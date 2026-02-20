@@ -88,83 +88,132 @@
     <!-- <script src="js/api.js"></script> -->
 
     <script>
-        // --- Mocking Auth Object (Hapus bagian ini jika sudah punya js/api.js yang asli) ---
-        const Auth = {
-            register: async (name, email, password) => {
-                // Simulasi delay jaringan
-                await new Promise(r => setTimeout(r, 1500));
-                // Simulasi logika
-                if(email === 'exist@test.com') {
-                    return { success: false, data: { message: "Email already registered." } };
-                }
-                return { success: true };
-            }
-        };
-        // ---------------------------------------------------------------------------
-
         const signupForm = document.getElementById('signupForm');
         const errorDiv = document.getElementById('error');
         const successDiv = document.getElementById('success');
         const spinner = document.getElementById('spinner');
         const btnText = document.querySelector('.btn-text');
         const signupBtn = document.getElementById('signupBtn');
+        const API = 'http://localhost:3000/api';
 
         signupForm.addEventListener('submit', async (e) => {
+            // CRITICAL: Prevent default form submission
             e.preventDefault();
             
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
 
-            // Validasi Client Side
-            if (password !== confirmPassword) {
-                errorDiv.textContent = 'Passwords do not match.';
-                errorDiv.style.display = 'block';
-                successDiv.style.display = 'none';
+            // Validate inputs
+            if (!name || !email || !password || !confirmPassword) {
+                showError('All fields are required');
                 return;
             }
 
-            // Reset UI
+            // Validate password strength
+            if (password.length < 6) {
+                showError('Password must be at least 6 characters');
+                return;
+            }
+
+            // Validate passwords match
+            if (password !== confirmPassword) {
+                showError('Passwords do not match');
+                return;
+            }
+
+            // Clear previous messages
             errorDiv.style.display = 'none';
             errorDiv.textContent = '';
             successDiv.style.display = 'none';
             successDiv.textContent = '';
             
-            // Set Loading State (Spinner di dalam tombol)
+            // Set loading state
             signupBtn.disabled = true;
             spinner.style.display = 'block';
             btnText.style.display = 'none';
 
             try {
-                // Panggil fungsi Auth.register
-                const result = await Auth.register(name, email, password);
+                // Fetch from FULL backend URL
+                const response = await fetch(`${API}/auth/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ name, email, password })
+                });
 
-                if (result.success) {
-                    successDiv.textContent = 'Account created successfully! Redirecting to login...';
-                    successDiv.style.display = 'block';
-                    errorDiv.style.display = 'none';
+                // Handle non-OK responses
+                if (!response.ok) {
+                    let errorMessage = 'Registration failed';
                     
-                    // Redirect setelah 2 detik
+                    try {
+                        const errorData = await response.json();
+                        errorMessage = errorData.message || errorData.error || errorMessage;
+                    } catch (jsonError) {
+                        errorMessage = response.statusText || `Error ${response.status}`;
+                    }
+                    
+                    throw new Error(errorMessage);
+                }
+
+                // Parse response JSON
+                let data;
+                try {
+                    data = await response.json();
+                } catch (jsonError) {
+                    console.error('JSON parse error:', jsonError);
+                    throw new Error('Invalid response format from server');
+                }
+
+                // Check success
+                if (data.success) {
+                    showSuccess('Account created successfully! Redirecting to login...');
+                    
+                    // Redirect after 2 seconds
                     setTimeout(() => {
                         window.location.href = 'login.html';
                     }, 2000);
                 } else {
-                    const errorMessage = result.data?.message || result.error || 'Registration failed';
-                    errorDiv.textContent = errorMessage;
-                    errorDiv.style.display = 'block';
+                    const errorMessage = data.message || data.error || 'Registration failed';
+                    showError(errorMessage);
                 }
+
             } catch (error) {
-                errorDiv.textContent = 'Connection error: ' + error.message;
-                errorDiv.style.display = 'block';
+                console.error('Signup error:', error);
+                const errorMessage = error.message || 'Connection error. Please try again.';
+                showError(errorMessage);
+
             } finally {
-                // Reset UI State
+                // CRITICAL: Always stop loading state
                 signupBtn.disabled = false;
                 spinner.style.display = 'none';
                 btnText.style.display = 'block';
             }
         });
 
+        /**
+         * Show error message
+         */
+        function showError(message) {
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            successDiv.style.display = 'none';
+        }
+
+        /**
+         * Show success message
+         */
+        function showSuccess(message) {
+            successDiv.textContent = message;
+            successDiv.style.display = 'block';
+            errorDiv.style.display = 'none';
+        }
+
+        /**
+         * Mock social signup message
+         */
         function showMockMessage(provider) {
             const footer = document.querySelector('.footer-text');
             footer.innerHTML = `<span style="color:#0052D4">${provider} signup is visual only.</span>`;

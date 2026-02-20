@@ -1,43 +1,33 @@
-require("dotenv").config();
-
+const path = require("path");
+require("dotenv").config({ path: path.resolve(__dirname, ".env"), override: true });
 const express = require("express");
 const cors = require("cors");
-
-require("./config/database");
-const { authenticate } = require("./middleware/auth");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
-app.use(cors());
+// middleware
+app.use(cors({ origin: "*" }));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// Routes
-app.get("/", (req, res) => {
-  res.json({ message: "Smart Incident Management API running" });
+// ping test
+app.get("/ping", (req, res) => {
+  res.send("PONG 🟢 SERVER HIDUP");
 });
 
-// Auth routes (no authentication required)
+// frontend
+app.use(express.static(path.join(__dirname, "../frontend")));
+
+// serve folder uploads (foto bukti insiden)
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// api
 app.use("/api/auth", require("./routes/authRoutes"));
+app.use("/api/incidents", require("./routes/incidentRoutes"));
+app.use("/api/admin", require("./routes/adminRoutes"));
 
-// Protected routes (require authentication)
-app.use("/api/incidents", authenticate, require("./routes/incidentRoutes"));
-
-// 404 handler
-app.use((req, res) => {
-  res.status(404).json({ success: false, message: "Route not found" });
-});
-
-// Global error handler
-app.use((err, req, res, next) => {
-  console.error("Global error handler:", err);
-  res.status(err.status || 500).json({
-    success: false,
-    message: err.message || "Internal server error"
-  });
-});
-
+// start server
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`);
 });

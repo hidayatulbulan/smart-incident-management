@@ -1,19 +1,27 @@
-const mysql = require("mysql2");
-require("dotenv").config();
+const path = require("path");
+require("dotenv").config({ path: path.resolve(__dirname, "../.env"), override: true });
+const mysql = require("mysql2/promise");
 
-const db = mysql.createConnection({
-  host: process.env.DB_HOST || "localhost",
-  user: process.env.DB_USER || "root",
-  password: process.env.DB_PASSWORD || "",
-  database: process.env.DB_NAME || "incident_db",
+const pool = mysql.createPool({
+  socketPath: undefined,
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "smartincident",
+  port: 3306,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
 });
 
-db.connect((err) => {
-  if (err) {
-    console.error("MYSQL GAGAL:", err.message);
-  } else {
+pool.getConnection()
+  .then((conn) => {
     console.log("MYSQL CONNECTED");
-  }
-});
+    conn.release();
+  })
+  .catch((err) => {
+    console.error("MYSQL GAGAL:", err.message);
+    console.error("Detail:", err);
+  });
 
-module.exports = db;
+module.exports = pool;

@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SMART Incident - Profil</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sidebar-width: 220px;
+      --primary: #6c63ff;
+      --primary-light: #ede9ff;
+      --main-bg: #eef0fb;
+      --text-dark: #1a1a2e;
+      --text-muted: #8a8fa8;
+      --shadow: 0 4px 18px rgba(108,99,255,0.09);
+      --radius: 16px;
+      --border: #e2e4ed;
+      --card-bg: #fff;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--main-bg);
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: var(--sidebar-width);
+      background: #f0f2fc;
+      display: flex; flex-direction: column;
+      padding: 28px 0 0;
+      min-height: 100vh;
+      position: fixed; top: 0; left: 0; bottom: 0;
+      z-index: 100;
+      border-right: 1px solid #e2e4f0;
+    }
+    .sidebar-logo {
+      display: flex; align-items: center; gap: 10px;
+      padding: 0 22px 28px;
+    }
+    .logo-icon {
+      width: 38px; height: 38px;
+      background: var(--primary); border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-icon svg { width: 20px; height: 20px; }
+    .logo-text .brand { font-size: 15px; font-weight: 800; color: var(--text-dark); }
+    .logo-text .sub   { font-size: 10px; font-weight: 600; color: var(--primary); letter-spacing: 2px; text-transform: uppercase; }
+
+    .sidebar-nav { flex: 1; padding: 8px 0; }
+    .nav-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 11px 22px;
+      color: var(--text-muted); font-size: 14px; font-weight: 600;
+      text-decoration: none; position: relative;
+      transition: background .2s, color .2s;
+    }
+    .nav-item:hover { color: var(--primary); background: rgba(108,99,255,.08); }
+    .nav-item.active { color: var(--primary); background: rgba(108,99,255,.10); }
+    .nav-item.active::before {
+      content: ''; position: absolute; left: 0; top: 4px; bottom: 4px;
+      width: 4px; background: var(--primary); border-radius: 0 4px 4px 0;
+    }
+    .nav-item svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+    .sidebar-bottom {
+      padding: 16px 22px 28px;
+      border-top: 1px solid #dde0f0;
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .darkmode-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 9px 0;
+    }
+    .darkmode-label {
+      display: flex; align-items: center; gap: 9px;
+      font-size: 13.5px; font-weight: 700; color: var(--text-muted);
+    }
+    .darkmode-label svg { width: 16px; height: 16px; }
+
+    .toggle { position: relative; width: 36px; height: 20px; cursor: pointer; display: block; }
+    .toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
+    .toggle-slider {
+      position: absolute; inset: 0;
+      background: #d0d4e8; border-radius: 20px;
+      transition: background .25s;
+    }
+    .toggle-slider::before {
+      content: ''; position: absolute; left: 3px; top: 3px;
+      width: 14px; height: 14px; border-radius: 50%;
+      background: #fff; transition: transform .25s;
+      box-shadow: 0 1px 3px rgba(0,0,0,.2);
+    }
+    .toggle input:checked + .toggle-slider { background: var(--primary); }
+    .toggle input:checked + .toggle-slider::before { transform: translateX(16px); }
+
+    .logout-btn {
+      display: flex; align-items: center; gap: 9px;
+      background: none; border: none;
+      font-family: 'Nunito', sans-serif;
+      font-size: 13.5px; font-weight: 700; color: #e05b5b;
+      cursor: pointer; padding: 9px 0; width: 100%;
+      transition: opacity .2s;
+    }
+    .logout-btn:hover { opacity: .75; }
+    .logout-btn svg { width: 16px; height: 16px; }
+
+    /* MAIN */
+    .main { margin-left: var(--sidebar-width); flex: 1; padding: 32px 40px; }
+
+    /* TOPBAR */
+    .topbar {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      margin-bottom: 28px;
+    }
+    .page-title    { font-size: 26px; font-weight: 800; color: var(--text-dark); }
+    .page-subtitle { font-size: 13px; font-weight: 600; color: var(--text-muted); margin-top: 3px; }
+    .topbar-right  { display: flex; align-items: center; gap: 12px; }
+    .search-bar {
+      display: flex; align-items: center; gap: 8px;
+      background: #fff; border: 1.5px solid var(--border);
+      border-radius: 10px; padding: 8px 16px;
+      font-size: 13px; color: var(--text-muted); min-width: 210px;
+    }
+    .search-bar svg { width: 15px; height: 15px; }
+    .user-ava {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg, #f6a05b, #e05b5b);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 700; color: #fff; flex-shrink: 0;
+    }
+
+    /* LAYOUT */
+    .layout { display: flex; gap: 22px; align-items: flex-start; }
+
+    /* PROFILE CARD */
+    .profile-card {
+      width: 210px; flex-shrink: 0;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 28px 22px 22px;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .avatar-wrap { position: relative; margin-bottom: 14px; }
+    .avatar-bg {
+      width: 88px; height: 88px; border-radius: 50%;
+      background: linear-gradient(135deg, #f6d95b, #f6a05b);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 44px;
+    }
+    .avatar-edit {
+      position: absolute; bottom: 2px; right: 2px;
+      width: 24px; height: 24px; border-radius: 50%;
+      background: var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      border: 2px solid #fff; cursor: pointer;
+    }
+    .avatar-edit svg { width: 11px; height: 11px; }
+
+    .profile-name { font-size: 16px; font-weight: 800; color: var(--text-dark); text-align: center; }
+    .profile-role { font-size: 12px; font-weight: 600; color: var(--text-muted); text-align: center; margin-bottom: 18px; }
+
+    .profile-info-list {
+      width: 100%; border-top: 1px solid #f0f0f8;
+      padding-top: 16px; display: flex; flex-direction: column; gap: 13px;
+    }
+    .pil { font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 3px; }
+    .piv { font-size: 12.5px; font-weight: 700; color: var(--text-dark); word-break: break-all; }
+
+    .security-card {
+      margin-top: 16px; width: 100%;
+      background: linear-gradient(135deg, #6c63ff, #5b8def);
+      border-radius: 12px; padding: 14px 16px; color: #fff;
+    }
+    .sec-card-title {
+      display: flex; align-items: center; gap: 7px;
+      font-size: 13px; font-weight: 800; margin-bottom: 10px;
+    }
+    .sec-card-title svg { width: 15px; height: 15px; }
+    .sec-bar-bg {
+      height: 6px; border-radius: 10px;
+      background: rgba(255,255,255,.25); overflow: hidden; margin-bottom: 8px;
+    }
+    .sec-bar-fill { height: 100%; border-radius: 10px; background: #fff; width: 75%; }
+    .sec-desc { font-size: 11px; font-weight: 600; opacity: .85; line-height: 1.5; }
+
+    /* FORMS */
+    .forms-col { flex: 1; display: flex; flex-direction: column; gap: 18px; }
+    .form-card {
+      background: var(--card-bg); border-radius: var(--radius);
+      box-shadow: var(--shadow); padding: 26px 28px;
+    }
+    .form-card-title {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 15px; font-weight: 800; color: var(--text-dark);
+      margin-bottom: 20px;
+    }
+    .form-card-title svg { width: 17px; height: 17px; color: var(--primary); }
+
+    .form-row { display: flex; gap: 16px; margin-bottom: 16px; }
+    .form-row .fg { flex: 1; }
+    .fg { margin-bottom: 16px; }
+    .fg.last { margin-bottom: 0; }
+
+    label {
+      display: block; font-size: 12px; font-weight: 700;
+      color: var(--text-dark); margin-bottom: 7px;
+    }
+    input[type="text"], input[type="email"], textarea {
+      font-family: 'Nunito', sans-serif;
+      font-size: 13.5px; font-weight: 600; color: var(--text-dark);
+      background: #fff; border: 1.5px solid var(--border);
+      border-radius: 10px; padding: 10px 14px;
+      outline: none; width: 100%;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    input::placeholder, textarea::placeholder { color: #b8bcd0; font-weight: 500; }
+    input:focus, textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(108,99,255,.10);
+    }
+    textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+
+    .form-actions {
+      display: flex; justify-content: flex-end; gap: 12px; margin-top: 22px;
+    }
+    .cancel-btn {
+      background: none; border: none; font-family: 'Nunito', sans-serif;
+      font-size: 14px; font-weight: 700; color: var(--text-muted);
+      cursor: pointer; padding: 10px 22px; border-radius: 10px;
+      transition: background .2s, color .2s;
+    }
+    .cancel-btn:hover { background: #f0f0f8; color: var(--text-dark); }
+    .save-btn {
+      background: var(--primary); color: #fff;
+      font-family: 'Nunito', sans-serif;
+      font-size: 14px; font-weight: 800; border: none;
+      border-radius: 10px; padding: 10px 28px; cursor: pointer;
+      box-shadow: 0 5px 16px rgba(108,99,255,.28);
+      transition: transform .15s, box-shadow .15s, background .2s;
+    }
+    .save-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(108,99,255,.36); }
+
+    /* SECURITY ROWS */
+    .security-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 0; border-bottom: 1px solid #f0f0f8;
+    }
+    .security-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .sec-row-left { display: flex; align-items: center; gap: 14px; }
+    .sec-icon {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: var(--primary-light);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .sec-icon svg { width: 18px; height: 18px; color: var(--primary); }
+    .sec-info-title { font-size: 13.5px; font-weight: 700; color: var(--text-dark); }
+    .sec-info-desc  { font-size: 11.5px; font-weight: 600; color: var(--text-muted); margin-top: 2px; }
+    .update-link {
+      font-size: 13px; font-weight: 800; color: var(--primary);
+      text-decoration: none; cursor: pointer;
+      padding: 6px 12px; border-radius: 8px; transition: background .2s;
+    }
+    .update-link:hover { background: var(--primary-light); }
+
+    /* 2FA TOGGLE */
+    .tfa-toggle { position: relative; width: 44px; height: 24px; cursor: pointer; display: block; }
+    .tfa-toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
+    .tfa-slider {
+      position: absolute; inset: 0;
+      background: #d0d4e8; border-radius: 24px; transition: background .25s;
+    }
+    .tfa-slider::before {
+      content: ''; position: absolute; left: 4px; top: 4px;
+      width: 16px; height: 16px; border-radius: 50%;
+      background: #fff; transition: transform .25s;
+      box-shadow: 0 1px 3px rgba(0,0,0,.2);
+    }
+    .tfa-toggle input:checked + .tfa-slider { background: var(--primary); }
+    .tfa-toggle input:checked + .tfa-slider::before { transform: translateX(20px); }
+  </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+      </svg>
+    </div>
+    <div class="logo-text">
+      <div class="brand">SMART</div>
+      <div class="sub">Incident</div>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="nav-item" href="dashboard.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="7" height="7" rx="1"/>
+        <rect x="14" y="3" width="7" height="7" rx="1"/>
+        <rect x="14" y="14" width="7" height="7" rx="1"/>
+        <rect x="3" y="14" width="7" height="7" rx="1"/>
+      </svg>
+      Dashboard
+    </a>
+    <a class="nav-item" href="report.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
+        <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
+      </svg>
+      Lapor Insiden
+    </a>
+    <a class="nav-item" href="#" onclick="goToLatestIncident(); return false;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="16" y1="13" x2="8" y2="13"/>
+        <line x1="16" y1="17" x2="8" y2="17"/>
+      </svg>
+      Riwayat Laporan
+    </a>
+    <a class="nav-item active" href="profile.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+      Profil
+    </a>
+  </nav>
+
+  <div class="sidebar-bottom">
+    <div class="darkmode-row">
+      <div class="darkmode-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+        </svg>
+        Dark Mode
+      </div>
+      <label class="toggle">
+        <input type="checkbox" id="darkToggle"/>
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+    <button class="logout-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/>
+        <polyline points="16 17 21 12 16 7"/>
+        <line x1="21" y1="12" x2="9" y2="12"/>
+      </svg>
+      Log Out
+    </button>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+
+  <div class="topbar">
+    <div>
+      <div class="page-title">Account Settings</div>
+      <div class="page-subtitle">Manage your profile information and security.</div>
+    </div>
+    <div class="topbar-right">
+      <div class="search-bar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <circle cx="11" cy="11" r="8"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        Type to search...
+      </div>
+      <div class="user-ava">B</div>
+    </div>
+  </div>
+
+  <div class="layout">
+
+    <!-- Kiri: Profile Card -->
+    <div class="profile-card">
+      <div class="avatar-wrap">
+        <div class="avatar-bg">&#128161;</div>
+        <div class="avatar-edit">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
+            <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
+          </svg>
+        </div>
+      </div>
+      <div class="profile-name">Bulan Hidayatul</div>
+      <div class="profile-role">Staff Operational</div>
+      <div class="profile-info-list">
+        <div>
+          <div class="pil">Email Address</div>
+          <div class="piv" id="displayEmail">hidayatulbulan@gmail.com</div>
+        </div>
+        <div>
+          <div class="pil">Department</div>
+          <div class="piv">IT Infrastructure</div>
+        </div>
+      </div>
+      <div class="security-card">
+        <div class="sec-card-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          Security Level
+        </div>
+        <div class="sec-bar-bg">
+          <div class="sec-bar-fill"></div>
+        </div>
+        <div class="sec-desc">Your profile is 75% secure. Add 2FA to improve security.</div>
+      </div>
+    </div>
+
+    <!-- Kanan: Forms -->
+    <div class="forms-col">
+
+      <!-- Personal Information -->
+      <div class="form-card">
+        <div class="form-card-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          Personal Information
+        </div>
+
+        <div class="form-row">
+          <div class="fg">
+            <label>First Name</label>
+            <input type="text" id="firstName" value="Bulan"/>
+          </div>
+          <div class="fg">
+            <label>Last Name</label>
+            <input type="text" id="lastName" value="Hidayatul"/>
+          </div>
+        </div>
+
+        <div class="fg">
+          <label>Email Address</label>
+          <input type="email" id="emailInput" value="hidayatulbulan@gmail.com"/>
+        </div>
+
+        <div class="fg last">
+          <label>Bio</label>
+          <textarea id="bioInput" placeholder="Tulis bio singkat tentang diri Anda..."></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button class="cancel-btn" onclick="resetForm()">Cancel</button>
+          <button class="save-btn" id="saveBtn" onclick="saveForm()">Save Changes</button>
+        </div>
+      </div>
+
+      <!-- Security Settings -->
+      <div class="form-card">
+        <div class="form-card-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          Security Settings
+        </div>
+
+        <div class="security-row">
+          <div class="sec-row-left">
+            <div class="sec-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0110 0v4"/>
+              </svg>
+            </div>
+            <div>
+              <div class="sec-info-title">Change Password</div>
+              <div class="sec-info-desc">Update your account password regularly.</div>
+            </div>
+          </div>
+          <a class="update-link" href="#">Update</a>
+        </div>
+
+        <div class="security-row">
+          <div class="sec-row-left">
+            <div class="sec-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+                <line x1="12" y1="18" x2="12.01" y2="18"/>
+              </svg>
+            </div>
+            <div>
+              <div class="sec-info-title">Two-Factor Authentication</div>
+              <div class="sec-info-desc">Add an extra layer of security.</div>
+            </div>
+          </div>
+          <label class="tfa-toggle">
+            <input type="checkbox" id="twofa"/>
+            <span class="tfa-slider"></span>
+          </label>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function resetForm() {
+    document.getElementById('firstName').value = 'Bulan';
+    document.getElementById('lastName').value = 'Hidayatul';
+    document.getElementById('emailInput').value = 'hidayatulbulan@gmail.com';
+    document.getElementById('bioInput').value = '';
+  }
+
+  function saveForm() {
+    const btn = document.getElementById('saveBtn');
+    const email = document.getElementById('emailInput').value;
+    document.getElementById('displayEmail').textContent = email;
+    btn.textContent = 'Tersimpan!';
+    btn.style.background = '#4dc4a8';
+    setTimeout(() => {
+      btn.textContent = 'Save Changes';
+      btn.style.background = '';
+    }, 2000);
+  }
+
+  document.getElementById('darkToggle').addEventListener('change', function() {
+    document.body.style.filter = this.checked ? 'invert(1) hue-rotate(180deg)' : '';
+  });
+</script>
+
+<script>
+async function goToLatestIncident() {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) { window.location.href = '../auth/login.html'; return; }
+    const response = await fetch('http://localhost:3000/api/incidents', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    const data = await response.json();
+    if (data.incidents && data.incidents.length > 0) {
+      window.location.href = `incident-detail.html?id=${data.incidents[0].id}`;
+    } else {
+      alert('Belum ada laporan insiden.');
+    }
+  } catch (err) {
+    alert('Gagal memuat laporan.');
+  }
+}
+</script>
+
+</body>
+</html>

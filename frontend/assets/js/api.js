@@ -58,6 +58,42 @@ const Incidents = {
     getById: async (id) => {
         return apiCall(`/incidents/${id}`);
     },
+
+    /**
+     * Create a new incident with photo (uses new endpoint)
+     * @param {string} title - Incident title
+     * @param {string} category - Incident category
+     * @param {string} description - Incident description
+     * @param {string} location - Incident location
+     * @param {File} photo - Photo file
+     */
+    createReport: async (title, category, description, location, photo) => {
+        const token = localStorage.getItem('token');
+        const formData = new FormData();
+        
+        formData.append('title', title);
+        formData.append('category', category);
+        formData.append('description', description);
+        formData.append('location', location);
+        
+        if (photo) {
+            formData.append('photo', photo);
+        }
+
+        try {
+            const response = await fetch(`${API}/incidents`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                body: formData
+            });
+            const data = await response.json();
+            return { success: response.ok, status: response.status, data };
+        } catch (error) {
+            return { success: false, error: error.message };
+        }
+    },
     
     create: async (title, type, priority, description, photo = null) => {
         const token = localStorage.getItem('token');
@@ -204,5 +240,26 @@ const Utils = {
         if (element) {
             element.style.display = 'none';
         }
+    }
+};
+    const Users = {
+    getAll: async () => {
+        return apiCall('/users');
+    },
+    
+    getById: async (id) => {
+        return apiCall(`/users/${id}`);
+    },
+    
+    create: async (userData) => {
+        return apiCall('/users', 'POST', userData);
+    },
+    
+    update: async (id, updates) => {
+        return apiCall(`/users/${id}`, 'PUT', updates);
+    },
+    
+    delete: async (id) => {
+        return apiCall(`/users/${id}`, 'DELETE');
     }
 };

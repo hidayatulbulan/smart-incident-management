@@ -71,65 +71,6 @@
         </div>
     </div>
 
-    <script>
-        const loginForm = document.getElementById('loginForm');
-        const errorDiv = document.getElementById('error');
-        const spinner = document.getElementById('spinner');
-        const btnText = document.querySelector('.btn-text');
-        const loginBtn = document.getElementById('loginBtn');
-        const API = 'http://localhost:3000/api'; 
-
-        loginForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
-            errorDiv.style.display = 'none';
-            loginBtn.disabled = true;
-            spinner.style.display = 'block';
-            btnText.style.display = 'none';
-
-            try {
-                const response = await fetch(`${API}/auth/login`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password })
-                });
-
-                const data = await response.json();
-                
-                // Simulasi untuk demo jika API mati
-                if (!response.ok) throw new Error(data.message || 'Login failed');
-
-                if (data.success && data.token) {
-                    localStorage.setItem('token', data.token);
-                    if (data.user) localStorage.setItem('user', JSON.stringify(data.user));
-                    
-                    // Redirect based on user role
-                    let redirectUrl = '../user/dashboard.html';
-                    if (data.user && data.user.role === 'admin') redirectUrl = '../admin/dashboard.html';
-                    
-                    setTimeout(() => window.location.href = redirectUrl, 500);
-                } else {
-                    throw new Error('Invalid credentials');
-                }
-            } catch (error) {
-                errorDiv.textContent = 'Login failed. Please check your email and password.';
-                errorDiv.style.display = 'block';
-            } finally {
-                loginBtn.disabled = false;
-                spinner.style.display = 'none';
-                btnText.style.display = 'block';
-            }
-        });
-
-        function showMockMessage(provider) {
-            const footer = document.querySelector('.footer-text');
-            footer.innerHTML = `<span style="color:#0052D4">${provider} login is visual only.</span>`;
-            setTimeout(() => {
-                footer.innerHTML = 'Don\'t have an account? <a href="signup.html">Sign up here</a>';
-            }, 2000);
-        }
-    </script>
+    <script src="../assets/js/login.js"></script>
 </body>
 </html>

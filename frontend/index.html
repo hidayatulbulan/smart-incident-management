@@ -4,60 +4,114 @@
   <meta charset="UTF-8" />
   <title>Smart Incident System</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome untuk Ikon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-</head> <link rel="stylesheet" href="assets/css/style.css">
+  <!-- Link ke CSS Main (Gradasi Biru) -->
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
 <body>
 
   <!-- HEADER -->
   <header class="header">
     <div class="logo-wrapper">
-      <img src="assets/images/logo.png" class="logo">
+      <!-- Pastikan file logo.png ada di folder assets/images/ -->
+      <img src="assets/images/logo.png" class="logo" alt="Logo" onerror="this.style.display='none'">
+      <span class="logo-text">SmartIncident</span>
     </div>
 
-    <a href="auth/login.html" class="login-btn">Login</a>
+    <a href="auth/login.html" class="login-btn">
+      <i class="fa-solid fa-right-to-bracket"></i> Login
+    </a>
   </header>
 
-  <!-- HERO -->
+  <!-- HERO SECTION -->
   <section class="hero">
-    <span class="hero-badge fade-up">
-      PROFESSIONAL REPORTING SYSTEM
-    </span>
+    <div class="hero-content">
+      <span class="hero-badge fade-up">
+        <i class="fa-solid fa-circle-check"></i> PROFESSIONAL REPORTING SYSTEM
+      </span>
 
-    <h1 class="fade-up fade-delay-1">
-      Smart Incident System
-    </h1>
+      <h1 class="fade-up fade-delay-1">
+        Kelola Insiden <br>
+        <span class="highlight">Cepat & Akurat</span>
+      </h1>
 
-    <p class="fade-up fade-delay-2">
-      Sistem pelaporan insiden terpadu untuk penanganan cepat,
-      transparan, dan profesional.
-    </p>
+      <p class="fade-up fade-delay-2">
+        Platform terpadu untuk pelaporan, pemantauan, dan penanganan insiden secara real-time. Transparan, aman, dan efisien.
+      </p>
 
-    <a href="auth/login.html" class="btn-primary fade-up fade-delay-3">
-      Login / Mulai Melapor
-    </a>
+      <div class="hero-buttons fade-up fade-delay-3">
+        <!-- Tombol Login -->
+        <a href="auth/login.html" class="btn-primary">
+          Login Sistem
+        </a>
+        
+        <!-- Tombol Pelajari Lebih Lanjut (Sudah Diperbaiki) -->
+        <a href="#features" class="btn-secondary">
+          Pelajari Lebih Lanjut
+        </a>
+      </div>
+    </div>
   </section>
 
-  <!-- FEATURES -->
-  <section class="features">
-    <div class="card">
-      <h3>Respons Cepat</h3>
-      <p>Pelaporan cepat untuk penanganan insiden yang efisien.</p>
-    </div>
+  <!-- FEATURES SECTION (Sudah diberi ID untuk Scroll) -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-header">
+        <h2>Mengapa Memilih Kami?</h2>
+        <p>Solusi terbaik untuk manajemen insiden perusahaan Anda.</p>
+      </div>
 
-    <div class="card">
-      <h3>Transparan</h3>
-      <p>Status laporan dapat dipantau secara real-time.</p>
-    </div>
+      <div class="card-grid">
+        <!-- Card 1 -->
+        <div class="card fade-up">
+          <div class="card-icon">
+            <i class="fa-solid fa-bolt"></i>
+          </div>
+          <h3>Respons Cepat</h3>
+          <p>Notifikasi instan dan pelaporan cepat memungkinkan tim penanganan bertindak segera saat insiden terjadi.</p>
+        </div>
 
-    <div class="card">
-      <h3>Aman</h3>
-      <p>Data pelapor terlindungi dengan sistem keamanan.</p>
+        <!-- Card 2 -->
+        <div class="card fade-up fade-delay-1">
+          <div class="card-icon">
+            <i class="fa-solid fa-eye"></i>
+          </div>
+          <h3>Transparan</h3>
+          <p>Lacak status laporan secara real-time dari awal pelaporan hingga penyelesaian masalah.</p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card fade-up fade-delay-2">
+          <div class="card-icon">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <h3>Aman & Terenkripsi</h3>
+          <p>Data pelapor dan detail insiden dilindungi dengan standar keamanan tingkat tinggi.</p>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- FOOTER -->
   <footer>
-    <div>© 2024 Smart Incident System</div>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <span>SmartIncident</span>
+        </div>
+        <div class="copyright">
+          &copy; 2024 Smart Incident System. All Rights Reserved.
+        </div>
+      </div>
+    </div>
   </footer>
 
 </body>

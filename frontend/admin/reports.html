@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports - Smart Incident</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            color: #1a1a2e;
+            font-size: 13px;
+        }
+
+        .container { display: flex; min-height: 100vh; }
+
+        /* ── SIDEBAR ── */
+        .sidebar {
+            width: 220px;
+            background: #fff;
+            padding: 24px 16px;
+            box-shadow: 2px 0 8px rgba(0,0,0,0.06);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0; left: 0; bottom: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 36px;
+            padding: 4px 8px;
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+
+        .logo-text h2 { font-size: 15px; font-weight: 700; color: #1a1a2e; }
+        .logo-text p  { font-size: 10px; color: #aaa; letter-spacing: 1px; }
+
+        .nav-menu { list-style: none; flex: 1; }
+        .nav-item  { margin-bottom: 4px; }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 14px;
+            color: #6b7280;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.2s;
+            font-size: 13px;
+        }
+
+        .nav-link:hover  { background: #f5f3ff; color: #667eea; }
+        .nav-link.active { background: #667eea; color: white; }
+        .nav-link i      { width: 18px; text-align: center; font-size: 15px; }
+
+        .logout {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 14px;
+            color: #9ca3af;
+            font-size: 13px;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        .logout:hover { color: #667eea; background: #f5f3ff; }
+
+        /* ── MAIN ── */
+        .main-content {
+            margin-left: 220px;
+            flex: 1;
+            padding: 28px 30px;
+        }
+
+        /* ── TOPBAR ── */
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 26px;
+        }
+
+        .topbar h1 { font-size: 22px; font-weight: 700; color: #1a1a2e; }
+
+        .topbar-right { display: flex; align-items: center; gap: 10px; }
+
+        .filter-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            background: #fff;
+            color: #374151;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .filter-btn .fi { display: flex; flex-direction: column; line-height: 1.3; }
+        .filter-btn .fi span   { font-size: 9px; color: #9ca3af; letter-spacing: 0.4px; }
+        .filter-btn .fi strong { font-size: 12px; color: #374151; font-weight: 500; }
+        .filter-btn .cv        { color: #9ca3af; font-size: 10px; }
+
+        .export-wrap { display: flex; }
+        .export-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px 0 0 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .export-caret {
+            padding: 8px 10px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-left: 1px solid rgba(255,255,255,0.3);
+            border-radius: 0 8px 8px 0;
+            cursor: pointer;
+            font-size: 10px;
+        }
+
+        /* ── CONTENT GRID ── */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 310px;
+            gap: 20px;
+        }
+
+        .left-col  { display: flex; flex-direction: column; gap: 18px; }
+        .right-col { display: flex; flex-direction: column; gap: 18px; }
+
+        /* ── KPI ROW ── */
+        .kpi-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+
+        .kpi-card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 20px 22px 16px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+            min-height: 120px;
+        }
+
+        .kpi-label {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: #9ca3af;
+            margin-bottom: 10px;
+        }
+
+        .kpi-val {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a1a2e;
+            line-height: 1;
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .badge-red   { background: #fee2e2; color: #ef4444; border-radius: 20px; padding: 2px 8px; font-size: 11px; font-weight: 600; }
+        .badge-green { background: #dcfce7; color: #22c55e; border-radius: 20px; padding: 2px 8px; font-size: 11px; font-weight: 600; }
+
+        .kpi-compare { font-size: 10px; color: #9ca3af; margin-top: 5px; }
+        .kpi-delta   { font-size: 11px; color: #3b82f6; font-weight: 600; margin-top: 4px; }
+
+        .kpi-icon {
+            position: absolute;
+            top: 16px; right: 16px;
+            width: 32px; height: 32px;
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px;
+        }
+
+        .kpi-sparkline {
+            position: absolute;
+            bottom: 14px; right: 14px;
+            display: flex;
+            align-items: flex-end;
+            gap: 3px;
+        }
+
+        .spark-bar { width: 7px; border-radius: 2px 2px 0 0; }
+
+        /* ── RESOLVED RATE ── */
+        .resolved-card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 20px 22px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+        }
+
+        .resolved-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 14px;
+        }
+
+        .resolved-val    { font-size: 34px; font-weight: 800; color: #1a1a2e; }
+        .resolved-target { font-size: 11px; color: #9ca3af; margin-top: 3px; }
+        .resolved-target strong { color: #6b7280; }
+
+        .resolved-icon {
+            width: 30px; height: 30px;
+            background: #dcfce7;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: #16a34a; font-size: 13px;
+        }
+
+        .progress-track { background: #f3f4f6; border-radius: 6px; height: 8px; overflow: hidden; margin-bottom: 14px; }
+        .progress-fill  { height: 100%; border-radius: 6px; background: linear-gradient(90deg, #22c55e, #16a34a); }
+
+        .resolved-spark { display: flex; align-items: flex-end; gap: 3px; justify-content: flex-end; }
+
+        /* ── CHART CARD ── */
+        .chart-card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 20px 22px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 4px;
+        }
+
+        .chart-title { font-size: 15px; font-weight: 700; color: #1a1a2e; }
+        .chart-sub   { font-size: 11px; color: #9ca3af; }
+
+        .legend       { display: flex; gap: 14px; align-items: center; }
+        .leg-item     { display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 500; color: #374151; }
+        .leg-dot      { width: 10px; height: 10px; border-radius: 2px; }
+
+        .chart-area { height: 180px; margin-top: 12px; }
+
+        /* ── TOP REPORTERS ── */
+        .reporters-card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 20px 22px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+        }
+
+        .reporters-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .reporters-title { font-size: 15px; font-weight: 700; color: #1a1a2e; }
+        .view-all { font-size: 12px; color: #667eea; font-weight: 500; text-decoration: none; display: flex; align-items: center; gap: 4px; }
+
+        table.rep-table { width: 100%; border-collapse: collapse; }
+
+        table.rep-table th {
+            text-align: left;
+            font-size: 10px;
+            color: #9ca3af;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            padding: 0 0 10px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        table.rep-table th:not(:first-child) { text-align: center; }
+        table.rep-table td { padding: 12px 0; border-bottom: 1px solid #f9fafb; vertical-align: middle; }
+        table.rep-table tr:last-child td { border-bottom: none; }
+        table.rep-table td:not(:first-child) { text-align: center; }
+
+        .user-cell { display: flex; align-items: center; gap: 10px; }
+
+        .av {
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 12px; font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .u-name { font-size: 13px; font-weight: 600; color: #1a1a2e; }
+        .u-role { font-size: 11px; color: #9ca3af; }
+
+        .st-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .st-active { background: #dcfce7; color: #16a34a; }
+        .st-away   { background: #fef3c7; color: #d97706; }
+
+        .res-hi { color: #22c55e; font-weight: 700; }
+        .res-mi { color: #f59e0b; font-weight: 700; }
+
+        /* ── PERFORMANCE METRICS ── */
+        .perf-card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 20px 22px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+        }
+
+        .perf-title { font-size: 15px; font-weight: 700; color: #1a1a2e; margin-bottom: 12px; }
+        .radar-area { height: 200px; }
+
+        .health-box {
+            background: #eef2ff;
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin-top: 14px;
+        }
+
+        .health-lbl { font-size: 9px; color: #9ca3af; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; margin-bottom: 4px; }
+        .health-val { font-size: 15px; font-weight: 700; color: #667eea; }
+
+        /* ── MONTHLY HIGHLIGHTS ── */
+        .highlights-card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 20px 22px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+        }
+
+        .highlights-title { font-size: 15px; font-weight: 700; color: #1a1a2e; margin-bottom: 16px; }
+
+        .hl-item { display: flex; gap: 12px; margin-bottom: 16px; }
+
+        .hl-icon {
+            width: 32px; height: 32px;
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 13px; flex-shrink: 0;
+        }
+
+        .ic-green  { background: #dcfce7; color: #16a34a; }
+        .ic-blue   { background: #dbeafe; color: #3b82f6; }
+        .ic-purple { background: #f3e8ff; color: #9333ea; }
+
+        .hl-body h4 { font-size: 13px; font-weight: 700; color: #1a1a2e; margin-bottom: 3px; }
+        .hl-body p  { font-size: 11px; color: #6b7280; line-height: 1.5; }
+
+        .rec-box {
+            background: #f9fafb;
+            border-radius: 10px;
+            padding: 12px 14px;
+            border-left: 3px solid #667eea;
+        }
+
+        .rec-lbl  { font-size: 9px; color: #9ca3af; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 5px; }
+        .rec-text { font-size: 11px; color: #374151; line-height: 1.5; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-chart-line"></i>
+            </div>
+            <div class="logo-text">
+                <h2>SMART</h2>
+                <p>INCIDENT</p>
+            </div>
+        </div>
+
+        <nav>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="dashboard.html" class="nav-link">
+                        <i class="fas fa-th-large"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="incidents.html" class="nav-link">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span>Incident Data</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="reports.html" class="nav-link active">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Reports</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="users.html" class="nav-link">
+                        <i class="fas fa-users"></i>
+                        <span>User management</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <a class="logout">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Log Out</span>
+        </a>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main-content">
+
+        <!-- TOPBAR -->
+        <div class="topbar">
+            <h1>Incident Reports</h1>
+            <div class="topbar-right">
+                <button class="filter-btn">
+                    <i class="fas fa-building" style="color:#9ca3af;font-size:12px;"></i>
+                    <span class="fi">
+                        <span>DEPARTMENT</span>
+                        <strong>All Departments</strong>
+                    </span>
+                    <i class="fas fa-chevron-down cv"></i>
+                </button>
+                <button class="filter-btn">
+                    <i class="fas fa-globe" style="color:#9ca3af;font-size:12px;"></i>
+                    <span class="fi">
+                        <span>REGION</span>
+                        <strong>Global</strong>
+                    </span>
+                    <i class="fas fa-chevron-down cv"></i>
+                </button>
+                <button class="filter-btn">
+                    <i class="fas fa-calendar-alt" style="color:#9ca3af;font-size:12px;"></i>
+                    <span class="fi">
+                        <span>DATE RANGE</span>
+                        <strong>Last 30 Days</strong>
+                    </span>
+                    <i class="fas fa-chevron-down cv"></i>
+                </button>
+                <div class="export-wrap">
+                    <button class="export-btn"><i class="fas fa-download"></i> Export</button>
+                    <button class="export-caret"><i class="fas fa-chevron-down"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONTENT GRID -->
+        <div class="content-grid">
+
+            <!-- LEFT -->
+            <div class="left-col">
+
+                <!-- KPI CARDS -->
+                <div class="kpi-row">
+                    <div class="kpi-card">
+                        <div class="kpi-label">TOTAL INCIDENTS</div>
+                        <div class="kpi-val">
+                            1,248 <span class="badge-red">-12.5%</span>
+                        </div>
+                        <div class="kpi-compare">COMPARE TO PREVIOUS PERIOD</div>
+                        <div class="kpi-delta">+154</div>
+                        <div class="kpi-icon" style="background:#fef3c7;color:#f59e0b;">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="kpi-sparkline" id="spark1"></div>
+                    </div>
+
+                    <div class="kpi-card">
+                        <div class="kpi-label">AVG. RESOLUTION TIME</div>
+                        <div class="kpi-val" style="font-size:24px;">
+                            4h 12m <span class="badge-red">-8.2%</span>
+                        </div>
+                        <div class="kpi-compare">COMPARE TO PREVIOUS PERIOD</div>
+                        <div class="kpi-delta">+11M</div>
+                        <div class="kpi-icon" style="background:#f3e8ff;color:#9333ea;">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="kpi-sparkline" id="spark2"></div>
+                    </div>
+                </div>
+
+                <!-- INCIDENTS BY CATEGORY -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <div>
+                            <div class="chart-title">Incidents by Category</div>
+                            <div class="chart-sub">Weekly trend comparison</div>
+                        </div>
+                        <div class="legend">
+                            <div class="leg-item">
+                                <span class="leg-dot" style="background:#818cf8;"></span> SOFTWARE
+                            </div>
+                            <div class="leg-item">
+                                <span class="leg-dot" style="background:#67e8f9;"></span> HARDWARE
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-area">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- TOP REPORTERS -->
+                <div class="reporters-card">
+                    <div class="reporters-header">
+                        <div class="reporters-title">Top Reporters</div>
+                        <a href="#" class="view-all">View All <i class="fas fa-arrow-right" style="font-size:10px;"></i></a>
+                    </div>
+                    <table class="rep-table">
+                        <thead>
+                            <tr>
+                                <th>USER</th>
+                                <th>STATUS</th>
+                                <th>INCIDENTS</th>
+                                <th>RESOLUTION %</th>
+                                <th>AVG TIME</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="user-cell">
+                                        <div class="av" style="background:linear-gradient(135deg,#667eea,#764ba2);">AR</div>
+                                        <div>
+                                            <div class="u-name">Alex Rivera</div>
+                                            <div class="u-role">System Architect</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="st-badge st-active">ACTIVE</span></td>
+                                <td>142</td>
+                                <td><span class="res-hi">96.5%</span></td>
+                                <td>1.2h</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="user-cell">
+                                        <div class="av" style="background:linear-gradient(135deg,#f59e0b,#ef4444);">SC</div>
+                                        <div>
+                                            <div class="u-name">Sarah Chen</div>
+                                            <div class="u-role">Support Lead</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="st-badge st-active">ACTIVE</span></td>
+                                <td>128</td>
+                                <td><span class="res-hi">92.0%</span></td>
+                                <td>2.5h</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="user-cell">
+                                        <div class="av" style="background:linear-gradient(135deg,#10b981,#3b82f6);">MT</div>
+                                        <div>
+                                            <div class="u-name">Marcus Taylor</div>
+                                            <div class="u-role">DevOps Engineer</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="st-badge st-away">AWAY</span></td>
+                                <td>94</td>
+                                <td><span class="res-mi">84.2%</span></td>
+                                <td>3.8h</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            <!-- RIGHT -->
+            <div class="right-col">
+
+                <!-- RESOLVED RATE -->
+                <div class="resolved-card">
+                    <div class="kpi-label">RESOLVED RATE</div>
+                    <div class="resolved-top">
+                        <div>
+                            <div class="resolved-val">88.4%</div>
+                            <div class="resolved-target">TARGET: <strong>90%</strong></div>
+                        </div>
+                        <div class="resolved-icon">
+                            <i class="fas fa-sync-alt"></i>
+                        </div>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" style="width:88.4%;"></div>
+                    </div>
+                    <div class="resolved-spark" id="resolvedSpark"></div>
+                </div>
+
+                <!-- PERFORMANCE METRICS -->
+                <div class="perf-card">
+                    <div class="perf-title">Performance Metrics</div>
+                    <div class="radar-area">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                    <div class="health-box">
+                        <div class="health-lbl">OVERALL HEALTH</div>
+                        <div class="health-val">Very Good (4.2/5)</div>
+                    </div>
+                </div>
+
+                <!-- MONTHLY HIGHLIGHTS -->
+                <div class="highlights-card">
+                    <div class="highlights-title">Monthly Highlights</div>
+
+                    <div class="hl-item">
+                        <div class="hl-icon ic-green"><i class="fas fa-chart-line"></i></div>
+                        <div class="hl-body">
+                            <h4>Stability Improvement</h4>
+                            <p>Network stability improved by 12% following the infrastructure upgrade on the 14th.</p>
+                        </div>
+                    </div>
+
+                    <div class="hl-item">
+                        <div class="hl-icon ic-blue"><i class="fas fa-bell"></i></div>
+                        <div class="hl-body">
+                            <h4>Peak Volume Notice</h4>
+                            <p>Mon-days between 9 AM and 11 AM continue to see the highest report volume.</p>
+                        </div>
+                    </div>
+
+                    <div class="hl-item">
+                        <div class="hl-icon ic-purple"><i class="fas fa-shield-alt"></i></div>
+                        <div class="hl-body">
+                            <h4>SLA Compliance</h4>
+                            <p>98% of critical severity incidents were acknowledged within the 15-minute SLA.</p>
+                        </div>
+                    </div>
+
+                    <div class="rec-box">
+                        <div class="rec-lbl">RECOMMENDATION</div>
+                        <p class="rec-text">Increase support staff capacity on Monday mornings to handle higher ticket volume effectively.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+    const API_BASE = 'http://localhost:3000/api';
+    let categoryChart, radarChart;
+
+    // Filter state
+    let filterState = {
+        dateRange: 30,
+        department: 'all',
+        region: 'global'
+    };
+
+    // Get token and check auth
+    const token = localStorage.getItem('token');
+    if (!token) {
+        window.location.href = '../auth/login.html';
+    }
+
+    /**
+     * Fetch all report data with query parameters
+     */
+    async function loadAllReports() {
+        try {
+            const params = new URLSearchParams({
+                dateRange: filterState.dateRange,
+                department: filterState.department,
+                region: filterState.region
+            });
+
+            const [statsRes, weeklyRes, reportersRes, metricsRes] = await Promise.all([
+                fetch(`${API_BASE}/admin/reports/stats?${params}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                }),
+                fetch(`${API_BASE}/admin/reports/weekly?${params}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                }),
+                fetch(`${API_BASE}/admin/reports/top-reporters?${params}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                }),
+                fetch(`${API_BASE}/admin/reports/performance?${params}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                })
+            ]);
+
+            // Check for auth errors
+            if (statsRes.status === 401 || weeklyRes.status === 401 || reportersRes.status === 401 || metricsRes.status === 401) {
+                window.location.href = '../auth/login.html';
+                return;
+            }
+
+            if (!statsRes.ok || !weeklyRes.ok || !reportersRes.ok || !metricsRes.ok) {
+                throw new Error('Failed to fetch report data');
+            }
+
+            const statsData = await statsRes.json();
+            const weeklyData = await weeklyRes.json();
+            const reportersData = await reportersRes.json();
+            const metricsData = await metricsRes.json();
+
+            if (statsData.success) {
+                updateStatsCards(statsData.data);
+            }
+            if (weeklyData.success) {
+                updateWeeklyChart(weeklyData.data);
+            }
+            if (reportersData.success) {
+                updateTopReportersTable(reportersData.data);
+            }
+            if (metricsData.success) {
+                updatePerformanceMetrics(metricsData.data);
+            }
+        } catch (error) {
+            console.error('Error loading reports:', error);
+            showErrorMessage('Failed to load report data. Please try again later.');
+        }
+    }
+
+    /**
+     * Update KPI cards with stats data
+     */
+    function updateStatsCards(data) {
+        // Total Incidents
+        const kpiCards = document.querySelectorAll('.kpi-card');
+        const totalCard = kpiCards[0];
+        if (totalCard) {
+            const val = totalCard.querySelector('.kpi-val');
+            const delta = totalCard.querySelector('.kpi-delta');
+            const changeNum = parseInt(data.totalChange);
+            const badgeClass = changeNum < 0 ? 'badge-red' : 'badge-green';
+            const sign = changeNum >= 0 ? '+' : '';
+            
+            val.innerHTML = `${data.totalIncidents} <span class="${badgeClass}">${sign}${data.totalChange}%</span>`;
+            delta.textContent = `${changeNum > 0 ? '+' : ''}${Math.abs(changeNum)} from previous period`;
+        }
+
+        // Avg Resolution Time
+        const resCard = kpiCards[1];
+        if (resCard) {
+            const val = resCard.querySelector('.kpi-val');
+            const delta = resCard.querySelector('.kpi-delta');
+            val.innerHTML = `${data.avgResolutionTime} <span class="badge-red">-8.2%</span>`;
+            delta.textContent = `${data.avgResolutionMinutes} minutes average`;
+        }
+
+        // Resolved Rate
+        const resolvedCard = document.querySelector('.resolved-card');
+        if (resolvedCard) {
+            const resolvedVal = resolvedCard.querySelector('.resolved-val');
+            const progressFill = resolvedCard.querySelector('.progress-fill');
+            
+            resolvedVal.textContent = `${data.resolvedRate}%`;
+            progressFill.style.width = `${data.resolvedRate}%`;
+        }
+    }
+
+    /**
+     * Update weekly category chart
+     */
+    function updateWeeklyChart(data) {
+        const ctx = document.getElementById('categoryChart');
+        if (!ctx) return;
+
+        if (categoryChart) {
+            categoryChart.destroy();
+        }
+
+        categoryChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: data.labels,
+                datasets: [
+                    {
+                        label: 'Software',
+                        data: data.software,
+                        backgroundColor: '#818cf8',
+                        borderRadius: 4,
+                        barPercentage: 0.45,
+                        categoryPercentage: 0.7
+                    },
+                    {
+                        label: 'Hardware',
+                        data: data.hardware,
+                        backgroundColor: '#67e8f9',
+                        borderRadius: 4,
+                        barPercentage: 0.45,
+                        categoryPercentage: 0.7
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { display: false }, ticks: { font: { size: 11 }, color: '#9ca3af' } },
+                    y: { grid: { color: '#f3f4f6' }, ticks: { font: { size: 11 }, color: '#9ca3af' }, beginAtZero: true }
+                }
+            }
+        });
+    }
+
+    /**
+     * Update top reporters table
+     */
+    function updateTopReportersTable(reporters) {
+        const tbody = document.querySelector('.rep-table tbody');
+        if (!tbody) return;
+
+        tbody.innerHTML = reporters.map(r => {
+            const initials = r.name.split(' ').map(n => n.charAt(0)).join('').toUpperCase();
+            const resolutionClass = parseFloat(r.resolutionPct) >= 95 ? 'res-hi' : 'res-mi';
+            
+            return `
+                <tr>
+                    <td>
+                        <div class="user-cell">
+                            <div class="av" style="background:linear-gradient(135deg,#667eea,#764ba2);">${initials}</div>
+                            <div>
+                                <div class="u-name">${r.name}</div>
+                                <div class="u-role">${r.role}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td><span class="st-badge st-active">ACTIVE</span></td>
+                    <td>${r.incidents}</td>
+                    <td><span class="${resolutionClass}">${r.resolutionPct}%</span></td>
+                    <td>${r.avgTime}</td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    /**
+     * Update performance metrics
+     */
+    function updatePerformanceMetrics(metrics) {
+        const radarCtx = document.getElementById('radarChart');
+        if (!radarCtx) return;
+
+        if (radarChart) {
+            radarChart.destroy();
+        }
+
+        radarChart = new Chart(radarCtx, {
+            type: 'radar',
+            data: {
+                labels: ['Compliance', 'Speed', 'Accuracy', 'Satisfaction', 'Efficiency'],
+                datasets: [{
+                    data: [metrics.compliance, metrics.speed, metrics.accuracy, metrics.satisfaction, metrics.efficiency],
+                    backgroundColor: 'rgba(102,126,234,0.15)',
+                    borderColor: '#667eea',
+                    borderWidth: 2,
+                    pointBackgroundColor: '#667eea',
+                    pointRadius: 3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    r: {
+                        min: 0, max: 100,
+                        ticks: { display: false },
+                        grid: { color: '#e5e7eb' },
+                        pointLabels: { font: { size: 10 }, color: '#6b7280' }
+                    }
+                }
+            }
+        });
+
+        // Update health score
+        const healthVal = document.querySelector('.health-val');
+        if (healthVal) {
+            healthVal.textContent = `${metrics.overallLabel} (${metrics.overallScore}/5)`;
+        }
+    }
+
+    /**
+     * Create and show dropdown
+     */
+    function createDropdown(options, onSelect) {
+        const dropdown = document.createElement('div');
+        dropdown.style.cssText = `
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            min-width: 160px;
+            margin-top: 4px;
+            z-index: 1000;
+        `;
+
+        const ul = document.createElement('ul');
+        ul.style.cssText = 'list-style: none; padding: 8px 0; margin: 0;';
+
+        options.forEach(opt => {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.textContent = opt.label;
+            a.style.cssText = `
+                display: block;
+                padding: 10px 16px;
+                color: #374151;
+                text-decoration: none;
+                font-size: 12px;
+                cursor: pointer;
+                transition: all 0.2s;
+                white-space: nowrap;
+            `;
+            a.addEventListener('mouseenter', () => {
+                a.style.background = '#f3f4f6';
+                a.style.color = '#667eea';
+            });
+            a.addEventListener('mouseleave', () => {
+                a.style.background = 'transparent';
+                a.style.color = '#374151';
+            });
+            a.addEventListener('click', (e) => {
+                e.stopPropagation();
+                onSelect(opt);
+                dropdown.remove();
+            });
+            li.appendChild(a);
+            ul.appendChild(li);
+        });
+
+        dropdown.appendChild(ul);
+        return dropdown;
+    }
+
+    /**
+     * Setup filter buttons
+     */
+    function setupFilterButtons() {
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        let activeDropdown = null;
+
+        filterBtns.forEach((btn, index) => {
+            btn.style.position = 'relative';
+            btn.style.cursor = 'pointer';
+
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+
+                // Close existing dropdown
+                if (activeDropdown) {
+                    activeDropdown.remove();
+                    activeDropdown = null;
+                }
+
+                let options = [];
+                let onSelect = null;
+
+                if (index === 0) {
+                    // Department
+                    options = [
+                        { label: 'All Departments', value: 'all' },
+                        { label: 'IT', value: 'it' },
+                        { label: 'HR', value: 'hr' },
+                        { label: 'Finance', value: 'finance' },
+                        { label: 'Operations', value: 'operations' }
+                    ];
+                    onSelect = (opt) => {
+                        filterState.department = opt.value;
+                        updateFilterButtonLabel(btn, 'DEPARTMENT', opt.label);
+                        loadAllReports();
+                    };
+                } else if (index === 1) {
+                    // Region
+                    options = [
+                        { label: 'Global', value: 'global' },
+                        { label: 'Asia', value: 'asia' },
+                        { label: 'Europe', value: 'europe' },
+                        { label: 'America', value: 'america' }
+                    ];
+                    onSelect = (opt) => {
+                        filterState.region = opt.value;
+                        updateFilterButtonLabel(btn, 'REGION', opt.label);
+                        loadAllReports();
+                    };
+                } else if (index === 2) {
+                    // Date Range
+                    options = [
+                        { label: 'Last 7 Days', value: 7 },
+                        { label: 'Last 30 Days', value: 30 },
+                        { label: 'Last 3 Months', value: 90 },
+                        { label: 'Last 6 Months', value: 180 },
+                        { label: 'Last Year', value: 365 }
+                    ];
+                    onSelect = (opt) => {
+                        filterState.dateRange = opt.value;
+                        updateFilterButtonLabel(btn, 'DATE RANGE', opt.label);
+                        loadAllReports();
+                    };
+                }
+
+                activeDropdown = createDropdown(options, onSelect);
+                btn.appendChild(activeDropdown);
+            });
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', () => {
+            if (activeDropdown) {
+                activeDropdown.remove();
+                activeDropdown = null;
+            }
+        });
+    }
+
+    /**
+     * Update filter button label
+     */
+    function updateFilterButtonLabel(btn, label, value) {
+        const fi = btn.querySelector('.fi');
+        if (fi) {
+            fi.innerHTML = `
+                <span>${label}</span>
+                <strong>${value}</strong>
+            `;
+        }
+    }
+
+    /**
+     * Setup export button
+     */
+    function setupExportButton() {
+        const exportBtn = document.querySelector('.export-btn');
+        const exportCaret = document.querySelector('.export-caret');
+        const exportWrap = document.querySelector('.export-wrap');
+        let exportDropdown = null;
+
+        const openExportMenu = (e) => {
+            e.stopPropagation();
+
+            if (exportDropdown) {
+                exportDropdown.remove();
+                exportDropdown = null;
+                return;
+            }
+
+            const options = [
+                {
+                    label: 'Export CSV',
+                    action: exportCSV
+                },
+                {
+                    label: 'Export PDF',
+                    action: exportPDF
+                },
+                {
+                    label: 'Export Excel',
+                    action: exportExcel
+                }
+            ];
+
+            exportDropdown = createDropdown(options, (opt) => {
+                opt.action();
+            });
+            exportWrap.style.position = 'relative';
+            exportWrap.appendChild(exportDropdown);
+        };
+
+        exportBtn.addEventListener('click', openExportMenu);
+        exportCaret.addEventListener('click', openExportMenu);
+
+        document.addEventListener('click', () => {
+            if (exportDropdown) {
+                exportDropdown.remove();
+                exportDropdown = null;
+            }
+        });
+    }
+
+    /**
+     * Export to CSV
+     */
+    function exportCSV() {
+        const reporters = document.querySelector('.rep-table tbody');
+        if (!reporters) {
+            showErrorMessage('No data to export');
+            return;
+        }
+
+        let csv = 'User,Status,Incidents,Resolution %,Avg Time\n';
+        reporters.querySelectorAll('tr').forEach(row => {
+            const cells = row.querySelectorAll('td');
+            if (cells.length >= 5) {
+                const name = cells[0].querySelector('.u-name')?.textContent || '';
+                const status = cells[1].textContent.trim() || '';
+                const incidents = cells[2].textContent.trim() || '';
+                const resolution = cells[3].textContent.trim() || '';
+                const avgTime = cells[4].textContent.trim() || '';
+
+                csv += `"${name}","${status}","${incidents}","${resolution}","${avgTime}"\n`;
+            }
+        });
+
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', `incident-reports-${new Date().toISOString().split('T')[0]}.csv`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        showSuccessMessage('CSV exported successfully');
+    }
+
+    /**
+     * Export to PDF
+     */
+    function exportPDF() {
+        const sidebar = document.querySelector('.sidebar');
+        const topbar = document.querySelector('.topbar');
+        const originalDisplay = sidebar.style.display;
+
+        sidebar.style.display = 'none';
+        topbar.style.display = 'none';
+
+        window.print();
+
+        sidebar.style.display = originalDisplay;
+        topbar.style.display = '';
+    }
+
+    /**
+     * Export to Excel
+     */
+    function exportExcel() {
+        showErrorMessage('Export Excel coming soon');
+    }
+
+    /**
+     * Show success message
+     */
+    function showSuccessMessage(message) {
+        const alert = document.createElement('div');
+        alert.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #22c55e;
+            color: white;
+            padding: 14px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2);
+            z-index: 1000;
+            font-size: 13px;
+            font-weight: 600;
+        `;
+        alert.textContent = message;
+        document.body.appendChild(alert);
+
+        setTimeout(() => alert.remove(), 4000);
+    }
+
+    // Logout functionality
+    document.querySelector('.logout').addEventListener('click', () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.href = '../auth/login.html';
+    });
+
+    /**
+     * Show error message
+     */
+    function showErrorMessage(message) {
+        const alert = document.createElement('div');
+        alert.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #ef4444;
+            color: white;
+            padding: 14px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+            z-index: 1000;
+            font-size: 13px;
+            font-weight: 600;
+        `;
+        alert.textContent = message;
+        document.body.appendChild(alert);
+
+        setTimeout(() => alert.remove(), 5000);
+    }
+
+    /**
+     * Create sparkline bars
+     */
+    function makeSpark(id, heights, color) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.innerHTML = '';
+        heights.forEach(h => {
+            const b = document.createElement('div');
+            b.className = 'spark-bar';
+            b.style.cssText = `height:${h}px;background:${color};`;
+            el.appendChild(b);
+        });
+    }
+
+    // Initialize sparklines with dummy data
+    makeSpark('spark1', [18, 26, 16, 30, 22, 34, 28], '#667eea');
+    makeSpark('spark2', [12, 20, 16, 24, 18, 28, 22], '#c084fc');
+
+    const rs = document.getElementById('resolvedSpark');
+    if (rs) {
+        rs.innerHTML = '';
+        [10, 16, 12, 20, 14, 18, 22].forEach(h => {
+            const b = document.createElement('div');
+            b.style.cssText = `width:7px;height:${h}px;background:#22c55e;border-radius:2px 2px 0 0;opacity:0.75;`;
+            rs.appendChild(b);
+        });
+    }
+
+    // Initialize filter buttons and export
+    setupFilterButtons();
+    setupExportButton();
+
+    // Load all reports when page loads
+    document.addEventListener('DOMContentLoaded', loadAllReports);
+</script>
+</body>
+</html>

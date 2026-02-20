@@ -3,11 +3,14 @@ const { analyzeIncident } = require("../services/aiRuleBased");
 
 exports.create = async (req, res) => {
   try {
-    const { title, type, description } = req.body;
-    const userId = req.userId;
+    const { title, type, category, description, location } = req.body;
+    const userId = req.user?.id;
 
-    if (!title || !type || !description) {
-      return res.status(400).json({ success: false, message: "Title, type, and description are required" });
+    // Support both 'type' and 'category' field names
+    const categoryValue = category || type;
+
+    if (!title || !categoryValue || !description) {
+      return res.status(400).json({ success: false, message: "Title, category/type, and description are required" });
     }
 
     if (!userId) {
@@ -15,17 +18,20 @@ exports.create = async (req, res) => {
     }
 
     // Call AI analyzer to determine priority and get recommendation
-    const aiAnalysis = analyzeIncident({ title, description, type });
+    const aiAnalysis = analyzeIncident({ title, description, type: categoryValue });
 
     const photo = req.file ? req.file.filename : null;
-    const incident = await Incident.create(
+    
+    // Use createWithPhoto for better field mapping
+    const incident = await Incident.createWithPhoto(
       userId,
       title,
-      type,
-      aiAnalysis.priority,
+      categoryValue,
       description,
+      location || "Not specified",
       photo,
-      aiAnalysis.recommendation
+      "open",
+      aiAnalysis.priority || "Medium"
     );
 
     res.status(201).json({
@@ -78,7 +84,7 @@ exports.getById = async (req, res) => {
 
 exports.getMyIncidents = async (req, res) => {
   try {
-    const userId = req.userId;
+    const userId = req.user?.id;
 
     if (!userId) {
       return res.status(401).json({ success: false, message: "User not authenticated" });
@@ -193,6 +199,20 @@ exports.getStats = async (req, res) => {
     });
   } catch (error) {
     console.error("Get stats error:", error);
+    res.status(500).json({ success: false, message: "Internal server error", error: error.message });
+  }
+};
+
+exports.getLatest = async (req, res) => {
+  try {
+    const incidents = await Incident.getLatest(3);
+    res.status(200).json({
+      success: true,
+      total: incidents.length,
+      incidents
+    });
+  } catch (error) {
+    console.error("Get latest incidents error:", error);
     res.status(500).json({ success: false, message: "Internal server error", error: error.message });
   }
 };

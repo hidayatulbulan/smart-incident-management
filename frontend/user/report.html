@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SMART Incident - Lapor Insiden</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sidebar-bg: #ffffff;
+      --sidebar-width: 220px;
+      --main-bg: #f4f6fb;
+      --primary: #6c63ff;
+      --primary-light: #ede9ff;
+      --text-dark: #1a1a2e;
+      --text-muted: #8a8fa8;
+      --shadow: 0 4px 18px rgba(108,99,255,0.08);
+      --radius: 16px;
+      --input-border: #e2e4ed;
+    }
+
+    html, body { height: 100%; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--main-bg);
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* ─── SIDEBAR ─────────────────────────────────── */
+    .sidebar {
+      width: var(--sidebar-width);
+      background: var(--sidebar-bg);
+      display: flex;
+      flex-direction: column;
+      padding: 28px 0 20px;
+      min-height: 100vh;
+      box-shadow: 2px 0 12px rgba(108,99,255,0.06);
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      z-index: 100;
+    }
+
+    .sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 22px 28px;
+      border-bottom: 1px solid #f0f0f5;
+    }
+
+    .logo-icon {
+      width: 38px; height: 38px;
+      background: var(--primary);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-icon svg { width: 20px; height: 20px; }
+
+    .logo-text .brand { font-size: 15px; font-weight: 800; color: var(--text-dark); letter-spacing: .5px; }
+    .logo-text .sub   { font-size: 10px; font-weight: 600; color: var(--primary); letter-spacing: 2px; text-transform: uppercase; }
+
+    .sidebar-nav { flex: 1; padding: 20px 0; }
+
+    .nav-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 11px 22px;
+      color: var(--text-muted);
+      font-size: 14px; font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      position: relative;
+      transition: background .2s, color .2s;
+    }
+    .nav-item:hover { color: var(--primary); background: var(--primary-light); }
+    .nav-item.active { color: var(--primary); background: var(--primary-light); }
+    .nav-item.active::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 4px; bottom: 4px;
+      width: 4px;
+      background: var(--primary);
+      border-radius: 0 4px 4px 0;
+    }
+    .nav-item svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+    .sidebar-user {
+      display: flex; align-items: center; gap: 10px;
+      padding: 14px 22px;
+      border-top: 1px solid #f0f0f5;
+    }
+    .user-ava {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: linear-gradient(135deg, #f6a05b, #e05b5b);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; color: #fff; flex-shrink: 0;
+    }
+    .user-name-sm  { font-size: 13px; font-weight: 700; color: var(--text-dark); }
+    .user-role     { font-size: 11px; color: var(--text-muted); font-weight: 600; }
+
+    /* ─── WRAPPER ─────────────────────────────────── */
+    .wrapper {
+      margin-left: var(--sidebar-width);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* ─── PAGE HEADER ─────────────────────────────── */
+    .page-header {
+      padding: 28px 36px 0;
+      flex-shrink: 0;
+    }
+    .breadcrumb {
+      font-size: 12px; color: var(--text-muted); font-weight: 600;
+      margin-bottom: 6px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .breadcrumb a { color: var(--text-muted); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--primary); }
+    .breadcrumb span { color: var(--text-dark); }
+
+    .page-title-row {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .page-title { font-size: 26px; font-weight: 800; color: var(--text-dark); }
+    .page-subtitle { font-size: 13px; color: var(--text-muted); font-weight: 600; margin-top: 4px; }
+
+    .header-actions {
+      display: flex; align-items: center; gap: 12px; margin-top: 4px;
+    }
+    .icon-btn {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: #fff; border: 1px solid var(--input-border);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--text-muted);
+      transition: border-color .2s, color .2s;
+    }
+    .icon-btn:hover { border-color: var(--primary); color: var(--primary); }
+    .icon-btn svg { width: 17px; height: 17px; }
+    .bantuan-btn {
+      display: flex; align-items: center; gap: 6px;
+      background: #fff; border: 1px solid var(--input-border);
+      border-radius: 10px; padding: 7px 14px;
+      font-size: 13px; font-weight: 700; color: var(--text-dark);
+      cursor: pointer; font-family: inherit;
+      transition: border-color .2s;
+    }
+    .bantuan-btn:hover { border-color: var(--primary); color: var(--primary); }
+    .bantuan-btn svg { width: 16px; height: 16px; }
+
+    /* ─── CONTENT ─────────────────────────────────── */
+    .content {
+      display: flex;
+      gap: 24px;
+      padding: 24px 36px;
+      flex: 1;
+      align-items: flex-start;
+    }
+
+    /* ─── FORM PANEL ──────────────────────────────── */
+    .form-panel {
+      flex: 1;
+      min-width: 0;
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 28px 30px;
+      display: flex; flex-direction: column; gap: 20px;
+    }
+
+    .form-group { display: flex; flex-direction: column; gap: 7px; }
+    .form-row   { display: flex; gap: 16px; }
+    .form-row .form-group { flex: 1; min-width: 0; }
+
+    label { font-size: 13px; font-weight: 700; color: var(--text-dark); }
+
+    input[type="text"],
+    select,
+    textarea {
+      font-family: 'Nunito', sans-serif;
+      font-size: 13.5px; font-weight: 600;
+      color: var(--text-dark);
+      background: #fff;
+      border: 1.5px solid var(--input-border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+      width: 100%;
+    }
+    input[type="text"]::placeholder,
+    textarea::placeholder { color: #b8bcd0; font-weight: 500; }
+    input[type="text"]:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(108,99,255,.10);
+    }
+
+    select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%238a8fa8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+      color: #b8bcd0;
+      cursor: pointer;
+    }
+    select.selected { color: var(--text-dark); }
+
+    textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
+
+    /* Upload Area */
+    .upload-area {
+      border: 2px dashed var(--input-border);
+      border-radius: 12px;
+      background: #fafbff;
+      min-height: 120px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 8px;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+      padding: 24px;
+    }
+    .upload-area:hover {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+    .upload-icon {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--primary-light);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .upload-icon svg { width: 22px; height: 22px; color: var(--primary); }
+    .upload-text { font-size: 13px; font-weight: 700; color: var(--text-dark); }
+    .upload-hint { font-size: 11.5px; color: var(--text-muted); font-weight: 600; }
+
+    /* Form Actions */
+    .form-actions {
+      display: flex; align-items: center; gap: 14px;
+      padding-top: 4px;
+    }
+    .batal-btn {
+      background: none; border: none;
+      font-family: 'Nunito', sans-serif;
+      font-size: 14px; font-weight: 700; color: var(--text-muted);
+      cursor: pointer; padding: 12px 20px; border-radius: 10px;
+      transition: color .2s, background .2s;
+    }
+    .batal-btn:hover { color: #e05b5b; background: #fdecea; }
+
+    .kirim-btn {
+      flex: 1;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      background: var(--primary);
+      color: #fff; font-size: 14px; font-weight: 800;
+      border: none; border-radius: 12px;
+      padding: 13px;
+      cursor: pointer; font-family: 'Nunito', sans-serif;
+      box-shadow: 0 6px 18px rgba(108,99,255,.30);
+      transition: transform .15s, box-shadow .15s;
+    }
+    .kirim-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(108,99,255,.38); }
+    .kirim-btn svg { width: 16px; height: 16px; }
+
+    /* ─── RIGHT PANEL ─────────────────────────────── */
+    .right-panel {
+      width: 260px;
+      flex-shrink: 0;
+      display: flex; flex-direction: column; gap: 16px;
+    }
+
+    .tips-card {
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px 20px;
+    }
+    .tips-title {
+      display: flex; align-items: center; gap: 7px;
+      font-size: 14px; font-weight: 800; color: var(--text-dark);
+      margin-bottom: 14px;
+    }
+    .tips-title svg { width: 16px; height: 16px; color: var(--primary); }
+
+    .tips-list { display: flex; flex-direction: column; gap: 10px; }
+    .tip-item  { display: flex; gap: 10px; align-items: flex-start; }
+    .tip-num {
+      width: 20px; height: 20px; border-radius: 50%;
+      background: var(--primary-light); color: var(--primary);
+      font-size: 11px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 1px;
+    }
+    .tip-text { font-size: 12px; font-weight: 600; color: var(--text-muted); line-height: 1.5; }
+
+    .emergency-card {
+      background: linear-gradient(135deg, #5b8def, #6c63ff);
+      border-radius: var(--radius);
+      padding: 20px;
+      color: #fff;
+      text-align: center;
+    }
+    .emergency-icon {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: rgba(255,255,255,.18);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 12px;
+    }
+    .emergency-icon svg { width: 20px; height: 20px; }
+    .emergency-title { font-size: 15px; font-weight: 800; margin-bottom: 6px; }
+    .emergency-desc  { font-size: 12px; font-weight: 600; opacity: .85; line-height: 1.5; margin-bottom: 14px; }
+    .emergency-btn {
+      display: flex; align-items: center; justify-content: center; gap: 7px;
+      background: #fff; color: var(--primary);
+      font-size: 13px; font-weight: 800;
+      border: none; border-radius: 10px;
+      padding: 10px 14px; width: 100%;
+      cursor: pointer; font-family: 'Nunito', sans-serif;
+      transition: opacity .2s;
+    }
+    .emergency-btn:hover { opacity: .92; }
+    .emergency-btn svg { width: 15px; height: 15px; }
+
+    .recent-card {
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px 20px;
+    }
+    .recent-title { font-size: 14px; font-weight: 800; color: var(--text-dark); margin-bottom: 14px; }
+    .recent-list { display: flex; flex-direction: column; gap: 10px; }
+    .recent-item { display: flex; align-items: flex-start; gap: 10px; }
+    .recent-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      flex-shrink: 0; margin-top: 3px;
+    }
+    .recent-dot.green  { background: #4dc4a8; }
+    .recent-dot.yellow { background: #e0c45b; }
+    .recent-info { display: flex; flex-direction: column; gap: 2px; }
+    .recent-name { font-size: 13px; font-weight: 700; color: var(--text-dark); }
+    .recent-meta { font-size: 11px; font-weight: 600; color: var(--text-muted); }
+
+    /* ─── FOOTER ──────────────────────────────────── */
+    .footer {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 36px;
+      font-size: 12px; font-weight: 600; color: var(--text-muted);
+      border-top: 1px solid #edf0f7;
+      flex-shrink: 0;
+    }
+    .footer-links { display: flex; gap: 18px; }
+    .footer-links a { color: var(--text-muted); text-decoration: none; }
+    .footer-links a:hover { color: var(--primary); }
+  </style>
+</head>
+<body>
+
+<!-- ── SIDEBAR ──────────────────────────────────────── -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3"/><path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+      </svg>
+    </div>
+    <div class="logo-text">
+      <div class="brand">SMART</div>
+      <div class="sub">Incident</div>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="nav-item" href="dashboard.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+        <rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/>
+      </svg>
+      Dashboard
+    </a>
+    <a class="nav-item active" href="report.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
+      </svg>
+      Lapor Insiden
+    </a>
+    <a class="nav-item" href="#" onclick="goToLatestIncident(); return false;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/>
+        <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+      </svg>
+      Riwayat Laporan
+    </a>
+    <a class="nav-item" href="profile.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>
+      </svg>
+      Profil
+    </a>
+  </nav>
+
+  <div class="sidebar-user">
+    <div class="user-ava">B</div>
+    <div>
+      <div class="user-name-sm">Bulan Hidayatul</div>
+      <div class="user-role">Staff Operational</div>
+    </div>
+  </div>
+</aside>
+
+<!-- ── WRAPPER ───────────────────────────────────────── -->
+<div class="wrapper">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="breadcrumb">
+      <a href="dashboard.html">Dashboard</a>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      <span>Lapor Insiden</span>
+    </div>
+    <div class="page-title-row">
+      <div>
+        <div class="page-title">Laporkan Insiden Baru</div>
+        <div class="page-subtitle">Sampaikan keluhan atau kejadian untuk tindak lanjut cepat.</div>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" title="Notifikasi">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/>
+          </svg>
+        </button>
+        <button class="bantuan-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+          Bantuan
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+
+    <!-- Form Panel -->
+    <div class="form-panel">
+
+      <div class="form-group">
+        <label>Judul Insiden</label>
+        <input type="text" id="judulInsiden" placeholder="Misal: AC di Ruang 302 Rusak" />
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Kategori</label>
+          <select id="kategori" onchange="this.classList.add('selected')">
+            <option value="" disabled selected>Pilih Kategori</option>
+            <option value="it">IT</option>
+            <option value="facilities">Fasilitas</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Lokasi Kejadian</label>
+          <input type="text" id="lokasiKejadian" placeholder="Contoh: Gedung A, Lantai 2, Ruangan 204" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Deskripsi Masalah</label>
+        <textarea id="deskripsiMasalah" placeholder="Jelaskan detail insiden secara rinci..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Bukti Foto</label>
+        <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+          <input type="file" id="fileInput" accept="image/*,.pdf" style="display:none" />
+          <div class="upload-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/>
+              <path d="M20.39 18.39A5 5 0 0018 9h-1.26A8 8 0 103 16.3"/>
+            </svg>
+          </div>
+          <div class="upload-text">Klik untuk upload atau drag and drop</div>
+          <div class="upload-hint">PNG, JPG atau PDF (Maks. 5MB)</div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button class="batal-btn">Batal</button>
+        <button class="kirim-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+          </svg>
+          Kirim Laporan
+        </button>
+      </div>
+
+    </div><!-- /form-panel -->
+
+    <!-- Right Panel -->
+    <div class="right-panel">
+
+      <div class="tips-card">
+        <div class="tips-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          Tips Melapor
+        </div>
+        <div class="tips-list">
+          <div class="tip-item">
+            <div class="tip-num">1</div>
+            <div class="tip-text">Berikan detail lokasi yang spesifik (Nomor ruangan, lantai, atau area).</div>
+          </div>
+          <div class="tip-item">
+            <div class="tip-num">2</div>
+            <div class="tip-text">Lampirkan foto yang jelas untuk membantu tim teknisi melakukan analisa cepat.</div>
+          </div>
+          <div class="tip-item">
+            <div class="tip-num">3</div>
+            <div class="tip-text">Pilih kategori yang paling sesuai agar laporan langsung terkirim ke departemen terkait.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="emergency-card">
+        <div class="emergency-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1 6s2-2 5-2 5 2 8 2 5-2 5-2v14s-2 2-5 2-5-2-8-2-5 2-5 2V6z"/><path d="M12 6v14M8 2v4M16 2v4"/>
+          </svg>
+        </div>
+        <div class="emergency-title">Darurat Keamanan?</div>
+        <div class="emergency-desc">Jika insiden mengancam keselamatan nyawa, segera hubungi nomor darurat internal.</div>
+        <button class="emergency-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+          </svg>
+          Hubungi 911
+        </button>
+      </div>
+
+      <div class="recent-card">
+        <div class="recent-title">Laporan Terbaru</div>
+        <div class="recent-list">
+          <div class="recent-item">
+            <div class="recent-dot green"></div>
+            <div class="recent-info">
+              <div class="recent-name">Lampu Lobby Padam</div>
+              <div class="recent-meta">CLOSED • 2J LALU</div>
+            </div>
+          </div>
+          <div class="recent-item">
+            <div class="recent-dot yellow"></div>
+            <div class="recent-info">
+              <div class="recent-name">Kran Bocor Lt. 2</div>
+              <div class="recent-meta">IN PROGRESS • 4J LALU</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /right-panel -->
+
+  </div><!-- /content -->
+
+  <!-- Footer — di dalam .wrapper agar rapi -->
+  <footer class="footer">
+    <span>© 2024 SafeDesk System. All rights reserved.</span>
+    <div class="footer-links">
+      <a href="#">Kebijakan Privasi</a>
+      <a href="#">Ketentuan Layanan</a>
+      <a href="#">Hubungi Kami</a>
+    </div>
+  </footer>
+
+</div><!-- /wrapper -->
+
+<script>
+  const uploadArea = document.querySelector('.upload-area');
+  uploadArea.addEventListener('dragover', e => {
+    e.preventDefault();
+    uploadArea.style.borderColor = '#6c63ff';
+    uploadArea.style.background  = '#ede9ff';
+  });
+  uploadArea.addEventListener('dragleave', () => {
+    uploadArea.style.borderColor = '';
+    uploadArea.style.background  = '';
+  });
+  uploadArea.addEventListener('drop', e => {
+    e.preventDefault();
+    uploadArea.style.borderColor = '';
+    uploadArea.style.background  = '';
+    const file = e.dataTransfer.files[0];
+    if (file) showFileName(file.name);
+  });
+  document.getElementById('fileInput').addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (file) showFileName(file.name);
+  });
+  function showFileName(name) {
+    const txt = uploadArea.querySelector('.upload-text');
+    txt.textContent = '✓ ' + name;
+    txt.style.color = '#6c63ff';
+  }
+
+  document.querySelector('.batal-btn').addEventListener('click', () => {
+    document.getElementById('judulInsiden').value = '';
+    document.getElementById('lokasiKejadian').value = '';
+    document.getElementById('deskripsiMasalah').value = '';
+    document.getElementById('kategori').selectedIndex = 0;
+    document.getElementById('kategori').classList.remove('selected');
+    const txt = document.querySelector('.upload-text');
+    txt.textContent = 'Klik untuk upload atau drag and drop';
+    txt.style.color = '';
+  });
+</script>
+
+<script>
+async function goToLatestIncident() {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) { window.location.href = '../auth/login.html'; return; }
+    const response = await fetch('http://localhost:3000/api/incidents', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    const data = await response.json();
+    if (data.incidents && data.incidents.length > 0) {
+      window.location.href = `incident-detail.html?id=${data.incidents[0].id}`;
+    } else {
+      alert('Belum ada laporan insiden.');
+    }
+  } catch (err) {
+    alert('Gagal memuat laporan.');
+  }
+}
+</script>
+
+<!-- Import Report form handler -->
+<script src="report.js"></script>
+
+</body>
+</html>

@@ -7,19 +7,40 @@ const authenticate = (req, res, next) => {
     const authHeader = req.headers.authorization;
     
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return res.status(401).json({ success: false, message: "Missing or invalid authorization header" });
+      return res.status(401).json({ success: false, message: "Unauthorized" });
     }
 
     const token = authHeader.substring(7);
 
     const decoded = jwt.verify(token, JWT_SECRET);
-    req.userId = decoded.id;
-    req.userEmail = decoded.email;
+    req.user = {
+      id: decoded.id,
+      role: decoded.role
+    };
     next();
   } catch (error) {
     console.error("Auth middleware error:", error.message);
-    return res.status(401).json({ success: false, message: "Invalid or expired token" });
+    return res.status(401).json({ success: false, message: "Unauthorized" });
   }
 };
 
-module.exports = { authenticate };
+const authorizeAdmin = (req, res, next) => {
+  try {
+    if (!req.user || req.user.role !== "admin") {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied"
+      });
+    }
+    next();
+  } catch (error) {
+    console.error("Admin authorization error:", error.message);
+    return res.status(500).json({
+      success: false,
+      message: "Server error"
+    });
+  }
+};
+
+module.exports = { authenticate, authorizeAdmin };
+
