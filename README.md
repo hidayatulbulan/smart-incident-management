@@ -45,9 +45,9 @@ http://localhost:3000
 
 Akun Default (Untuk Pengecekan)
 Role	Email	                    Password
-Admin	admin@smartincident.com     admin123
-Solver	solver@smartincident.com    solver123
-User	user@smartincident.com      user123
+Admin	admin@gmail.com             admin123
+Solver	solver@gmail.com            solver123
+User	bulan@gmail.com             123456
 
 Alur Cek Sistem
 Login sebagai User → buat laporan
