@@ -11,11 +11,6 @@ app.use(cors({ origin: "*" }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ping test
-app.get("/ping", (req, res) => {
-  res.send("PONG 🟢 SERVER HIDUP");
-});
-
 // frontend
 app.use(express.static(path.join(__dirname, "../frontend")));
 
@@ -26,6 +21,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/incidents", require("./routes/incidentRoutes"));
 app.use("/api/admin", require("./routes/adminRoutes"));
+app.use("/api/solver", require("./routes/solverRoutes"));
 
 // start server
 app.listen(PORT, () => {

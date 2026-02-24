@@ -485,3 +485,112 @@ exports.deleteUser = async (req, res) => {
     });
   }
 };
+
+/**
+ * Get all solvers (Admin only)
+ * GET /api/admin/solvers
+ * Returns: list of solver users with id, name, email
+ */
+exports.getSolvers = async (req, res) => {
+  try {
+    const [solvers] = await db.query(
+      "SELECT id, name, email FROM users WHERE role = 'solver' ORDER BY name ASC"
+    );
+
+    res.status(200).json({
+      success: true,
+      data: solvers
+    });
+  } catch (error) {
+    console.error("Get solvers error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error"
+    });
+  }
+};
+
+/**
+ * Assign incident to solver (Admin only)
+ * PUT /api/admin/incidents/:id/assign
+ * Body: { assigned_to } (solver user id)
+ * Validates incident and solver exist, then assigns incident and sets status to 'progress'
+ */
+exports.assignIncident = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { assigned_to } = req.body;
+
+    // Validate required fields
+    if (!id) {
+      return res.status(400).json({
+        success: false,
+        message: "Incident ID is required"
+      });
+    }
+
+    if (!assigned_to) {
+      return res.status(400).json({
+        success: false,
+        message: "Solver ID is required"
+      });
+    }
+
+    // Check if incident exists
+    const [incident] = await db.query(
+      "SELECT * FROM incidents WHERE id = ?",
+      [id]
+    );
+
+    if (incident.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Incident not found"
+      });
+    }
+
+    // Check if solver exists and has role 'solver'
+    const [solver] = await db.query(
+      "SELECT id, role FROM users WHERE id = ?",
+      [assigned_to]
+    );
+
+    if (solver.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Solver not found"
+      });
+    }
+
+    if (solver[0].role !== 'solver') {
+      return res.status(400).json({
+        success: false,
+        message: "User is not a solver"
+      });
+    }
+
+    // Update incident: assign to solver and set status to 'progress'
+    await db.query(
+      "UPDATE incidents SET assigned_to = ?, status = 'progress', updated_at = NOW() WHERE id = ?",
+      [assigned_to, id]
+    );
+
+    // Fetch updated incident
+    const [updatedIncidentData] = await db.query(
+      "SELECT i.*, u.name as reporter_name, s.name as assigned_to_name FROM incidents i LEFT JOIN users u ON i.user_id = u.id LEFT JOIN users s ON i.assigned_to = s.id WHERE i.id = ?",
+      [id]
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Insiden berhasil di-assign",
+      data: updatedIncidentData[0]
+    });
+  } catch (error) {
+    console.error("Assign incident error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error"
+    });
+  }
+};

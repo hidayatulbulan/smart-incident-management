@@ -82,16 +82,34 @@ document.addEventListener('DOMContentLoaded', () => {
       // Save user info if provided
       if (data.user) {
         localStorage.setItem('user', JSON.stringify(data.user));
-        console.log('User info saved');
+        console.log('User info saved to localStorage:', {
+          id: data.user.id,
+          name: data.user.name,
+          email: data.user.email,
+          role: data.user.role
+        });
+        console.log('Verification - Reading from localStorage:', JSON.parse(localStorage.getItem('user')));
       }
 
       // Determine redirect URL based on role
       let redirectUrl = '../user/dashboard.html';
-      if (data.user && data.user.role === 'admin') {
+      console.log('=== ROLE-BASED REDIRECT DEBUG ===');
+      console.log('data.user object:', data.user);
+      console.log('data.user.role:', data.user?.role);
+      console.log('Role type:', typeof data.user?.role);
+      
+      if (data.user && data.user.role?.toLowerCase() === 'admin') {
         redirectUrl = '../admin/dashboard.html';
+        console.log('Detected ADMIN role → redirecting to admin dashboard');
+      } else if (data.user && data.user.role?.toLowerCase() === 'solver') {
+        redirectUrl = '../solver/dashboard.html';
+        console.log('Detected SOLVER role → redirecting to solver dashboard');
+      } else {
+        console.log('Default USER role → redirecting to user dashboard');
       }
 
-      console.log('Login successful, redirecting to:', redirectUrl);
+      console.log('Final redirect URL:', redirectUrl);
+      console.log('=== END DEBUG ===');
       window.location.href = redirectUrl;
 
     } catch (error) {

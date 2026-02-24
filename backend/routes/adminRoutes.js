@@ -9,6 +9,12 @@ router.get("/incidents", authenticate, authorizeAdmin, adminController.getAllInc
 // Update incident status and admin note (admin only)
 router.put("/incidents/:id", authenticate, authorizeAdmin, adminController.updateIncident);
 
+// Assign incident to solver (admin only)
+router.put("/incidents/:id/assign", authenticate, authorizeAdmin, adminController.assignIncident);
+
+// Get all solvers (admin only)
+router.get("/solvers", authenticate, authorizeAdmin, adminController.getSolvers);
+
 // User management endpoints (admin only)
 router.get("/users", authenticate, authorizeAdmin, adminController.getUsers);
 router.post("/users", authenticate, authorizeAdmin, adminController.createUser);

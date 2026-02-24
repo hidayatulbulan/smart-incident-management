@@ -118,7 +118,7 @@ function showLoading() {
     if (tbody) {
         tbody.innerHTML = `
             <tr>
-                <td colspan="8" style="text-align: center; padding: 40px;">
+                <td colspan="9" style="text-align: center; padding: 40px;">
                     <i class="fas fa-spinner fa-spin" style="font-size: 24px; color: #667eea;"></i>
                     <p style="margin-top: 10px; color: #999;">Memuat data insiden...</p>
                 </td>
@@ -135,7 +135,7 @@ function showEmptyState() {
     if (tbody) {
         tbody.innerHTML = `
             <tr>
-                <td colspan="8" style="text-align: center; padding: 40px;">
+                <td colspan="9" style="text-align: center; padding: 40px;">
                     <i class="fas fa-inbox" style="font-size: 40px; color: #ddd; margin-bottom: 10px;"></i>
                     <p style="color: #999; font-size: 14px;">Belum ada laporan insiden</p>
                 </td>
@@ -148,7 +148,7 @@ function showEmptyState() {
  * Render incidents into the table
  * @param {Array} incidents - Array of incident objects
  */
-function renderIncidents(incidents) {
+async function renderIncidents(incidents) {
     const tbody = document.querySelector('.incidents-table tbody');
     
     if (!tbody) {
@@ -158,6 +158,25 @@ function renderIncidents(incidents) {
 
     // Store incidents for modal access
     allIncidentsData = incidents;
+
+    // Fetch solvers list for dropdown
+    let solvers = [];
+    try {
+        const token = localStorage.getItem('token');
+        const response = await fetch('http://localhost:3000/api/admin/solvers', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        if (response.ok) {
+            const data = await response.json();
+            solvers = data.data || [];
+        }
+    } catch (error) {
+        console.error('Error fetching solvers:', error);
+    }
 
     // Clear existing rows
     tbody.innerHTML = '';
@@ -180,6 +199,24 @@ function renderIncidents(incidents) {
         // Format date
         const formattedDate = formatDateDDMMYYYY(incident.created_at);
         
+        // Get assigned solver name
+        const assignedSolver = solvers.find(s => s.id === incident.assigned_to);
+        const assignedSolverName = assignedSolver ? assignedSolver.name : null;
+        
+        // Enrich incident data for modal access
+        const enrichedIncident = {
+            ...incident,
+            assigned_solver_name: assignedSolverName
+        };
+        
+        // Store in allIncidentsData
+        const existingIndex = allIncidentsData.findIndex(inc => inc.id === incident.id);
+        if (existingIndex >= 0) {
+            allIncidentsData[existingIndex] = enrichedIncident;
+        } else {
+            allIncidentsData.push(enrichedIncident);
+        }
+        
         // Determine status badge class
         let statusClass = 'status-open';
         if (incident.status?.toLowerCase() === 'progress') statusClass = 'status-progress';
@@ -187,6 +224,13 @@ function renderIncidents(incidents) {
         
         // Determine priority badge class dynamically
         const priorityClass = 'priority-' + (incident.priority || 'medium').toLowerCase();
+        
+        // Build solver dropdown options
+        let solverOptions = '<option value="">-- Pilih Solver --</option>';
+        solvers.forEach(solver => {
+            const selected = incident.assigned_to === solver.id ? 'selected' : '';
+            solverOptions += `<option value="${solver.id}" ${selected}>${escapeHtml(solver.name)}</option>`;
+        });
         
         // Build row HTML
         row.innerHTML = `
@@ -205,6 +249,11 @@ function renderIncidents(incidents) {
                     <option value="open" ${incident.status?.toLowerCase() === 'open' ? 'selected' : ''}>Open</option>
                     <option value="progress" ${incident.status?.toLowerCase() === 'progress' ? 'selected' : ''}>On Progress</option>
                     <option value="closed" ${incident.status?.toLowerCase() === 'closed' ? 'selected' : ''}>Closed</option>
+                </select>
+            </td>
+            <td>
+                <select class="filter-select" onchange="assignSolver(${incident.id}, this.value)" style="padding: 8px 12px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 13px; cursor: pointer;">
+                    ${solverOptions}
                 </select>
             </td>
             <td>${formattedDate}</td>
@@ -280,6 +329,7 @@ function openIncidentModal(id, isReadOnly = false) {
     document.getElementById('modalPriority').value = incident.priority || '';
     statusSelect.value = incident.status?.toLowerCase() || 'open';
     adminNotetextarea.value = incident.admin_note || '';
+    document.getElementById('modalAssignedSolver').value = incident.assigned_solver_name || 'Belum di-assign';
 
     // Set photo
     const photoImg = document.getElementById('modalPhoto');
@@ -478,6 +528,18 @@ function createIncidentModal() {
                     </select>
                 </div>
 
+                <div class="modal-form-group" style="margin-bottom: 15px;">
+                    <label style="display: block; font-size: 11px; font-weight: 600; color: #9ca3af; margin-bottom: 5px; text-transform: uppercase;">Assigned Solver</label>
+                    <input type="text" id="modalAssignedSolver" readonly style="
+                        width: 100%;
+                        padding: 10px 12px;
+                        border: 1px solid #e5e7eb;
+                        border-radius: 8px;
+                        font-size: 13px;
+                        background: #f9fafb;
+                    ">
+                </div>
+
                 <div class="modal-form-group" style="margin-bottom: 20px;">
                     <label style="display: block; font-size: 11px; font-weight: 600; color: #9ca3af; margin-bottom: 5px; text-transform: uppercase;">Admin Note</label>
                     <textarea id="modalAdminNote" style="
@@ -622,6 +684,38 @@ async function updateStatus(id, newStatus) {
         fetchIncidents();
     } catch (error) {
         showError('Gagal mengubah status incident: ' + error.message);
+    }
+}
+
+/**
+ * Assign incident to solver
+ * @param {number} incidentId - Incident ID
+ * @param {string} solverId - Solver user ID to assign to
+ */
+async function assignSolver(incidentId, solverId) {
+    // If no solver selected, return
+    if (!solverId) {
+        return;
+    }
+
+    const token = localStorage.getItem('token');
+    try {
+        const response = await fetch(`http://localhost:3000/api/admin/incidents/${incidentId}/assign`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ assigned_to: parseInt(solverId) })
+        });
+
+        const responseData = await response.json();
+        if (!response.ok) throw new Error(responseData.message || 'Gagal assign solver');
+
+        showSuccess('Solver berhasil di-assign!');
+        fetchIncidents();
+    } catch (error) {
+        showError('Gagal assign solver: ' + error.message);
     }
 }
 
