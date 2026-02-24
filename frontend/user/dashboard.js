@@ -6,6 +6,15 @@
 const API_BASE = "http://localhost:3000/api";
 
 /**
+ * Status badge styling map
+ */
+const statusMap = {
+  open:     { label: 'Open',        bg: '#e3f2fd', color: '#1976d2' },
+  progress: { label: 'On Progress', bg: '#fff3e0', color: '#f57c00' },
+  closed:   { label: 'Closed',      bg: '#f1f8e9', color: '#689f38' }
+};
+
+/**
  * Initialize dashboard on page load
  */
 document.addEventListener("DOMContentLoaded", function () {
@@ -108,7 +117,7 @@ function populateDashboard(incidents) {
   // Calculate stats
   const total = incidents.length;
   const openCount = incidents.filter(i => i.status === "open").length;
-  const inProgressCount = incidents.filter(i => i.status === "in_progress").length;
+  const inProgressCount = incidents.filter(i => i.status === "progress").length;
   const closedCount = incidents.filter(i => i.status === "closed").length;
 
   // Update stat cards
@@ -178,9 +187,8 @@ function createIncidentRow(incident) {
   const priorityClass = getPriorityClass(incident.priority);
   const priorityBadge = `<span class="badge ${priorityClass}">${capitalizeFirst(incident.priority)}</span>`;
 
-  // Determine status style
-  const statusClass = getStatusClass(incident.status);
-  const statusSpan = `<span class="${statusClass}">${formatStatus(incident.status)}</span>`;
+  // Determine status style with badge colors
+  const statusSpan = getStatusBadge(incident.status);
 
   // Format date
   const reportedDate = formatDate(incident.created_at);
@@ -210,15 +218,30 @@ function getPriorityClass(priority) {
 }
 
 /**
+ * Get status badge info with styling
+ * @param {string} status Status value
+ * @returns {Object} Badge info with label, bg, and color
+ */
+function getStatusBadge(status) {
+  const map = {
+    open:     { label: 'Open',        bg: '#e3f2fd', color: '#1976d2' },
+    progress: { label: 'On Progress', bg: '#fff3e0', color: '#f57c00' },
+    closed:   { label: 'Closed',      bg: '#f1f8e9', color: '#689f38' }
+  };
+  const s = map[status?.toLowerCase()] || { label: status, bg: '#f0f0f0', color: '#666' };
+  return `<span style="background:${s.bg};color:${s.color};padding:3px 10px;border-radius:20px;font-size:12px;font-weight:600;">${s.label}</span>`;
+}
+
+/**
  * Get status CSS class
  * @param {string} status Status value
  * @returns {string} CSS class name
  */
 function getStatusClass(status) {
   if (!status) return "status-open";
-  const statusLower = status.toLowerCase().replace(/_/g, "");
+  const statusLower = status.toLowerCase();
   if (statusLower === "open") return "status-open";
-  if (statusLower === "inprogress") return "status-inprogress";
+  if (statusLower === "progress") return "status-progress";
   return "status-closed";
 }
 
@@ -230,8 +253,7 @@ function getStatusClass(status) {
 function formatStatus(status) {
   if (!status) return "Open";
   const statusLower = status.toLowerCase();
-  if (statusLower === "in_progress") return "In Progress";
-  if (statusLower === "inprogress") return "In Progress";
+  if (statusLower === "progress") return "On Progress";
   if (statusLower === "open") return "Open";
   if (statusLower === "closed") return "Closed";
   return capitalizeFirst(status);

@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const bcryptjs = require("bcryptjs");
+const db = require("../config/database");
 const User = require("../models/userModel");
 
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-this";
@@ -143,6 +144,141 @@ exports.login = async (req, res) => {
     });
   } catch (error) {
     console.error("Login error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message
+    });
+  }
+};
+
+/**
+ * Get User Profile
+ * GET /api/auth/profile
+ * Requires: Bearer token in Authorization header
+ * Returns: User profile data
+ */
+exports.getProfile = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    // Get user data from database
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        profile_photo: user.profile_photo,
+        created_at: user.created_at
+      }
+    });
+  } catch (error) {
+    console.error("Get profile error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message
+    });
+  }
+};
+
+/**
+ * Update User Profile
+ * PUT /api/auth/profile
+ * Requires: Bearer token in Authorization header
+ * Body: { name }
+ * Updates user name in database
+ */
+exports.updateProfile = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { name } = req.body;
+
+    // Validate input
+    if (!name) {
+      return res.status(400).json({
+        success: false,
+        message: "Name is required"
+      });
+    }
+
+    if (typeof name !== 'string' || name.trim().length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Name must be a non-empty string"
+      });
+    }
+
+    // Update user name in database
+    await User.updateName(userId, name.trim());
+
+    // Get updated user data
+    const updatedUser = await User.findById(userId);
+
+    res.status(200).json({
+      success: true,
+      message: "Profile updated successfully",
+      data: {
+        id: updatedUser.id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        role: updatedUser.role
+      }
+    });
+  } catch (error) {
+    console.error("Update profile error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message
+    });
+  }
+};
+
+/**
+ * Update User Profile Photo
+ * POST /api/auth/profile/photo
+ * Requires: Bearer token in Authorization header, file upload (multipart/form-data, key: "photo")
+ * Updates user profile photo filename in database
+ */
+exports.updateProfilePhoto = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: "No file uploaded"
+      });
+    }
+
+    const userId = req.user.id;
+    const filename = req.file.filename;
+
+    // Update user profile_photo in database
+    await db.query("UPDATE users SET profile_photo = ? WHERE id = ?", [filename, userId]);
+
+    // Get updated user data
+    const updatedUser = await User.findById(userId);
+
+    res.status(200).json({
+      success: true,
+      message: "Profile photo updated successfully",
+      data: {
+        profile_photo: updatedUser.profile_photo
+      }
+    });
+  } catch (error) {
+    console.error("Update profile photo error:", error);
     res.status(500).json({
       success: false,
       message: "Internal server error",

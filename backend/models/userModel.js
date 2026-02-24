@@ -12,7 +12,7 @@ class User {
 
   static async findById(id) {
     try {
-      const [results] = await db.query("SELECT id, name, email, role FROM users WHERE id = ?", [id]);
+      const [results] = await db.query("SELECT id, name, email, role, profile_photo, created_at FROM users WHERE id = ?", [id]);
       return results[0] || null;
     } catch (error) {
       throw error;
@@ -47,6 +47,15 @@ class User {
   static async updatePassword(id, hashedPassword) {
     try {
       await db.query("UPDATE users SET password = ? WHERE id = ?", [hashedPassword, id]);
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async updateName(id, name) {
+    try {
+      await db.query("UPDATE users SET name = ? WHERE id = ?", [name, id]);
       return true;
     } catch (error) {
       throw error;

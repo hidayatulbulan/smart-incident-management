@@ -7,16 +7,14 @@
 const API_BASE = "http://localhost:3000/api";
 
 const STATUS_MAPPING = {
-  "open": "Dilaporkan",
-  "in_progress": "Diproses",
-  "inprogress": "Diproses",
-  "closed": "Selesai"
+  "open": "Open",
+  "progress": "On Progress",
+  "closed": "Closed"
 };
 
 const STATUS_BADGE_CLASS = {
   "open": "blue",
-  "in_progress": "orange",
-  "inprogress": "orange",
+  "progress": "orange",
   "closed": "green"
 };
 

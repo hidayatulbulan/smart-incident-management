@@ -134,8 +134,11 @@
     <!-- SIDEBAR -->
     <aside class="sidebar">
         <div class="logo">
-            <img src="../assets/images/logo.png" alt="Logo" style="width: 30px; height: auto;">
-            <div class="logo-text"><h2>SMART</h2><p>INCIDENT</p></div>
+            <img src="../assets/images/logo.png" 
+                 style="width:36px;height:36px;object-fit:contain;border-radius:8px;" 
+                 alt="Logo" 
+                 onerror="this.style.display='none'">
+            <span style="font-size:15px;font-weight:700;color:#1a1a2e;line-height:1.2;">SmartIncident</span>
         </div>
         <nav>
             <ul class="nav-menu">
@@ -189,7 +192,7 @@
                 <div class="stat-footer">this month</div>
             </div>
             <div class="stat-card pink">
-                <div class="stat-header"><div class="stat-icon"><i class="fas fa-spinner"></i></div><span>In Progress</span></div>
+                <div class="stat-header"><div class="stat-icon"><i class="fas fa-spinner"></i></div><span>On Progress</span></div>
                 <div class="stat-value"><h2 id="progressVal">0</h2><span class="stat-badge" id="progressBadge">0</span></div>
                 <div class="stat-footer">this month</div>
             </div>
@@ -255,7 +258,7 @@
                     <div class="filter-tabs">
                         <button class="filter-tab active" onclick="filterTable('all',this)">All Status</button>
                         <button class="filter-tab" onclick="filterTable('open',this)">Open</button>
-                        <button class="filter-tab" onclick="filterTable('progress',this)">Progress</button>
+                        <button class="filter-tab" onclick="filterTable('progress',this)">On Progress</button>
                         <button class="filter-tab" onclick="filterTable('closed',this)">Closed</button>
                     </div>
                 </div>

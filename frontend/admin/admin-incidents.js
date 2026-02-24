@@ -203,7 +203,7 @@ function renderIncidents(incidents) {
             <td>
                 <select class="status-select ${statusClass}" onchange="updateStatus(${incident.id}, this.value)">
                     <option value="open" ${incident.status?.toLowerCase() === 'open' ? 'selected' : ''}>Open</option>
-                    <option value="in_progress" ${incident.status?.toLowerCase() === 'progress' ? 'selected' : ''}>Progress</option>
+                    <option value="progress" ${incident.status?.toLowerCase() === 'progress' ? 'selected' : ''}>On Progress</option>
                     <option value="closed" ${incident.status?.toLowerCase() === 'closed' ? 'selected' : ''}>Closed</option>
                 </select>
             </td>
