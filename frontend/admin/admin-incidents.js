@@ -330,6 +330,10 @@ function openIncidentModal(id, isReadOnly = false) {
     statusSelect.value = incident.status?.toLowerCase() || 'open';
     adminNotetextarea.value = incident.admin_note || '';
     document.getElementById('modalAssignedSolver').value = incident.assigned_solver_name || 'Belum di-assign';
+    const solverNoteField = document.getElementById('modalSolverNote');
+    if (solverNoteField) {
+        solverNoteField.value = incident.solver_note || 'Belum ada catatan dari solver';
+    }
 
     // Set photo
     const photoImg = document.getElementById('modalPhoto');
@@ -538,6 +542,22 @@ function createIncidentModal() {
                         font-size: 13px;
                         background: #f9fafb;
                     ">
+                </div>
+
+                <div class="modal-form-group" style="margin-bottom: 15px;">
+                    <label style="display: block; font-size: 11px; font-weight: 600; color: #9ca3af; margin-bottom: 5px; text-transform: uppercase;">Catatan Solver</label>
+                    <textarea id="modalSolverNote" readonly style="
+                        width: 100%;
+                        padding: 10px 12px;
+                        border: 1px solid #e5e7eb;
+                        border-radius: 8px;
+                        font-size: 13px;
+                        min-height: 80px;
+                        resize: vertical;
+                        background: #f1f8e9;
+                        color: #2e7d52;
+                        font-family: inherit;
+                    "></textarea>
                 </div>
 
                 <div class="modal-form-group" style="margin-bottom: 20px;">

@@ -153,6 +153,33 @@ function renderIncidentData(incident) {
   if (aiSuggestion) {
     aiSuggestion.textContent = incident.recommendation || incident.suggestion || "Tidak ada rekomendasi AI untuk laporan ini.";
   }
+
+  // Add solver note to right panel if status is closed and solver_note exists
+  const normalizedStatus = incident.status?.toLowerCase().replace("_", "") || "open";
+  if (incident.solver_note && normalizedStatus === "closed") {
+    const aiCard = document.querySelector(".ai-card");
+    if (aiCard) {
+      const solverNoteHtml = `
+        <div style="
+          background: #f1f8e9;
+          border-radius: 14px;
+          padding: 18px 20px;
+          border: 1px solid #c8e6c9;
+          box-shadow: 0 4px 18px rgba(108,99,255,0.08);
+          margin-bottom: 16px;
+        ">
+          <div style="display:flex;align-items:center;gap:7px;font-size:14px;font-weight:800;color:#2e7d52;margin-bottom:10px;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg>
+            Catatan Penyelesaian
+          </div>
+          <div style="font-size:13px;font-weight:600;color:#2e7d52;line-height:1.6;border-left:4px solid #4dc4a8;padding-left:12px;">
+            ${escapeHtml(incident.solver_note)}
+          </div>
+        </div>
+      `;
+      aiCard.insertAdjacentHTML("beforebegin", solverNoteHtml);
+    }
+  }
 }
 
 function updateMetaField(elementId, value) {
@@ -320,6 +347,25 @@ function renderTimeline(incident) {
 
     timelineContainer.insertAdjacentHTML("beforeend", timelineHtml);
   });
+
+  // Add solver note timeline item if incident is closed and solver_note exists
+  const normalizedStatus = incident.status?.toLowerCase().replace("_", "") || "open";
+  if (normalizedStatus === "closed" && incident.solver_note) {
+    const solverNoteTimelineHtml = `
+      <div class="tl-item">
+        <div class="tl-left">
+          <div class="tl-dot done">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+        </div>
+        <div class="tl-body">
+          <div class="tl-step">Diselesaikan</div>
+          <div class="tl-note">${escapeHtml(incident.solver_note)}</div>
+        </div>
+      </div>
+    `;
+    timelineContainer.insertAdjacentHTML("beforeend", solverNoteTimelineHtml);
+  }
 }
 
 function isStatusCompleted(currentStatus, checkStatus) {
