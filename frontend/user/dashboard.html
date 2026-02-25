@@ -586,6 +586,29 @@
 const API_BASE = 'http://localhost:3000/api';
 
 /**
+ * XSS Prevention: Escape HTML special characters
+ */
+function escapeHtml(text) {
+  if (!text) return '';
+  const map = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+  };
+  return text.replace(/[&<>"']/g, m => map[m]);
+}
+
+/**
+ * Capitalize first letter of string
+ */
+function capitalizeFirst(str) {
+  if (!str) return '';
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+/**
  * Status badge styling map
  */
 const statusMap = {
@@ -611,6 +634,12 @@ function getStatusBadge(status) {
 
 function getToken() {
   return localStorage.getItem('token');
+}
+
+function redirectToLogin() {
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+  window.location.href = '../auth/login.html';
 }
 
 function logout() {
@@ -708,13 +737,16 @@ function filterIncidentsTable(searchTerm) {
 
 async function loadDashboard() {
   const token = getToken();
-  if (!token) { window.location.href = '../auth/login.html'; return; }
+  if (!token) {
+    redirectToLogin();
+    return;
+  }
 
   // Set user info
   const user = JSON.parse(localStorage.getItem('user')) || {};
   if (user.name) {
-    document.getElementById('greeting').innerHTML = `Hi, ${user.name} 👋`;
-    document.getElementById('userName').textContent = user.name;
+    document.getElementById('greeting').innerHTML = `Hi, ${escapeHtml(user.name)} 👋`;
+    document.getElementById('userName').textContent = escapeHtml(user.name);
     document.getElementById('userAvatar').textContent = user.name.charAt(0).toUpperCase();
   }
 
@@ -722,6 +754,12 @@ async function loadDashboard() {
     const response = await fetch(`${API_BASE}/incidents`, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
+
+    if (response.status === 401) {
+      redirectToLogin();
+      return;
+    }
+
     const data = await response.json();
     const incidents = data.incidents || [];
 
@@ -743,8 +781,8 @@ async function loadDashboard() {
     } else {
       tbody.innerHTML = incidents.slice(0, 5).map(inc => `
         <tr onclick="window.location.href='incident-detail.html?id=${inc.id}'">
-          <td>${inc.title || '-'}</td>
-          <td>${inc.category || inc.type || '-'}</td>
+          <td>${escapeHtml(inc.title) || '-'}</td>
+          <td>${escapeHtml(inc.category || inc.type) || '-'}</td>
           <td>${getPriorityBadge(inc.priority)}</td>
           <td>${getStatusBadge(inc.status)}</td>
           <td>${formatDate(inc.created_at)}</td>
@@ -755,8 +793,8 @@ async function loadDashboard() {
     // Latest incident card
     if (incidents.length > 0) {
       const latest = incidents[0];
-      document.getElementById('latestTitle').textContent = latest.title || '-';
-      document.getElementById('latestCategory').textContent = latest.category || latest.type || '-';
+      document.getElementById('latestTitle').textContent = escapeHtml(latest.title) || '-';
+      document.getElementById('latestCategory').textContent = escapeHtml(latest.category || latest.type) || '-';
       
       document.getElementById('latestStatus').innerHTML = getStatusBadge(latest.status);
       
@@ -778,6 +816,7 @@ async function loadDashboard() {
 
   } catch (err) {
     console.error('Error loading dashboard:', err);
+    alert('Gagal memuat dashboard');
   }
 }
 
