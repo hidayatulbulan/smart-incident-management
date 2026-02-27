@@ -371,6 +371,29 @@
             background: #c62828;
             color: white;
         }
+
+        .tab-btn {
+            padding: 7px 18px;
+            border-radius: 8px;
+            border: 1.5px solid #e5e7eb;
+            background: #fff;
+            color: #6b7280;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab-btn:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        .tab-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
     </style>
 </head>
 <body>
@@ -407,7 +430,7 @@
                     <li class="nav-item">
                         <a href="users.html" class="nav-link active">
                             <i class="fas fa-users"></i>
-                            <span>User management</span>
+                            <span>User Management</span>
                         </a>
                     </li>
                 </ul>
@@ -422,13 +445,13 @@
         <main class="main-content">
             <div class="page-header">
                 <h1>User Management</h1>
-                <p>Manage system users and permissions</p>
+                <p>Manage users and system permissions</p>
             </div>
 
             <div class="stats-row">
                 <div class="stat-box">
                     <div class="stat-box-header">
-                        <h3>Total Users</h3>
+                        <h3>Total User</h3>
                         <div class="stat-icon blue">
                             <i class="fas fa-users"></i>
                         </div>
@@ -438,7 +461,7 @@
 
                 <div class="stat-box">
                     <div class="stat-box-header">
-                        <h3>Active Users</h3>
+                        <h3>Total Solver</h3>
                         <div class="stat-icon green">
                             <i class="fas fa-user-check"></i>
                         </div>
@@ -448,7 +471,7 @@
 
                 <div class="stat-box">
                     <div class="stat-box-header">
-                        <h3>Administrators</h3>
+                        <h3>Administrator</h3>
                         <div class="stat-icon orange">
                             <i class="fas fa-user-shield"></i>
                         </div>
@@ -458,14 +481,20 @@
             </div>
 
             <div class="card">
+                <div id="roleTabs" style="display:flex;gap:8px;margin-bottom:16px;">
+                    <button class="tab-btn active" onclick="filterByRole('all')">All</button>
+                    <button class="tab-btn" onclick="filterByRole('user')">User</button>
+                    <button class="tab-btn" onclick="filterByRole('solver')">Solver</button>
+                    <button class="tab-btn" onclick="filterByRole('admin')">Admin</button>
+                </div>
                 <div class="table-controls">
                     <div class="search-box">
                         <i class="fas fa-search"></i>
-                        <input type="text" id="userSearchInput" placeholder="Search users...">
+                        <input type="text" id="userSearchInput" placeholder="Cari Pengguna...">
                     </div>
                     <button class="add-btn" onclick="openAddUserModal()">
                         <i class="fas fa-plus"></i>
-                        Add User
+                        Add
                     </button>
                 </div>
 
@@ -491,10 +520,10 @@
     <!-- Modal for Add/Edit User -->
     <div id="userModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
         <div style="background: white; border-radius: 15px; padding: 30px; max-width: 500px; width: 90%;">
-            <h2 id="modalTitle" style="margin-bottom: 20px; color: #333;">Add User</h2>
+            <h2 id="modalTitle" style="margin-bottom: 20px; color: #333;">Add</h2>
             <form id="userForm" onsubmit="submitUserForm(event)">
                 <div style="margin-bottom: 15px;">
-                    <label style="display: block; margin-bottom: 5px; color: #666; font-weight: 600; font-size: 12px;">Name</label>
+                    <label style="display: block; margin-bottom: 5px; color: #666; font-weight: 600; font-size: 12px;">Nama</label>
                     <input type="text" id="userName" name="name" required style="width: 100%; padding: 10px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 13px;">
                 </div>
 
@@ -504,7 +533,7 @@
                 </div>
 
                 <div style="margin-bottom: 15px;" id="passwordContainer">
-                    <label style="display: block; margin-bottom: 5px; color: #666; font-weight: 600; font-size: 12px;">Password</label>
+                    <label style="display: block; margin-bottom: 5px; color: #666; font-weight: 600; font-size: 12px;">Kata sandi</label>
                     <input type="password" id="userPassword" name="password" required style="width: 100%; padding: 10px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 13px;">
                 </div>
 
@@ -513,7 +542,7 @@
                     <select id="userRole" name="role" required style="width: 100%; padding: 10px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 13px; cursor: pointer;">
                         <option value="">Select Role</option>
                         <option value="admin">Admin</option>
-                        <option value="manager">Manager</option>
+                        <option value="manager">Solver</option>
                         <option value="user">User</option>
                     </select>
                 </div>
@@ -568,10 +597,9 @@
 
             allUsersData = data.data;
             
-            // Update stats
-            document.getElementById('totalUsersCount').textContent = data.stats.totalUsers;
-            document.getElementById('activeUsersCount').textContent = data.stats.activeUsers;
-            document.getElementById('administratorsCount').textContent = data.stats.administrators;
+            document.getElementById('totalUsersCount').textContent = allUsersData.filter(u => u.role?.toLowerCase() === 'user').length;
+            document.getElementById('activeUsersCount').textContent = allUsersData.filter(u => u.role?.toLowerCase() === 'solver').length;
+            document.getElementById('administratorsCount').textContent = allUsersData.filter(u => u.role?.toLowerCase() === 'admin').length;
 
             // Render table
             renderUsersTable(allUsersData);
@@ -729,6 +757,20 @@
         } catch (error) {
             alert('Error deleting user: ' + error.message);
         }
+    }
+
+    // Filter users by role
+    function filterByRole(role) {
+        // Update active tab
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        
+        // Filter users
+        const filtered = role === 'all' 
+            ? allUsersData 
+            : allUsersData.filter(u => u.role === role || (role === 'solver' && u.role === 'manager'));
+        
+        renderUsersTable(filtered);
     }
 
     // Setup search filter

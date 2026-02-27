@@ -392,7 +392,7 @@
 
             <a class="logout">
                 <i class="fas fa-sign-out-alt"></i>
-                <span>Log Out</span>
+                <span>Keluar</span>
             </a>
         </aside>
 
@@ -803,7 +803,7 @@ function openIncidentModal(id, isReadOnly = false) {
     // Set photo
     const photoImg = document.getElementById('modalPhoto');
     if (incident.photo) {
-        photoImg.src = `http://localhost:3000/uploads/${incident.photo}`;
+        photoImg.src = `http://localhost:3000/uploads/incidents/${incident.photo}`;
         photoImg.style.display = 'block';
     } else {
         photoImg.style.display = 'none';

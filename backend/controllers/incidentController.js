@@ -1,5 +1,7 @@
 const Incident = require("../models/incidentModel");
 const { analyzeIncident } = require("../services/aiRuleBased");
+const { createNotificationsForMultiple } = require("../helpers/notificationHelper");
+const db = require("../config/database");
 
 exports.create = async (req, res) => {
   try {
@@ -33,6 +35,29 @@ exports.create = async (req, res) => {
       "open",
       aiAnalysis.priority || "Medium"
     );
+
+    // Get reporter name
+    const [reporterData] = await db.query(
+      "SELECT name FROM users WHERE id = ?",
+      [userId]
+    );
+    const reporterName = reporterData[0]?.name || "User";
+
+    // Get all admin users
+    const [admins] = await db.query(
+      "SELECT id FROM users WHERE role = 'admin'"
+    );
+    const adminIds = admins.map(admin => admin.id);
+
+    // Create notifications for all admins
+    if (adminIds.length > 0) {
+      await createNotificationsForMultiple(
+        adminIds,
+        "Laporan Baru Masuk",
+        `${reporterName} melaporkan: ${title}`,
+        "new_incident"
+      );
+    }
 
     res.status(201).json({
       success: true,

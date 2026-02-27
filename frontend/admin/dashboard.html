@@ -149,7 +149,7 @@
             </ul>
         </nav>
         <button class="logout-link" onclick="logout()">
-            <i class="fas fa-sign-out-alt"></i><span>Log Out</span>
+            <i class="fas fa-sign-out-alt"></i><span>Keluar</span>
         </button>
     </aside>
 
@@ -167,9 +167,26 @@
                     <i class="fas fa-search"></i>
                     <input type="text" placeholder="Type to search" id="searchInput">
                 </div>
-                <div class="notification">
-                    <i class="far fa-bell"></i>
-                    <span class="badge"></span>
+                <div style="position:relative;cursor:pointer;margin-right:8px;" onclick="toggleNotifications()">
+                  <i class="fas fa-bell" style="font-size:18px;color:#8a8fa8;"></i>
+                  <span id="notifBadge" style="
+                    display:none;position:absolute;top:-6px;right:-6px;
+                    background:#ef4444;color:white;border-radius:50%;
+                    width:18px;height:18px;font-size:10px;font-weight:700;
+                    align-items:center;justify-content:center;
+                  ">0</span>
+                </div>
+                <div id="notifDropdown" style="
+                  display:none;position:fixed;top:60px;right:20px;
+                  width:340px;background:white;border-radius:14px;
+                  box-shadow:0 8px 30px rgba(0,0,0,0.12);
+                  z-index:999;border:1px solid #e8e8f2;
+                ">
+                  <div style="padding:16px 18px;border-bottom:1px solid #f0f0f8;display:flex;justify-content:space-between;align-items:center;">
+                    <span style="font-size:14px;font-weight:800;color:#1a1a2e;">Notifikasi</span>
+                    <span onclick="markAllRead()" style="font-size:12px;color:#6c63ff;cursor:pointer;font-weight:600;">Tandai semua dibaca</span>
+                  </div>
+                  <div id="notifList" style="max-height:320px;overflow-y:auto;"></div>
                 </div>
                 <div class="user-profile">
                     <div class="user-avatar" id="adminAvatar">A</div>
@@ -445,10 +462,76 @@
         }catch(err){ console.error('Dashboard error:',err); }
     }
 
-    // Search
     document.getElementById('searchInput').addEventListener('input',function(){
         const q=this.value.toLowerCase();
         renderTable(allIncidents.filter(i=>(i.title||'').toLowerCase().includes(q)||(i.category||'').toLowerCase().includes(q)||(i.reporter_name||'').toLowerCase().includes(q)));
+    });
+
+    async function loadNotifications() {
+      const token = localStorage.getItem('token');
+      if (!token) return;
+      try {
+        const res = await fetch('http://localhost:3000/api/notifications', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        const notifs = data.notifications || [];
+        const unread = notifs.filter(n => !n.is_read).length;
+        const badge = document.getElementById('notifBadge');
+        if (badge) {
+          badge.textContent = unread;
+          badge.style.display = unread > 0 ? 'flex' : 'none';
+        }
+        const list = document.getElementById('notifList');
+        if (!list) return;
+        if (notifs.length === 0) {
+          list.innerHTML = '<div style="padding:24px;text-align:center;color:#9ca3af;font-size:13px;">Tidak ada notifikasi</div>';
+          return;
+        }
+        list.innerHTML = notifs.map(n => `
+          <div onclick="markRead(${n.id})" style="
+            padding:14px 18px;border-bottom:1px solid #f9f9fc;
+            background:${n.is_read ? '#fff' : '#f5f3ff'};cursor:pointer;
+          ">
+            <div style="font-size:13px;font-weight:700;color:#1a1a2e;margin-bottom:3px;">${n.title}</div>
+            <div style="font-size:12px;color:#6b7280;">${n.message}</div>
+            <div style="font-size:11px;color:#9ca3af;margin-top:4px;">${new Date(n.created_at).toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})}</div>
+          </div>
+        `).join('');
+      } catch(e) { console.error(e); }
+    }
+
+    function toggleNotifications() {
+      const dd = document.getElementById('notifDropdown');
+      if (!dd) return;
+      dd.style.display = dd.style.display === 'none' ? 'block' : 'none';
+      if (dd.style.display === 'block') loadNotifications();
+    }
+
+    async function markRead(id) {
+      const token = localStorage.getItem('token');
+      await fetch(`http://localhost:3000/api/notifications/${id}/read`, {
+        method: 'PUT', headers: { 'Authorization': `Bearer ${token}` }
+      });
+      loadNotifications();
+    }
+
+    async function markAllRead() {
+      const token = localStorage.getItem('token');
+      await fetch('http://localhost:3000/api/notifications/read-all', {
+        method: 'PUT', headers: { 'Authorization': `Bearer ${token}` }
+      });
+      loadNotifications();
+    }
+
+    loadNotifications();
+    setInterval(loadNotifications, 30000);
+
+    document.addEventListener('click', (e) => {
+      const dd = document.getElementById('notifDropdown');
+      if (dd && !dd.contains(e.target) && !e.target.closest('[onclick="toggleNotifications()"]')) {
+        dd.style.display = 'none';
+      }
     });
 
     loadDashboard();

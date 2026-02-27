@@ -1,4 +1,5 @@
 const db = require("../config/database");
+const { createNotification } = require("../helpers/notificationHelper");
 
 /**
  * Get incidents assigned to this solver
@@ -147,10 +148,23 @@ exports.updateStatus = async (req, res) => {
       [id]
     );
 
+    const updatedIncident = updatedIncidents[0];
+    const reporterId = updatedIncident.user_id;
+    const incidentTitle = updatedIncident.title || "Insiden";
+    
+    // Create notification for incident reporter
+    const statusMessage = status === 'progress' ? 'sedang ditangani' : (status === 'closed' ? 'telah diselesaikan' : status);
+    await createNotification(
+      reporterId,
+      "Status Insiden Diperbarui",
+      `Insiden "${incidentTitle}" sekarang ${statusMessage}`,
+      "status_update"
+    );
+
     res.status(200).json({
       success: true,
       message: "Status berhasil diperbarui",
-      data: updatedIncidents[0]
+      data: updatedIncident
     });
   } catch (error) {
     console.error("Update status error:", error);

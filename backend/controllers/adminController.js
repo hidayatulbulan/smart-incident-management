@@ -1,6 +1,7 @@
 const db = require("../config/database");
 const Incident = require("../models/incidentModel");
 const bcryptjs = require("bcryptjs");
+const { createNotification } = require("../helpers/notificationHelper");
 
 /**
  * Get all incidents (Admin only)
@@ -579,6 +580,16 @@ exports.assignIncident = async (req, res) => {
     const [updatedIncidentData] = await db.query(
       "SELECT i.*, u.name as reporter_name, s.name as assigned_to_name FROM incidents i LEFT JOIN users u ON i.user_id = u.id LEFT JOIN users s ON i.assigned_to = s.id WHERE i.id = ?",
       [id]
+    );
+
+    const incidentTitle = updatedIncidentData[0]?.title || "Insiden";
+
+    // Create notification for solver
+    await createNotification(
+      assigned_to,
+      "Insiden Baru Ditugaskan",
+      `Anda ditugaskan untuk menangani: ${incidentTitle}`,
+      "assigned"
     );
 
     res.status(200).json({

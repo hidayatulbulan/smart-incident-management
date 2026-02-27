@@ -22,6 +22,7 @@ app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/incidents", require("./routes/incidentRoutes"));
 app.use("/api/admin", require("./routes/adminRoutes"));
 app.use("/api/solver", require("./routes/solverRoutes"));
+app.use("/api/notifications", require("./routes/notificationRoutes"));
 
 // start server
 app.listen(PORT, () => {
