@@ -1,426 +1,396 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SMART Incident - Lapor Insiden</title>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <title>Lapor Insiden - SmartIncident</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --sidebar-bg: #ffffff;
-      --sidebar-width: 220px;
-      --main-bg: #f4f6fb;
-      --primary: #6c63ff;
-      --primary-light: #ede9ff;
-      --text-dark: #1a1a2e;
-      --text-muted: #8a8fa8;
-      --shadow: 0 4px 18px rgba(108,99,255,0.08);
-      --radius: 16px;
-      --input-border: #e2e4ed;
+      --red:#e63946; --red-dark:#c1121f; --red-deep:#8c1b28; --red-light:#ff8fa3;
+      --red-50:#fff5f7; --red-100:#ffe0e5;
+      --white:#ffffff; --gray-50:#f8f9fb; --gray-100:#f0f2f5;
+      --gray-200:#e4e6ea; --gray-300:#d0d3da; --gray-400:#b0b5c0;
+      --gray-500:#8e95a2; --gray-600:#6b7280; --gray-700:#4b5563;
+      --gray-800:#374151; --gray-900:#1f2937;
+      --sw:232px;
+      --shadow:0 2px 18px rgba(0,0,0,0.07);
+      --shadow-r:0 8px 28px rgba(230,57,70,0.22);
+      --radius:20px; --rsm:14px; --rinput:12px;
     }
 
-    html, body { height: 100%; }
+    html, body { height:100%; }
+    body { font-family:'Plus Jakarta Sans',sans-serif; background:var(--gray-50); min-height:100vh; display:flex; overflow-x:hidden; color:var(--gray-900); }
 
-    body {
-      font-family: 'Nunito', sans-serif;
-      background: var(--main-bg);
-      min-height: 100vh;
-      display: flex;
-    }
+    /* ──── KEYFRAMES ──── */
+    @keyframes slideInLeft  { from{transform:translateX(-110%);opacity:0} to{transform:translateX(0);opacity:1} }
+    @keyframes fadeInDown   { from{transform:translateY(-20px);opacity:0} to{transform:translateY(0);opacity:1} }
+    @keyframes fadeInUp     { from{transform:translateY(26px);opacity:0}  to{transform:translateY(0);opacity:1} }
+    @keyframes fadeInRight  { from{transform:translateX(28px);opacity:0}  to{transform:translateX(0);opacity:1} }
+    @keyframes shimmer      { 0%{left:-70%} 100%{left:130%} }
+    @keyframes toastIn      { from{transform:translateX(115%);opacity:0} to{transform:translateX(0);opacity:1} }
+    @keyframes popIn        { 0%{opacity:0;transform:scale(.6)} 70%{transform:scale(1.06)} 100%{opacity:1;transform:scale(1)} }
+    @keyframes uploadBounce { 0%,100%{transform:translateY(0)} 40%{transform:translateY(-9px)} 70%{transform:translateY(-4px)} }
+    @keyframes pulseDot     { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.7);opacity:.45} }
+    @keyframes spin         { to{transform:rotate(360deg)} }
+    @keyframes rowIn        { from{opacity:0;transform:translateX(-8px)} to{opacity:1;transform:translateX(0)} }
+    @keyframes floatIcon    { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+    @keyframes inputFocus   { from{box-shadow:0 0 0 0 rgba(230,57,70,.18)} to{box-shadow:0 0 0 4px rgba(230,57,70,.10)} }
 
-    /* ─── SIDEBAR ─────────────────────────────────── */
+    /* ──── SIDEBAR ──── */
     .sidebar {
-      width: var(--sidebar-width);
-      background: var(--sidebar-bg);
-      display: flex;
-      flex-direction: column;
-      padding: 28px 0 20px;
-      min-height: 100vh;
-      box-shadow: 2px 0 12px rgba(108,99,255,0.06);
-      position: fixed;
-      top: 0; left: 0; bottom: 0;
-      z-index: 100;
+      width:var(--sw); background:var(--white);
+      display:flex; flex-direction:column;
+      padding:26px 14px 20px;
+      min-height:100vh; position:fixed; top:0; left:0; bottom:0; z-index:200;
+      box-shadow:2px 0 20px rgba(0,0,0,.05);
+      border-right:1px solid var(--red-100);
+      animation:slideInLeft .45s cubic-bezier(.22,1,.36,1);
     }
+    .sb-logo  { display:flex; align-items:center; gap:11px; margin-bottom:32px; padding:6px 10px; }
+    .sb-icon  { width:38px; height:38px; background:linear-gradient(135deg,var(--red),var(--red-dark)); border-radius:11px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:17px; box-shadow:0 4px 12px rgba(230,57,70,.32); flex-shrink:0; }
+    .sb-brand { font-size:15.5px; font-weight:800; color:var(--gray-900); }
+    .sb-brand span { color:var(--red); }
 
-    .sidebar-logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 0 22px 28px;
-      border-bottom: 1px solid #f0f0f5;
-    }
+    .sb-lbl { font-size:9.5px; font-weight:700; color:var(--gray-400); text-transform:uppercase; letter-spacing:1.3px; padding:0 10px; margin-bottom:7px; }
 
-    .logo-icon {
-      width: 38px; height: 38px;
-      background: var(--primary);
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .logo-icon svg { width: 20px; height: 20px; }
+    .nav-a { display:flex; align-items:center; gap:11px; padding:10px 13px; color:var(--gray-500); font-size:13px; font-weight:600; text-decoration:none; border-radius:var(--rsm); position:relative; transition:all .2s; margin-bottom:2px; }
+    .nav-a:hover  { background:var(--red-50); color:var(--red); }
+    .nav-a.active { background:linear-gradient(135deg,var(--red),#f05a67); color:#fff; box-shadow:0 4px 14px rgba(230,57,70,.28); }
+    .nav-a.active::before { content:''; position:absolute; left:-14px; width:4px; height:22px; background:var(--red); border-radius:0 4px 4px 0; }
+    .nav-a svg { width:16px; height:16px; flex-shrink:0; }
 
-    .logo-text .brand { font-size: 15px; font-weight: 800; color: var(--text-dark); letter-spacing: .5px; }
-    .logo-text .sub   { font-size: 10px; font-weight: 600; color: var(--primary); letter-spacing: 2px; text-transform: uppercase; }
+    .sb-div { height:1px; background:var(--gray-100); margin:14px 0; }
 
-    .sidebar-nav { flex: 1; padding: 20px 0; }
+    .user-tag { display:flex; align-items:center; gap:10px; padding:10px 13px; margin-top:auto; border-top:1px solid var(--gray-100); padding-top:16px; }
+    .user-av  { width:34px; height:34px; border-radius:50%; background:linear-gradient(135deg,var(--red-light),var(--red)); display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:800; color:#fff; box-shadow:0 3px 8px rgba(230,57,70,.24); flex-shrink:0; }
+    .user-nm  { font-size:13px; font-weight:700; color:var(--gray-800); }
+    .user-rl  { font-size:10.5px; color:var(--gray-400); font-weight:500; margin-top:1px; }
 
-    .nav-item {
-      display: flex; align-items: center; gap: 12px;
-      padding: 11px 22px;
-      color: var(--text-muted);
-      font-size: 14px; font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-      position: relative;
-      transition: background .2s, color .2s;
-    }
-    .nav-item:hover { color: var(--primary); background: var(--primary-light); }
-    .nav-item.active { color: var(--primary); background: var(--primary-light); }
-    .nav-item.active::before {
-      content: '';
-      position: absolute;
-      left: 0; top: 4px; bottom: 4px;
-      width: 4px;
-      background: var(--primary);
-      border-radius: 0 4px 4px 0;
-    }
-    .nav-item svg { width: 18px; height: 18px; flex-shrink: 0; }
+    /* ──── MAIN WRAPPER ──── */
+    .wrapper { margin-left:var(--sw); flex:1; display:flex; flex-direction:column; min-height:100vh; }
 
-    .sidebar-user {
-      display: flex; align-items: center; gap: 10px;
-      padding: 14px 22px;
-      border-top: 1px solid #f0f0f5;
-    }
-    .user-ava {
-      width: 34px; height: 34px; border-radius: 50%;
-      background: linear-gradient(135deg, #f6a05b, #e05b5b);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 13px; font-weight: 700; color: #fff; flex-shrink: 0;
-    }
-    .user-name-sm  { font-size: 13px; font-weight: 700; color: var(--text-dark); }
-    .user-role     { font-size: 11px; color: var(--text-muted); font-weight: 600; }
-
-    /* ─── WRAPPER ─────────────────────────────────── */
-    .wrapper {
-      margin-left: var(--sidebar-width);
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    /* ─── PAGE HEADER ─────────────────────────────── */
+    /* ──── PAGE HEADER ──── */
     .page-header {
-      padding: 28px 36px 0;
-      flex-shrink: 0;
+      padding:24px 32px 0;
+      animation:fadeInDown .5s cubic-bezier(.22,1,.36,1);
     }
-    .breadcrumb {
-      font-size: 12px; color: var(--text-muted); font-weight: 600;
-      margin-bottom: 6px;
-      display: flex; align-items: center; gap: 6px;
-    }
-    .breadcrumb a { color: var(--text-muted); text-decoration: none; }
-    .breadcrumb a:hover { color: var(--primary); }
-    .breadcrumb span { color: var(--text-dark); }
+    .breadcrumb { display:flex; align-items:center; gap:7px; font-size:12px; color:var(--gray-400); font-weight:600; margin-bottom:7px; }
+    .breadcrumb a { color:var(--gray-400); text-decoration:none; transition:color .2s; }
+    .breadcrumb a:hover { color:var(--red); }
+    .breadcrumb i { font-size:9px; color:var(--gray-300); }
+    .breadcrumb .bc-active { color:var(--red); font-weight:700; }
 
-    .page-title-row {
-      display: flex; align-items: flex-start; justify-content: space-between;
-      flex-wrap: wrap; gap: 12px;
-    }
-    .page-title { font-size: 26px; font-weight: 800; color: var(--text-dark); }
-    .page-subtitle { font-size: 13px; color: var(--text-muted); font-weight: 600; margin-top: 4px; }
+    .header-row { display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+    .page-title    { font-size:22px; font-weight:800; color:var(--gray-900); letter-spacing:-.5px; }
+    .page-subtitle { font-size:12.5px; color:var(--gray-400); font-weight:500; margin-top:3px; }
 
-    .header-actions {
-      display: flex; align-items: center; gap: 12px; margin-top: 4px;
-    }
+    .header-actions { display:flex; align-items:center; gap:12px; margin-top:4px; }
     .icon-btn {
-      width: 36px; height: 36px; border-radius: 10px;
-      background: #fff; border: 1px solid var(--input-border);
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; color: var(--text-muted);
-      transition: border-color .2s, color .2s;
+      width:38px; height:38px; border-radius:11px;
+      background:var(--white); border:1.5px solid var(--gray-200);
+      display:flex; align-items:center; justify-content:center;
+      cursor:pointer; color:var(--gray-400); transition:all .2s;
     }
-    .icon-btn:hover { border-color: var(--primary); color: var(--primary); }
-    .icon-btn svg { width: 17px; height: 17px; }
-    .bantuan-btn {
-      display: flex; align-items: center; gap: 6px;
-      background: #fff; border: 1px solid var(--input-border);
-      border-radius: 10px; padding: 7px 14px;
-      font-size: 13px; font-weight: 700; color: var(--text-dark);
-      cursor: pointer; font-family: inherit;
-      transition: border-color .2s;
+    .icon-btn:hover { border-color:var(--red-light); color:var(--red); background:var(--red-50); }
+    .icon-btn svg { width:16px; height:16px; }
+    .help-btn {
+      display:flex; align-items:center; gap:7px;
+      background:var(--white); border:1.5px solid var(--gray-200);
+      border-radius:11px; padding:8px 16px;
+      font-size:12.5px; font-weight:700; color:var(--gray-600);
+      cursor:pointer; font-family:inherit; transition:all .2s;
     }
-    .bantuan-btn:hover { border-color: var(--primary); color: var(--primary); }
-    .bantuan-btn svg { width: 16px; height: 16px; }
+    .help-btn:hover { border-color:var(--red-light); color:var(--red); background:var(--red-50); }
+    .help-btn svg { width:15px; height:15px; }
 
-    /* ─── CONTENT ─────────────────────────────────── */
-    .content {
-      display: flex;
-      gap: 24px;
-      padding: 24px 36px;
-      flex: 1;
-      align-items: flex-start;
-    }
+    /* ──── CONTENT LAYOUT ──── */
+    .content { display:flex; gap:22px; padding:22px 32px 40px; flex:1; align-items:flex-start; }
+    .col-form { flex:1; min-width:0; display:flex; flex-direction:column; gap:0; }
+    .col-side { width:252px; flex-shrink:0; display:flex; flex-direction:column; gap:16px; }
 
-    /* ─── FORM PANEL ──────────────────────────────── */
-    .form-panel {
-      flex: 1;
-      min-width: 0;
-      background: #fff;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 28px 30px;
-      display: flex; flex-direction: column; gap: 20px;
+    /* ──── FORM CARD ──── */
+    .form-card {
+      background:var(--white); border-radius:var(--radius);
+      box-shadow:var(--shadow); border:1px solid var(--gray-100);
+      padding:28px 30px;
+      animation:fadeInUp .5s cubic-bezier(.22,1,.36,1) .12s both;
     }
 
-    .form-group { display: flex; flex-direction: column; gap: 7px; }
-    .form-row   { display: flex; gap: 16px; }
-    .form-row .form-group { flex: 1; min-width: 0; }
-
-    label { font-size: 13px; font-weight: 700; color: var(--text-dark); }
-
-    input[type="text"],
-    select,
-    textarea {
-      font-family: 'Nunito', sans-serif;
-      font-size: 13.5px; font-weight: 600;
-      color: var(--text-dark);
-      background: #fff;
-      border: 1.5px solid var(--input-border);
-      border-radius: 10px;
-      padding: 10px 14px;
-      outline: none;
-      transition: border-color .2s, box-shadow .2s;
-      width: 100%;
+    /* form section header */
+    .form-section-title {
+      font-size:11px; font-weight:700; color:var(--gray-400);
+      text-transform:uppercase; letter-spacing:1px;
+      margin-bottom:18px; padding-bottom:12px;
+      border-bottom:1.5px solid var(--gray-100);
+      display:flex; align-items:center; gap:7px;
     }
-    input[type="text"]::placeholder,
-    textarea::placeholder { color: #b8bcd0; font-weight: 500; }
-    input[type="text"]:focus,
-    select:focus,
-    textarea:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(108,99,255,.10);
+    .form-section-title i { color:var(--red); font-size:12px; }
+
+    .form-group { margin-bottom:20px; }
+    .form-group:last-of-type { margin-bottom:0; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+
+    .form-label {
+      display:flex; align-items:center; gap:5px;
+      font-size:12.5px; font-weight:700; color:var(--gray-700);
+      margin-bottom:8px;
+    }
+    .form-label .req { color:var(--red); font-size:14px; line-height:1; margin-left:1px; }
+
+    .form-input,
+    .form-select,
+    .form-textarea {
+      width:100%; padding:11px 14px;
+      border:1.5px solid var(--gray-200); border-radius:var(--rinput);
+      font-size:13px; font-family:inherit; color:var(--gray-900);
+      background:var(--white); outline:none;
+      transition:border-color .2s, box-shadow .2s;
+    }
+    .form-input::placeholder, .form-textarea::placeholder { color:var(--gray-400); font-weight:400; }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color:var(--red-light);
+      box-shadow:0 0 0 3px rgba(230,57,70,.09);
+    }
+    .form-input:hover:not(:focus), .form-select:hover:not(:focus), .form-textarea:hover:not(:focus) {
+      border-color:var(--gray-300);
     }
 
-    select {
-      appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%238a8fa8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 14px center;
-      padding-right: 36px;
-      color: #b8bcd0;
-      cursor: pointer;
+    /* input with icon */
+    .input-wrap { position:relative; }
+    .input-wrap .input-icon { position:absolute; left:13px; top:50%; transform:translateY(-50%); color:var(--gray-400); font-size:13px; pointer-events:none; }
+    .input-wrap .form-input { padding-left:38px; }
+
+    .form-select {
+      cursor:pointer; appearance:none; -webkit-appearance:none;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23b0b5c0' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat:no-repeat; background-position:right 12px center; padding-right:36px;
     }
-    select.selected { color: var(--text-dark); }
+    .form-select.has-value { color:var(--gray-900); }
+    .form-select:not(.has-value) { color:var(--gray-400); }
 
-    textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
+    .form-textarea { resize:vertical; min-height:120px; line-height:1.65; }
 
-    /* Upload Area */
+    /* char counter */
+    .char-row { display:flex; justify-content:flex-end; margin-top:4px; }
+    .char-count { font-size:10.5px; color:var(--gray-400); font-weight:500; }
+    .char-count.warn { color:#ea580c; }
+
+    /* ──── UPLOAD ZONE ──── */
     .upload-area {
-      border: 2px dashed var(--input-border);
-      border-radius: 12px;
-      background: #fafbff;
-      min-height: 120px;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 8px;
-      cursor: pointer;
-      transition: border-color .2s, background .2s;
-      padding: 24px;
+      border:2px dashed var(--gray-300); border-radius:var(--rsm);
+      padding:38px 20px; text-align:center; cursor:pointer;
+      transition:all .25s; background:var(--gray-50);
+      position:relative; overflow:hidden;
     }
-    .upload-area:hover {
-      border-color: var(--primary);
-      background: var(--primary-light);
+    .upload-area:hover, .upload-area.drag-over {
+      border-color:var(--red-light); background:var(--red-50);
     }
-    .upload-icon {
-      width: 44px; height: 44px; border-radius: 50%;
-      background: var(--primary-light);
-      display: flex; align-items: center; justify-content: center;
-    }
-    .upload-icon svg { width: 22px; height: 22px; color: var(--primary); }
-    .upload-text { font-size: 13px; font-weight: 700; color: var(--text-dark); }
-    .upload-hint { font-size: 11.5px; color: var(--text-muted); font-weight: 600; }
+    .upload-area:hover .up-icon-bg { background:var(--red-100); }
+    .upload-area:hover .up-icon    { animation:uploadBounce .65s ease; color:var(--red-dark); }
+    .up-icon-bg { width:56px; height:56px; border-radius:16px; background:var(--red-50); display:flex; align-items:center; justify-content:center; margin:0 auto 14px; transition:background .2s; }
+    .up-icon    { font-size:22px; color:var(--red); transition:color .2s; }
+    .up-text    { font-size:13.5px; font-weight:700; color:var(--gray-700); margin-bottom:4px; transition:color .2s; }
+    .up-hint    { font-size:11.5px; color:var(--gray-400); font-weight:500; }
+    .upload-area:hover .up-text { color:var(--red); }
+    #fileInput  { display:none; }
 
-    /* Form Actions */
+    /* file preview */
+    .file-preview {
+      display:flex; align-items:center; gap:11px;
+      background:var(--red-50); border:1.5px solid var(--red-100);
+      border-radius:10px; padding:11px 14px; margin-top:10px;
+      animation:popIn .3s cubic-bezier(.34,1.56,.64,1);
+    }
+    .file-preview i { font-size:18px; color:var(--red); flex-shrink:0; }
+    .file-preview-name { font-size:12.5px; font-weight:700; color:var(--gray-800); flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .file-preview-size { font-size:11px; color:var(--gray-400); font-weight:500; }
+    .file-remove { background:none; border:none; cursor:pointer; color:var(--gray-400); font-size:13px; padding:3px; border-radius:6px; transition:all .2s; }
+    .file-remove:hover { color:var(--red); background:var(--red-100); }
+
+    /* ──── FORM ACTIONS ──── */
     .form-actions {
-      display: flex; align-items: center; gap: 14px;
-      padding-top: 4px;
+      display:flex; align-items:center; gap:14px;
+      margin-top:26px; padding-top:22px;
+      border-top:1.5px solid var(--gray-100);
     }
-    .batal-btn {
-      background: none; border: none;
-      font-family: 'Nunito', sans-serif;
-      font-size: 14px; font-weight: 700; color: var(--text-muted);
-      cursor: pointer; padding: 12px 20px; border-radius: 10px;
-      transition: color .2s, background .2s;
+    .btn-cancel {
+      padding:11px 22px; border:1.5px solid var(--gray-200);
+      border-radius:var(--rsm); background:var(--white);
+      color:var(--gray-600); font-size:13px; font-weight:700;
+      cursor:pointer; font-family:inherit; transition:all .2s;
     }
-    .batal-btn:hover { color: #e05b5b; background: #fdecea; }
+    .btn-cancel:hover { border-color:var(--gray-300); background:var(--gray-50); color:var(--gray-800); }
 
-    .kirim-btn {
-      flex: 1;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      background: var(--primary);
-      color: #fff; font-size: 14px; font-weight: 800;
-      border: none; border-radius: 12px;
-      padding: 13px;
-      cursor: pointer; font-family: 'Nunito', sans-serif;
-      box-shadow: 0 6px 18px rgba(108,99,255,.30);
-      transition: transform .15s, box-shadow .15s;
+    .btn-submit {
+      flex:1; padding:13px 22px;
+      background:linear-gradient(135deg,var(--red),var(--red-dark));
+      color:#fff; border:none; border-radius:var(--rsm);
+      font-size:14px; font-weight:800; cursor:pointer; font-family:inherit;
+      box-shadow:var(--shadow-r);
+      display:flex; align-items:center; justify-content:center; gap:9px;
+      position:relative; overflow:hidden;
+      transition:transform .2s, box-shadow .2s;
     }
-    .kirim-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(108,99,255,.38); }
-    .kirim-btn svg { width: 16px; height: 16px; }
+    .btn-submit::after { content:''; position:absolute; top:0; left:-70%; width:40%; height:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent); transform:skewX(-18deg); }
+    .btn-submit:hover  { transform:translateY(-2px); box-shadow:0 12px 32px rgba(230,57,70,.36); }
+    .btn-submit:hover::after { animation:shimmer .55s ease forwards; }
+    .btn-submit:disabled { opacity:.65; cursor:not-allowed; transform:none; }
+    .btn-submit svg { width:16px; height:16px; }
 
-    /* ─── RIGHT PANEL ─────────────────────────────── */
-    .right-panel {
-      width: 260px;
-      flex-shrink: 0;
-      display: flex; flex-direction: column; gap: 16px;
-    }
+    /* loading spinner inside btn */
+    .btn-spinner { width:16px; height:16px; border:2.5px solid rgba(255,255,255,.4); border-top-color:#fff; border-radius:50%; animation:spin .7s linear infinite; flex-shrink:0; }
 
+    /* ──── RIGHT SIDE CARDS ──── */
+
+    /* Tips Card */
     .tips-card {
-      background: #fff;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 18px 20px;
+      background:var(--white); border-radius:var(--radius);
+      box-shadow:var(--shadow); border:1px solid var(--gray-100);
+      padding:20px 22px;
+      animation:fadeInRight .5s cubic-bezier(.22,1,.36,1) .16s both;
     }
-    .tips-title {
-      display: flex; align-items: center; gap: 7px;
-      font-size: 14px; font-weight: 800; color: var(--text-dark);
-      margin-bottom: 14px;
+    .tips-head {
+      display:flex; align-items:center; gap:8px;
+      font-size:14px; font-weight:800; color:var(--gray-900);
+      margin-bottom:16px; padding-bottom:12px;
+      border-bottom:1.5px solid var(--gray-100);
     }
-    .tips-title svg { width: 16px; height: 16px; color: var(--primary); }
+    .tips-head-icon { width:28px; height:28px; border-radius:8px; background:var(--red-50); display:flex; align-items:center; justify-content:center; color:var(--red); font-size:13px; }
+    .tips-list { display:flex; flex-direction:column; gap:12px; }
+    .tip-item  { display:flex; gap:11px; align-items:flex-start; }
+    .tip-num   { width:22px; height:22px; border-radius:50%; background:linear-gradient(135deg,var(--red-light),var(--red)); color:#fff; font-size:10.5px; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; box-shadow:0 2px 6px rgba(230,57,70,.22); }
+    .tip-text  { font-size:12px; font-weight:500; color:var(--gray-600); line-height:1.55; }
 
-    .tips-list { display: flex; flex-direction: column; gap: 10px; }
-    .tip-item  { display: flex; gap: 10px; align-items: flex-start; }
-    .tip-num {
-      width: 20px; height: 20px; border-radius: 50%;
-      background: var(--primary-light); color: var(--primary);
-      font-size: 11px; font-weight: 800;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; margin-top: 1px;
-    }
-    .tip-text { font-size: 12px; font-weight: 600; color: var(--text-muted); line-height: 1.5; }
-
+    /* Emergency Card */
     .emergency-card {
-      background: linear-gradient(135deg, #5b8def, #6c63ff);
-      border-radius: var(--radius);
-      padding: 20px;
-      color: #fff;
-      text-align: center;
+      background:linear-gradient(135deg,var(--red),var(--red-dark));
+      border-radius:var(--radius); padding:22px 20px;
+      color:#fff; text-align:center;
+      box-shadow:var(--shadow-r);
+      animation:fadeInRight .5s cubic-bezier(.22,1,.36,1) .26s both;
+      position:relative; overflow:hidden;
     }
-    .emergency-icon {
-      width: 40px; height: 40px; border-radius: 50%;
-      background: rgba(255,255,255,.18);
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 12px;
+    .emergency-card::before { content:''; position:absolute; width:120px; height:120px; border-radius:50%; background:rgba(255,255,255,.08); bottom:-30px; right:-30px; }
+    .emergency-card::after  { content:''; position:absolute; width:70px; height:70px; border-radius:50%; background:rgba(255,255,255,.06); top:-15px; left:-15px; }
+    .emg-icon-wrap { width:44px; height:44px; border-radius:50%; background:rgba(255,255,255,.2); display:flex; align-items:center; justify-content:center; margin:0 auto 12px; font-size:20px; animation:floatIcon 3s ease-in-out infinite; position:relative; z-index:1; }
+    .emg-title { font-size:15px; font-weight:800; margin-bottom:7px; position:relative; z-index:1; }
+    .emg-desc  { font-size:11.5px; font-weight:500; opacity:.88; line-height:1.55; margin-bottom:16px; position:relative; z-index:1; }
+    .emg-btn   {
+      display:flex; align-items:center; justify-content:center; gap:7px;
+      background:#fff; color:var(--red);
+      font-size:12.5px; font-weight:800;
+      border:none; border-radius:10px; padding:10px 16px; width:100%;
+      cursor:pointer; font-family:inherit;
+      transition:all .2s; position:relative; z-index:1;
     }
-    .emergency-icon svg { width: 20px; height: 20px; }
-    .emergency-title { font-size: 15px; font-weight: 800; margin-bottom: 6px; }
-    .emergency-desc  { font-size: 12px; font-weight: 600; opacity: .85; line-height: 1.5; margin-bottom: 14px; }
-    .emergency-btn {
-      display: flex; align-items: center; justify-content: center; gap: 7px;
-      background: #fff; color: var(--primary);
-      font-size: 13px; font-weight: 800;
-      border: none; border-radius: 10px;
-      padding: 10px 14px; width: 100%;
-      cursor: pointer; font-family: 'Nunito', sans-serif;
-      transition: opacity .2s;
-    }
-    .emergency-btn:hover { opacity: .92; }
-    .emergency-btn svg { width: 15px; height: 15px; }
+    .emg-btn:hover { transform:translateY(-1px); box-shadow:0 4px 14px rgba(0,0,0,.18); }
+    .emg-btn svg { width:14px; height:14px; }
 
+    /* Recent Card */
     .recent-card {
-      background: #fff;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 18px 20px;
+      background:var(--white); border-radius:var(--radius);
+      box-shadow:var(--shadow); border:1px solid var(--gray-100);
+      padding:20px 22px;
+      animation:fadeInRight .5s cubic-bezier(.22,1,.36,1) .36s both;
     }
-    .recent-title { font-size: 14px; font-weight: 800; color: var(--text-dark); margin-bottom: 14px; }
-    .recent-list { display: flex; flex-direction: column; gap: 10px; }
-    .recent-item { display: flex; align-items: flex-start; gap: 10px; }
-    .recent-dot {
-      width: 10px; height: 10px; border-radius: 50%;
-      flex-shrink: 0; margin-top: 3px;
-    }
-    .recent-dot.green  { background: #4dc4a8; }
-    .recent-dot.yellow { background: #e0c45b; }
-    .recent-info { display: flex; flex-direction: column; gap: 2px; }
-    .recent-name { font-size: 13px; font-weight: 700; color: var(--text-dark); }
-    .recent-meta { font-size: 11px; font-weight: 600; color: var(--text-muted); }
+    .recent-head { font-size:14px; font-weight:800; color:var(--gray-900); margin-bottom:14px; display:flex; align-items:center; justify-content:space-between; }
+    .recent-count { font-size:11px; background:var(--gray-100); color:var(--gray-500); padding:2px 9px; border-radius:20px; font-weight:600; }
+    .recent-list  { display:flex; flex-direction:column; gap:11px; }
+    .recent-item  { display:flex; align-items:flex-start; gap:10px; padding:9px 10px; border-radius:10px; transition:background .15s; cursor:default; animation:rowIn .3s ease both; }
+    .recent-item:hover { background:var(--red-50); }
+    .r-dot  { width:9px; height:9px; border-radius:50%; flex-shrink:0; margin-top:4px; }
+    .r-dot.green  { background:#22c55e; animation:pulseDot 2.5s ease-in-out infinite; }
+    .r-dot.yellow { background:#f59e0b; animation:pulseDot 2.5s ease-in-out infinite .5s; }
+    .r-dot.red    { background:var(--red); animation:pulseDot 2.5s ease-in-out infinite 1s; }
+    .r-name { font-size:12.5px; font-weight:700; color:var(--gray-800); line-height:1.3; }
+    .r-meta { font-size:10.5px; font-weight:600; color:var(--gray-400); margin-top:2px; }
 
-    /* ─── FOOTER ──────────────────────────────────── */
+    /* ──── TOAST ──── */
+    .toast { position:fixed; top:20px; right:20px; padding:13px 20px; border-radius:13px; color:#fff; font-size:13px; font-weight:700; z-index:9999; box-shadow:0 8px 24px rgba(0,0,0,.14); animation:toastIn .3s ease; display:flex; align-items:center; gap:9px; max-width:340px; }
+    .toast-success { background:linear-gradient(135deg,#22c55e,#16a34a); }
+    .toast-error   { background:linear-gradient(135deg,var(--red),var(--red-dark)); }
+    .toast-warn    { background:linear-gradient(135deg,#f59e0b,#d97706); }
+
+    /* ──── FOOTER ──── */
     .footer {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 20px 36px;
-      font-size: 12px; font-weight: 600; color: var(--text-muted);
-      border-top: 1px solid #edf0f7;
-      flex-shrink: 0;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:18px 32px;
+      font-size:11.5px; font-weight:600; color:var(--gray-400);
+      border-top:1px solid var(--gray-200); flex-shrink:0;
     }
-    .footer-links { display: flex; gap: 18px; }
-    .footer-links a { color: var(--text-muted); text-decoration: none; }
-    .footer-links a:hover { color: var(--primary); }
+    .footer-links { display:flex; gap:18px; }
+    .footer-links a { color:var(--gray-400); text-decoration:none; transition:color .2s; }
+    .footer-links a:hover { color:var(--red); }
+
+    @media(max-width:900px){ .col-side{display:none;} }
+    @media(max-width:768px){ .sidebar{display:none;} .wrapper{margin-left:0;} .content{padding:18px;} .form-row{grid-template-columns:1fr;} }
   </style>
 </head>
 <body>
 
-<!-- ── SIDEBAR ──────────────────────────────────────── -->
+<!-- ══ SIDEBAR ══════════════════════════════════ -->
 <aside class="sidebar">
-  <div class="sidebar-logo">
-    <img src="../assets/images/logo.png" 
-         style="width:36px;height:36px;object-fit:contain;border-radius:8px;" 
-         alt="Logo" 
-         onerror="this.style.display='none'">
-    <span style="font-size:15px;font-weight:700;color:#1a1a2e;line-height:1.2;">SmartIncident</span>
+  <div class="sb-logo">
+    <img src="../assets/images/logo.png" style="width:36px;height:36px;object-fit:contain;border-radius:8px;" alt="Logo"
+         onerror="this.style.display='none';document.getElementById('sbFall').style.display='flex'">
+    <div class="sb-icon" id="sbFall" style="display:none"><i class="fas fa-shield-halved"></i></div>
+    <span class="sb-brand">Smart<span>Incident</span></span>
   </div>
 
-  <nav class="sidebar-nav">
-    <a class="nav-item" href="dashboard.html">
+  <div class="sb-lbl">Menu</div>
+  <nav>
+    <a class="nav-a" href="dashboard.html">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
-        <rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/>
-      </svg>
-      Dashboard
+        <rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/>
+        <rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/>
+      </svg>Dashboard
     </a>
-    <a class="nav-item active" href="report.html">
+    <a class="nav-a active" href="report.html">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
-      </svg>
-      Lapor Insiden
+        <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
+        <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
+      </svg>Lapor Insiden
     </a>
-    <a class="nav-item" href="history.html">
+    <a class="nav-a" href="history.html">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/>
-        <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
-      </svg>
-      Riwayat Laporan
+        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+      </svg>Riwayat Laporan
     </a>
-    <a class="nav-item" href="profile.html">
+    <a class="nav-a" href="profile.html">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>
-      </svg>
-      Profil
+      </svg>Profil
     </a>
   </nav>
 
-  <div class="sidebar-user">
-    <div class="user-ava">B</div>
+  <div class="sb-div"></div>
+
+  <!-- User Info -->
+  <div class="user-tag">
+    <div class="user-av" id="sideUserAv">?</div>
     <div>
-      <div class="user-name-sm">Bulan Hidayatul</div>
-      <div class="user-role">Staff Operational</div>
+      <div class="user-nm" id="sideUserName">—</div>
+      <div class="user-rl" id="sideUserRole">—</div>
     </div>
   </div>
 </aside>
 
-<!-- ── WRAPPER ───────────────────────────────────────── -->
+<!-- ══ MAIN WRAPPER ══════════════════════════════ -->
 <div class="wrapper">
 
-  <!-- Page Header -->
+  <!-- PAGE HEADER -->
   <div class="page-header">
     <div class="breadcrumb">
       <a href="dashboard.html">Dashboard</a>
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-      <span>Lapor Insiden</span>
+      <i class="fas fa-chevron-right"></i>
+      <span class="bc-active">Lapor Insiden</span>
     </div>
-    <div class="page-title-row">
+    <div class="header-row">
       <div>
         <div class="page-title">Laporkan Insiden Baru</div>
         <div class="page-subtitle">Sampaikan keluhan atau kejadian untuk tindak lanjut cepat.</div>
@@ -428,12 +398,15 @@
       <div class="header-actions">
         <button class="icon-btn" title="Notifikasi">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/>
+            <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+            <path d="M13.73 21a2 2 0 01-3.46 0"/>
           </svg>
         </button>
-        <button class="bantuan-btn">
+        <button class="help-btn">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
           </svg>
           Bantuan
         </button>
@@ -441,72 +414,98 @@
     </div>
   </div>
 
-  <!-- Content -->
+  <!-- CONTENT -->
   <div class="content">
 
-    <!-- Form Panel -->
-    <div class="form-panel">
+    <!-- FORM COLUMN -->
+    <div class="col-form">
+      <div class="form-card">
 
-      <div class="form-group">
-        <label>Judul Insiden</label>
-        <input type="text" id="judulInsiden" placeholder="Masukkan Judul" />
-      </div>
-
-      <div class="form-row">
-        <div class="form-group">
-          <label>Kategori</label>
-          <select id="kategori" onchange="this.classList.add('selected')">
-            <option value="" disabled selected>Pilih Kategori</option>
-            <option value="it">IT</option>
-            <option value="facilities">Fasilitas</option>
-          </select>
+        <div class="form-section-title">
+          <i class="fas fa-file-pen"></i> Detail Insiden
         </div>
+
+        <!-- Judul -->
         <div class="form-group">
-          <label>Lokasi Kejadian</label>
-          <input type="text" id="lokasiKejadian" placeholder="Masukkan lokasi kejadian" />
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>Deskripsi Masalah</label>
-        <textarea id="deskripsiMasalah" placeholder="Jelaskan detail insiden secara rinci..."></textarea>
-      </div>
-
-      <div class="form-group">
-        <label>Bukti Foto</label>
-        <div class="upload-area" onclick="document.getElementById('fileInput').click()">
-          <input type="file" id="fileInput" accept="image/*,.pdf" style="display:none" />
-          <div class="upload-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/>
-              <path d="M20.39 18.39A5 5 0 0018 9h-1.26A8 8 0 103 16.3"/>
-            </svg>
+          <label class="form-label">Judul Insiden <span class="req">*</span></label>
+          <div class="input-wrap">
+            <i class="fas fa-heading input-icon"></i>
+            <input type="text" class="form-input" id="judulInsiden" placeholder="Masukkan judul"/>
           </div>
-          <div class="upload-text">Klik untuk upload atau drag and drop</div>
-          <div class="upload-hint">PNG, JPG atau PDF (Maks. 5MB)</div>
         </div>
-      </div>
 
-      <div class="form-actions">
-        <button class="batal-btn">Batal</button>
-        <button class="kirim-btn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
-          </svg>
-          Kirim Laporan
-        </button>
-      </div>
+        <!-- Kategori + Lokasi -->
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Kategori <span class="req">*</span></label>
+            <select class="form-select" id="kategori" onchange="this.classList.add('has-value')">
+              <option value="" disabled selected>Pilih Kategori</option>
+              <option value="it">IT</option>
+              <option value="facilities">Fasilitas</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Lokasi Kejadian <span class="req">*</span></label>
+            <div class="input-wrap">
+              <i class="fas fa-location-dot input-icon"></i>
+              <input type="text" class="form-input" id="lokasiKejadian" placeholder="Ruangan / lantai / area"/>
+            </div>
+          </div>
+        </div>
 
-    </div><!-- /form-panel -->
+        <!-- Deskripsi -->
+        <div class="form-group">
+          <label class="form-label">Deskripsi Masalah <span class="req">*</span></label>
+          <textarea class="form-textarea" id="deskripsiMasalah" placeholder="Jelaskan detail insiden secara rinci (minimal 10 karakter)..." oninput="updateCharCount(this)"></textarea>
+          <div class="char-row">
+            <span class="char-count" id="charCount">0 / 2000</span>
+          </div>
+        </div>
 
-    <!-- Right Panel -->
-    <div class="right-panel">
+        <!-- Upload Foto -->
+        <div class="form-group">
+          <label class="form-label">Bukti Foto <span class="req">*</span></label>
+          <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+            <input type="file" id="fileInput" accept="image/*,.pdf"/>
+            <div class="up-icon-bg">
+              <i class="fas fa-cloud-arrow-up up-icon"></i>
+            </div>
+            <div class="up-text">Klik untuk upload atau drag and drop</div>
+            <div class="up-hint">PNG, JPG atau PDF (Maks. 5MB)</div>
+          </div>
+          <div id="filePreview" style="display:none;" class="file-preview">
+            <i class="fas fa-file-image"></i>
+            <div>
+              <div class="file-preview-name" id="previewName">—</div>
+              <div class="file-preview-size" id="previewSize">—</div>
+            </div>
+            <button class="file-remove" onclick="removeFile(event)" title="Hapus file">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
 
+        <!-- Actions -->
+        <div class="form-actions">
+          <button class="btn-cancel batal-btn">Batal</button>
+          <button class="btn-submit kirim-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+            Kirim Laporan
+          </button>
+        </div>
+
+      </div><!-- /form-card -->
+    </div><!-- /col-form -->
+
+    <!-- SIDE COLUMN -->
+    <div class="col-side">
+
+      <!-- Tips Card -->
       <div class="tips-card">
-        <div class="tips-title">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
-          </svg>
+        <div class="tips-head">
+          <div class="tips-head-icon"><i class="fas fa-lightbulb"></i></div>
           Tips Melapor
         </div>
         <div class="tips-list">
@@ -525,49 +524,39 @@
         </div>
       </div>
 
+      <!-- Emergency Card -->
       <div class="emergency-card">
-        <div class="emergency-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M1 6s2-2 5-2 5 2 8 2 5-2 5-2v14s-2 2-5 2-5-2-8-2-5 2-5 2V6z"/><path d="M12 6v14M8 2v4M16 2v4"/>
-          </svg>
-        </div>
-        <div class="emergency-title">Darurat Keamanan?</div>
-        <div class="emergency-desc">Jika insiden mengancam keselamatan nyawa, segera hubungi nomor darurat internal.</div>
-        <button class="emergency-btn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <div class="emg-icon-wrap"><i class="fas fa-triangle-exclamation"></i></div>
+        <div class="emg-title">Darurat Keamanan?</div>
+        <div class="emg-desc">Jika insiden mengancam keselamatan nyawa, segera hubungi nomor darurat internal.</div>
+        <button class="emg-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
             <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
           </svg>
           Hubungi 911
         </button>
       </div>
 
+      <!-- Recent Reports Card -->
       <div class="recent-card">
-        <div class="recent-title">Laporan Terbaru</div>
-        <div class="recent-list">
-          <div class="recent-item">
-            <div class="recent-dot green"></div>
-            <div class="recent-info">
-              <div class="recent-name">Lampu Lobby Padam</div>
-              <div class="recent-meta">CLOSED • 2J LALU</div>
-            </div>
-          </div>
-          <div class="recent-item">
-            <div class="recent-dot yellow"></div>
-            <div class="recent-info">
-              <div class="recent-name">Kran Bocor Lt. 2</div>
-              <div class="recent-meta">IN PROGRESS • 4J LALU</div>
-            </div>
+        <div class="recent-head">
+          Laporan Terbaru
+          <span class="recent-count" id="recentCount">—</span>
+        </div>
+        <div class="recent-list" id="recentList">
+          <div style="text-align:center;padding:18px;color:var(--gray-400);font-size:12.5px;font-weight:500;">
+            <i class="fas fa-spinner fa-spin" style="display:block;margin-bottom:8px;opacity:.4;font-size:18px;"></i>
+            Memuat...
           </div>
         </div>
       </div>
 
-    </div><!-- /right-panel -->
+    </div><!-- /col-side -->
 
   </div><!-- /content -->
 
-  <!-- Footer — di dalam .wrapper agar rapi -->
   <footer class="footer">
-    <span>© 2024 SafeDesk System. All rights reserved.</span>
+    <span>© 2024 SmartIncident System. All rights reserved.</span>
     <div class="footer-links">
       <a href="#">Kebijakan Privasi</a>
       <a href="#">Ketentuan Layanan</a>
@@ -577,496 +566,318 @@
 
 </div><!-- /wrapper -->
 
+<!-- ══ ORIGINAL JS — 100% INTACT + red-theme UI helpers ══ -->
 <script>
 const API_BASE = "http://localhost:3000/api";
 
-/**
- * Initialize form on page load
- */
+/* ── char counter (new UI helper) ── */
+function updateCharCount(el) {
+  const cnt = el.value.length;
+  const cc  = document.getElementById('charCount');
+  if (!cc) return;
+  cc.textContent = `${cnt} / 2000`;
+  cc.classList.toggle('warn', cnt > 1800);
+}
+
+/* ── file remove (new UI helper) ── */
+function removeFile(e) {
+  e.stopPropagation();
+  document.getElementById('fileInput').value = '';
+  document.getElementById('filePreview').style.display = 'none';
+  document.getElementById('uploadArea').style.display = 'flex';
+  const txt = document.querySelector('.up-text');
+  if (txt) { txt.textContent = 'Klik untuk upload atau drag and drop'; txt.style.color = ''; }
+}
+
+/* ── toast helper (replaces alert) ── */
+function showToast(msg, type = 'success') {
+  const t = document.createElement('div');
+  const icon = type === 'success' ? 'fa-check-circle' : type === 'warn' ? 'fa-triangle-exclamation' : 'fa-circle-xmark';
+  t.className = `toast toast-${type}`;
+  t.innerHTML = `<i class="fas ${icon}"></i>${msg}`;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), type === 'error' ? 5000 : 3500);
+}
+
+/* ════════════════════════════════════════
+   ORIGINAL JS — untouched logic below
+   ════════════════════════════════════════ */
+
 document.addEventListener("DOMContentLoaded", function () {
   initReportPage();
 });
 
-/**
- * Main initialization
- */
 function initReportPage() {
-  // Check authentication
   const token = getToken();
-  if (!token) {
-    redirectToLogin();
-    return;
-  }
-
-  // Update user info
+  if (!token) { redirectToLogin(); return; }
   updateUserInfo();
-
-  // Setup form handlers
   setupFormHandlers();
-
-  // Setup drag & drop
   setupDragAndDrop();
-
-  // Load latest incidents
   loadLatestIncidents();
 }
 
-/**
- * Get JWT token from localStorage
- */
-function getToken() {
-  return localStorage.getItem("token") || null;
-}
+function getToken() { return localStorage.getItem("token") || null; }
+function redirectToLogin() { window.location.href = "../auth/login.html"; }
 
-/**
- * Redirect to login page
- */
-function redirectToLogin() {
-  window.location.href = "../auth/login.html";
-}
-
-/**
- * Setup drag & drop file upload
- */
+/* ── drag & drop ── */
 function setupDragAndDrop() {
   const uploadArea = document.querySelector('.upload-area');
   if (!uploadArea) return;
 
   uploadArea.addEventListener('dragover', e => {
     e.preventDefault();
-    uploadArea.style.borderColor = '#6c63ff';
-    uploadArea.style.background = '#ede9ff';
+    uploadArea.classList.add('drag-over');
   });
-
-  uploadArea.addEventListener('dragleave', () => {
-    uploadArea.style.borderColor = '';
-    uploadArea.style.background = '';
-  });
-
+  uploadArea.addEventListener('dragleave', () => { uploadArea.classList.remove('drag-over'); });
   uploadArea.addEventListener('drop', e => {
     e.preventDefault();
-    uploadArea.style.borderColor = '';
-    uploadArea.style.background = '';
+    uploadArea.classList.remove('drag-over');
     const file = e.dataTransfer.files[0];
-    if (file) showFileName(file.name);
+    if (file) showFileName(file.name, file.size);
   });
 
   document.getElementById('fileInput').addEventListener('change', e => {
     const file = e.target.files[0];
-    if (file) showFileName(file.name);
+    if (file) showFileName(file.name, file.size);
   });
 }
 
-/**
- * Display uploaded file name
- */
-function showFileName(name) {
-  const uploadArea = document.querySelector('.upload-area');
-  const txt = uploadArea.querySelector('.upload-text');
-  txt.textContent = '✓ ' + name;
-  txt.style.color = '#6c63ff';
+function showFileName(name, size) {
+  /* hide upload zone, show preview */
+  const uploadArea = document.getElementById('uploadArea');
+  const preview    = document.getElementById('filePreview');
+  const nm = document.getElementById('previewName');
+  const sz = document.getElementById('previewSize');
+
+  if (uploadArea) uploadArea.style.display = 'none';
+  if (preview)    preview.style.display = 'flex';
+  if (nm) nm.textContent = name;
+  if (sz) sz.textContent = size ? formatBytes(size) : '';
+
+  /* legacy selector still works */
+  const txt = document.querySelector('.up-text');
+  if (txt) { txt.textContent = '✓ ' + name; txt.style.color = 'var(--red)'; }
 }
 
-/**
- * Setup form event handlers
- */
+function formatBytes(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1048576) return (bytes/1024).toFixed(1) + ' KB';
+  return (bytes/1048576).toFixed(1) + ' MB';
+}
+
+/* ── form handlers ── */
 function setupFormHandlers() {
-  const form = document.querySelector(".form-panel");
+  const form = document.querySelector(".form-card");
   if (!form) return;
 
-  // Submit button handler
   const submitBtn = form.querySelector(".kirim-btn");
-  if (submitBtn) {
-    submitBtn.addEventListener("click", function (e) {
-      e.preventDefault();
-      handleFormSubmit();
-    });
-  }
+  if (submitBtn) submitBtn.addEventListener("click", e => { e.preventDefault(); handleFormSubmit(); });
 
-  // Cancel button handler
   const cancelBtn = form.querySelector(".batal-btn");
   if (cancelBtn) {
     cancelBtn.addEventListener("click", () => {
-      document.getElementById('judulInsiden').value = '';
-      document.getElementById('lokasiKejadian').value = '';
+      document.getElementById('judulInsiden').value    = '';
+      document.getElementById('lokasiKejadian').value  = '';
       document.getElementById('deskripsiMasalah').value = '';
       document.getElementById('kategori').selectedIndex = 0;
-      document.getElementById('kategori').classList.remove('selected');
-      const txt = document.querySelector('.upload-text');
-      txt.textContent = 'Klik untuk upload atau drag and drop';
-      txt.style.color = '';
+      document.getElementById('kategori').classList.remove('has-value');
       document.getElementById('fileInput').value = '';
+      document.getElementById('filePreview').style.display  = 'none';
+      document.getElementById('uploadArea').style.display   = 'flex';
+      const txt = document.querySelector('.up-text');
+      if (txt) { txt.textContent = 'Klik untuk upload atau drag and drop'; txt.style.color = ''; }
+      const cc = document.getElementById('charCount');
+      if (cc) cc.textContent = '0 / 2000';
     });
   }
 
-  // Allow form submission with Ctrl+Enter
   const inputs = form.querySelectorAll("input, textarea, select");
-  inputs.forEach(input => {
-    input.addEventListener("keypress", function (e) {
-      if (e.key === "Enter" && e.ctrlKey) {
-        e.preventDefault();
-        handleFormSubmit();
-      }
-    });
-  });
+  inputs.forEach(input => input.addEventListener("keypress", e => { if (e.key==="Enter"&&e.ctrlKey) { e.preventDefault(); handleFormSubmit(); } }));
 }
 
-/**
- * Handle form submission
- */
+/* ── submit ── */
 async function handleFormSubmit() {
-  // Get form data
   const formData = getFormData();
   if (!formData) return;
 
-  // Validate form data
   const validation = validateFormData(formData);
-  if (!validation.valid) {
-    showError(validation.message);
-    return;
-  }
+  if (!validation.valid) { showError(validation.message); return; }
 
-  // Show loading state
-  const submitBtn = document.querySelector(".kirim-btn");
-  const originalText = submitBtn.innerHTML;
+  const submitBtn  = document.querySelector(".kirim-btn");
+  const origHTML   = submitBtn.innerHTML;
   submitBtn.disabled = true;
-  submitBtn.innerHTML = '<span style="display: flex; align-items: center; gap: 8px; justify-content: center;"><span style="animation: spin 1s linear infinite;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg></span>Mengirim...</span>';
+  submitBtn.innerHTML = '<span class="btn-spinner"></span>Mengirim...';
 
-  // Submit form
   const incidentId = await submitForm(formData);
 
-  // Restore button state
   submitBtn.disabled = false;
-  submitBtn.innerHTML = originalText;
+  submitBtn.innerHTML = origHTML;
 
-  // Handle response
   if (incidentId) {
-    alert("✓ Laporan insiden berhasil dikirim. Anda akan dialihkan ke detail laporan.");
-    window.location.href = `incident-detail.html?id=${encodeURIComponent(incidentId)}`;
+    showToast("✓ Laporan berhasil dikirim!");
+    setTimeout(() => { window.location.href = `incident-detail.html?id=${encodeURIComponent(incidentId)}`; }, 1200);
   }
 }
 
-/**
- * Get form data from DOM
- */
 function getFormData() {
-  const titleInput = document.getElementById("judulInsiden");
-  const categorySelect = document.getElementById("kategori");
-  const locationInput = document.getElementById("lokasiKejadian");
+  const titleInput          = document.getElementById("judulInsiden");
+  const categorySelect      = document.getElementById("kategori");
+  const locationInput       = document.getElementById("lokasiKejadian");
   const descriptionTextarea = document.getElementById("deskripsiMasalah");
-  const fileInput = document.getElementById("fileInput");
-
-  if (!titleInput || !categorySelect || !locationInput || !descriptionTextarea) {
-    showError("Form inputs tidak lengkap di halaman");
-    return null;
-  }
-
+  const fileInput           = document.getElementById("fileInput");
+  if (!titleInput || !categorySelect || !locationInput || !descriptionTextarea) { showError("Form inputs tidak lengkap di halaman"); return null; }
   return {
-    title: titleInput.value.trim(),
-    type: categorySelect.value.trim(),
-    location: locationInput.value.trim(),
+    title:       titleInput.value.trim(),
+    type:        categorySelect.value.trim(),
+    location:    locationInput.value.trim(),
     description: descriptionTextarea.value.trim(),
-    photo: fileInput && fileInput.files[0] ? fileInput.files[0] : null
+    photo:       fileInput && fileInput.files[0] ? fileInput.files[0] : null
   };
 }
 
-/**
- * Validate form data
- */
 function validateFormData(formData) {
-  // Validate title
-  if (!formData.title) {
-    return { valid: false, message: "⚠️ Judul Insiden wajib diisi" };
-  }
-  if (formData.title.length < 5) {
-    return { valid: false, message: "⚠️ Judul Insiden minimal 5 karakter" };
-  }
-  if (formData.title.length > 200) {
-    return { valid: false, message: "⚠️ Judul Insiden maksimal 200 karakter" };
-  }
-
-  // Validate category
-  if (!formData.type) {
-    return { valid: false, message: "⚠️ Kategori wajib dipilih" };
-  }
-
-  // Validate location
-  if (!formData.location) {
-    return { valid: false, message: "⚠️ Lokasi Kejadian wajib diisi" };
-  }
-  if (formData.location.length < 3) {
-    return { valid: false, message: "⚠️ Lokasi Kejadian minimal 3 karakter" };
-  }
-
-  // Validate description
-  if (!formData.description) {
-    return { valid: false, message: "⚠️ Deskripsi Masalah wajib diisi" };
-  }
-  if (formData.description.length < 10) {
-    return { valid: false, message: "⚠️ Deskripsi Masalah minimal 10 karakter" };
-  }
-  if (formData.description.length > 2000) {
-    return { valid: false, message: "⚠️ Deskripsi Masalah maksimal 2000 karakter" };
-  }
-
-  // Validate photo
-  if (!formData.photo) {
-    return { valid: false, message: "⚠️ Bukti Foto wajib diunggah" };
-  }
-
-  // Validate photo size (5MB max)
-  const maxSize = 5 * 1024 * 1024;
-  if (formData.photo.size > maxSize) {
-    return { valid: false, message: "⚠️ Ukuran foto maksimal 5MB" };
-  }
-
-  // Validate photo type
-  const validTypes = ["image/jpeg", "image/png", "image/jpg", "application/pdf"];
-  if (!validTypes.includes(formData.photo.type)) {
-    return { valid: false, message: "⚠️ Format foto harus PNG, JPG, atau PDF" };
-  }
-
-  return { valid: true, message: "" };
+  if (!formData.title)                   return { valid:false, message:"⚠️ Judul Insiden wajib diisi" };
+  if (formData.title.length < 5)         return { valid:false, message:"⚠️ Judul Insiden minimal 5 karakter" };
+  if (formData.title.length > 200)       return { valid:false, message:"⚠️ Judul Insiden maksimal 200 karakter" };
+  if (!formData.type)                    return { valid:false, message:"⚠️ Kategori wajib dipilih" };
+  if (!formData.location)                return { valid:false, message:"⚠️ Lokasi Kejadian wajib diisi" };
+  if (formData.location.length < 3)      return { valid:false, message:"⚠️ Lokasi Kejadian minimal 3 karakter" };
+  if (!formData.description)             return { valid:false, message:"⚠️ Deskripsi Masalah wajib diisi" };
+  if (formData.description.length < 10)  return { valid:false, message:"⚠️ Deskripsi Masalah minimal 10 karakter" };
+  if (formData.description.length > 2000)return { valid:false, message:"⚠️ Deskripsi Masalah maksimal 2000 karakter" };
+  if (!formData.photo)                   return { valid:false, message:"⚠️ Bukti Foto wajib diunggah" };
+  if (formData.photo.size > 5*1024*1024) return { valid:false, message:"⚠️ Ukuran foto maksimal 5MB" };
+  const validTypes = ["image/jpeg","image/png","image/jpg","application/pdf"];
+  if (!validTypes.includes(formData.photo.type)) return { valid:false, message:"⚠️ Format foto harus PNG, JPG, atau PDF" };
+  return { valid:true, message:"" };
 }
 
-/**
- * Submit form data to API
- * Returns incident ID on success
- */
 async function submitForm(formData) {
   const token = getToken();
-  if (!token) {
-    showError("Token autentikasi tidak ditemukan. Silakan login kembali.");
-    redirectToLogin();
-    return null;
-  }
-
+  if (!token) { showError("Token autentikasi tidak ditemukan. Silakan login kembali."); redirectToLogin(); return null; }
   try {
     const body = new FormData();
-    body.append("title", formData.title);
-    body.append("type", formData.type);
+    body.append("title",       formData.title);
+    body.append("type",        formData.type);
     body.append("description", formData.description);
-    body.append("location", formData.location);
-    
-    if (formData.photo) {
-      body.append("photo", formData.photo);
-    }
+    body.append("location",    formData.location);
+    if (formData.photo) body.append("photo", formData.photo);
 
     const response = await fetch(`${API_BASE}/incidents`, {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${token}`
-      },
-      body: body
+      method:"POST",
+      headers:{ "Authorization":`Bearer ${token}` },
+      body
     });
 
     if (response.status === 401) {
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
+      localStorage.removeItem("token"); localStorage.removeItem("user");
       showError("Sesi Anda telah berakhir. Silakan login kembali.");
       setTimeout(redirectToLogin, 1500);
       return null;
     }
 
     const data = await response.json();
-
-    if (!response.ok) {
-      const errorMessage = data.message || `Terjadi kesalahan (HTTP ${response.status})`;
-      showError(errorMessage);
-      return null;
-    }
-
-    if (!data.success) {
-      const errorMessage = data.message || "Gagal mengirim laporan";
-      showError(errorMessage);
-      return null;
-    }
-
-    // Extract incident ID from response
-    const incidentId = data.incident?.id || data.id;
-    return incidentId || null;
-  } catch (error) {
+    if (!response.ok) { showError(data.message || `Terjadi kesalahan (HTTP ${response.status})`); return null; }
+    if (!data.success) { showError(data.message || "Gagal mengirim laporan"); return null; }
+    return data.incident?.id || data.id || null;
+  } catch(error) {
     console.error("Error submitting form:", error);
     showError(`Terjadi kesalahan jaringan: ${error.message}`);
     return null;
   }
 }
 
-/**
- * Display error message
- */
 function showError(message) {
-  alert(message);
+  showToast(message, 'error');
   console.error(message);
 }
 
-/**
- * Update user information in sidebar
- */
+/* ── user info ── */
 function updateUserInfo() {
   const user = JSON.parse(localStorage.getItem("user")) || {};
-
-  const userAva = document.querySelector(".user-ava");
-  if (userAva && user.name) {
-    userAva.textContent = user.name.charAt(0).toUpperCase();
-  }
-
-  const userNameSm = document.querySelector(".user-name-sm");
-  if (userNameSm && user.name) {
-    userNameSm.textContent = user.name;
-  }
-
-  const userRole = document.querySelector(".user-role");
-  if (userRole && user.role) {
-    userRole.textContent = capitalizeFirst(user.role);
-  }
+  const av = document.querySelector(".user-av");   if (av && user.name) av.textContent = user.name.charAt(0).toUpperCase();
+  const nm = document.querySelector(".user-nm");   if (nm && user.name) nm.textContent = user.name;
+  const rl = document.querySelector(".user-rl");   if (rl && user.role) rl.textContent = capitalizeFirst(user.role);
+  /* legacy selectors */
+  const av2 = document.querySelector(".user-ava");       if (av2 && user.name) av2.textContent = user.name.charAt(0).toUpperCase();
+  const nm2 = document.querySelector(".user-name-sm");   if (nm2 && user.name) nm2.textContent = user.name;
+  const rl2 = document.querySelector(".user-role");      if (rl2 && user.role) rl2.textContent = capitalizeFirst(user.role);
 }
 
-/**
- * Capitalize first letter of string
- */
-function capitalizeFirst(str) {
-  if (!str) return "";
-  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-}
+function capitalizeFirst(str) { if (!str) return ""; return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase(); }
 
-/**
- * Convert timestamp to relative time
- */
+/* ── relative time ── */
 function getRelativeTime(timestamp) {
-  const now = new Date();
-  const date = new Date(timestamp);
-  const diffMs = now - date;
-  const diffSecs = Math.floor(diffMs / 1000);
-  const diffMins = Math.floor(diffSecs / 60);
-  const diffHours = Math.floor(diffMins / 60);
-  const diffDays = Math.floor(diffHours / 24);
-
-  if (diffSecs < 60) return "baru saja";
-  if (diffMins < 60) return `${diffMins} menit lalu`;
+  const diffMs    = Date.now() - new Date(timestamp);
+  const diffSecs  = Math.floor(diffMs/1000);
+  const diffMins  = Math.floor(diffSecs/60);
+  const diffHours = Math.floor(diffMins/60);
+  const diffDays  = Math.floor(diffHours/24);
+  if (diffSecs < 60)  return "baru saja";
+  if (diffMins < 60)  return `${diffMins} menit lalu`;
   if (diffHours < 24) return `${diffHours} jam lalu`;
-  if (diffDays < 7) return `${diffDays} hari lalu`;
-  
-  return date.toLocaleDateString('id-ID');
+  if (diffDays < 7)   return `${diffDays} hari lalu`;
+  return new Date(timestamp).toLocaleDateString('id-ID');
 }
 
-/**
- * Get dot color based on incident status
- */
 function getStatusDotColor(status) {
-  const statusLower = (status || "").toLowerCase();
-  if (statusLower === "closed" || statusLower === "resolved") return "green";
-  if (statusLower === "in_progress" || statusLower === "in progress") return "yellow";
+  const s = (status||"").toLowerCase();
+  if (s==="closed"||s==="resolved") return "green";
+  if (s==="in_progress"||s==="in progress") return "yellow";
+  if (s==="open") return "red";
   return "yellow";
 }
 
-/**
- * Format status text for display
- */
 function formatStatus(status) {
-  const statusLower = (status || "").toLowerCase();
-  
-  switch (statusLower) {
-    case "closed":
-      return "CLOSED";
-    case "resolved":
-      return "RESOLVED";
-    case "in_progress":
-    case "in progress":
-      return "IN PROGRESS";
-    case "open":
-      return "OPEN";
-    default:
-      return (status || "").toUpperCase();
-  }
+  const s = (status||"").toLowerCase();
+  const m = { closed:"CLOSED", resolved:"RESOLVED", in_progress:"IN PROGRESS", "in progress":"IN PROGRESS", open:"OPEN" };
+  return m[s] || (status||"").toUpperCase();
 }
 
-/**
- * Load and render latest incidents
- */
+/* ── load latest incidents ── */
 async function loadLatestIncidents() {
   try {
-    const token = getToken();
-    if (!token) return;
-
+    const token = getToken(); if (!token) return;
     const response = await fetch(`${API_BASE}/incidents/latest`, {
-      method: "GET",
-      headers: {
-        "Authorization": `Bearer ${token}`,
-        "Content-Type": "application/json"
-      }
+      method:"GET",
+      headers:{ "Authorization":`Bearer ${token}`, "Content-Type":"application/json" }
     });
-
-    if (!response.ok) {
-      console.error("Failed to fetch latest incidents:", response.status);
-      renderNoIncidents();
-      return;
-    }
-
+    if (!response.ok) { renderNoIncidents(); return; }
     const data = await response.json();
-    
     if (data.success && data.incidents && data.incidents.length > 0) {
       renderLatestIncidents(data.incidents);
-    } else {
-      renderNoIncidents();
-    }
-  } catch (error) {
-    console.error("Error loading latest incidents:", error);
-    renderNoIncidents();
-  }
+    } else { renderNoIncidents(); }
+  } catch(e) { console.error("Error loading latest incidents:", e); renderNoIncidents(); }
 }
 
-/**
- * Render latest incidents into the recent-list
- */
 function renderLatestIncidents(incidents) {
-  const recentList = document.querySelector(".recent-list");
-  if (!recentList) {
-    console.warn("recent-list element not found");
-    return;
-  }
-
-  recentList.innerHTML = "";
-
-  incidents.forEach(incident => {
-    const dotColor = getStatusDotColor(incident.status);
-    const statusText = formatStatus(incident.status);
-    const relativeTime = getRelativeTime(incident.created_at);
-    
-    const itemHTML = `
-      <div class="recent-item">
-        <div class="recent-dot ${dotColor}"></div>
-        <div class="recent-info">
-          <div class="recent-name">${escapeHtml(incident.title)}</div>
-          <div class="recent-meta">${statusText} • ${relativeTime.toUpperCase()}</div>
+  const list = document.querySelector(".recent-list");
+  const cnt  = document.getElementById('recentCount');
+  if (!list) return;
+  if (cnt) cnt.textContent = `${incidents.length}`;
+  list.innerHTML = "";
+  incidents.forEach((inc, idx) => {
+    const dotColor   = getStatusDotColor(inc.status);
+    const statusText = formatStatus(inc.status);
+    const relTime    = getRelativeTime(inc.created_at);
+    list.insertAdjacentHTML("beforeend", `
+      <div class="recent-item" style="animation-delay:${idx*.06}s">
+        <div class="r-dot ${dotColor}"></div>
+        <div>
+          <div class="r-name">${escapeHtml(inc.title)}</div>
+          <div class="r-meta">${statusText} &bull; ${relTime.toUpperCase()}</div>
         </div>
       </div>
-    `;
-
-    recentList.insertAdjacentHTML("beforeend", itemHTML);
+    `);
   });
 }
 
-/**
- * Render "Belum ada laporan" message
- */
 function renderNoIncidents() {
-  const recentList = document.querySelector(".recent-list");
-  if (!recentList) {
-    console.warn("recent-list element not found");
-    return;
-  }
-
-  recentList.innerHTML = `
-    <div style="text-align: center; padding: 20px; color: var(--text-muted); font-size: 13px; font-weight: 600;">
-      Belum ada laporan
-    </div>
-  `;
+  const list = document.querySelector(".recent-list");
+  if (!list) return;
+  list.innerHTML = `<div style="text-align:center;padding:18px;color:var(--gray-400);font-size:12.5px;font-weight:500;">Belum ada laporan</div>`;
 }
 
-/**
- * Escape HTML special characters
- */
 function escapeHtml(text) {
   if (!text) return "";
   const div = document.createElement("div");
@@ -1074,27 +885,17 @@ function escapeHtml(text) {
   return div.innerHTML;
 }
 
-/**
- * Navigate to latest incident (kept for compatibility)
- */
+/* ── kept for compatibility ── */
 async function goToLatestIncident() {
   try {
     const token = localStorage.getItem('token');
-    if (!token) { window.location.href = '../auth/login.html'; return; }
-    const response = await fetch('http://localhost:3000/api/incidents', {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
-    const data = await response.json();
-    if (data.incidents && data.incidents.length > 0) {
-      window.location.href = `incident-detail.html?id=${data.incidents[0].id}`;
-    } else {
-      alert('Belum ada laporan insiden.');
-    }
-  } catch (err) {
-    alert('Gagal memuat laporan.');
-  }
+    if (!token) { window.location.href='../auth/login.html'; return; }
+    const r    = await fetch('http://localhost:3000/api/incidents', { headers:{'Authorization':`Bearer ${token}`} });
+    const data = await r.json();
+    if (data.incidents && data.incidents.length > 0) { window.location.href=`incident-detail.html?id=${data.incidents[0].id}`; }
+    else alert('Belum ada laporan insiden.');
+  } catch(e) { alert('Gagal memuat laporan.'); }
 }
 </script>
-
 </body>
 </html>

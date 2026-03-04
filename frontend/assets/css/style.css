@@ -1,375 +1,592 @@
-/* ======================
-   LOGIN PAGE
-====================== */
+/* =========================================
+   Smart Incident Management - Login Style
+   Red Incident Theme + Animations
+   ========================================= */
 
-* {
+*, *::before, *::after {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
-body, html {
-    height: 100%;
-    width: 100%;
-    overflow-x: hidden;
-}
-
-/* --- 2. Animated Gradient Background (Body) --- */
 body {
-    background: linear-gradient(-45deg, #0052D4, #4364F7, #6FB1FC, #00C6FF);
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    background-color: #F5EDED;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 40px 20px;
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+/* =========================================
+   Keyframe Animations
+   ========================================= */
+
+/* Card entrance */
+@keyframes cardEntrance {
+    from {
+        opacity: 0;
+        transform: translateY(40px) scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Left content slide in from left */
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-36px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Staggered fade up */
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Blob floating */
+@keyframes blobFloat {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33%       { transform: translate(18px, -20px) scale(1.06); }
+    66%       { transform: translate(-12px, 14px) scale(0.96); }
+}
+
+@keyframes blobFloat2 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33%       { transform: translate(-22px, 16px) scale(1.05); }
+    66%       { transform: translate(14px, -12px) scale(0.97); }
+}
+
+@keyframes blobFloat3 {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50%       { transform: translate(-50%, -50%) scale(1.14); }
+}
+
+/* Panel inner blob pulse */
+@keyframes panelBlobPulse {
+    0%, 100% { transform: scale(1);    opacity: 0.45; }
+    50%       { transform: scale(1.18); opacity: 0.65; }
+}
+
+/* Input focus pop */
+@keyframes inputPop {
+    0%   { box-shadow: 0 0 0 0px rgba(220, 38, 38, 0.2); }
+    100% { box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.08); }
+}
+
+/* Error shake */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%       { transform: translateX(-7px); }
+    40%       { transform: translateX(7px); }
+    60%       { transform: translateX(-4px); }
+    80%       { transform: translateX(4px); }
+}
+
+/* Spinner */
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* =========================================
+   Background Blobs - Red tones
+   ========================================= */
+.blob {
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(80px);
+    opacity: 0.3;
+}
+
+.blob-1 {
+    width: 420px;
+    height: 420px;
+    background: #fca5a5;
+    top: -120px;
+    left: -100px;
+    animation: blobFloat 11s ease-in-out infinite;
+}
+
+.blob-2 {
+    width: 360px;
+    height: 360px;
+    background: #fecaca;
+    bottom: -90px;
+    right: -80px;
+    animation: blobFloat2 13s ease-in-out infinite;
+}
+
+.blob-3 {
+    width: 260px;
+    height: 260px;
+    background: #fee2e2;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: blobFloat3 9s ease-in-out infinite;
+}
+
+/* =========================================
+   Main Card
+   ========================================= */
+.glass-card {
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 8px 40px rgba(185, 28, 28, 0.10),
+                0 2px 8px rgba(0, 0, 0, 0.06);
+    display: flex;
+    width: 100%;
+    max-width: 860px;
+    min-height: 520px;
+    overflow: visible;
+    position: relative;
+    z-index: 1;
+    animation: cardEntrance 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* =========================================
+   Left Panel - Pure Red Gradient
+   ========================================= */
+.left-panel {
+    flex: 1;
+    background: linear-gradient(145deg, #fee2e2 0%, #fecaca 45%, #fca5a5 100%);
+    padding: 48px 40px;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
-}
-
-@keyframes gradientBG {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-/* --- 3. Floating Blobs --- */
-.blob {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(60px);
-    z-index: 0;
-    opacity: 0.7;
-    animation: float 10s infinite ease-in-out;
-}
-
-/* Pink/Red Blobs (Sesuai kode asli Anda) */
-.blob-1 { top: 15%; left: 10%; width: 300px; height: 300px; background: #ff9a9e; animation-delay: 0s; }
-.blob-2 { bottom: 15%; right: 10%; width: 350px; height: 350px; background: #a18cd1; animation-delay: -5s; }
-.blob-3 { top: 30%; right: 30%; width: 200px; height: 200px; background: #84fab0; animation-delay: -2s; }
-
-@keyframes float {
-    0%, 100% { transform: translate(0, 0); }
-    50% { transform: translate(30px, -40px); }
-}
-
-/* --- 4. Glassmorphism Card (.glass-card) --- */
-.glass-card {
-    z-index: 10;
-    width: 90%;
-    max-width: 900px;
-    /* Menggunakan min-height agar fleksibel untuk Login (550px) atau Signup (600px) */
-    min-height: 550px; 
-    background: rgba(255, 255, 255, 0.65);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-radius: 24px;
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
-    display: flex;
     overflow: hidden;
-    animation: popIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-@keyframes popIn {
-    from { opacity: 0; transform: scale(0.9) translateY(30px); }
-    to { opacity: 1; transform: scale(1) translateY(0); }
+.left-panel::before {
+    content: '';
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(252, 165, 165, 0.6) 0%, transparent 70%);
+    border-radius: 50%;
+    bottom: -80px;
+    right: -60px;
+    pointer-events: none;
+    animation: panelBlobPulse 6s ease-in-out infinite;
 }
 
-/* --- Left Side (Text) --- */
-.left-panel {
-    flex: 1;
-    padding: 3rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    color: #333;
-    background: rgba(255, 255, 255, 0.4);
-    border-right: 1px solid rgba(255, 255, 255, 0.5);
+.left-panel::after {
+    content: '';
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(254, 202, 202, 0.7) 0%, transparent 70%);
+    border-radius: 50%;
+    top: 20px;
+    left: 10px;
+    pointer-events: none;
+    animation: panelBlobPulse 8s ease-in-out infinite reverse;
+}
+
+.left-content {
+    position: relative;
+    z-index: 1;
+    animation: slideInLeft 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
 }
 
 .left-content h2 {
-    font-size: 2.5rem;
-    font-weight: 800;
-    margin-bottom: 1.5rem;
-    background: linear-gradient(#0052D4, #65C7F7);
-    background: -webkit-linear-gradient(#0052D4, #65C7F7);
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-    -webkit-text-fill-color: transparent;
-    opacity: 0;
-    animation: slideUp 0.8s ease forwards 0.2s;
+    font-size: 30px;
+    font-weight: 700;
+    color: #991b1b;
+    line-height: 1.25;
+    margin-bottom: 14px;
 }
 
 .left-content p {
-    font-size: 1.1rem;
-    line-height: 1.7;
-    color: #555;
-    opacity: 0;
-    animation: slideUp 0.8s ease forwards 0.4s;
+    font-size: 14px;
+    color: #b91c1c;
+    line-height: 1.65;
 }
 
-/* --- Right Side (Form) --- */
+/* =========================================
+   Right Panel
+   ========================================= */
 .right-panel {
     flex: 1;
-    padding: 3rem;
+    background: #ffffff;
+    padding: 36px 44px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    background: rgba(255, 255, 255, 0.5);
+    justify-content: flex-start;
+    overflow-y: auto;
 }
 
+/* =========================================
+   Logo / Header
+   ========================================= */
 .logo-header {
-    margin-bottom: 2.5rem; /* Default Login */
-    text-align: center;
-    opacity: 0;
-    animation: slideUp 0.8s ease forwards 0.6s;
+    margin-bottom: 24px;
+    animation: fadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both;
 }
 
-/* Penyesuaian khusus jika dirasa perlu (opsional) */
-.right-panel .logo-header h1 {
-    font-size: 1.8rem; /* Login size */
-    color: #004e92;
+.logo-header h1 {
+    font-size: 24px;
     font-weight: 700;
-    margin-bottom: 0.5rem;
+    color: #0f172a;
+    margin-bottom: 4px;
 }
 
 .logo-header p {
-    color: #666;
-    font-size: 0.95rem;
+    font-size: 13.5px;
+    color: #64748b;
 }
 
-/* --- Form Elements --- */
+/* =========================================
+   Error Message
+   ========================================= */
+.error-message {
+    display: none;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #dc2626;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-bottom: 14px;
+    animation: shake 0.4s ease;
+}
+
+/* =========================================
+   Form Groups - staggered fadeUp
+   ========================================= */
 .form-group {
-    margin-bottom: 1.2rem;
-    opacity: 0;
-    animation: slideUp 0.8s ease forwards;
+    margin-bottom: 14px;
+    animation: fadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* Staggered Animation Delays (Mencakup hingga 5 elemen untuk Signup) */
-.form-group:nth-child(1) { animation-delay: 0.8s; }
-.form-group:nth-child(2) { animation-delay: 0.9s; }
-.form-group:nth-child(3) { animation-delay: 1.0s; }
-.form-group:nth-child(4) { animation-delay: 1.1s; }
-.form-group:nth-child(5) { animation-delay: 1.2s; } 
-
-.form-submit { 
-    animation-delay: 1.3s; 
-    opacity: 0; 
-    animation-fill-mode: forwards; 
-    animation-name: slideUp; 
-}
+.form-group:nth-child(1) { animation-delay: 0.42s; }
+.form-group:nth-child(2) { animation-delay: 0.50s; }
+.form-group:nth-child(3) { animation-delay: 0.57s; }
 
 .form-group label {
     display: block;
-    margin-bottom: 0.5rem;
-    color: #444;
+    font-size: 13px;
     font-weight: 600;
-    font-size: 0.9rem;
+    color: #374151;
+    margin-bottom: 6px;
 }
 
 .form-control {
     width: 100%;
-    padding: 0.85rem 1rem;
-    border: 2px solid rgba(255, 255, 255, 0.8);
-    border-radius: 12px;
-    font-size: 1rem;
-    background: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-    transition: all 0.3s ease;
+    padding: 10px 14px;
+    font-size: 14px;
+    font-family: inherit;
+    color: #0f172a;
+    background: #ffffff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.form-control::placeholder {
+    color: #94a3b8;
 }
 
 .form-control:focus {
-    outline: none;
-    border-color: #4364F7;
-    box-shadow: 0 0 0 4px rgba(67, 100, 247, 0.15);
-    transform: translateY(-2px);
+    border-color: #dc2626;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.10);
+    animation: inputPop 0.3s ease forwards;
 }
 
-/* Helper text untuk Signup */
-.small-text {
-    color: #888;
-    font-size: 0.75rem;
-    margin-top: 4px;
-    display: block;
-}
-
+/* =========================================
+   Checkbox Group
+   ========================================= */
 .checkbox-group {
     display: flex;
-    align-items: flex-start; /* Agar centered vertikal jika text panjang */
-    margin-bottom: 1.8rem;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 18px;
 }
 
-.checkbox-group input {
-    margin-right: 0.5rem;
-    width: 18px;
-    height: 18px;
-    margin-top: 3px; /* Align with text */
-    accent-color: #4364F7;
+.checkbox-group input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+    accent-color: #dc2626;
     cursor: pointer;
+    border-radius: 4px;
+    flex-shrink: 0;
 }
 
 .checkbox-group label {
+    margin-bottom: 0;
+    font-size: 13px;
     font-weight: 400;
+    color: #475569;
     cursor: pointer;
-    color: #555;
-    font-size: 0.9rem;
-    line-height: 1.4;
 }
 
-/* --- Buttons --- */
-.btn-primary {
+/* =========================================
+   Primary Button - Red
+   ========================================= */
+.btn-primary,
+.form-submit {
     width: 100%;
-    padding: 0.9rem;
-    background: linear-gradient(135deg, #0052D4, #4364F7);
-    color: white;
-    border: none;
-    border-radius: 12px;
-    font-size: 1rem;
+    padding: 11px 20px;
+    background: #dc2626;
+    color: #ffffff;
+    font-size: 15px;
     font-weight: 600;
+    font-family: inherit;
+    border: none;
+    border-radius: 8px;
     cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 4px 15px rgba(0, 82, 212, 0.3);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
+    transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+    margin-bottom: 18px;
+    animation: fadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.63s both;
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
-.btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 82, 212, 0.4);
+/* Shimmer sweep on hover */
+.btn-primary::after,
+.form-submit::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -60%;
+    width: 40%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.22), transparent);
+    transform: translateY(-50%) skewX(-20deg);
+    transition: left 0.55s ease;
 }
 
-.btn-primary:active {
-    transform: scale(0.98);
+.btn-primary:hover::after,
+.form-submit:hover::after {
+    left: 130%;
 }
 
-/* --- Divider --- */
+.btn-primary:hover,
+.form-submit:hover {
+    background: #b91c1c;
+    box-shadow: 0 4px 16px rgba(220, 38, 38, 0.38);
+    transform: translateY(-1px);
+}
+
+.btn-primary:active,
+.form-submit:active {
+    background: #991b1b;
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.btn-primary:disabled,
+.form-submit:disabled {
+    background: #fca5a5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* =========================================
+   Loading Spinner
+   ========================================= */
+.loading-spinner {
+    display: none;
+    width: 18px;
+    height: 18px;
+    border: 2.5px solid rgba(255, 255, 255, 0.4);
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    animation: spin 0.75s linear infinite;
+}
+
+/* =========================================
+   Divider
+   ========================================= */
 .divider {
     display: flex;
     align-items: center;
-    margin: 1.5rem 0;
-    color: #777;
-    font-size: 0.85rem;
-    opacity: 0;
-    animation: slideUp 0.8s ease forwards 1.3s;
-}
-.divider::before, .divider::after {
-    content: '';
-    flex: 1;
-    border-bottom: 1px solid rgba(0,0,0,0.1);
+    gap: 12px;
+    font-size: 12.5px;
+    color: #94a3b8;
+    margin-bottom: 14px;
+    animation: fadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.70s both;
 }
 
-/* --- Social Buttons --- */
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #e2e8f0;
+}
+
+/* =========================================
+   Social Buttons
+   ========================================= */
 .social-buttons {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-    opacity: 0;
-    animation: slideUp 0.8s ease forwards 1.4s;
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    animation: fadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.76s both;
 }
 
 .btn-social {
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0.7rem;
-    border: 1px solid rgba(0,0,0,0.05);
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 10px;
+    gap: 8px;
+    padding: 9px 16px;
+    background: #ffffff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 13.5px;
+    font-weight: 500;
+    font-family: inherit;
+    color: #374151;
     cursor: pointer;
-    transition: all 0.2s;
-    font-size: 0.9rem;
-    color: #333;
+    transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
 }
 
 .btn-social:hover {
-    background: white;
-    border-color: #4364F7;
-    transform: translateY(-2px);
+    background: #fff5f5;
+    border-color: #fca5a5;
+    box-shadow: 0 2px 10px rgba(220, 38, 38, 0.08);
+    transform: translateY(-1px);
 }
 
-.btn-social svg { width: 18px; height: 18px; margin-right: 8px; }
+.btn-social svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
 
-/* --- Footer --- */
+.btn-social:last-child svg {
+    fill: #0f172a;
+}
+
+/* =========================================
+   Footer Text
+   ========================================= */
 .footer-text {
     text-align: center;
-    margin-top: 1.5rem;
-    font-size: 0.9rem;
-    color: #555;
-    opacity: 0;
-    animation: slideUp 0.8s ease forwards 1.5s;
-}
-.footer-text a { color: #0052D4; text-decoration: none; font-weight: 600; }
-
-/* --- Messages (Error & Success) --- */
-.error-message {
-    background-color: #fff0f0;
-    color: #d32f2f;
-    padding: 0.8rem;
-    border-radius: 8px;
-    margin-bottom: 1.25rem;
-    font-size: 0.9rem;
-    display: none;
-    border: 1px solid #ffcdd2;
-    animation: shake 0.4s;
+    font-size: 13px;
+    color: #64748b;
+    animation: fadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.82s both;
 }
 
+.footer-text a {
+    color: #dc2626;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.footer-text a:hover {
+    color: #991b1b;
+    text-decoration: underline;
+}
+
+/* =========================================
+   Responsive
+   ========================================= */
+@media (max-width: 680px) {
+    .glass-card {
+        flex-direction: column;
+        max-width: 420px;
+    }
+
+    .left-panel {
+        padding: 32px 28px;
+        min-height: 180px;
+    }
+
+    .left-content h2 {
+        font-size: 22px;
+    }
+
+    .right-panel {
+        padding: 32px 28px;
+    }
+}
+
+/* =========================================
+   Signup page - card lebih tinggi
+   ========================================= */
+
+/* Success message */
 .success-message {
-    background-color: #e8f5e9;
-    color: #2e7d32;
-    padding: 0.8rem;
+    display: none;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    color: #16a34a;
+    padding: 10px 14px;
     border-radius: 8px;
-    margin-bottom: 1.25rem;
-    font-size: 0.9rem;
-    display: none;
-    border: 1px solid #c8e6c9;
-    animation: slideUp 0.4s ease;
+    font-size: 13px;
+    margin-bottom: 14px;
 }
 
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    75% { transform: translateX(5px); }
+/* Small helper text under inputs */
+.small-text {
+    display: block;
+    font-size: 11.5px;
+    color: #94a3b8;
+    margin-top: 4px;
 }
 
-@keyframes slideUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
+/* Terms link color - red theme override */
+#signupForm a {
+    color: #dc2626 !important;
+    text-decoration: none;
+}
+#signupForm a:hover {
+    text-decoration: underline;
 }
 
-/* --- Spinner --- */
-.loading-spinner {
-    border: 3px solid rgba(255, 255, 255, 0.3);
-    border-top: 3px solid #fff;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    animation: spin 1s linear infinite;
-    display: none;
+/* On signup page, body should start from top so full card is reachable */
+body:has(#signupForm) {
+    align-items: flex-start;
 }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+body:has(#signupForm) .glass-card {
+    margin: auto;
+    min-height: auto;
 }
 
-/* --- Responsive Mobile --- */
-@media (max-width: 768px) {
-    .glass-card { 
-        flex-direction: column; 
-        height: auto; 
-        margin: 20px 0; 
-        width: 95%;
-    }
-    .left-panel { 
-        display: none; /* Hide left panel on mobile */
-    }
-    .right-panel { 
-        padding: 2rem; 
-        width: 100%;
-    }
-    .blob { display: none; }
+body:has(#signupForm) .right-panel {
+    justify-content: flex-start;
+    padding-top: 36px;
+    padding-bottom: 36px;
+}
+
+body:has(#signupForm) .left-panel {
+    min-height: 100%;
+    position: sticky;
+    top: 0;
+    align-self: flex-start;
+    height: 100vh;
 }

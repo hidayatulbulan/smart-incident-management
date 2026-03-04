@@ -4,103 +4,140 @@
   <meta charset="UTF-8" />
   <title>Smart Incident System</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <!-- Google Fonts: Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-  
-  <!-- FontAwesome untuk Ikon -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-  <!-- Link ke CSS Main (Gradasi Biru) -->
   <link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body>
 
-  <!-- HEADER -->
   <header class="header">
     <div class="logo-wrapper">
-      <!-- Pastikan file logo.png ada di folder assets/images/ -->
       <img src="assets/images/logo.png" class="logo" alt="Logo" onerror="this.style.display='none'">
       <span class="logo-text">SmartIncident</span>
     </div>
-
     <a href="auth/login.html" class="login-btn">
       <i class="fa-solid fa-right-to-bracket"></i> Login
     </a>
   </header>
 
-  <!-- HERO SECTION -->
   <section class="hero">
+    <div class="hero-blob-center"></div>
     <div class="hero-content">
-      <span class="hero-badge fade-up">
+      <span class="hero-badge">
         <i class="fa-solid fa-circle-check"></i> PROFESSIONAL REPORTING SYSTEM
       </span>
-
-      <h1 class="fade-up fade-delay-1">
+      <h1>
         Kelola Insiden <br>
         <span class="highlight">Cepat & Akurat</span>
       </h1>
-
-      <p class="fade-up fade-delay-2">
+      <p>
         Platform terpadu untuk pelaporan, pemantauan, dan penanganan insiden secara real-time. Transparan, aman, dan efisien.
       </p>
-
-      <div class="hero-buttons fade-up fade-delay-3">
-        <!-- Tombol Login -->
+      <div class="hero-buttons">
         <a href="auth/login.html" class="btn-primary">
-          Login Sistem
+          <i class="fa-solid fa-right-to-bracket"></i> Login Sistem
         </a>
-        
-        <!-- Tombol Pelajari Lebih Lanjut (Sudah Diperbaiki) -->
         <a href="#features" class="btn-secondary">
-          Pelajari Lebih Lanjut
+          <i class="fa-solid fa-circle-info"></i> Pelajari Lebih Lanjut
         </a>
       </div>
     </div>
   </section>
 
-  <!-- FEATURES SECTION (Sudah diberi ID untuk Scroll) -->
+  <!-- STATS BAR -->
+  <div class="stats-bar">
+    <div class="container">
+      <div class="stats-row">
+        <div class="stat-item">
+          <span class="stat-num">247+</span>
+          <span class="stat-label">Insiden Selesai</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num">4.2m</span>
+          <span class="stat-label">Rata-rata Respons</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num">98.7%</span>
+          <span class="stat-label">Tingkat Resolusi</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num">24/7</span>
+          <span class="stat-label">Monitoring Aktif</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <section class="features" id="features">
     <div class="container">
       <div class="section-header">
+        <span class="section-tag">Mengapa Kami</span>
         <h2>Mengapa Memilih Kami?</h2>
         <p>Solusi terbaik untuk manajemen insiden perusahaan Anda.</p>
       </div>
 
       <div class="card-grid">
-        <!-- Card 1 -->
-        <div class="card fade-up">
+        <div class="card">
           <div class="card-icon">
             <i class="fa-solid fa-bolt"></i>
           </div>
           <h3>Respons Cepat</h3>
           <p>Notifikasi instan dan pelaporan cepat memungkinkan tim penanganan bertindak segera saat insiden terjadi.</p>
+          <div class="card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
         </div>
-
-        <!-- Card 2 -->
-        <div class="card fade-up fade-delay-1">
+        <div class="card">
           <div class="card-icon">
             <i class="fa-solid fa-eye"></i>
           </div>
           <h3>Transparan</h3>
           <p>Lacak status laporan secara real-time dari awal pelaporan hingga penyelesaian masalah.</p>
+          <div class="card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
         </div>
-
-        <!-- Card 3 -->
-        <div class="card fade-up fade-delay-2">
+        <div class="card">
           <div class="card-icon">
             <i class="fa-solid fa-shield-halved"></i>
           </div>
           <h3>Aman & Terenkripsi</h3>
           <p>Data pelapor dan detail insiden dilindungi dengan standar keamanan tingkat tinggi.</p>
+          <div class="card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- FOOTER -->
+  <!-- CTA STRIP -->
+  <!-- Trust strip -->
+  <div class="trust-strip">
+    <div class="container">
+      <div class="trust-row">
+        <div class="trust-item">
+          <i class="fa-solid fa-lock"></i>
+          <span>Enkripsi AES-256</span>
+        </div>
+        <div class="trust-sep"></div>
+        <div class="trust-item">
+          <i class="fa-solid fa-server"></i>
+          <span>99.9% Uptime</span>
+        </div>
+        <div class="trust-sep"></div>
+        <div class="trust-item">
+          <i class="fa-solid fa-users"></i>
+          <span>Multi-role Access</span>
+        </div>
+        <div class="trust-sep"></div>
+        <div class="trust-item">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+          <span>Audit Trail Lengkap</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <footer>
     <div class="container">
       <div class="footer-content">
@@ -114,5 +151,21 @@
     </div>
   </footer>
 
+  <script>
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.card, .section-header, .stat-item, .trust-item').forEach((el, i) => {
+      el.style.transitionDelay = (i * 0.08) + 's';
+      observer.observe(el);
+    });
+  </script>
 </body>
 </html>

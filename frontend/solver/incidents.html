@@ -636,6 +636,29 @@
     </div>
   </div>
 </div>
+<!-- Selesaikan Modal -->
+<div id="selesaikanModalOverlay" class="modal-overlay" onclick="if(event.target === this) closeSelesaikanModal()">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Selesaikan Insiden</h3>
+      <button class="modal-close" onclick="closeSelesaikanModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-error" id="selesaikanModalError"></div>
+      <div class="modal-form-group">
+        <label for="selesaikanModalNote">Catatan Penyelesaian</label>
+        <textarea id="selesaikanModalNote" placeholder="Masukkan catatan penyelesaian..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="modal-btn modal-btn-cancel" onclick="closeSelesaikanModal()">Batal</button>
+      <button class="modal-btn modal-btn-submit" id="selesaikanModalSubmit" onclick="submitSelesai()">Selesaikan</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
 
 <script>
 const API_BASE = 'http://localhost:3000/api';
@@ -913,26 +936,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
-<!-- Selesaikan Modal -->
-<div id="selesaikanModalOverlay" class="modal-overlay" onclick="if(event.target === this) closeSelesaikanModal()">
-  <div class="modal">
-    <div class="modal-header">
-      <h3>Selesaikan Insiden</h3>
-      <button class="modal-close" onclick="closeSelesaikanModal()">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="modal-error" id="selesaikanModalError"></div>
-      <div class="modal-form-group">
-        <label for="selesaikanModalNote">Catatan Penyelesaian</label>
-        <textarea id="selesaikanModalNote" placeholder="Masukkan catatan penyelesaian..."></textarea>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="modal-btn modal-btn-cancel" onclick="closeSelesaikanModal()">Batal</button>
-      <button class="modal-btn modal-btn-submit" id="selesaikanModalSubmit" onclick="submitSelesai()">Selesaikan</button>
-    </div>
-  </div>
-</div>
+
 
 </body>
 </html>

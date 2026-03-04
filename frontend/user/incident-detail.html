@@ -1,1013 +1,692 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SMART Incident - Detail Laporan</title>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <title>Detail Laporan - Smart Incident</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --sidebar-width: 220px;
-      --primary: #6c63ff;
-      --primary-light: #ede9ff;
-      --main-bg: #f4f6fb;
-      --text-dark: #1a1a2e;
-      --text-muted: #8a8fa8;
-      --shadow: 0 4px 18px rgba(108,99,255,0.08);
-      --radius: 14px;
-      --border: #e8e8f2;
+      --red: #e63946; --red-dark: #c1121f; --red-light: #ff8fa3;
+      --red-50: #fff5f7; --red-100: #ffe0e5;
+      --white: #fff; --gray-50: #f8f9fb; --gray-100: #f0f2f5;
+      --gray-200: #e4e6ea; --gray-300: #d0d3da; --gray-400: #b0b5c0;
+      --gray-500: #8e95a2; --gray-600: #6b7280; --gray-700: #4b5563;
+      --gray-800: #374151; --gray-900: #1f2937;
+      --green: #16a34a; --green-50: #f0fdf4; --green-100: #dcfce7; --green-200: #bbf7d0;
+      --blue-50: #eff6ff; --blue-100: #dbeafe; --blue: #1d4ed8;
+      --shadow-sm: 0 1px 8px rgba(0,0,0,0.05);
+      --shadow: 0 2px 16px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 24px rgba(0,0,0,0.09);
+      --radius: 18px; --rsm: 12px;
+      --sidebar: 235px;
     }
 
-    body {
-      font-family: 'Nunito', sans-serif;
-      background: var(--main-bg);
-      min-height: 100vh;
-      display: flex;
-    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--gray-50); color: var(--gray-900); min-height: 100vh; display: flex; overflow-x: hidden; }
 
-    /* ─── SIDEBAR ─────────────────────────────────── */
+    /* ===== ANIMATIONS ===== */
+    @keyframes slideInLeft  { from{transform:translateX(-100%);opacity:0} to{transform:translateX(0);opacity:1} }
+    @keyframes fadeInDown   { from{transform:translateY(-20px);opacity:0} to{transform:translateY(0);opacity:1} }
+    @keyframes fadeInUp     { from{transform:translateY(24px);opacity:0}  to{transform:translateY(0);opacity:1} }
+    @keyframes fadeIn       { from{opacity:0} to{opacity:1} }
+    @keyframes scaleIn      { from{transform:scale(0.95);opacity:0} to{transform:scale(1);opacity:1} }
+    @keyframes spin         { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
+    @keyframes pulse        { 0%,100%{opacity:1} 50%{opacity:.5} }
+    @keyframes shimmer      { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
+    @keyframes tlDrop       { from{transform:translateY(-10px) scale(0.9);opacity:0} to{transform:translateY(0) scale(1);opacity:1} }
+    @keyframes drawLine     { from{height:0} to{height:100%} }
+
+    /* ===== SIDEBAR ===== */
     .sidebar {
-      width: var(--sidebar-width);
-      background: #fff;
-      display: flex;
-      flex-direction: column;
-      padding: 28px 0 20px;
-      min-height: 100vh;
-      box-shadow: 2px 0 12px rgba(108,99,255,0.06);
-      position: fixed;
-      top: 0; left: 0; bottom: 0;
-      z-index: 100;
+      width: var(--sidebar); background: var(--white); padding: 24px 14px;
+      box-shadow: 2px 0 20px rgba(0,0,0,0.05); display: flex; flex-direction: column;
+      position: fixed; top: 0; left: 0; bottom: 0; z-index: 100;
+      border-right: 1px solid var(--red-100);
+      animation: slideInLeft 0.45s cubic-bezier(0.22,1,0.36,1);
     }
+    .logo { display: flex; align-items: center; gap: 11px; margin-bottom: 32px; padding: 8px 10px; }
+    .logo-icon { width: 38px; height: 38px; background: linear-gradient(135deg,var(--red),var(--red-dark)); border-radius: 11px; display: flex; align-items: center; justify-content: center; color: white; font-size: 17px; box-shadow: 0 4px 12px rgba(230,57,70,.32); }
+    .logo-text { font-size: 15.5px; font-weight: 800; color: var(--gray-900); }
+    .logo-text span { color: var(--red); }
 
-    .sidebar-logo {
-      display: flex; align-items: center; gap: 10px;
-      padding: 0 22px 28px;
-      border-bottom: 1px solid #f0f0f5;
-    }
-    .logo-icon {
-      width: 38px; height: 38px;
-      background: var(--primary); border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .logo-icon svg { width: 20px; height: 20px; }
-    .logo-text .brand { font-size: 15px; font-weight: 800; color: var(--text-dark); letter-spacing: .5px; }
-    .logo-text .sub   { font-size: 10px; font-weight: 600; color: var(--primary); letter-spacing: 2px; text-transform: uppercase; }
+    .nav-section-label { font-size: 9.5px; font-weight: 700; color: var(--gray-400); text-transform: uppercase; letter-spacing: 1.3px; padding: 0 10px; margin-bottom: 7px; }
+    .nav-menu { list-style: none; }
+    .nav-item-li { margin-bottom: 2px; }
+    .nav-link { display: flex; align-items: center; gap: 11px; padding: 10px 13px; color: var(--gray-500); text-decoration: none; border-radius: var(--rsm); font-size: 13px; font-weight: 600; transition: all .2s; position: relative; }
+    .nav-link:hover { background: var(--red-50); color: var(--red); }
+    .nav-link.active { background: linear-gradient(135deg,var(--red),#f05a67); color: white; box-shadow: 0 4px 14px rgba(230,57,70,.28); }
+    .nav-link.active::before { content: ''; position: absolute; left: -14px; width: 4px; height: 22px; background: var(--red); border-radius: 0 4px 4px 0; }
+    .nav-link i { width: 17px; text-align: center; font-size: 13px; }
 
-    .sidebar-nav { flex: 1; padding: 20px 0; }
+    .sidebar-spacer { flex: 1; }
+    .sidebar-divider { height: 1px; background: var(--gray-100); margin: 14px 0; }
+    .sidebar-user { display: flex; align-items: center; gap: 10px; padding: 10px 13px; border-radius: var(--rsm); margin-bottom: 2px; }
+    .user-ava { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg,var(--red),var(--red-dark)); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; color: white; flex-shrink: 0; box-shadow: 0 3px 10px rgba(230,57,70,.28); }
+    .user-name-sm { font-size: 12.5px; font-weight: 700; color: var(--gray-900); }
+    .user-role-sm { font-size: 10.5px; color: var(--gray-400); font-weight: 500; margin-top: 1px; }
+    .logout-btn { display: flex; align-items: center; gap: 11px; padding: 10px 13px; color: var(--gray-400); font-size: 13px; font-weight: 600; cursor: pointer; border-radius: var(--rsm); border: none; background: none; font-family: inherit; transition: all .2s; width: 100%; }
+    .logout-btn:hover { background: #fff5f5; color: var(--red); }
 
-    .nav-item {
-      display: flex; align-items: center; gap: 12px;
-      padding: 11px 22px;
-      color: var(--text-muted);
-      font-size: 14px; font-weight: 600;
-      cursor: pointer; text-decoration: none;
-      position: relative;
-      transition: background .2s, color .2s;
-    }
-    .nav-item:hover { color: var(--primary); background: var(--primary-light); }
-    .nav-item.active { color: var(--primary); background: var(--primary-light); }
-    .nav-item.active::before {
-      content: '';
-      position: absolute; left: 0; top: 4px; bottom: 4px;
-      width: 4px; background: var(--primary);
-      border-radius: 0 4px 4px 0;
-    }
-    .nav-item svg { width: 18px; height: 18px; flex-shrink: 0; }
+    /* ===== MAIN ===== */
+    .main { margin-left: var(--sidebar); flex: 1; padding: 28px 32px 48px; animation: fadeIn .5s ease; }
 
-    .sidebar-user {
-      display: flex; align-items: center; gap: 10px;
-      padding: 14px 22px;
-      border-top: 1px solid #f0f0f5;
-    }
-    .user-ava {
-      width: 34px; height: 34px; border-radius: 50%;
-      background: linear-gradient(135deg, #f6a05b, #e05b5b);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 13px; font-weight: 700; color: #fff; flex-shrink: 0;
-    }
-    .user-name-sm { font-size: 13px; font-weight: 700; color: var(--text-dark); }
-    .user-role    { font-size: 11px; color: var(--text-muted); font-weight: 600; }
-
-    /* ─── MAIN ────────────────────────────────────── */
-    .main {
-      margin-left: var(--sidebar-width);
-      flex: 1;
-      padding: 28px 32px 40px;
-    }
-
-    /* ─── PAGE HEADER ─────────────────────────────── */
+    /* ===== BREADCRUMB ===== */
     .breadcrumb {
-      font-size: 12px; color: var(--text-muted); font-weight: 600;
       display: flex; align-items: center; gap: 6px;
-      margin-bottom: 8px;
+      font-size: 12px; font-weight: 600; color: var(--gray-400);
+      margin-bottom: 14px;
+      animation: fadeInDown .4s ease;
     }
-    .breadcrumb a { color: var(--text-muted); text-decoration: none; }
-    .breadcrumb a:hover { color: var(--primary); }
-    .breadcrumb span { color: var(--text-dark); }
-    .breadcrumb svg { width: 12px; height: 12px; }
+    .breadcrumb a { color: var(--gray-400); text-decoration: none; transition: color .15s; }
+    .breadcrumb a:hover { color: var(--red); }
+    .breadcrumb i { font-size: 10px; }
+    .breadcrumb span { color: var(--gray-700); }
 
-    .page-title-row {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 22px;
+    /* ===== PAGE TITLE ROW ===== */
+    .title-row {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      margin-bottom: 24px;
+      animation: fadeInDown .4s ease .05s both;
     }
-    .page-title { font-size: 24px; font-weight: 800; color: var(--text-dark); }
+    .page-title { font-size: 22px; font-weight: 800; color: var(--gray-900); letter-spacing: -0.4px; line-height: 1.3; }
 
     .cetak-btn {
       display: flex; align-items: center; gap: 7px;
-      background: #fff; border: 1.5px solid var(--border);
-      border-radius: 10px; padding: 8px 18px;
-      font-size: 13px; font-weight: 700; color: var(--text-dark);
-      cursor: pointer; font-family: 'Nunito', sans-serif;
-      transition: border-color .2s, color .2s;
+      background: white; border: 1.5px solid var(--gray-200);
+      border-radius: 11px; padding: 9px 18px;
+      font-size: 12.5px; font-weight: 700; color: var(--gray-700);
+      cursor: pointer; font-family: inherit; transition: all .2s; flex-shrink: 0;
     }
-    .cetak-btn:hover { border-color: var(--primary); color: var(--primary); }
-    .cetak-btn svg { width: 15px; height: 15px; }
+    .cetak-btn:hover { border-color: var(--red); color: var(--red); background: var(--red-50); }
+    .cetak-btn i { font-size: 13px; }
 
-    /* ─── LAYOUT ──────────────────────────────────── */
-    .layout { display: flex; gap: 22px; align-items: flex-start; }
+    /* ===== LAYOUT ===== */
+    .layout { display: flex; gap: 20px; align-items: flex-start; }
 
-    /* ─── INFO CARD ───────────────────────────────── */ss
+    /* ===== INFO CARD ===== */
     .info-card {
-      flex: 1;
-      background: #fff;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 26px 28px;
+      flex: 1; min-width: 0;
+      background: white; border-radius: var(--radius);
+      box-shadow: var(--shadow); border: 1px solid var(--gray-100);
+      overflow: hidden;
+      animation: fadeInUp .5s cubic-bezier(0.22,1,0.36,1) .1s both;
     }
 
-    .info-card-header {
+    /* Card banner header */
+    .card-banner {
+      background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
+      padding: 18px 24px;
       display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 22px;
+      position: relative; overflow: hidden;
     }
+    .card-banner::before {
+      content: ''; position: absolute; top: -30px; right: -30px;
+      width: 120px; height: 120px; border-radius: 50%;
+      background: rgba(255,255,255,.08);
+    }
+    .card-banner::after {
+      content: ''; position: absolute; bottom: -40px; right: 60px;
+      width: 90px; height: 90px; border-radius: 50%;
+      background: rgba(255,255,255,.05);
+    }
+    .banner-title { display: flex; align-items: center; gap: 9px; font-size: 14px; font-weight: 800; color: white; }
+    .banner-title i { font-size: 15px; opacity: .9; }
 
-    .info-card-title {
-      display: flex; align-items: center; gap: 8px;
-      font-size: 15px; font-weight: 800; color: var(--text-dark);
-    }
-    .info-card-title svg { width: 17px; height: 17px; color: var(--primary); }
+    /* Status badge */
+    .s-badge { padding: 5px 14px; border-radius: 20px; font-size: 10.5px; font-weight: 800; display: inline-block; letter-spacing: .3px; text-transform: uppercase; }
+    .s-open     { background: #fff7ed; color: #c2410c; border: 1.5px solid #fed7aa; }
+    .s-progress { background: var(--blue-50); color: var(--blue); border: 1.5px solid var(--blue-100); }
+    .s-closed   { background: var(--green-50); color: var(--green); border: 1.5px solid var(--green-200); }
 
-    .status-badge {
-      display: inline-flex; align-items: center; gap: 5px;
-      padding: 5px 14px; border-radius: 20px;
-      font-size: 11px; font-weight: 800;
-      letter-spacing: .4px;
-      text-transform: uppercase;
-    }
-    .status-badge.orange { background: #fff3e0; color: #e0845b; }
-    .status-badge.blue   { background: #e8f0fe; color: #5b8def; }
-    .status-badge.green  { background: #e8f8f1; color: #40c07a; }
-    .status-badge.gray   { background: #f0f0f5; color: #8a8fa8; }
+    /* White status badges on banner */
+    .banner-badge { padding: 5px 14px; border-radius: 20px; font-size: 10.5px; font-weight: 800; letter-spacing: .4px; text-transform: uppercase; border: 1.5px solid rgba(255,255,255,.35); color: white; background: rgba(255,255,255,.18); backdrop-filter: blur(4px); }
+
+    .card-body { padding: 24px; }
 
     /* Meta grid */
-    .meta-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px 32px;
-      margin-bottom: 22px;
-    }
-    .meta-label {
-      font-size: 10px; font-weight: 700;
-      color: var(--text-muted);
-      text-transform: uppercase; letter-spacing: .6px;
-      margin-bottom: 5px;
-    }
-    .meta-value {
-      font-size: 14px; font-weight: 700; color: var(--text-dark);
-      display: flex; align-items: center; gap: 5px;
-    }
-    .meta-value svg { width: 13px; height: 13px; color: var(--primary); }
+    .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 32px; margin-bottom: 24px; }
+    .meta-label { font-size: 10px; font-weight: 700; color: var(--gray-400); text-transform: uppercase; letter-spacing: .7px; margin-bottom: 6px; }
+    .meta-value { font-size: 13.5px; font-weight: 700; color: var(--gray-800); display: flex; align-items: center; gap: 6px; }
+    .meta-value i { color: var(--red); font-size: 13px; }
+    .meta-id { font-size: 14px; font-weight: 800; color: var(--gray-900); background: var(--red-50); padding: 3px 12px; border-radius: 8px; border: 1px solid var(--red-100); display: inline-block; }
 
-    /* Divider */
-    .divider { height: 1px; background: #f0f0f8; margin-bottom: 20px; }
+    .divider { height: 1px; background: var(--gray-100); margin: 0 0 22px; }
 
-    /* Deskripsi */
+    /* Section */
     .section-label {
-      font-size: 11px; font-weight: 700; color: var(--text-muted);
-      text-transform: uppercase; letter-spacing: .6px;
-      margin-bottom: 10px;
+      font-size: 10px; font-weight: 700; color: var(--red);
+      text-transform: uppercase; letter-spacing: .8px;
+      margin-bottom: 10px; display: flex; align-items: center; gap: 7px;
     }
-    .desc-text {
-      font-size: 13.5px; font-weight: 600; color: var(--text-dark);
-      line-height: 1.7; margin-bottom: 22px;
-    }
+    .section-label::after { content:''; flex:1; height:1px; background: linear-gradient(to right,var(--red-100),transparent); }
 
-    /* Foto Bukti */
-    .foto-grid {
-      display: flex; gap: 12px; flex-wrap: wrap;
-    }
+    .desc-text { font-size: 13.5px; font-weight: 500; color: var(--gray-700); line-height: 1.75; margin-bottom: 24px; }
+
+    /* Photo grid */
+    .foto-grid { display: flex; gap: 12px; flex-wrap: wrap; }
     .foto-item {
-      width: 150px; height: 110px;
-      border-radius: 10px; overflow: hidden;
-      border: 1.5px solid var(--border);
-      cursor: pointer;
+      width: 160px; height: 115px; border-radius: 12px; overflow: hidden;
+      border: 1.5px solid var(--gray-100); cursor: pointer; position: relative;
+      transition: transform .2s, box-shadow .2s;
     }
+    .foto-item:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 24px rgba(0,0,0,.12); }
     .foto-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-    .foto-add {
-      width: 150px; height: 110px;
-      border-radius: 10px;
-      border: 2px dashed var(--border);
-      background: #fafbff;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 5px;
-      cursor: pointer;
-      color: var(--text-muted);
-      transition: border-color .2s, background .2s;
+    .foto-overlay {
+      position: absolute; inset: 0; background: rgba(230,57,70,.0);
+      display: flex; align-items: center; justify-content: center;
+      transition: background .2s;
     }
-    .foto-add:hover { border-color: var(--primary); background: var(--primary-light); }
-    .foto-add svg { width: 22px; height: 22px; }
-    .foto-add span { font-size: 11px; font-weight: 700; }
+    .foto-item:hover .foto-overlay { background: rgba(230,57,70,.18); }
+    .foto-overlay i { color: white; font-size: 20px; opacity: 0; transition: opacity .2s; }
+    .foto-item:hover .foto-overlay i { opacity: 1; }
 
-    /* ─── RIGHT PANEL ─────────────────────────────── */
-    .right-panel {
-      width: 260px; flex-shrink: 0;
-      display: flex; flex-direction: column; gap: 16px;
-    }
+    .no-foto { padding: 18px 0; color: var(--gray-400); font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 8px; }
+    .no-foto i { font-size: 16px; }
 
-    /* Status Terakhir */
+    /* ===== RIGHT PANEL ===== */
+    .right-panel { width: 280px; flex-shrink: 0; display: flex; flex-direction: column; gap: 16px; }
+
+    /* Status Card */
     .status-card {
-      background: #fff;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 20px 22px;
+      background: white; border-radius: var(--radius);
+      box-shadow: var(--shadow); border: 1px solid var(--gray-100);
+      overflow: hidden;
+      animation: fadeInUp .5s cubic-bezier(0.22,1,0.36,1) .15s both;
     }
-    .status-card-title {
-      font-size: 14px; font-weight: 800; color: var(--text-dark);
-      margin-bottom: 18px;
-      display: flex; align-items: center; gap: 7px;
+    .panel-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--gray-100);
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; font-weight: 800; color: var(--gray-900);
     }
-    .status-card-title svg { width: 15px; height: 15px; color: var(--text-muted); }
+    .panel-header i { color: var(--red); font-size: 13px; }
 
-    .timeline { display: flex; flex-direction: column; gap: 0; }
+    /* Timeline */
+    .timeline { padding: 16px 20px; display: flex; flex-direction: column; gap: 0; }
 
-    .tl-item {
-      display: flex; gap: 14px;
-      position: relative;
-    }
-
-    .tl-left {
-      display: flex; flex-direction: column; align-items: center;
-      width: 26px; flex-shrink: 0;
-    }
+    .tl-item { display: flex; gap: 14px; }
+    .tl-left { display: flex; flex-direction: column; align-items: center; width: 28px; flex-shrink: 0; }
     .tl-dot {
-      width: 26px; height: 26px; border-radius: 50%;
+      width: 28px; height: 28px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0; z-index: 1;
+      animation: tlDrop .4s cubic-bezier(0.34,1.56,0.64,1) both;
     }
-    .tl-dot.done   { background: #4dc4a8; }
-    .tl-dot.active { background: var(--primary); }
-    .tl-dot.idle   { background: #e8e8f2; border: 2px solid #ddd; }
-    .tl-dot svg { width: 12px; height: 12px; }
+    .tl-dot.done   { background: linear-gradient(135deg,#22c55e,#16a34a); box-shadow: 0 3px 10px rgba(34,197,94,.32); }
+    .tl-dot.active { background: linear-gradient(135deg,var(--red),var(--red-dark)); box-shadow: 0 3px 10px rgba(230,57,70,.35); }
+    .tl-dot.idle   { background: var(--gray-100); border: 2px solid var(--gray-200); }
+    .tl-dot i { font-size: 11px; color: white; }
+    .tl-dot.idle i { color: var(--gray-400); }
 
-    .tl-line {
-      flex: 1;
-      width: 2px;
-      background: #e8e8f2;
-      margin: 3px 0;
-      min-height: 28px;
-    }
+    .tl-line { flex: 1; width: 2px; background: var(--gray-100); margin: 4px 0; min-height: 26px; border-radius: 2px; overflow: hidden; position: relative; }
+    .tl-line.done::after { content:''; position:absolute; inset:0; background: linear-gradient(to bottom,#22c55e,#16a34a); animation: drawLine .5s ease both; }
 
-    .tl-body {
-      padding-bottom: 22px;
-      flex: 1;
-    }
+    .tl-body { padding-bottom: 20px; flex: 1; }
     .tl-item:last-child .tl-body { padding-bottom: 0; }
+    .tl-step { font-size: 13px; font-weight: 700; color: var(--gray-900); margin-bottom: 2px; }
+    .tl-step.muted { color: var(--gray-400); font-weight: 600; }
+    .tl-time { font-size: 11px; font-weight: 500; color: var(--gray-400); margin-bottom: 3px; }
+    .tl-note { font-size: 11.5px; font-weight: 500; color: var(--gray-500); font-style: italic; line-height: 1.5; }
 
-    .tl-step { font-size: 13px; font-weight: 800; color: var(--text-dark); margin-bottom: 2px; }
-    .tl-step.muted { color: var(--text-muted); }
-    .tl-time { font-size: 11px; font-weight: 600; color: var(--text-muted); margin-bottom: 3px; }
-    .tl-note { font-size: 11.5px; font-weight: 600; color: var(--text-muted); font-style: italic; }
+    /* Solver Note Card */
+    .solver-card {
+      background: white; border-radius: var(--radius);
+      box-shadow: var(--shadow); border: 1px solid var(--gray-100);
+      overflow: hidden;
+      animation: fadeInUp .5s cubic-bezier(0.22,1,0.36,1) .2s both;
+    }
+    .solver-body { padding: 16px 20px; }
+    .solver-text {
+      font-size: 12.5px; font-weight: 500; color: var(--gray-700);
+      line-height: 1.7; border-left: 3px solid var(--green); padding-left: 12px;
+      background: var(--green-50); border-radius: 0 8px 8px 0; padding: 10px 12px;
+    }
 
     /* AI Card */
+    @keyframes aiGlow { 0%,100%{box-shadow:0 4px 24px rgba(230,57,70,.18),0 0 0 0 rgba(230,57,70,.08)} 50%{box-shadow:0 8px 32px rgba(230,57,70,.28),0 0 0 6px rgba(230,57,70,.04)} }
+    @keyframes sparkle { 0%,100%{transform:scale(1) rotate(0deg);opacity:1} 50%{transform:scale(1.2) rotate(15deg);opacity:.8} }
+
     .ai-card {
-      background: linear-gradient(140deg, #ede9ff 0%, #f8f6ff 60%, #e8f0fe 100%);
       border-radius: var(--radius);
-      padding: 18px 20px;
-      position: relative;
       overflow: hidden;
-      border: 1px solid #ddd8ff;
+      animation: fadeInUp .5s cubic-bezier(0.22,1,0.36,1) .2s both, aiGlow 3s ease-in-out 1s infinite;
+      background: linear-gradient(160deg, #1a1a2e 0%, #2d1b2e 50%, #1f1035 100%);
+      border: 1px solid rgba(230,57,70,.3);
+      box-shadow: 0 8px 32px rgba(0,0,0,.22), 0 0 0 1px rgba(255,255,255,.04) inset;
+      position: relative;
     }
     .ai-card::before {
-      content: '✦';
-      position: absolute; top: 12px; right: 16px;
-      font-size: 28px; color: rgba(108,99,255,.18);
-      line-height: 1;
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at top right, rgba(230,57,70,.18) 0%, transparent 60%),
+                  radial-gradient(ellipse at bottom left, rgba(193,18,31,.12) 0%, transparent 60%);
+      pointer-events: none;
     }
-    .ai-card-title {
-      display: flex; align-items: center; gap: 7px;
-      font-size: 14px; font-weight: 800; color: var(--primary);
-      margin-bottom: 10px;
+    .ai-card::after {
+      content: '✦ ✦ ✦'; position: absolute; top: 14px; right: 14px;
+      font-size: 7px; letter-spacing: 4px; color: rgba(255,255,255,.12);
+      pointer-events: none;
     }
-    .ai-card-title svg { width: 16px; height: 16px; }
+    .ai-banner {
+      padding: 16px 18px 14px;
+      display: flex; align-items: center; gap: 10px;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      position: relative; z-index: 1;
+    }
+    .ai-banner-icon {
+      width: 34px; height: 34px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--red), var(--red-dark));
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 12px rgba(230,57,70,.45); flex-shrink: 0;
+    }
+    .ai-banner-icon i { font-size: 15px; color: white; animation: sparkle 2.5s ease-in-out infinite; }
+    .ai-banner-text { flex: 1; }
+    .ai-banner-title { font-size: 13.5px; font-weight: 800; color: white; letter-spacing: -.2px; }
+    .ai-banner-sub   { font-size: 10px; font-weight: 500; color: rgba(255,255,255,.4); margin-top: 1px; }
 
+    .ai-body { padding: 16px 18px 18px; position: relative; z-index: 1; }
+    .ai-label-row { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; }
     .ai-label {
-      font-size: 11px; font-weight: 800; color: var(--primary);
-      text-transform: uppercase; letter-spacing: .5px;
-      margin-bottom: 4px;
+      font-size: 9px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;
+      color: var(--red-light); background: rgba(230,57,70,.15);
+      padding: 3px 9px; border-radius: 6px; border: 1px solid rgba(230,57,70,.25);
     }
-    .ai-text {
-      font-size: 12.5px; font-weight: 600; color: #4a4580;
-      line-height: 1.6; margin-bottom: 14px;
+    .ai-text-wrap {
+      background: rgba(255,255,255,.05); border-radius: 10px;
+      border: 1px solid rgba(255,255,255,.07);
+      padding: 12px 14px; margin-bottom: 14px;
     }
+    .ai-text { font-size: 12.5px; font-weight: 500; color: rgba(255,255,255,.75); line-height: 1.7; }
     .ai-link {
-      display: inline-flex; align-items: center; gap: 5px;
-      font-size: 12.5px; font-weight: 800; color: var(--primary);
-      text-decoration: none; cursor: pointer;
-      transition: gap .2s;
+      display: flex; align-items: center; justify-content: center; gap: 7px;
+      font-size: 12.5px; font-weight: 700; color: white;
+      text-decoration: none; cursor: pointer; width: 100%;
+      padding: 10px 16px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--red), var(--red-dark));
+      box-shadow: 0 4px 16px rgba(230,57,70,.4); transition: all .2s;
     }
-    .ai-link:hover { gap: 8px; }
-    .ai-link svg { width: 13px; height: 13px; }
+    .ai-link:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(230,57,70,.5); filter: brightness(1.08); }
+    .ai-link i { font-size: 12px; }
 
-    /* Loading Spinner */
-    .loading-spinner {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 400px;
-    }
-    .spinner {
-      border: 4px solid #f3f3f3;
-      border-top: 4px solid var(--primary);
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      animation: spin 1s linear infinite;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
+    /* Loading */
+    .loading-wrap { display: flex; align-items: center; justify-content: center; height: 300px; }
+    .spinner { width: 38px; height: 38px; border: 3.5px solid var(--red-100); border-top-color: var(--red); border-radius: 50%; animation: spin 0.85s linear infinite; }
 
-    /* Error Message */
-    .error-message {
-      background: #ffebee;
-      color: #c62828;
-      border: 1px solid #ef5350;
-      padding: 16px;
-      border-radius: var(--radius);
-      margin-bottom: 20px;
-    }
-    .error-message strong {
-      display: block;
-      margin-bottom: 5px;
-    }
+    /* Error */
+    .error-box { background: #fff0f2; border: 1.5px solid var(--red-100); border-radius: var(--rsm); padding: 16px 18px; margin-bottom: 20px; display: flex; align-items: flex-start; gap: 10px; color: var(--red-dark); font-size: 13px; font-weight: 600; }
+    .error-box i { margin-top: 1px; font-size: 14px; flex-shrink: 0; }
 
-    /* Hidden class */
-    .hidden {
-      display: none !important;
-    }
+    .hidden { display: none !important; }
+
+    /* Lightbox */
+    .lightbox { position: fixed; inset: 0; background: rgba(0,0,0,.85); z-index: 9999; display: flex; align-items: center; justify-content: center; animation: fadeIn .2s ease; cursor: pointer; }
+    .lightbox img { max-width: 90vw; max-height: 88vh; border-radius: 14px; box-shadow: 0 24px 60px rgba(0,0,0,.5); animation: scaleIn .2s ease; }
+    .lightbox-close { position: absolute; top: 20px; right: 24px; color: white; font-size: 22px; cursor: pointer; width: 38px; height: 38px; background: rgba(255,255,255,.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background .2s; }
+    .lightbox-close:hover { background: rgba(255,255,255,.2); }
+
+    @media(max-width:768px) { .sidebar{display:none;} .main{margin-left:0;padding:18px;} .layout{flex-direction:column;} .right-panel{width:100%;} }
+    @media print { .sidebar,.cetak-btn{display:none!important;} .main{margin:0;padding:20px;} }
   </style>
 </head>
 <body>
 
-<!-- ── SIDEBAR ──────────────────────────────────────── -->
+<!-- ===== SIDEBAR ===== -->
 <aside class="sidebar">
-  <div class="sidebar-logo">
-    <img src="../assets/images/logo.png" 
-         style="width:36px;height:36px;object-fit:contain;border-radius:8px;" 
-         alt="Logo" 
-         onerror="this.style.display='none'">
-    <span style="font-size:15px;font-weight:700;color:#1a1a2e;line-height:1.2;">SmartIncident</span>
+  <div class="logo">
+    <img src="../assets/images/logo.png" style="width:36px;height:36px;object-fit:contain;border-radius:8px;" alt="Logo"
+         onerror="this.style.display='none';document.getElementById('sbFall').style.display='flex'">
+    <div class="logo-icon" id="sbFall" style="display:none"><i class="fas fa-shield-halved"></i></div>
+    <span class="logo-text">Smart<span>Incident</span></span>
   </div>
 
-  <nav class="sidebar-nav">
-    <a class="nav-item" href="dashboard.html">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
-        <rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/>
-      </svg>
-      Dashboard
-    </a>
-    <a class="nav-item" href="report.html">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
-        <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
-      </svg>
-      Lapor Insiden
-    </a>
-    <a class="nav-item" href="history.html">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
-        <polyline points="14 2 14 8 20 8"/>
-        <line x1="16" y1="13" x2="8" y2="13"/>
-        <line x1="16" y1="17" x2="8" y2="17"/>
-      </svg>
-      Riwayat Laporan
-    </a>
-    <a class="nav-item" href="profile.html">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>
-      </svg>
-      Profil
-    </a>
+  <div class="nav-section-label">Menu Utama</div>
+  <nav>
+    <ul class="nav-menu">
+      <li class="nav-item-li"><a href="dashboard.html"  class="nav-link"><i class="fas fa-th-large"></i><span>Dashboard</span></a></li>
+      <li class="nav-item-li"><a href="report.html"     class="nav-link"><i class="fas fa-pen-to-square"></i><span>Lapor Insiden</span></a></li>
+      <li class="nav-item-li"><a href="history.html"    class="nav-link active"><i class="fas fa-clock-rotate-left"></i><span>Riwayat Laporan</span></a></li>
+      <li class="nav-item-li"><a href="profile.html"    class="nav-link"><i class="fas fa-user"></i><span>Profil</span></a></li>
+    </ul>
   </nav>
 
+  <div class="sidebar-spacer"></div>
+  <div class="sidebar-divider"></div>
+
   <div class="sidebar-user">
-    <div class="user-ava">B</div>
+    <div class="user-ava" id="sidebarAva">B</div>
     <div>
-      <div class="user-name-sm">Bulan Hidayatul</div>
-      <div class="user-role">Staff Operational</div>
+      <div class="user-name-sm" id="sidebarName">–</div>
+      <div class="user-role-sm" id="sidebarRole">–</div>
     </div>
   </div>
+  <button class="logout-btn" id="logoutBtn">
+    <i class="fas fa-sign-out-alt"></i><span>Keluar</span>
+  </button>
 </aside>
 
-<!-- ── MAIN ─────────────────────────────────────────── -->
+<!-- ===== MAIN ===== -->
 <div class="main">
 
   <!-- Breadcrumb -->
   <div class="breadcrumb">
-    <a href="dashboard.html">Daftar Insiden</a>
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+    <a href="history.html">Riwayat Laporan</a>
+    <i class="fas fa-chevron-right"></i>
     <span>Detail Laporan</span>
   </div>
 
-  <!-- Error Message Container -->
+  <!-- Error -->
   <div id="errorContainer" class="hidden"></div>
 
   <!-- Title row -->
-  <div class="page-title-row">
-    <div class="page-title" id="pageTitle">Detail Laporan: Memuat...</div>
+  <div class="title-row">
+    <h1 class="page-title" id="pageTitle">Detail Laporan</h1>
     <button class="cetak-btn" onclick="window.print()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="6 9 6 2 18 2 18 9"/>
-        <path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/>
-        <rect x="6" y="14" width="12" height="8"/>
-      </svg>
-      Cetak
+      <i class="fas fa-print"></i> Cetak
     </button>
   </div>
 
   <!-- Layout -->
   <div class="layout">
 
-    <!-- Info Card -->
+    <!-- ── LEFT: Info Card ── -->
     <div class="info-card">
 
-      <!-- Loading State -->
-      <div id="loadingState" class="loading-spinner">
-        <div class="spinner"></div>
-      </div>
+      <!-- Loading -->
+      <div id="loadingState" class="loading-wrap"><div class="spinner"></div></div>
 
-      <!-- Content State -->
+      <!-- Content -->
       <div id="contentState" class="hidden">
 
-      <div class="info-card-header">
-        <div class="info-card-title">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
-          </svg>
-          Informasi Utama
-        </div>
-        <span class="status-badge" id="statusBadge">Memuat...</span>
-      </div>
-
-      <!-- Meta Grid -->
-      <div class="meta-grid">
-        <div class="meta-item">
-          <div class="meta-label">ID Insiden</div>
-          <div class="meta-value" id="idValue">#INC-0000</div>
-        </div>
-        <div class="meta-item">
-          <div class="meta-label">Kategori</div>
-          <div class="meta-value" id="categoryValue">-</div>
-        </div>
-        <div class="meta-item">
-          <div class="meta-label">Lokasi</div>
-          <div class="meta-value" id="locationValue">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>
-            </svg>
-            Memuat...
+        <!-- Banner -->
+        <div class="card-banner">
+          <div class="banner-title">
+            <i class="fas fa-circle-info"></i> Informasi Utama
           </div>
+          <span class="banner-badge" id="statusBadgeBanner">–</span>
         </div>
-        <div class="meta-item">
-          <div class="meta-label">Tanggal Laporan</div>
-          <div class="meta-value" id="dateValue">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
-            </svg>
-            Memuat...
+
+        <div class="card-body">
+
+          <!-- Meta Grid -->
+          <div class="meta-grid">
+            <div>
+              <div class="meta-label">ID Insiden</div>
+              <div class="meta-value"><span class="meta-id" id="idValue">#INC-0000</span></div>
+            </div>
+            <div>
+              <div class="meta-label">Kategori</div>
+              <div class="meta-value" id="categoryValue">–</div>
+            </div>
+            <div>
+              <div class="meta-label">Lokasi</div>
+              <div class="meta-value" id="locationValue"><i class="fas fa-location-dot"></i> –</div>
+            </div>
+            <div>
+              <div class="meta-label">Tanggal Laporan</div>
+              <div class="meta-value" id="dateValue"><i class="fas fa-calendar"></i> –</div>
+            </div>
           </div>
+
+          <div class="divider"></div>
+
+          <!-- Deskripsi -->
+          <div class="section-label"><i class="fas fa-align-left"></i> Deskripsi Masalah</div>
+          <div class="desc-text" id="descriptionValue">Memuat...</div>
+
+          <!-- Foto -->
+          <div class="section-label"><i class="fas fa-images"></i> Foto Bukti</div>
+          <div class="foto-grid" id="photoGrid">
+            <div class="no-foto"><i class="fas fa-image"></i> Memuat foto...</div>
+          </div>
+
         </div>
       </div>
+    </div>
 
-      <div class="divider"></div>
-
-      <!-- Deskripsi -->
-      <div class="section-label">Deskripsi Masalah</div>
-      <div class="desc-text" id="descriptionValue">
-        Memuat...
-      </div>
-
-      <!-- Foto Bukti -->
-      <div class="section-label">Foto Bukti</div>
-      <div class="foto-grid" id="photoGrid">
-        <div class="foto-item">
-          <svg viewBox="0 0 150 110" xmlns="http://www.w3.org/2000/svg" width="150" height="110">
-            <rect width="150" height="110" fill="#f0f0f0"/>
-            <text x="50%" y="50%" text-anchor="middle" dy=".3em" fill="#999" font-size="14">Memuat...</text>
-          </svg>
-        </div>
-      </div>
-
-      </div><!-- /contentState -->
-
-    <!-- Right Panel -->
+    <!-- ── RIGHT PANEL ── -->
     <div class="right-panel">
 
-      <!-- Status Terakhir -->
+      <!-- Status Timeline -->
       <div class="status-card">
-        <div class="status-card-title">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-          </svg>
-          Status Terakhir
+        <div class="panel-header">
+          <i class="fas fa-timeline"></i> Status Terakhir
         </div>
-
         <div class="timeline" id="timelineContainer">
-          <div style="text-align: center; color: #999; padding: 20px;">Memuat timeline...</div>
+          <div style="text-align:center;color:var(--gray-400);padding:20px;font-size:12.5px;">Memuat...</div>
         </div>
       </div>
 
-      <!-- Saran Cerdas AI -->
+      <!-- AI Card -->
       <div class="ai-card" id="aiCard">
-        <div class="ai-card-title">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-          </svg>
-          Saran Cerdas AI
+        <div class="ai-banner">
+          <div class="ai-banner-icon"><i class="fas fa-star"></i></div>
+          <div class="ai-banner-text">
+            <div class="ai-banner-title">Saran Cerdas AI</div>
+            <div class="ai-banner-sub">Rekomendasi otomatis dari sistem</div>
+          </div>
         </div>
-        <div class="ai-label">Saran:</div>
-        <div class="ai-text" id="aiSuggestion">
-          Memuat saran...
+        <div class="ai-body">
+          <div class="ai-label-row"><span class="ai-label">Saran</span></div>
+          <div class="ai-text-wrap">
+            <div class="ai-text" id="aiSuggestion">Memuat saran...</div>
+          </div>
+          <a class="ai-link" href="#">
+            <i class="fas fa-arrow-right"></i> Terapkan Protokol
+          </a>
         </div>
-        <a class="ai-link" href="#">
-          Terapkan Protokol
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
-          </svg>
-        </a>
       </div>
 
-    </div><!-- /right-panel -->
+      <!-- Solver Note (injected by JS after AI card) -->
+      <div id="solverCardWrap"></div>
 
-  </div><!-- /layout -->
-
-</div><!-- /main -->
+    </div>
+  </div>
+</div>
 
 <script>
-/**
- * SMART Incident Management - Incident Detail Page
- * Fetches and displays single incident details from API
- * Production-ready, vanilla JavaScript, no framework
- */
+  const API_BASE = 'http://localhost:3000/api';
 
-const API_BASE = "http://localhost:3000/api";
-
-const STATUS_MAPPING = {
-  "open": "Open",
-  "progress": "On Progress",
-  "closed": "Closed"
-};
-
-const STATUS_BADGE_CLASS = {
-  "open": "blue",
-  "progress": "orange",
-  "closed": "green"
-};
-
-document.addEventListener("DOMContentLoaded", function () {
-  initPage();
-});
-
-async function initPage() {
-  const token = getToken();
-  if (!token) {
-    redirectToLogin();
-    return;
-  }
-
-  const incidentId = getIncidentIdFromUrl();
-  if (!incidentId) {
-    showError("ID Insiden tidak ditemukan di URL");
-    hideLoading();
-    return;
-  }
-
-  await fetchAndRenderIncident(incidentId, token);
-}
-
-function getToken() {
-  return localStorage.getItem("token") || null;
-}
-
-function getIncidentIdFromUrl() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const id = urlParams.get("id");
-  return id && id.trim() ? id.trim() : null;
-}
-
-function redirectToLogin() {
-  window.location.href = "../auth/login.html";
-}
-
-async function fetchAndRenderIncident(incidentId, token) {
-  try {
-    const response = await fetch(`${API_BASE}/incidents/${encodeURIComponent(incidentId)}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      }
-    });
-
-    if (response.status === 401) {
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      redirectToLogin();
-      return;
-    }
-
-    if (response.status === 404) {
-      showError("Laporan tidak ditemukan (404)");
-      hideLoading();
-      return;
-    }
-
-    if (!response.ok) {
-      showError(`Terjadi kesalahan (HTTP ${response.status})`);
-      hideLoading();
-      return;
-    }
-
-    const data = await response.json();
-
-    if (!data.success || !data.incident) {
-      showError(data.message || "Format respons tidak valid");
-      hideLoading();
-      return;
-    }
-
-    const incident = data.incident;
-    renderIncidentData(incident);
-    renderTimeline(incident);
-    updateUserInfo();
-
-    hideLoading();
-    showContent();
-  } catch (error) {
-    console.error("Error fetching incident:", error);
-    showError(`Terjadi kesalahan saat mengambil data: ${error.message}`);
-    hideLoading();
-  }
-}
-
-function renderIncidentData(incident) {
-  const pageTitle = document.getElementById("pageTitle");
-  if (pageTitle) {
-    pageTitle.textContent = `Detail Laporan: ${escapeHtml(incident.title || "N/A")}`;
-  }
-
-  const statusBadge = document.getElementById("statusBadge");
-  if (statusBadge) {
-    const statusText = formatStatus(incident.status);
-    const badgeClass = STATUS_BADGE_CLASS[incident.status?.toLowerCase()] || "gray";
-    statusBadge.textContent = statusText;
-    statusBadge.className = `status-badge ${badgeClass}`;
-  }
-
-  updateMetaField("idValue", `#INC-${formatIncidentId(incident.id)}`);
-  updateMetaField("categoryValue", incident.type || incident.category || "-");
-
-  const locationValue = document.getElementById("locationValue");
-  if (locationValue) {
-    locationValue.innerHTML = `
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>
-      </svg>
-      ${escapeHtml(incident.location || "-")}
-    `;
-  }
-
-  const dateValue = document.getElementById("dateValue");
-  if (dateValue) {
-    const formattedDate = formatDate(incident.created_at);
-    dateValue.innerHTML = `
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
-      </svg>
-      ${formattedDate}
-    `;
-  }
-
-  const descriptionValue = document.getElementById("descriptionValue");
-  if (descriptionValue) {
-    descriptionValue.textContent = incident.description || "Tidak ada deskripsi";
-  }
-
-  renderPhotos(incident);
-
-  const aiSuggestion = document.getElementById("aiSuggestion");
-  if (aiSuggestion) {
-    aiSuggestion.textContent = incident.recommendation || incident.suggestion || "Tidak ada rekomendasi AI untuk laporan ini.";
-  }
-
-  // Add solver note to right panel if status is closed and solver_note exists
-  const normalizedStatus = incident.status?.toLowerCase().replace("_", "") || "open";
-  if (incident.solver_note && normalizedStatus === "closed") {
-    const aiCard = document.querySelector(".ai-card");
-    if (aiCard) {
-      const solverNoteHtml = `
-        <div style="
-          background: #f1f8e9;
-          border-radius: 14px;
-          padding: 18px 20px;
-          border: 1px solid #c8e6c9;
-          box-shadow: 0 4px 18px rgba(108,99,255,0.08);
-          margin-bottom: 16px;
-        ">
-          <div style="display:flex;align-items:center;gap:7px;font-size:14px;font-weight:800;color:#2e7d52;margin-bottom:10px;">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg>
-            Catatan Penyelesaian
-          </div>
-          <div style="font-size:13px;font-weight:600;color:#2e7d52;line-height:1.6;border-left:4px solid #4dc4a8;padding-left:12px;">
-            ${escapeHtml(incident.solver_note)}
-          </div>
-        </div>
-      `;
-      aiCard.insertAdjacentHTML("beforebegin", solverNoteHtml);
-    }
-  }
-}
-
-function updateMetaField(elementId, value) {
-  const element = document.getElementById(elementId);
-  if (element) {
-    element.textContent = value;
-  }
-}
-
-function formatIncidentId(id) {
-  if (!id) return "0000";
-  return String(id).padStart(4, "0");
-}
-
-function formatStatus(status) {
-  if (!status) return "Tidak diketahui";
-  const statusLower = status.toLowerCase();
-  return STATUS_MAPPING[statusLower] || capitalizeFirst(status);
-}
-
-function capitalizeFirst(str) {
-  if (!str) return "";
-  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-}
-
-function formatDate(dateString) {
-  if (!dateString) return "-";
-  try {
-    const date = new Date(dateString);
-    const options = {
-      year: "numeric",
-      month: "long",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit"
-    };
-    return date.toLocaleDateString("id-ID", options);
-  } catch (e) {
-    return dateString;
-  }
-}
-
-function escapeHtml(text) {
-  if (!text) return "";
-  const div = document.createElement("div");
-  div.textContent = text;
-  return div.innerHTML;
-}
-
-function renderPhotos(incident) {
-  const photoGrid = document.getElementById("photoGrid");
-  if (!photoGrid) return;
-
-  photoGrid.innerHTML = "";
-
-  const photos = getPhotoList(incident);
-  if (!photos || photos.length === 0) {
-    photoGrid.innerHTML = '<div style="padding: 20px; color: #999; text-align: center;">Tidak ada foto bukti</div>';
-    return;
-  }
-
-  photos.forEach(photo => {
-    if (photo) {
-      const fotoItem = document.createElement("div");
-      fotoItem.className = "foto-item";
-
-      const photoUrl = buildPhotoUrl(photo);
-      console.log("Photo URL:", photoUrl); // untuk debug
-
-      fotoItem.innerHTML = `
-        <img 
-          src="${photoUrl}" 
-          alt="Foto bukti"
-          style="width:100%;height:100%;object-fit:cover;display:block;"
-          onerror="this.parentElement.innerHTML='<div style=\\"padding:20px;color:#999;text-align:center;\\">Gagal memuat foto</div>'"
-        >
-      `;
-
-      photoGrid.appendChild(fotoItem);
-    }
-  });
-}
-
-function getPhotoList(incident) {
-  if (!incident) return [];
-
-  if (incident.photos) {
-    if (typeof incident.photos === "string") {
-      try {
-        return JSON.parse(incident.photos);
-      } catch (e) {
-        return [incident.photos];
-      }
-    }
-    if (Array.isArray(incident.photos)) {
-      return incident.photos;
-    }
-  }
-
-  if (incident.photo) {
-    return [incident.photo];
-  }
-
-  return [];
-}
-
-/**
- * FIXED - Build full photo URL
- */
-function buildPhotoUrl(photoPath) {
-  if (!photoPath) return "";
-
-  // Jika sudah full URL
-  if (photoPath.startsWith("http")) {
-    return photoPath;
-  }
-
-  // Path yang benar sesuai folder uploads/incidents
-  return `http://localhost:3000/uploads/incidents/${photoPath}`;
-}
-
-function renderTimeline(incident) {
-  const timelineContainer = document.getElementById("timelineContainer");
-  if (!timelineContainer) return;
-
-  timelineContainer.innerHTML = "";
-
-  const statuses = ["open", "in_progress", "closed"];
-  const statusLabels = {
-    "open": { text: "Dilaporkan", note: "Laporan diterima oleh sistem" },
-    "in_progress": { text: "Diproses", note: "Teknisi ditugaskan ke lokasi" },
-    "closed": { text: "Selesai", note: "Laporan telah diselesaikan" }
+  const STATUS_MAP = {
+    open:       { label: 'Open',        banner: 'Open',        cls: 's-open' },
+    progress:   { label: 'On Progress', banner: 'On Progress', cls: 's-progress' },
+    in_progress:{ label: 'On Progress', banner: 'On Progress', cls: 's-progress' },
+    closed:     { label: 'Closed',      banner: 'Closed',      cls: 's-closed' }
   };
 
-  statuses.forEach((status, index) => {
-    let dotClass = "idle";
-    let icon = "";
-    const normalizedIncidentStatus = incident.status?.toLowerCase().replace("_", "") || "open";
-    const normalizedStatus = status.replace("_", "");
-
-    if (normalizedStatus === normalizedIncidentStatus) {
-      dotClass = "active";
-      icon = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4" fill="#fff"/></svg>';
-    } else if (isStatusCompleted(incident.status, status)) {
-      dotClass = "done";
-      icon = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
-    }
-
-    const isLast = index === statuses.length - 1;
-    const timelineHtml = `
-      <div class="tl-item">
-        <div class="tl-left">
-          <div class="tl-dot ${dotClass}">${icon}</div>
-          ${!isLast ? '<div class="tl-line"></div>' : ""}
-        </div>
-        <div class="tl-body">
-          <div class="tl-step${dotClass === "idle" ? " muted" : ""}">
-            ${statusLabels[status].text}
-          </div>
-          ${dotClass !== "idle" ? `<div class="tl-time">${formatDate(incident.created_at)}</div>` : ""}
-          <div class="tl-note">${statusLabels[status].note}</div>
-        </div>
-      </div>
-    `;
-
-    timelineContainer.insertAdjacentHTML("beforeend", timelineHtml);
-  });
-
-  // Add solver note timeline item if incident is closed and solver_note exists
-  const normalizedStatus = incident.status?.toLowerCase().replace("_", "") || "open";
-  if (normalizedStatus === "closed" && incident.solver_note) {
-    const solverNoteTimelineHtml = `
-      <div class="tl-item">
-        <div class="tl-left">
-          <div class="tl-dot done">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-          </div>
-        </div>
-        <div class="tl-body">
-          <div class="tl-step">Diselesaikan</div>
-          <div class="tl-note">${escapeHtml(incident.solver_note)}</div>
-        </div>
-      </div>
-    `;
-    timelineContainer.insertAdjacentHTML("beforeend", solverNoteTimelineHtml);
-  }
-}
-
-function isStatusCompleted(currentStatus, checkStatus) {
-  const statusOrder = {
-    "open": 0,
-    "in_progress": 1,
-    "inprogress": 1,
-    "closed": 2
-  };
-
-  const normalizedCurrent = (currentStatus?.toLowerCase().replace("_", "")) || "open";
-  const normalizedCheck = checkStatus.replace("_", "");
-
-  const currentIndex = statusOrder[normalizedCurrent] ?? 0;
-  const checkIndex = statusOrder[normalizedCheck] ?? 0;
-
-  return currentIndex > checkIndex;
-}
-
-function showError(message) {
-  const errorContainer = document.getElementById("errorContainer");
-  if (errorContainer) {
-    errorContainer.innerHTML = `
-      <div class="error-message">
-        <strong>⚠️ Kesalahan</strong>
-        ${escapeHtml(message)}
-      </div>
-    `;
-    errorContainer.classList.remove("hidden");
-  }
-}
-
-function hideLoading() {
-  const loadingState = document.getElementById("loadingState");
-  if (loadingState) {
-    loadingState.classList.add("hidden");
-  }
-}
-
-function showContent() {
-  const contentState = document.getElementById("contentState");
-  if (contentState) {
-    contentState.classList.remove("hidden");
-  }
-}
-
-function updateUserInfo() {
-  const user = JSON.parse(localStorage.getItem("user")) || {};
-
-  const userAva = document.querySelector(".user-ava");
-  if (userAva && user.name) {
-    userAva.textContent = user.name.charAt(0).toUpperCase();
-  }
-
-  const userNameSm = document.querySelector(".user-name-sm");
-  if (userNameSm && user.name) {
-    userNameSm.textContent = user.name;
-  }
-
-  const userRole = document.querySelector(".user-role");
-  if (userRole && user.role) {
-    userRole.textContent = capitalizeFirst(user.role);
-  }
-}
-
-async function goToLatestIncident() {
-  try {
+  document.addEventListener('DOMContentLoaded', () => {
     const token = localStorage.getItem('token');
     if (!token) { window.location.href = '../auth/login.html'; return; }
-    const response = await fetch('http://localhost:3000/api/incidents', {
-      headers: { 'Authorization': `Bearer ${token}` }
+    loadUserInfo();
+    const id = new URLSearchParams(window.location.search).get('id');
+    if (!id) { showError('ID Insiden tidak ditemukan di URL'); hideLoading(); return; }
+    fetchIncident(id, token);
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.removeItem('token'); localStorage.removeItem('user');
+      window.location.href = '../auth/login.html';
     });
-    const data = await response.json();
-    if (data.incidents && data.incidents.length > 0) {
-      window.location.href = `incident-detail.html?id=${data.incidents[0].id}`;
-    } else {
-      alert('Belum ada laporan insiden.');
-    }
-  } catch (err) {
-    alert('Gagal memuat laporan.');
+  });
+
+  function loadUserInfo() {
+    try {
+      const u = JSON.parse(localStorage.getItem('user')) || {};
+      const ini  = u.name ? u.name.charAt(0).toUpperCase() : 'U';
+      const name = u.name || '–';
+      const role = u.role ? u.role.charAt(0).toUpperCase() + u.role.slice(1) : '–';
+      const sa = document.getElementById('sidebarAva');   if (sa) sa.textContent = ini;
+      const sn = document.getElementById('sidebarName');  if (sn) sn.textContent = name;
+      const sr = document.getElementById('sidebarRole');  if (sr) sr.textContent = role;
+    } catch(e) {}
   }
-}
+
+  async function fetchIncident(id, token) {
+    try {
+      const res = await fetch(`${API_BASE}/incidents/${encodeURIComponent(id)}`, {
+        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
+      });
+      if (res.status === 401) { window.location.href = '../auth/login.html'; return; }
+      if (res.status === 404) { showError('Laporan tidak ditemukan (404)'); hideLoading(); return; }
+      if (!res.ok) { showError(`Terjadi kesalahan (HTTP ${res.status})`); hideLoading(); return; }
+      const data = await res.json();
+      if (!data.success || !data.incident) { showError(data.message || 'Format respons tidak valid'); hideLoading(); return; }
+      render(data.incident);
+      hideLoading();
+      showContent();
+    } catch(err) {
+      showError(`Gagal mengambil data: ${err.message}`);
+      hideLoading();
+    }
+  }
+
+  function render(inc) {
+    // Title
+    const pt = document.getElementById('pageTitle');
+    if (pt) pt.textContent = `Detail Laporan: ${esc(inc.title || 'N/A')}`;
+
+    // Status banner
+    const statusKey = (inc.status || 'open').toLowerCase().replace('_', '');
+    const st = STATUS_MAP[statusKey] || STATUS_MAP[inc.status?.toLowerCase()] || { label: inc.status, banner: inc.status, cls: 's-open' };
+    const sb = document.getElementById('statusBadgeBanner');
+    if (sb) sb.textContent = st.banner;
+
+    // Meta fields
+    setText('idValue', ''); // handled separately
+    const idEl = document.getElementById('idValue');
+    if (idEl) idEl.innerHTML = `<span class="meta-id">#INC-${String(inc.id).padStart(4,'0')}</span>`;
+
+    setText('categoryValue', inc.category || inc.type || '–');
+
+    const loc = document.getElementById('locationValue');
+    if (loc) loc.innerHTML = `<i class="fas fa-location-dot"></i> ${esc(inc.location || '–')}`;
+
+    const dt = document.getElementById('dateValue');
+    if (dt) dt.innerHTML = `<i class="fas fa-calendar"></i> ${fmtDate(inc.created_at)}`;
+
+    const desc = document.getElementById('descriptionValue');
+    if (desc) desc.textContent = inc.description || 'Tidak ada deskripsi';
+
+    renderPhotos(inc);
+    renderTimeline(inc);
+
+    // Solver note
+    const norm = (inc.status || '').toLowerCase().replace('_','');
+    if (inc.solver_note && norm === 'closed') {
+      const wrap = document.getElementById('solverCardWrap');
+      if (wrap) wrap.innerHTML = `
+        <div class="solver-card">
+          <div class="panel-header" style="color:var(--green)">
+            <i class="fas fa-circle-check" style="color:var(--green)"></i> Catatan Penyelesaian
+          </div>
+          <div class="solver-body">
+            <div class="solver-text">${esc(inc.solver_note)}</div>
+          </div>
+        </div>`;
+    }
+
+    // AI
+    const ai = document.getElementById('aiSuggestion');
+    if (ai) ai.textContent = inc.recommendation || inc.suggestion || 'Tidak ada rekomendasi AI untuk laporan ini.';
+  }
+
+  function renderPhotos(inc) {
+    const grid = document.getElementById('photoGrid');
+    if (!grid) return;
+    let photos = [];
+    if (inc.photos) {
+      photos = typeof inc.photos === 'string' ? (() => { try { return JSON.parse(inc.photos); } catch(e) { return [inc.photos]; } })() : (Array.isArray(inc.photos) ? inc.photos : []);
+    } else if (inc.photo) { photos = [inc.photo]; }
+
+    if (!photos.length) {
+      grid.innerHTML = '<div class="no-foto"><i class="fas fa-image"></i> Tidak ada foto bukti</div>';
+      return;
+    }
+    grid.innerHTML = photos.filter(Boolean).map(p => {
+      const url = p.startsWith('http') ? p : `http://localhost:3000/uploads/incidents/${p}`;
+      return `<div class="foto-item" onclick="openLightbox('${url}')">
+        <img src="${url}" alt="Foto bukti" onerror="this.parentElement.innerHTML='<div style=&quot;padding:16px;color:var(--gray-400);font-size:12px;text-align:center&quot;>Gagal memuat foto</div>'">
+        <div class="foto-overlay"><i class="fas fa-magnifying-glass-plus"></i></div>
+      </div>`;
+    }).join('');
+  }
+
+  function renderTimeline(inc) {
+    const container = document.getElementById('timelineContainer');
+    if (!container) return;
+
+    const steps = [
+      { key: 'open',        label: 'Dilaporkan',  note: 'Laporan diterima oleh sistem',      icon: 'fa-flag' },
+      { key: 'in_progress', label: 'Diproses',    note: 'Teknisi ditugaskan ke lokasi',       icon: 'fa-gear' },
+      { key: 'closed',      label: 'Selesai',     note: 'Laporan telah diselesaikan',         icon: 'fa-circle-check' }
+    ];
+
+    const ORDER = { open:0, in_progress:1, inprogress:1, progress:1, closed:2 };
+    const curKey   = (inc.status || 'open').toLowerCase();
+    const curNorm  = curKey.replace('_','');
+    const curOrder = ORDER[curKey] ?? ORDER[curNorm] ?? 0;
+
+    container.innerHTML = steps.map((s, idx) => {
+      const sNorm  = s.key.replace('_','');
+      const sOrder = ORDER[s.key] ?? 0;
+      const isDone   = curOrder > sOrder;
+      const isActive = curNorm === sNorm || curKey === s.key;
+      const isIdle   = !isDone && !isActive;
+
+      const dotCls  = isDone ? 'done' : isActive ? 'active' : 'idle';
+      const iconHtml = `<i class="fas ${isDone ? 'fa-check' : isActive ? 'fa-circle-dot' : s.icon}"></i>`;
+      const isLast  = idx === steps.length - 1;
+      const lineCls = isDone ? 'tl-line done' : 'tl-line';
+
+      return `
+        <div class="tl-item" style="animation-delay:${idx*0.1}s">
+          <div class="tl-left">
+            <div class="tl-dot ${dotCls}" style="animation-delay:${idx*0.1}s">${iconHtml}</div>
+            ${!isLast ? `<div class="${lineCls}"></div>` : ''}
+          </div>
+          <div class="tl-body">
+            <div class="tl-step${isIdle ? ' muted' : ''}">${s.label}</div>
+            ${!isIdle ? `<div class="tl-time">${fmtDate(inc.created_at)}</div>` : ''}
+            <div class="tl-note">${s.note}</div>
+          </div>
+        </div>`;
+    }).join('');
+
+    // Solver note step
+    const norm = curKey.replace('_','');
+    if (norm === 'closed' && inc.solver_note) {
+      container.insertAdjacentHTML('beforeend', `
+        <div class="tl-item" style="animation-delay:.35s">
+          <div class="tl-left">
+            <div class="tl-dot done" style="animation-delay:.35s"><i class="fas fa-check"></i></div>
+          </div>
+          <div class="tl-body">
+            <div class="tl-step">Diselesaikan</div>
+            <div class="tl-note">${esc(inc.solver_note)}</div>
+          </div>
+        </div>`);
+    }
+  }
+
+  function openLightbox(url) {
+    const lb = document.createElement('div');
+    lb.className = 'lightbox';
+    lb.innerHTML = `<div class="lightbox-close" onclick="this.parentElement.remove()"><i class="fas fa-xmark"></i></div><img src="${url}" alt="Foto">`;
+    lb.onclick = (e) => { if (e.target === lb) lb.remove(); };
+    document.body.appendChild(lb);
+  }
+
+  function showError(msg) {
+    const ec = document.getElementById('errorContainer');
+    if (ec) { ec.innerHTML = `<div class="error-box"><i class="fas fa-triangle-exclamation"></i> ${esc(msg)}</div>`; ec.classList.remove('hidden'); }
+  }
+  function hideLoading() { const el=document.getElementById('loadingState'); if(el) el.classList.add('hidden'); }
+  function showContent() { const el=document.getElementById('contentState'); if(el) el.classList.remove('hidden'); }
+  function setText(id, val) { const el=document.getElementById(id); if(el) el.textContent=val; }
+  function esc(t) { if(!t)return''; const d=document.createElement('div'); d.textContent=t; return d.innerHTML; }
+  function fmtDate(s) {
+    if (!s) return '–';
+    try { return new Date(s).toLocaleDateString('id-ID',{day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'}); }
+    catch(e) { return s; }
+  }
 </script>
 </body>
 </html>
