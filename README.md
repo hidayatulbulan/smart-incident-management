@@ -1,60 +1,106 @@
-SMART Incident Management System
+# 🚨 SMART Incident Management System
 
-SMART Incident Management System adalah aplikasi manajemen insiden berbasis web yang memungkinkan User melaporkan insiden, Admin mengelola dan menugaskan insiden, serta Solver menangani dan menyelesaikan insiden.
+SMART Incident Management System adalah **aplikasi manajemen insiden berbasis web** yang memungkinkan **User** melaporkan insiden, **Admin** mengelola dan menugaskan insiden, serta **Solver** menangani dan menyelesaikan insiden secara terstruktur.
 
-Fitur Utama
+---
 
-1. User
-Membuat laporan insiden (foto, kategori, prioritas)
-Melihat status dan riwayat laporan
+## ✨ Fitur Utama
 
-2. Admin
-Melihat seluruh laporan insiden
-Menugaskan insiden ke solver
-Monitoring melalui dashboard
+### 👤 User
 
-3. Solver
-Melihat insiden yang ditugaskan
-Mengubah status (On Progress / Completed)
-Menambahkan catatan penyelesaian
+* Membuat laporan insiden (foto, kategori, prioritas)
+* Melihat status laporan
+* Melihat riwayat laporan insiden
 
-Teknologi
+### 🛠️ Admin
 
-Backend: Node.js, Express.js
-Frontend: HTML, CSS, Vanilla JavaScript
-Database: MySQL
-Auth: JWT
-Penyimpanan foto: Local server (uploads)
+* Melihat seluruh laporan insiden
+* Menugaskan insiden ke Solver
+* Monitoring insiden melalui dashboard
 
-Menjalankan Sistem 
+### 🧑‍🔧 Solver
 
-1. Konfigurasi Environment
-Buat file .env di folder backend:
+* Melihat insiden yang ditugaskan
+* Mengubah status insiden (`On Progress` / `Completed`)
+* Menambahkan catatan penyelesaian
+
+---
+
+## 🧰 Teknologi yang Digunakan
+
+* **Backend**: Node.js, Express.js
+* **Frontend**: HTML, CSS, Vanilla JavaScript
+* **Database**: MySQL
+* **Authentication**: JSON Web Token (JWT)
+* **Penyimpanan Foto**: Local Server (`uploads/`)
+
+---
+
+## ▶️ Menjalankan Sistem
+
+### 1️⃣ Konfigurasi Environment
+
+Buat file `.env` di folder **backend**:
+
+```env
 PORT=3000
 DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=
 DB_NAME=smartincident
 JWT_SECRET=your_secret_key
-2. Install & Jalankan
+```
+
+---
+
+### 2️⃣ Install & Jalankan Aplikasi
+
+```bash
 cd backend
 npm install
 npm start
-Akses aplikasi melalui browser:
+```
+
+---
+
+### 3️⃣ Akses Aplikasi
+
+Buka browser dan akses:
+
+```
 http://localhost:3000
+```
 
-Akun Default (Untuk Pengecekan)
-Role	Email	                    Password
-Admin	admin@gmail.com             admin123
-Solver	solver@gmail.com            solver123
-User	bulan@gmail.com             123456
+---
 
-Alur Cek Sistem
-Login sebagai User → buat laporan
-Login sebagai Solver → tangani laporan
-Login sebagai Admin → monitoring & manajemen
+## 🔐 Akun Default (Untuk Pengecekan)
 
-Catatan
-File .env dan node_modules tidak disertakan di repository
-File database .sql digunakan untuk menyamakan struktur saat kolaborasi
-Foto insiden tersimpan di backend/uploads/incidents/
+| Role   | Email                                       | Password  |
+| ------ | ------------------------------------------- | --------- |
+| Admin  | [admin@gmail.com](mailto:admin@gmail.com)   | admin123  |
+| Solver | [solver@gmail.com](mailto:solver@gmail.com) | solver123 |
+| User   | [bulan@gmail.com](mailto:bulan@gmail.com)   | 123456    |
+
+---
+
+## 🔄 Alur Pengecekan Sistem
+
+1. Login sebagai **User** → buat laporan insiden
+2. Login sebagai **Solver** → tangani dan selesaikan laporan
+3. Login sebagai **Admin** → monitoring dan manajemen insiden
+
+---
+
+## 📁 Catatan
+
+* File `.env` dan folder `node_modules` tidak disertakan di repository
+* File database `.sql` digunakan untuk menyamakan struktur database saat kolaborasi
+* Foto insiden tersimpan di:
+
+  ```
+  backend/uploads/incidents/
+  ```
+
+---
+
+📄 **SMART Incident Management System**
