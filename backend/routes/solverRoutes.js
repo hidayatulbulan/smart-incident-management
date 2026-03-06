@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { authenticate } = require("../middleware/auth");
 const solverController = require("../controllers/solverController");
-
+const incidentController = require("../controllers/incidentController");
 /**
  * Solver authorization middleware
  * Checks if user has 'solver' role
@@ -33,5 +33,6 @@ router.get("/incidents/:id", authenticate, authorizeSolver, solverController.get
 
 // Update incident status and solver note
 router.put("/incidents/:id/status", authenticate, authorizeSolver, solverController.updateStatus);
+router.put("/incidents/:id/resolve", authenticate, authorizeSolver, incidentController.resolveIncident);
 
 module.exports = router;

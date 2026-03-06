@@ -20,5 +20,7 @@ router.get("/:id", authenticate, incident.getById);
 router.put("/:id", authenticate, incident.update);
 router.put("/:id/status", authenticate, incident.updateStatus);
 router.delete("/:id", authenticate, incident.delete);
+router.put("/:id/resolve",    authenticate, incident.resolveIncident);
+router.post("/:id/recommend", authenticate, incident.getAIRecommendation);
 
 module.exports = router;

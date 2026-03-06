@@ -146,6 +146,19 @@
     }
     .detail-btn:hover { background: var(--red); color: white; border-color: var(--red); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(230,57,70,.22); }
 
+    .delete-btn {
+      padding: 6px 15px; border-radius: 9px;
+      background: var(--red-50); color: var(--red);
+      border: 1.5px solid var(--red-100);
+      font-size: 12px; font-weight: 700; cursor: pointer;
+      font-family: inherit; transition: all .2s;
+      display: inline-flex; align-items: center; gap: 5px;
+    }
+    .delete-btn:hover { background: var(--red); color: white; border-color: var(--red); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(230,57,70,.22); }
+    .delete-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .action-buttons { display: flex; gap: 6px; }
+
     .empty-state { text-align: center; padding: 60px 20px; color: var(--gray-400); }
     .empty-state i { font-size: 38px; margin-bottom: 14px; display: block; opacity: .3; color: var(--red); }
     .empty-state h3 { font-size: 15px; font-weight: 700; color: var(--gray-600); margin-bottom: 6px; }
@@ -156,6 +169,7 @@
 
     .toast { position: fixed; top: 20px; right: 20px; padding: 13px 20px; border-radius: 12px; color: white; font-size: 13px; font-weight: 700; z-index: 9999; box-shadow: 0 8px 24px rgba(0,0,0,.14); animation: toastIn .3s ease; display: flex; align-items: center; gap: 8px; }
     .toast-error { background: linear-gradient(135deg,var(--red),var(--red-dark)); }
+    .toast-success { background: linear-gradient(135deg,#22c55e,#16a34a); }
 
     @media(max-width:768px) { .sidebar{display:none;} .main{margin-left:0;} .content{padding:16px;} .topbar{padding:18px 16px 0;} }
   </style>
@@ -216,7 +230,7 @@
       <select id="filterStatus" class="filter-select">
         <option value="">Semua Status</option>
         <option value="open">Open</option>
-        <option value="progress">On Progress</option>
+<option value="in_progress">On Progress</option>
         <option value="closed">Closed</option>
       </select>
       <select id="filterPriority" class="filter-select">
@@ -253,6 +267,7 @@
 <script>
   const API_BASE = 'http://localhost:3000/api';
   let allIncidents = [];
+  let currentUserId = null;
 
   document.addEventListener('DOMContentLoaded', () => {
     const token = getToken();
@@ -273,6 +288,7 @@
   function loadUserInfo() {
     try {
       const u = JSON.parse(localStorage.getItem('user')) || {};
+      currentUserId = u.id || null;
       const ini  = u.name ? u.name.charAt(0).toUpperCase() : 'U';
       const name = u.name || '–';
       const role = u.role ? u.role.charAt(0).toUpperCase() + u.role.slice(1) : '–';
@@ -304,9 +320,9 @@
     const pri = document.getElementById('filterPriority').value;
     const q   = document.getElementById('searchInput').value.toLowerCase();
     let f = allIncidents;
-    if (sta) f = f.filter(i => {
+if (sta) f = f.filter(i => {
       const s = (i.status||'').toLowerCase();
-      return sta === 'progress' ? (s==='progress'||s==='in_progress') : s===sta;
+      return sta === 'in_progress' ? (s==='in_progress'||s==='progress') : s===sta;
     });
     if (pri) f = f.filter(i => (i.priority||'').toLowerCase() === pri);
     if (q)   f = f.filter(i => (i.title||'').toLowerCase().includes(q)||(i.category||i.type||'').toLowerCase().includes(q));
@@ -325,6 +341,13 @@
       const sCls   = status==='progress'||status==='in_progress' ? 's-progress'  : status==='closed' ? 's-closed'  : 's-open';
       const pLabel = priority.charAt(0).toUpperCase()+priority.slice(1);
       const pCls   = 'p-'+priority;
+      
+      // Check if the current user owns this report
+      const isOwner = inc.user_id === currentUserId;
+      const deleteButton = isOwner ? `<button class="delete-btn" onclick="deleteReport(${inc.id})" title="Hapus laporan">
+        <i class="fas fa-trash"></i> Hapus
+      </button>` : '';
+      
       return `<tr style="animation-delay:${idx*0.04}s">
         <td><span class="no-cell">${idx+1}</span></td>
         <td><span class="id-badge">#INC-${String(inc.id).padStart(4,'0')}</span></td>
@@ -333,12 +356,56 @@
         <td><span class="p-badge ${pCls}">${pLabel}</span></td>
         <td><span class="s-badge ${sCls}">${sLabel}</span></td>
         <td><span class="date-cell">${fmtDate(inc.created_at)}</span></td>
-        <td><a class="detail-btn" href="incident-detail.html?id=${encodeURIComponent(inc.id)}">
-          <i class="fas fa-eye"></i> Detail
-        </a></td>
+        <td>
+          <div class="action-buttons">
+            <a class="detail-btn" href="incident-detail.html?id=${encodeURIComponent(inc.id)}">
+              <i class="fas fa-eye"></i> Detail
+            </a>
+            ${deleteButton}
+          </div>
+        </td>
       </tr>`;
     }).join('');
     footer.textContent = `Menampilkan ${list.length} laporan`;
+  }
+
+  // Delete report function
+  async function deleteReport(id) {
+    // Show confirmation dialog in Bahasa Indonesia
+    const confirmed = confirm('Apakah Anda yakin ingin menghapus laporan ini?');
+    
+    if (!confirmed) return;
+    
+    const token = getToken();
+    if (!token) {
+      window.location.href = '../auth/login.html';
+      return;
+    }
+    
+    try {
+      const res = await fetch(`${API_BASE}/incidents/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      const data = await res.json();
+      
+      if (res.ok && data.success) {
+        // Show success alert in Bahasa Indonesia
+        alert('Laporan berhasil dihapus');
+        // Refresh the report history table without reloading the page
+        loadIncidents(token);
+      } else {
+        // Show error alert in Bahasa Indonesia
+        alert(data.message || 'Gagal menghapus laporan');
+      }
+    } catch(err) {
+      console.error('Delete error:', err);
+      alert('Gagal menghapus laporan');
+    }
   }
 
   function renderEmpty() {

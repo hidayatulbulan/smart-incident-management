@@ -1,21 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Smart Incident Management</title>
-</head><link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
 <body>
 
-   
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
     <div class="blob blob-3"></div>
 
-   
     <div class="glass-card">
-        
-        
+
         <div class="left-panel">
             <div class="left-content">
                 <h2>Cepat, Efisien, dan Produktif</h2>
@@ -23,7 +21,6 @@
             </div>
         </div>
 
-    
         <div class="right-panel">
             <div class="logo-header">
                 <h1>Smart Incident</h1>
@@ -40,7 +37,20 @@
 
                 <div class="form-group">
                     <label for="password">Kata Sandi</label>
-                    <input type="password" id="password" name="password" class="form-control" placeholder="••••••••" required>
+                    <div class="password-wrapper">
+                        <input type="password" id="password" name="password" class="form-control" placeholder="••••••••" required>
+                        <button type="button" class="toggle-password" onclick="togglePassword()" tabindex="-1">
+                            <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                            <svg id="eyeOffIcon" style="display:none" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/>
+                                <path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/>
+                                <line x1="1" y1="1" x2="23" y2="23"/>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="form-group checkbox-group">
@@ -72,154 +82,117 @@
     </div>
 
     <script>
+        const LOGIN_URL = 'http://localhost:3000/api/auth/login';
 
-const LOGIN_URL = 'http://localhost:3000/api/auth/login';
+        function togglePassword() {
+            const input = document.getElementById('password');
+            const eyeIcon = document.getElementById('eyeIcon');
+            const eyeOffIcon = document.getElementById('eyeOffIcon');
+            if (input.type === 'password') {
+                input.type = 'text';
+                eyeIcon.style.display = 'none';
+                eyeOffIcon.style.display = 'block';
+            } else {
+                input.type = 'password';
+                eyeIcon.style.display = 'block';
+                eyeOffIcon.style.display = 'none';
+            }
+        }
 
-document.addEventListener('DOMContentLoaded', () => {
-  const loginForm = document.getElementById('loginForm');
-  const errorDiv = document.getElementById('error');
-  const spinner = document.getElementById('spinner');
-  const btnText = document.querySelector('.btn-text');
-  const loginBtn = document.getElementById('loginBtn');
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginForm = document.getElementById('loginForm');
+            const errorDiv = document.getElementById('error');
+            const spinner = document.getElementById('spinner');
+            const btnText = document.querySelector('.btn-text');
+            const loginBtn = document.getElementById('loginBtn');
 
-  if (!loginForm) {
-    console.error('Login form not found');
-    return;
-  }
+            if (!loginForm) return;
 
-  loginForm.addEventListener('submit', handleLogin);
+            loginForm.addEventListener('submit', handleLogin);
 
-  async function handleLogin(e) {
-    e.preventDefault();
+            async function handleLogin(e) {
+                e.preventDefault();
 
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const password = document.getElementById('password').value.trim();
 
-    // Validate inputs
-    if (!email || !password) {
-      showError('Email and password are required');
-      return;
-    }
+                if (!email || !password) {
+                    showError('Email dan kata sandi wajib diisi');
+                    return;
+                }
 
-    // Clear previous errors and show loading state
-    errorDiv.style.display = 'none';
-    errorDiv.textContent = '';
-    loginBtn.disabled = true;
-    spinner.style.display = 'block';
-    btnText.style.display = 'none';
+                errorDiv.style.display = 'none';
+                errorDiv.textContent = '';
+                loginBtn.disabled = true;
+                spinner.style.display = 'block';
+                btnText.style.display = 'none';
 
-    try {
-      console.log('Attempting login to:', LOGIN_URL);
+                try {
+                    const response = await fetch(LOGIN_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email, password })
+                    });
 
-      // Fetch from backend
-      const response = await fetch(LOGIN_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email, password })
-      });
+                    let data;
+                    try {
+                        data = await response.json();
+                    } catch (jsonError) {
+                        throw new Error('Format respons tidak valid dari server');
+                    }
 
-      console.log('Response status:', response.status);
+                    if (!response.ok) {
+                        throw new Error(data.message || data.error || `Login gagal (${response.status})`);
+                    }
 
-      // Parse response
-      let data;
-      try {
-        data = await response.json();
-      } catch (jsonError) {
-        console.error('Failed to parse JSON response:', jsonError);
-        throw new Error('Invalid response format from server');
-      }
+                    if (!data.token) {
+                        throw new Error(data.message || 'Token tidak diterima dari server');
+                    }
 
-      // Handle non-200 responses
-      if (!response.ok) {
-        const errorMessage = data.message || data.error || `Login failed (${response.status})`;
-        console.error('Login error:', errorMessage);
-        throw new Error(errorMessage);
-      }
+                    localStorage.setItem('token', data.token);
 
-      // Validate response has token
-      if (!data.token) {
-        throw new Error(data.message || 'No token received from server');
-      }
+                    if (data.user) {
+                        localStorage.setItem('user', JSON.stringify(data.user));
+                    }
 
-      // Save token to localStorage
-      localStorage.setItem('token', data.token);
-      console.log('Token saved successfully');
+                    let redirectUrl = '../user/dashboard.html';
+                    if (data.user && data.user.role?.toLowerCase() === 'admin') {
+                        redirectUrl = '../admin/dashboard.html';
+                    } else if (data.user && data.user.role?.toLowerCase() === 'solver') {
+                        redirectUrl = '../solver/dashboard.html';
+                    }
 
-      // Save user info if provided
-      if (data.user) {
-        localStorage.setItem('user', JSON.stringify(data.user));
-        console.log('User info saved to localStorage:', {
-          id: data.user.id,
-          name: data.user.name,
-          email: data.user.email,
-          role: data.user.role
+                    window.location.href = redirectUrl;
+
+                } catch (error) {
+                    let errorMessage = 'Login gagal. Silakan coba lagi.';
+                    if (error instanceof TypeError) {
+                        errorMessage = 'Gagal terhubung ke server. Pastikan server berjalan di http://localhost:3000';
+                        alert(errorMessage);
+                    } else if (error.message) {
+                        errorMessage = error.message;
+                    }
+                    showError(errorMessage);
+                } finally {
+                    loginBtn.disabled = false;
+                    spinner.style.display = 'none';
+                    btnText.style.display = 'block';
+                }
+            }
+
+            function showError(message) {
+                errorDiv.textContent = message;
+                errorDiv.style.display = 'block';
+            }
         });
-        console.log('Verification - Reading from localStorage:', JSON.parse(localStorage.getItem('user')));
-      }
 
-      // Determine redirect URL based on role
-      let redirectUrl = '../user/dashboard.html';
-      console.log('=== ROLE-BASED REDIRECT DEBUG ===');
-      console.log('data.user object:', data.user);
-      console.log('data.user.role:', data.user?.role);
-      console.log('Role type:', typeof data.user?.role);
-      
-      if (data.user && data.user.role?.toLowerCase() === 'admin') {
-        redirectUrl = '../admin/dashboard.html';
-        console.log('Detected ADMIN role → redirecting to admin dashboard');
-      } else if (data.user && data.user.role?.toLowerCase() === 'solver') {
-        redirectUrl = '../solver/dashboard.html';
-        console.log('Detected SOLVER role → redirecting to solver dashboard');
-      } else {
-        console.log('Default USER role → redirecting to user dashboard');
-      }
-
-      console.log('Final redirect URL:', redirectUrl);
-      console.log('=== END DEBUG ===');
-      window.location.href = redirectUrl;
-
-    } catch (error) {
-      let errorMessage = 'Login failed. Please try again.';
-
-      if (error instanceof TypeError) {
-        // Network error - fetch failed to reach server
-        errorMessage = 'Failed to connect to server. Ensure http://localhost:3000 is running';
-        console.error('Network error:', error.message);
-        alert(errorMessage);
-      } else if (error.message) {
-        errorMessage = error.message;
-        console.error('Login error:', errorMessage);
-      }
-
-      console.error('Full error details:', error);
-      showError(errorMessage);
-
-    } finally {
-      // CRITICAL: Always stop loading state
-      loginBtn.disabled = false;
-      spinner.style.display = 'none';
-      btnText.style.display = 'block';
-    }
-  }
-
-  function showError(message) {
-    errorDiv.textContent = message;
-    errorDiv.style.display = 'block';
-  }
-});
-
-/**
- * Mock social login message
- */
-function showMockMessage(provider) {
-  const footer = document.querySelector('.footer-text');
-  footer.innerHTML = `<span style="color:#0052D4">${provider} login is visual only.</span>`;
-  setTimeout(() => {
-    footer.innerHTML = 'Don\'t have an account? <a href="signup.html">Sign up here</a>';
-  }, 2000);
-}
+        function showMockMessage(provider) {
+            const footer = document.querySelector('.footer-text');
+            footer.innerHTML = `<span style="color:#0052D4">${provider} login hanya tampilan.</span>`;
+            setTimeout(() => {
+                footer.innerHTML = 'Belum punya akun? <a href="signup.html">Daftar</a>';
+            }, 2000);
+        }
     </script>
 </body>
 </html>

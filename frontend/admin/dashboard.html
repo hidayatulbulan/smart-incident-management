@@ -296,10 +296,10 @@
                 <div class="table-header">
                     <h3 class="card-title">Insiden Terbaru</h3>
                     <div class="filter-tabs">
-                        <button class="filter-tab active" onclick="filterTable('all',this)">Semua</button>
-                        <button class="filter-tab" onclick="filterTable('open',this)">Open</button>
-                        <button class="filter-tab" onclick="filterTable('progress',this)">On Progress</button>
-                        <button class="filter-tab" onclick="filterTable('closed',this)">Closed</button>
+                         <button class="filter-tab" onclick="window.location.href='incidents.html'">Semua</button>
+                        <button class="filter-tab active" onclick="filterTable('open',this); window.location.href='incidents.html?status=open'">Open</button>
+                        <button class="filter-tab" onclick="window.location.href='incidents.html?status=in_progress'">On Progress</button>
+                        <button class="filter-tab" onclick="window.location.href='incidents.html?status=closed'">Closed</button>
                     </div>
                 </div>
                 <table class="incidents-table">
@@ -370,12 +370,12 @@
     function getStatusBadge(s){
         const ls=(s||'').toLowerCase();
         if(ls==='open')                         return `<span class="status-badge status-open">Open</span>`;
-        if(ls==='progress'||ls==='in_progress') return `<span class="status-badge status-progress">On Progress</span>`;
+        if(ls==='progress'||ls==='in_progress') return `<span class="status-badge status-progress">In Progress</span>`;
         if(ls==='closed')                       return `<span class="status-badge status-closed">Closed</span>`;
         return `<span class="status-badge status-closed">Closed</span>`;
     }
 
-    // ✅ Tabel biasa, sorted terbaru dulu
+    //  Tabel 
     function renderTable(data){
         const tbody = document.getElementById('tableBody');
         if(!data.length){
@@ -472,7 +472,7 @@
                 document.getElementById('medBar').style.width=Math.round(medium/total*100)+'%';
                 document.getElementById('highBar').style.width=Math.round(high/total*100)+'%';
             }
-            renderTable(incidents);
+            renderTable(incidents.filter(i => i.status?.toLowerCase() === 'open'));
             initChart(incidents);
         } catch(err){ console.error('Dashboard error:',err); }
     }

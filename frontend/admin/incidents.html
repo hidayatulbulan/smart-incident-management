@@ -334,7 +334,7 @@
                     <select class="filter-select" id="statusFilter">
                         <option value="">Semua Status</option>
                         <option value="open">Open</option>
-                        <option value="progress">On Progress</option>
+<option value="in_progress">On Progress</option>
                         <option value="closed">Closed</option>
                     </select>
                 </div>
@@ -428,9 +428,9 @@
             <div class="modal-form-row">
                 <div class="form-group">
                     <label><i class="fas fa-circle-dot" style="margin-right:4px;opacity:0.7;"></i>Status</label>
-                    <select id="modalStatusSelect" class="modal-status-select">
+<select id="modalStatusSelect" class="modal-status-select">
                         <option value="open">Open</option>
-                        <option value="progress">On Progress</option>
+                        <option value="in_progress">On Progress</option>
                         <option value="closed">Closed</option>
                     </select>
                 </div>
@@ -575,9 +575,9 @@ async function renderIncidents(incidents) {
             <td>
                 <select class="status-select ${statusClass}"
                     onchange="updateStatus(${incident.id},this.value);this.className='status-select '+getStatusClass(this.value)">
-                    <option value="open"     ${ls==='open'?'selected':''}>Open</option>
-                    <option value="progress" ${ls==='progress'||ls==='in_progress'?'selected':''}>On Progress</option>
-                    <option value="closed"   ${ls==='closed'?'selected':''}>Closed</option>
+<option value="open"        ${ls==='open'?'selected':''}>Open</option>
+                    <option value="in_progress" ${ls==='in_progress'||ls==='progress'?'selected':''}>On Progress</option>
+                    <option value="closed"      ${ls==='closed'?'selected':''}>Closed</option>
                 </select>
             </td>
             <td>
@@ -598,8 +598,8 @@ async function renderIncidents(incidents) {
 }
 
 function getStatusClass(val) {
-    if (val === 'progress') return 'status-progress';
-    if (val === 'closed')   return 'status-closed';
+    if (val === 'in_progress' || val === 'progress') return 'status-progress';
+    if (val === 'closed') return 'status-closed';
     return 'status-open';
 }
 
@@ -744,9 +744,9 @@ async function fetchIncidents() {
 
         if (q)   incidents = incidents.filter(i => (i.title||'').toLowerCase().includes(q)||(i.reporter_name||'').toLowerCase().includes(q)||(i.category||'').toLowerCase().includes(q));
         if (pri) incidents = incidents.filter(i => (i.priority||'').toLowerCase() === pri);
-        if (sta) incidents = incidents.filter(i => {
+if (sta) incidents = incidents.filter(i => {
             const ls = (i.status||'').toLowerCase();
-            if (sta === 'progress') return ls==='progress'||ls==='in_progress';
+            if (sta === 'in_progress') return ls==='in_progress'||ls==='progress';
             return ls === sta;
         });
 
@@ -764,7 +764,18 @@ document.getElementById('priorityFilter').addEventListener('change', () => fetch
 document.getElementById('statusFilter').addEventListener('change', () => fetchIncidents());
 
 document.addEventListener('DOMContentLoaded', function () {
+    // URL parameter dari dashboard redirect
+    const urlParams = new URLSearchParams(window.location.search);
+    const statusParam = urlParams.get('status');
+    if (statusParam) {
+        const filterEl = document.getElementById('statusFilter');
+        if (filterEl) {
+            filterEl.value = statusParam;
+        }
+    }
+
     fetchIncidents();
+
     const logoutBtn = document.querySelector('.logout');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', () => {
