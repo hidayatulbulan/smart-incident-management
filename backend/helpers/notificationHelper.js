@@ -1,18 +1,18 @@
 const db = require("../config/database");
 
-/**
- * Create a notification for a user
- * @param {number} userId - The user ID to create notification for
- * @param {string} title - Notification title
- * @param {string} message - Notification message
- * @param {string} type - Notification type (info, new_incident, assigned, status_update, etc.)
- */
-async function createNotification(userId, title, message, type = 'info') {
+async function createNotification(userId, title, message, type = 'info', incidentId = null) {
   try {
-    await db.query(
-      "INSERT INTO notifications (user_id, title, message, type) VALUES (?, ?, ?, ?)",
-      [userId, title, message, type]
-    );
+    if (incidentId) {
+      await db.query(
+        "INSERT INTO notifications (user_id, title, message, type, incident_id) VALUES (?, ?, ?, ?, ?)",
+        [userId, title, message, type, incidentId]
+      );
+    } else {
+      await db.query(
+        "INSERT INTO notifications (user_id, title, message, type) VALUES (?, ?, ?, ?)",
+        [userId, title, message, type]
+      );
+    }
     return true;
   } catch (error) {
     console.error("Create notification error:", error);
@@ -20,17 +20,10 @@ async function createNotification(userId, title, message, type = 'info') {
   }
 }
 
-/**
- * Create notifications for multiple users
- * @param {array} userIds - Array of user IDs
- * @param {string} title - Notification title
- * @param {string} message - Notification message
- * @param {string} type - Notification type
- */
-async function createNotificationsForMultiple(userIds, title, message, type = 'info') {
+async function createNotificationsForMultiple(userIds, title, message, type = 'info', incidentId = null) {
   try {
     for (const userId of userIds) {
-      await createNotification(userId, title, message, type);
+      await createNotification(userId, title, message, type, incidentId);
     }
     return true;
   } catch (error) {

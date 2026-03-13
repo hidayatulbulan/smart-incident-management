@@ -286,3 +286,46 @@ exports.updateProfilePhoto = async (req, res) => {
     });
   }
 };
+/**
+ * Change Password
+ * PUT /api/auth/change-password
+ */
+exports.changePassword = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { oldPassword, newPassword } = req.body;
+
+    if (!oldPassword || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "Kata sandi lama dan baru wajib diisi"
+      });
+    }
+
+    if (newPassword.length < 8) {
+      return res.status(400).json({
+        success: false,
+        message: "Kata sandi baru minimal 8 karakter"
+      });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User tidak ditemukan" });
+    }
+
+    const isMatch = await bcryptjs.compare(oldPassword, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ success: false, message: "Kata sandi lama tidak sesuai" });
+    }
+
+    const hashedNew = await bcryptjs.hash(newPassword, 10);
+    await db.query("UPDATE users SET password = ? WHERE id = ?", [hashedNew, userId]);
+
+    res.status(200).json({ success: true, message: "Kata sandi berhasil diubah" });
+
+  } catch (error) {
+    console.error("Change password error:", error);
+    res.status(500).json({ success: false, message: "Internal server error", error: error.message });
+  }
+};

@@ -6,96 +6,80 @@ const { createNotification } = require("../helpers/notificationHelper");
 /**
  * Get all incidents (Admin only)
  * GET /api/admin/incidents
- * Returns all incidents sorted by created_at DESC
  */
 exports.getAllIncidents = async (req, res) => {
   try {
     const incidents = await Incident.getAll();
-    res.status(200).json({
-      success: true,
-      data: incidents
-    });
+    res.status(200).json({ success: true, data: incidents });
   } catch (error) {
     console.error("Get all incidents error:", error);
-    res.status(500).json({
-      success: false,
-      message: "Server error"
-    });
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
 /**
  * Update incident status and admin note (Admin only)
  * PUT /api/admin/incidents/:id
- * Body: { status, admin_note }
  */
 exports.updateIncident = async (req, res) => {
   try {
     const { id } = req.params;
     const { status, admin_note } = req.body;
 
-    // Validate incident ID
-    if (!id) {
-      return res.status(400).json({
-        success: false,
-        message: "Incident ID is required"
-      });
-    }
+    if (!id) return res.status(400).json({ success: false, message: "Incident ID is required" });
 
-    // Check if incident exists
     const incident = await Incident.getById(id);
-    if (!incident) {
-      return res.status(404).json({
-        success: false,
-        message: "Incident not found"
-      });
-    }
+    if (!incident) return res.status(404).json({ success: false, message: "Incident not found" });
 
-    // Validate status if provided
     if (status) {
-      const validStatuses = ["open", "progress", "closed"];
-      if (!validStatuses.includes(status)) {
-        return res.status(400).json({
-          success: false,
-          message: "Invalid status. Allowed values: open, progress, closed"
-        });
-      }
+      const validStatuses = ["open", "progress", "closed", "in_progress"];
+      if (!validStatuses.includes(status))
+        return res.status(400).json({ success: false, message: "Invalid status. Allowed values: open, in_progress, closed" });
     }
 
-    // Update incident with status and admin_note
     const updatedIncident = await Incident.updateAdminFields(id, status || incident.status, admin_note || incident.admin_note || null);
-
-    res.status(200).json({
-      success: true,
-      message: "Incident updated successfully",
-      data: updatedIncident
-    });
+    res.status(200).json({ success: true, message: "Incident updated successfully", data: updatedIncident });
   } catch (error) {
     console.error("Update incident error:", error);
-    res.status(500).json({
-      success: false,
-      message: "Server error"
-    });
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
+
+/**
+ * Delete incident (Admin only)
+ * DELETE /api/admin/incidents/:id
+ */
+exports.deleteIncident = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!id) return res.status(400).json({ success: false, message: "Incident ID is required" });
+
+    const incident = await Incident.getById(id);
+    if (!incident) return res.status(404).json({ success: false, message: "Incident not found" });
+
+    const deleted = await Incident.delete(id);
+    if (!deleted) return res.status(500).json({ success: false, message: "Gagal menghapus insiden" });
+
+    console.log(`[ADMIN] Incident #${id} deleted`);
+    res.status(200).json({ success: true, message: "Insiden berhasil dihapus" });
+  } catch (error) {
+    console.error("Delete incident error:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
 /**
  * Get reports statistics (Admin only)
  * GET /api/admin/reports/stats
- * Returns: totalIncidents, totalChange, resolvedRate, avgResolutionTime, avgResolutionMinutes
  */
 exports.getReportsStats = async (req, res) => {
   try {
-    // Last 30 days
     const [currentStats] = await db.query(
       "SELECT COUNT(*) as total, SUM(CASE WHEN status='closed' THEN 1 ELSE 0 END) as closed FROM incidents WHERE created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)"
     );
-    
-    // Previous 30 days
     const [prevStats] = await db.query(
       "SELECT COUNT(*) as total FROM incidents WHERE created_at >= DATE_SUB(NOW(), INTERVAL 60 DAY) AND created_at < DATE_SUB(NOW(), INTERVAL 30 DAY)"
     );
-
-    // Average resolution time (for closed incidents)
     const [resolutionTimeData] = await db.query(
       "SELECT AVG(TIMESTAMPDIFF(MINUTE, created_at, updated_at)) as avgMinutes FROM incidents WHERE status='closed' AND created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)"
     );
@@ -104,45 +88,28 @@ exports.getReportsStats = async (req, res) => {
     const prevTotal = prevStats[0]?.total || 0;
     const closedIncidents = currentStats[0].closed || 0;
     const avgResolutionMinutes = Math.round(resolutionTimeData[0]?.avgMinutes || 0);
-    
-    // Calculate total change percentage
     const totalChange = prevTotal > 0 ? ((totalIncidents - prevTotal) / prevTotal * 100).toFixed(1) : 0;
-    
-    // Calculate resolved rate percentage
     const resolvedRate = totalIncidents > 0 ? ((closedIncidents / totalIncidents) * 100).toFixed(1) : 0;
-    
-    // Format avg resolution time (convert minutes to hours and minutes)
     const hours = Math.floor(avgResolutionMinutes / 60);
     const minutes = avgResolutionMinutes % 60;
     const avgResolutionTime = `${hours}h ${minutes}m`;
 
     res.status(200).json({
       success: true,
-      data: {
-        totalIncidents,
-        totalChange: parseFloat(totalChange),
-        resolvedRate: parseFloat(resolvedRate),
-        avgResolutionTime,
-        avgResolutionMinutes
-      }
+      data: { totalIncidents, totalChange: parseFloat(totalChange), resolvedRate: parseFloat(resolvedRate), avgResolutionTime, avgResolutionMinutes }
     });
   } catch (error) {
     console.error("Get reports stats error:", error);
-    res.status(500).json({
-      success: false,
-      message: "Server error"
-    });
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
 /**
  * Get weekly incidents by category (Admin only)
  * GET /api/admin/reports/weekly
- * Returns: labels, software, hardware arrays
  */
 exports.getWeeklyByCategory = async (req, res) => {
   try {
-    // Get the last 5 weeks of data
     const [data] = await db.query(
       `SELECT 
         WEEK(created_at, 1) as week_num,
@@ -156,61 +123,44 @@ exports.getWeeklyByCategory = async (req, res) => {
       LIMIT 50`
     );
 
-    // Group by week
     const weekMap = new Map();
     data.forEach(row => {
       const key = `${row.year}-W${row.week_num}`;
-      if (!weekMap.has(key)) {
-        weekMap.set(key, { software: 0, hardware: 0 });
-      }
-      
-      const category = (row.category || '').toLowerCase();
-      const isSoftware = category.includes('software') || category.includes('it') || category.includes('sistem');
-      
-      if (isSoftware) {
-        weekMap.get(key).software += row.count;
-      } else {
-        weekMap.get(key).hardware += row.count;
-      }
+      if (!weekMap.has(key)) weekMap.set(key, { it: 0, fasilitas: 0 });
+
+      const category = (row.category || '').toLowerCase().trim();
+      const isIT = category === 'it' || category.includes('software') || category.includes('hardware') || category.includes('sistem') || category.includes('network') || category.includes('teknologi');
+      const isFasilitas = category === 'fasilitas' || category === 'facilities' || category === 'facility' || category.includes('fasilitas') || category.includes('gedung') || category.includes('ruangan');
+
+      if (isIT) weekMap.get(key).it += parseInt(row.count);
+      else if (isFasilitas) weekMap.get(key).fasilitas += parseInt(row.count);
+      else weekMap.get(key).it += parseInt(row.count);
     });
 
-    // Get last 5 weeks
-    const weeks = Array.from(weekMap.keys()).reverse().slice(0, 5);
-    const software = weeks.map(w => weekMap.get(w)?.software || 0);
-    const hardware = weeks.map(w => weekMap.get(w)?.hardware || 0);
-    
-    // Create week labels
-    const labels = weeks.map((_, i) => `WK ${i + 1}`);
+    const weeks = Array.from(weekMap.keys()).sort((a, b) => a.localeCompare(b)).slice(-5);
+    const itData        = weeks.map(w => weekMap.get(w)?.it        || 0);
+    const fasilitasData = weeks.map(w => weekMap.get(w)?.fasilitas || 0);
+    const labels        = weeks.map((_, i) => `WK ${i + 1}`);
 
     res.status(200).json({
       success: true,
-      data: {
-        labels,
-        software,
-        hardware
-      }
+      data: { labels, it: itData, fasilitas: fasilitasData, software: itData, hardware: fasilitasData }
     });
   } catch (error) {
     console.error("Get weekly by category error:", error);
-    res.status(500).json({
-      success: false,
-      message: "Server error"
-    });
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
 /**
  * Get top reporters (Admin only)
  * GET /api/admin/reports/top-reporters
- * Returns: top 5 users with incident count and resolution rate
  */
 exports.getTopReporters = async (req, res) => {
   try {
     const [reporters] = await db.query(
       `SELECT 
-        u.id,
-        u.name,
-        u.role,
+        u.id, u.name, u.role,
         COUNT(i.id) as incidents,
         SUM(CASE WHEN i.status='closed' THEN 1 ELSE 0 END) as closed,
         AVG(TIMESTAMPDIFF(HOUR, i.created_at, i.updated_at)) as avgHours
@@ -224,35 +174,25 @@ exports.getTopReporters = async (req, res) => {
     );
 
     const topReporters = reporters.map(r => ({
-      id: r.id,
-      name: r.name,
-      role: r.role,
+      id: r.id, name: r.name, role: r.role,
       incidents: r.incidents || 0,
       resolutionPct: r.incidents > 0 ? ((r.closed / r.incidents) * 100).toFixed(1) : 0,
       avgTime: r.avgHours ? `${Math.round(r.avgHours)}h` : '0h'
     }));
 
-    res.status(200).json({
-      success: true,
-      data: topReporters
-    });
+    res.status(200).json({ success: true, data: topReporters });
   } catch (error) {
     console.error("Get top reporters error:", error);
-    res.status(500).json({
-      success: false,
-      message: "Server error"
-    });
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
 /**
  * Get performance metrics (Admin only)
  * GET /api/admin/reports/performance
- * Returns: compliance, speed, accuracy, satisfaction, efficiency, overallScore, overallLabel
  */
 exports.getPerformanceMetrics = async (req, res) => {
   try {
-    // Get metrics from incidents
     const [metrics] = await db.query(
       `SELECT 
         COUNT(*) as total,
@@ -268,180 +208,87 @@ exports.getPerformanceMetrics = async (req, res) => {
     const unresolvedHigh = metrics[0].unresolved_high || 0;
     const avgMinutes = metrics[0].avgMinutes || 0;
 
-    // Calculate scores (0-100)
-    const compliance = total > 0 ? Math.min(100, ((closed / total) * 100 + ((1 - unresolvedHigh / (total || 1)) * 20)).toFixed(0)) : 0;
-    const speed = Math.min(100, Math.max(0, (100 - avgMinutes / 30).toFixed(0)));
-    const accuracy = Math.min(100, (90 + Math.random() * 10).toFixed(0));
-    const satisfaction = Math.min(100, (75 + Math.random() * 20).toFixed(0));
-    const efficiency = total > 0 ? Math.min(100, (((closed / total) * 100 * 0.7 + (100 - avgMinutes / 30) * 0.3)).toFixed(0)) : 0;
-
-    // Calculate overall score (out of 5)
+    const compliance   = total > 0 ? Math.min(100, Math.round((closed / total) * 100 + (1 - unresolvedHigh / (total || 1)) * 20)) : 0;
+    const speed        = Math.min(100, Math.max(0, Math.round(100 - avgMinutes / 30)));
+    const accuracy     = Math.min(100, Math.round(90 + Math.random() * 10));
+    const satisfaction = Math.min(100, Math.round(75 + Math.random() * 20));
+    const efficiency   = total > 0 ? Math.min(100, Math.round((closed / total) * 100 * 0.7 + (100 - avgMinutes / 30) * 0.3)) : 0;
     const overallScore = ((compliance + speed + accuracy + satisfaction + efficiency) / 500 * 5).toFixed(1);
-    
-    // Determine label
-    let overallLabel = "Fair";
-    if (overallScore >= 4.5) overallLabel = "Very Good";
-    else if (overallScore >= 4.0) overallLabel = "Good";
-    else if (overallScore >= 3.0) overallLabel = "Fair";
+
+    let overallLabel = "Cukup";
+    if (overallScore >= 4.5)      overallLabel = "Sangat Baik";
+    else if (overallScore >= 4.0) overallLabel = "Baik";
+    else if (overallScore >= 3.0) overallLabel = "Cukup";
 
     res.status(200).json({
       success: true,
-      data: {
-        compliance: parseInt(compliance),
-        speed: parseInt(speed),
-        accuracy: parseInt(accuracy),
-        satisfaction: parseInt(satisfaction),
-        efficiency: parseInt(efficiency),
-        overallScore: parseFloat(overallScore),
-        overallLabel
-      }
+      data: { compliance, speed, accuracy, satisfaction, efficiency, overallScore: parseFloat(overallScore), overallLabel }
     });
   } catch (error) {
     console.error("Get performance metrics error:", error);
-    res.status(500).json({
-      success: false,
-      message: "Server error"
-    });
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
 /**
- * Get all users with statistics (Admin only)
+ * Get all users (Admin only)
  * GET /api/admin/users
- * Returns user list and statistics
  */
 exports.getUsers = async (req, res) => {
   try {
-    const [users] = await db.query(
-      "SELECT id, name, email, role, created_at FROM users ORDER BY created_at DESC"
-    );
-
-    const totalUsers = users.length;
+    const [users] = await db.query("SELECT id, name, email, role, created_at FROM users ORDER BY created_at DESC");
+    const totalUsers     = users.length;
     const administrators = users.filter(u => u.role === "admin").length;
-    const activeUsers = users.filter(u => u.role !== "admin").length;
-
-    res.status(200).json({
-      success: true,
-      stats: {
-        totalUsers,
-        administrators,
-        activeUsers
-      },
-      data: users
-    });
+    const activeUsers    = users.filter(u => u.role !== "admin").length;
+    res.status(200).json({ success: true, stats: { totalUsers, administrators, activeUsers }, data: users });
   } catch (error) {
     console.error("Get users error:", error);
-    res.status(500).json({
-      success: false,
-      message: "Server error"
-    });
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
 /**
  * Create new user (Admin only)
  * POST /api/admin/users
- * Body: { name, email, password, role, department }
  */
 exports.createUser = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
+    if (!name || !email || !password || !role)
+      return res.status(400).json({ success: false, message: "All fields are required" });
 
-    // Validation
-    if (!name || !email || !password || !role) {
-      return res.status(400).json({
-        success: false,
-        message: "All fields are required"
-      });
-    }
+    const [existingUser] = await db.query("SELECT id FROM users WHERE email = ?", [email]);
+    if (existingUser.length > 0)
+      return res.status(400).json({ success: false, message: "Email already exists" });
 
-    // Check if email exists
-    const [existingUser] = await db.query(
-      "SELECT id FROM users WHERE email = ?",
-      [email]
-    );
-
-    if (existingUser.length > 0) {
-      return res.status(400).json({
-        success: false,
-        message: "Email already exists"
-      });
-    }
-
-    // Hash password
     const hashedPassword = await bcryptjs.hash(password, 10);
-
-    // Insert user
-    const [result] = await db.query(
-      "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)",
-      [name, email, hashedPassword, role]
-    );
-
-    res.status(201).json({
-      success: true,
-      message: "User created successfully",
-      userId: result.insertId
-    });
+    const [result] = await db.query("INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)", [name, email, hashedPassword, role]);
+    res.status(201).json({ success: true, message: "User created successfully", userId: result.insertId });
   } catch (error) {
     console.error("Create user error:", error);
-    res.status(500).json({
-      success: false,
-      message: "Server error"
-    });
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
 /**
  * Update user (Admin only)
  * PUT /api/admin/users/:id
- * Body: { name, role, department }
  */
 exports.updateUser = async (req, res) => {
   try {
     const { id } = req.params;
     const { name, role } = req.body;
+    if (!id) return res.status(400).json({ success: false, message: "User ID is required" });
+    if (!name || !role) return res.status(400).json({ success: false, message: "Name and role are required" });
 
-    // Validation
-    if (!id) {
-      return res.status(400).json({
-        success: false,
-        message: "User ID is required"
-      });
-    }
-
-    if (!name || !role) {
-      return res.status(400).json({
-        success: false,
-        message: "Name and role are required"
-      });
-    }
-
-    // Check if user exists
     const [user] = await db.query("SELECT id FROM users WHERE id = ?", [id]);
+    if (user.length === 0) return res.status(404).json({ success: false, message: "User not found" });
 
-    if (user.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found"
-      });
-    }
-
-    // Update user
-    await db.query(
-      "UPDATE users SET name = ?, role = ? WHERE id = ?",
-      [name, role, id]
-    );
-
-    res.status(200).json({
-      success: true,
-      message: "User updated successfully"
-    });
+    await db.query("UPDATE users SET name = ?, role = ? WHERE id = ?", [name, role, id]);
+    res.status(200).json({ success: true, message: "User updated successfully" });
   } catch (error) {
     console.error("Update user error:", error);
-    res.status(500).json({
-      success: false,
-      message: "Server error"
-    });
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
@@ -452,131 +299,57 @@ exports.updateUser = async (req, res) => {
 exports.deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
+    if (!id) return res.status(400).json({ success: false, message: "User ID is required" });
 
-    // Validation
-    if (!id) {
-      return res.status(400).json({
-        success: false,
-        message: "User ID is required"
-      });
-    }
-
-    // Check if user exists
     const [user] = await db.query("SELECT id FROM users WHERE id = ?", [id]);
+    if (user.length === 0) return res.status(404).json({ success: false, message: "User not found" });
 
-    if (user.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found"
-      });
-    }
-
-    // Delete user
     await db.query("DELETE FROM users WHERE id = ?", [id]);
-
-    res.status(200).json({
-      success: true,
-      message: "User deleted successfully"
-    });
+    res.status(200).json({ success: true, message: "User deleted successfully" });
   } catch (error) {
     console.error("Delete user error:", error);
-    res.status(500).json({
-      success: false,
-      message: "Server error"
-    });
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
 /**
  * Get all solvers (Admin only)
  * GET /api/admin/solvers
- * Returns: list of solver users with id, name, email
  */
 exports.getSolvers = async (req, res) => {
   try {
-    const [solvers] = await db.query(
-      "SELECT id, name, email FROM users WHERE role = 'solver' ORDER BY name ASC"
-    );
-
-    res.status(200).json({
-      success: true,
-      data: solvers
-    });
+    const [solvers] = await db.query("SELECT id, name, email FROM users WHERE role = 'solver' ORDER BY name ASC");
+    res.status(200).json({ success: true, data: solvers });
   } catch (error) {
     console.error("Get solvers error:", error);
-    res.status(500).json({
-      success: false,
-      message: "Server error"
-    });
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
 /**
  * Assign incident to solver (Admin only)
  * PUT /api/admin/incidents/:id/assign
- * Body: { assigned_to } (solver user id)
- * Validates incident and solver exist, then assigns incident and sets status to 'progress'
  */
 exports.assignIncident = async (req, res) => {
   try {
     const { id } = req.params;
     const { assigned_to } = req.body;
 
-    // Validate required fields
-    if (!id) {
-      return res.status(400).json({
-        success: false,
-        message: "Incident ID is required"
-      });
-    }
+    if (!id)          return res.status(400).json({ success: false, message: "Incident ID is required" });
+    if (!assigned_to) return res.status(400).json({ success: false, message: "Solver ID is required" });
 
-    if (!assigned_to) {
-      return res.status(400).json({
-        success: false,
-        message: "Solver ID is required"
-      });
-    }
+    const [incident] = await db.query("SELECT * FROM incidents WHERE id = ?", [id]);
+    if (incident.length === 0) return res.status(404).json({ success: false, message: "Incident not found" });
 
-    // Check if incident exists
-    const [incident] = await db.query(
-      "SELECT * FROM incidents WHERE id = ?",
-      [id]
-    );
+    const [solver] = await db.query("SELECT id, role FROM users WHERE id = ?", [assigned_to]);
+    if (solver.length === 0) return res.status(404).json({ success: false, message: "Solver not found" });
+    if (solver[0].role !== 'solver') return res.status(400).json({ success: false, message: "User is not a solver" });
 
-    if (incident.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "Incident not found"
-      });
-    }
-
-    // Check if solver exists and has role 'solver'
-    const [solver] = await db.query(
-      "SELECT id, role FROM users WHERE id = ?",
-      [assigned_to]
-    );
-
-    if (solver.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "Solver not found"
-      });
-    }
-
-    if (solver[0].role !== 'solver') {
-      return res.status(400).json({
-        success: false,
-        message: "User is not a solver"
-      });
-    }
-
-    // Update incident: assign to solver and set status to 'progress'
     await db.query(
       "UPDATE incidents SET assigned_to = ?, status = 'progress', updated_at = NOW() WHERE id = ?",
       [assigned_to, id]
     );
 
-    // Fetch updated incident
     const [updatedIncidentData] = await db.query(
       "SELECT i.*, u.name as reporter_name, s.name as assigned_to_name FROM incidents i LEFT JOIN users u ON i.user_id = u.id LEFT JOIN users s ON i.assigned_to = s.id WHERE i.id = ?",
       [id]
@@ -584,24 +357,17 @@ exports.assignIncident = async (req, res) => {
 
     const incidentTitle = updatedIncidentData[0]?.title || "Insiden";
 
-    // Create notification for solver
     await createNotification(
       assigned_to,
       "Insiden Baru Ditugaskan",
       `Anda ditugaskan untuk menangani: ${incidentTitle}`,
-      "assigned"
+      "assigned",
+      parseInt(id)
     );
 
-    res.status(200).json({
-      success: true,
-      message: "Insiden berhasil di-assign",
-      data: updatedIncidentData[0]
-    });
+    res.status(200).json({ success: true, message: "Insiden berhasil di-assign", data: updatedIncidentData[0] });
   } catch (error) {
     console.error("Assign incident error:", error);
-    res.status(500).json({
-      success: false,
-      message: "Server error"
-    });
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };

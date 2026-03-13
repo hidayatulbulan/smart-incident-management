@@ -25,8 +25,11 @@ const authorizeSolver = (req, res, next) => {
   }
 };
 
-// Get all incidents assigned to this solver
+// Get all incidents assigned to this solver (for incidents.html - all statuses)
 router.get("/incidents", authenticate, authorizeSolver, solverController.getMyIncidents);
+
+// Get latest OPEN incidents for Dashboard (filter status='open', limit 5)
+router.get("/incidents/latest", authenticate, authorizeSolver, solverController.getLatestIncidents);
 
 // Get specific incident detail
 router.get("/incidents/:id", authenticate, authorizeSolver, solverController.getIncidentDetail);

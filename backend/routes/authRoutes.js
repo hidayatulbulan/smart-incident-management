@@ -20,6 +20,7 @@ router.post("/login", auth.login);
 router.get("/profile", authenticate, auth.getProfile);
 router.put("/profile", authenticate, auth.updateProfile);
 router.post("/profile/photo", authenticate, uploadPhoto.single("photo"), auth.updateProfilePhoto);
+router.put("/change-password", authenticate, auth.changePassword);
 
 // GET route for browser testing only (remove in production)
 router.get("/login", (req, res) => {
