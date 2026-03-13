@@ -17,28 +17,19 @@
             --shadow-card: 0 2px 16px rgba(0,0,0,0.06);
             --radius: 18px; --radius-sm: 12px;
         }
-
         * { margin:0; padding:0; box-sizing:border-box; }
         body { font-family:'Plus Jakarta Sans',sans-serif; background:var(--gray-50); color:var(--gray-900); overflow-x:hidden; }
         .container { display:flex; min-height:100vh; }
 
-        /* ===== SIDEBAR ===== */
-        .sidebar {
-            width:235px; background:var(--white); padding:24px 14px;
-            box-shadow:2px 0 20px rgba(0,0,0,0.05); display:flex; flex-direction:column;
-            position:fixed; top:0; left:0; bottom:0; z-index:100;
-            border-right:1px solid var(--red-100);
-            animation:slideInLeft 0.45s cubic-bezier(0.22,1,0.36,1);
-        }
+        /* SIDEBAR */
+        .sidebar { width:235px; background:var(--white); padding:24px 14px; box-shadow:2px 0 20px rgba(0,0,0,0.05); display:flex; flex-direction:column; position:fixed; top:0; left:0; bottom:0; z-index:100; border-right:1px solid var(--red-100); animation:slideInLeft 0.45s cubic-bezier(0.22,1,0.36,1); }
         @keyframes slideInLeft { from{transform:translateX(-100%);opacity:0;} to{transform:translateX(0);opacity:1;} }
         @keyframes fadeInUp    { from{transform:translateY(24px);opacity:0;} to{transform:translateY(0);opacity:1;} }
         @keyframes fadeInDown  { from{transform:translateY(-18px);opacity:0;} to{transform:translateY(0);opacity:1;} }
-
         .logo { display:flex; align-items:center; gap:11px; margin-bottom:32px; padding:8px 10px; }
         .logo-icon { width:38px; height:38px; background:linear-gradient(135deg,var(--red),var(--red-dark)); border-radius:11px; display:flex; align-items:center; justify-content:center; color:white; font-size:17px; box-shadow:0 4px 12px rgba(230,57,70,0.32); }
         .logo-text { font-size:15.5px; font-weight:800; color:var(--gray-900); letter-spacing:-0.3px; }
         .logo-text span { color:var(--red); }
-
         .nav-section-label { font-size:9.5px; font-weight:700; color:var(--gray-400); text-transform:uppercase; letter-spacing:1.3px; padding:0 10px; margin-bottom:7px; }
         .nav-menu { list-style:none; margin-bottom:10px; }
         .nav-item { margin-bottom:2px; }
@@ -51,33 +42,22 @@
         .logout-link { display:flex; align-items:center; gap:11px; padding:10px 13px; color:var(--gray-400); font-size:13px; font-weight:600; cursor:pointer; border-radius:var(--radius-sm); margin-top:auto; border:none; background:none; transition:all 0.2s; font-family:inherit; width:100%; }
         .logout-link:hover { background:#fff5f5; color:var(--red); }
 
-        /* ===== MAIN ===== */
+        /* MAIN */
         .main-content { flex:1; margin-left:235px; padding:26px 30px; }
-
-        /* ===== PAGE HEADER ===== */
         .page-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:24px; animation:fadeInDown 0.5s cubic-bezier(0.22,1,0.36,1); }
         .page-header-left h1 { font-size:22px; font-weight:800; color:var(--gray-900); letter-spacing:-0.5px; }
         .page-header-left p { font-size:12.5px; color:var(--gray-400); margin-top:3px; font-weight:500; }
-
-        .add-btn { display:flex; align-items:center; gap:8px; padding:10px 20px; background:linear-gradient(135deg,var(--red),var(--red-dark)); color:white; border:none; border-radius:var(--radius-sm); font-size:13px; font-weight:700; cursor:pointer; font-family:inherit; transition:all 0.2s; box-shadow:0 4px 14px rgba(230,57,70,0.28); }
-        .add-btn:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(230,57,70,0.38); }
-
-        /* ===== CARD ===== */
         .card { background:white; border-radius:var(--radius); padding:22px; box-shadow:var(--shadow-card); border:1px solid var(--gray-100); animation:fadeInUp 0.5s cubic-bezier(0.22,1,0.36,1) 0.1s both; }
-
-        /* ===== CONTROLS ===== */
         .table-controls { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:12px; }
         .search-filter { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
-
         .search-box { position:relative; }
         .search-box input { padding:9px 16px 9px 38px; border:1.5px solid var(--gray-200); border-radius:11px; width:260px; font-size:12.5px; outline:none; transition:all 0.2s; background:white; font-family:inherit; color:var(--gray-900); }
         .search-box input:focus { border-color:var(--red-light); box-shadow:0 0 0 3px rgba(230,57,70,0.08); }
         .search-box i { position:absolute; left:13px; top:50%; transform:translateY(-50%); color:var(--gray-400); font-size:12px; }
-
         .filter-select { padding:9px 14px; border:1.5px solid var(--gray-200); border-radius:11px; font-size:12.5px; cursor:pointer; outline:none; background:white; font-family:inherit; color:var(--gray-700); font-weight:500; transition:all 0.2s; }
         .filter-select:focus { border-color:var(--red-light); box-shadow:0 0 0 3px rgba(230,57,70,0.08); }
 
-        /* ===== TABLE ===== */
+        /* TABLE */
         .incidents-table { width:100%; border-collapse:collapse; }
         .incidents-table thead tr { border-bottom:2px solid var(--gray-100); }
         .incidents-table th { padding:10px 12px; text-align:left; font-size:10px; font-weight:700; color:var(--gray-400); text-transform:uppercase; letter-spacing:0.7px; }
@@ -85,36 +65,23 @@
         .incidents-table tbody tr { transition:background 0.15s; }
         .incidents-table tbody tr:hover { background:var(--red-50); }
         .incidents-table tbody tr:last-child td { border-bottom:none; }
-
         .user-cell { display:flex; align-items:center; gap:9px; }
         .user-avatar-small { width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:white; flex-shrink:0; }
         .user-name { font-weight:600; color:var(--gray-800); }
-
         .id-badge { font-size:12px; font-weight:700; color:var(--gray-500); }
-
-        /* PRIORITY */
         .priority-badge { padding:3px 11px; border-radius:20px; font-size:10.5px; font-weight:700; display:inline-block; }
         .priority-high   { background:#fff0f2; color:var(--red); }
         .priority-medium { background:#fff7ed; color:#ea580c; }
         .priority-low    { background:rgba(230,57,70,0.07); color:var(--red-dark); }
-
-        /* STATUS SELECT */
         .status-select { padding:4px 22px 4px 10px; border-radius:20px; font-size:10.5px; font-weight:700; cursor:pointer; border:1.5px solid transparent; outline:none; font-family:inherit; appearance:none; -webkit-appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='5'%3E%3Cpath d='M0 0l4.5 5L9 0z' fill='%23aaa'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 7px center; transition:box-shadow 0.2s; }
         .status-select:focus { box-shadow:0 0 0 3px rgba(230,57,70,0.10); }
         .status-open     { background-color:#fff7ed; color:#c2410c; border-color:#fed7aa; }
         .status-progress { background-color:#eff6ff; color:#1d4ed8; border-color:#bfdbfe; }
         .status-closed   { background-color:#f0fdf4; color:#15803d; border-color:#bbf7d0; }
-
-        /* ASSIGN SELECT */
         .assign-select { padding:5px 10px; border:1.5px solid var(--gray-200); border-radius:9px; font-size:11.5px; cursor:pointer; outline:none; background:white; font-family:inherit; color:var(--gray-700); font-weight:500; max-width:145px; transition:border-color 0.2s; }
         .assign-select:focus { border-color:var(--red-light); }
-
-        /* CAT BADGE */
         .cat-badge { background:var(--gray-100); color:var(--gray-600); padding:3px 10px; border-radius:7px; font-size:10.5px; font-weight:600; }
-
         .date-cell { font-size:11.5px; color:var(--gray-500); font-weight:500; white-space:nowrap; }
-
-        /* ACTION BUTTONS */
         .action-buttons { display:flex; gap:6px; }
         .action-btn { width:30px; height:30px; border-radius:8px; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s; font-size:12px; }
         .view-btn   { background:var(--red-50);   color:var(--red); }
@@ -124,161 +91,75 @@
         .edit-btn:hover   { background:#1d4ed8;         color:white; transform:scale(1.1); }
         .delete-btn:hover { background:var(--red-dark); color:white; transform:scale(1.1); }
 
-        /* ===== PAGINATION ===== */
-        .pagination { display:flex; justify-content:center; align-items:center; gap:6px; margin-top:22px; }
-        .page-btn { width:34px; height:34px; border-radius:9px; border:1.5px solid var(--gray-200); background:white; cursor:pointer; font-size:12.5px; font-weight:600; font-family:inherit; color:var(--gray-600); transition:all 0.2s; display:flex; align-items:center; justify-content:center; }
-        .page-btn:hover:not(.active) { border-color:var(--red-light); color:var(--red); background:var(--red-50); }
+        /* PAGINATION */
+        .pagination-wrap { display:flex; flex-direction:column; align-items:center; gap:10px; margin-top:22px; }
+        .pagination-info { font-size:12px; color:var(--gray-500); font-weight:500; }
+        .pagination { display:flex; justify-content:center; align-items:center; gap:5px; }
+        .page-btn { min-width:34px; height:34px; border-radius:9px; border:1.5px solid var(--gray-200); background:white; cursor:pointer; font-size:12.5px; font-weight:600; font-family:inherit; color:var(--gray-600); transition:all 0.2s; display:flex; align-items:center; justify-content:center; padding:0 8px; }
+        .page-btn:hover:not(.active):not(:disabled) { border-color:var(--red-light); color:var(--red); background:var(--red-50); }
         .page-btn.active { background:linear-gradient(135deg,var(--red),var(--red-dark)); color:white; border-color:transparent; box-shadow:0 4px 12px rgba(230,57,70,0.28); }
+        .page-btn:disabled { opacity:0.38; cursor:not-allowed; }
 
-        /* empty state */
         .empty-state { text-align:center; padding:48px 20px; color:var(--gray-400); }
         .empty-state i { font-size:36px; margin-bottom:12px; display:block; opacity:0.35; }
         .empty-state p { font-size:13px; font-weight:500; }
 
-        /* ===== TOAST ===== */
+        /* TOAST */
         .toast { position:fixed; top:20px; right:20px; padding:13px 20px; border-radius:12px; color:white; font-size:13px; font-weight:700; z-index:9999; box-shadow:0 8px 24px rgba(0,0,0,0.14); animation:toastIn 0.3s ease; display:flex; align-items:center; gap:9px; }
         .toast-success { background:linear-gradient(135deg,#22c55e,#16a34a); }
         .toast-error   { background:linear-gradient(135deg,var(--red),var(--red-dark)); }
         @keyframes toastIn { from{transform:translateX(100%);opacity:0;} to{transform:translateX(0);opacity:1;} }
 
-        /* ===== MODAL ===== */
-        #incidentModal { display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.45); z-index:2000; align-items:center; justify-content:center; overflow-y:auto; padding:20px; backdrop-filter:blur(2px); }
-        .modal-box { background:white; border-radius:var(--radius); width:100%; max-width:580px; max-height:92vh; overflow-y:auto; box-shadow:0 24px 64px rgba(0,0,0,0.18); overflow:hidden; }
-
-        /* Modal Header - Red gradient banner */
-        .modal-header {
-            display:flex; justify-content:space-between; align-items:center;
-            padding:20px 24px;
-            background: linear-gradient(135deg, var(--red), var(--red-dark));
-            position:sticky; top:0; z-index:1;
-        }
+        /* MODAL */
+        #incidentModal { display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.45); z-index:2000; align-items:center; justify-content:center; padding:20px; backdrop-filter:blur(2px); }
+        .modal-box { background:white; border-radius:var(--radius); width:100%; max-width:580px; max-height:92vh; box-shadow:0 24px 64px rgba(0,0,0,0.18); display:flex; flex-direction:column; }
+        .modal-header { display:flex; justify-content:space-between; align-items:center; padding:20px 24px; background:linear-gradient(135deg,var(--red),var(--red-dark)); border-radius:var(--radius) var(--radius) 0 0; flex-shrink:0; }
         .modal-header h2 { font-size:16px; font-weight:800; color:white; letter-spacing:-0.3px; display:flex; align-items:center; gap:9px; }
-        .modal-header h2 i { font-size:14px; opacity:0.85; }
-        .modal-close {
-            background:rgba(255,255,255,0.15); border:none; font-size:14px; color:white; cursor:pointer;
-            width:30px; height:30px; display:flex; align-items:center; justify-content:center;
-            border-radius:8px; transition:all 0.2s;
-        }
+        .modal-close { background:rgba(255,255,255,0.15); border:none; font-size:14px; color:white; cursor:pointer; width:30px; height:30px; display:flex; align-items:center; justify-content:center; border-radius:8px; transition:all 0.2s; }
         .modal-close:hover { background:rgba(255,255,255,0.28); }
-
-        /* Modal body */
-        .modal-body { padding:22px 24px; overflow-y:auto; max-height:calc(92vh - 130px); }
-
-        /* Photo section */
-        .photo-section { position:relative; margin-bottom:20px; }
-        #modalPhoto { max-width:100%; max-height:220px; border-radius:12px; display:none; width:100%; object-fit:cover; }
-        .photo-box {
-            background: linear-gradient(135deg, var(--red-50), #fff8f9);
-            border: 1.5px dashed var(--red-light);
-            border-radius:12px; padding:28px; text-align:center; color:var(--red-light);
-            margin-bottom:0;
-        }
+        .modal-body { padding:22px 24px; overflow-y:auto; flex:1; }
+        .photo-section { margin-bottom:20px; }
+        .photo-box { background:linear-gradient(135deg,var(--red-50),#fff8f9); border:1.5px dashed var(--red-light); border-radius:12px; padding:28px; text-align:center; }
         .photo-box i { font-size:26px; margin-bottom:6px; display:block; color:var(--red-light); opacity:0.7; }
         .photo-box span { font-size:12px; color:var(--gray-400); font-weight:500; }
-
-        /* Incident ID pill inside modal body */
-        .modal-id-pill {
-            display:inline-flex; align-items:center; gap:6px;
-            background: var(--red-50); color: var(--red);
-            border: 1.5px solid var(--red-100);
-            border-radius: 20px; padding: 4px 12px;
-            font-size: 11px; font-weight: 800;
-            margin-bottom: 16px; letter-spacing: 0.3px;
-        }
-
-        /* Section divider label */
-        .modal-section-label {
-            font-size: 9px; font-weight: 800; color: var(--red);
-            text-transform: uppercase; letter-spacing: 1.5px;
-            display: flex; align-items: center; gap: 8px;
-            margin: 18px 0 12px;
-        }
-        .modal-section-label::after {
-            content:''; flex:1; height:1px;
-            background: linear-gradient(to right, var(--red-100), transparent);
-        }
-
-        /* Form groups */
+        .modal-id-pill { display:inline-flex; align-items:center; gap:6px; background:var(--red-50); color:var(--red); border:1.5px solid var(--red-100); border-radius:20px; padding:4px 12px; font-size:11px; font-weight:800; margin-bottom:16px; }
+        .modal-section-label { font-size:9px; font-weight:800; color:var(--red); text-transform:uppercase; letter-spacing:1.5px; display:flex; align-items:center; gap:8px; margin:18px 0 12px; }
+        .modal-section-label::after { content:''; flex:1; height:1px; background:linear-gradient(to right,var(--red-100),transparent); }
         .modal-form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
         .form-group { margin-bottom:13px; }
-        .form-group label {
-            display:block; font-size:9.5px; font-weight:700; color:var(--red);
-            margin-bottom:5px; text-transform:uppercase; letter-spacing:0.8px;
-            opacity: 0.85;
-        }
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
-            width:100%; padding:9px 12px;
-            border:1.5px solid var(--red-100);
-            border-radius:10px; font-size:12.5px; outline:none;
-            font-family:inherit; color:var(--gray-800); transition:border-color 0.2s;
-            background:white;
-        }
-        .form-group input:focus,
-        .form-group textarea:focus,
-        .form-group select:focus {
-            border-color:var(--red-light);
-            box-shadow:0 0 0 3px rgba(230,57,70,0.08);
-        }
-        .form-group input[readonly],
-        .form-group textarea[readonly] {
-            background: var(--red-50);
-            color:var(--gray-700);
-            cursor:default;
-            border-color: var(--red-100);
-        }
+        .form-group label { display:block; font-size:9.5px; font-weight:700; color:var(--red); margin-bottom:5px; text-transform:uppercase; letter-spacing:0.8px; opacity:0.85; }
+        .form-group input, .form-group textarea, .form-group select { width:100%; padding:9px 12px; border:1.5px solid var(--red-100); border-radius:10px; font-size:12.5px; outline:none; font-family:inherit; color:var(--gray-800); transition:border-color 0.2s; background:white; }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color:var(--red-light); box-shadow:0 0 0 3px rgba(230,57,70,0.08); }
+        .form-group input[readonly], .form-group textarea[readonly] { background:var(--red-50); color:var(--gray-700); cursor:default; }
         .form-group textarea { resize:vertical; min-height:76px; }
+        .modal-status-select { width:100%; padding:9px 12px; border:1.5px solid var(--red-100); border-radius:10px; font-size:12.5px; outline:none; font-family:inherit; color:var(--gray-800); background:white; cursor:pointer; font-weight:600; }
+        .solver-note { background:#f0fdf4 !important; color:#166534 !important; border-color:#bbf7d0 !important; }
+        .admin-note-area { background:white !important; border-color:var(--red-light) !important; }
+        .modal-footer { padding:14px 24px; border-top:1.5px solid var(--red-100); display:flex; gap:10px; justify-content:flex-end; background:var(--red-50); border-radius:0 0 var(--radius) var(--radius); flex-shrink:0; }
+        .modal-btn-cancel { padding:9px 18px; border:1.5px solid var(--red-100); background:white; color:var(--red); border-radius:10px; font-size:13px; font-weight:600; cursor:pointer; font-family:inherit; transition:all 0.2s; }
+        .modal-btn-cancel:hover { border-color:var(--red); }
+        .modal-btn-save { padding:9px 22px; background:linear-gradient(135deg,var(--red),var(--red-dark)); color:white; border:none; border-radius:10px; font-size:13px; font-weight:700; cursor:pointer; font-family:inherit; box-shadow:0 4px 12px rgba(230,57,70,0.28); display:flex; align-items:center; gap:7px; transition:all 0.2s; }
+        .modal-btn-save:hover { transform:translateY(-1px); }
 
-        /* Status select inside modal */
-        .modal-status-select {
-            width:100%; padding:9px 12px;
-            border:1.5px solid var(--red-100);
-            border-radius:10px; font-size:12.5px; outline:none;
-            font-family:inherit; color:var(--gray-800); transition:all 0.2s;
-            background:white; cursor:pointer; font-weight:600;
-        }
-        .modal-status-select:focus {
-            border-color:var(--red);
-            box-shadow:0 0 0 3px rgba(230,57,70,0.08);
-        }
-
-        /* Solver note - green tinted */
-        .solver-note {
-            background: #f0fdf4 !important;
-            color: #166534 !important;
-            border-color: #bbf7d0 !important;
-        }
-
-        /* Admin note - red-accented */
-        .admin-note-area {
-            background: white !important;
-            border-color: var(--red-light) !important;
-            color: var(--gray-800) !important;
-        }
-        .admin-note-area:focus {
-            box-shadow: 0 0 0 3px rgba(230,57,70,0.10) !important;
-        }
-
-        /* Modal footer */
-        .modal-footer {
-            padding:14px 24px; border-top:1.5px solid var(--red-100);
-            display:flex; gap:10px; justify-content:flex-end;
-            background: var(--red-50);
-        }
-        .modal-btn-cancel {
-            padding:9px 18px; border:1.5px solid var(--red-100); background:white;
-            color:var(--red); border-radius:10px; font-size:13px; font-weight:600;
-            cursor:pointer; font-family:inherit; transition:all 0.2s;
-        }
-        .modal-btn-cancel:hover { border-color:var(--red); background:white; }
-        .modal-btn-save {
-            padding:9px 22px; background:linear-gradient(135deg,var(--red),var(--red-dark));
-            color:white; border:none; border-radius:10px; font-size:13px; font-weight:700;
-            cursor:pointer; font-family:inherit; transition:all 0.2s;
-            box-shadow:0 4px 12px rgba(230,57,70,0.28); display:flex; align-items:center; gap:7px;
-        }
-        .modal-btn-save:hover { transform:translateY(-1px); box-shadow:0 6px 18px rgba(230,57,70,0.38); }
+        /* DELETE MODAL */
+        #deleteModal { display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:3000; align-items:center; justify-content:center; padding:20px; backdrop-filter:blur(3px); }
+        .delete-modal-box { background:white; border-radius:var(--radius); width:100%; max-width:420px; box-shadow:0 24px 64px rgba(0,0,0,0.22); overflow:hidden; animation:deleteModalIn 0.25s cubic-bezier(0.34,1.56,0.64,1); }
+        @keyframes deleteModalIn { from{transform:scale(0.88);opacity:0;} to{transform:scale(1);opacity:1;} }
+        .delete-modal-icon { background:linear-gradient(135deg,#fff5f7,#ffe0e5); padding:28px 24px 16px; text-align:center; }
+        .delete-modal-icon .icon-circle { width:62px; height:62px; background:linear-gradient(135deg,var(--red),var(--red-dark)); border-radius:50%; display:inline-flex; align-items:center; justify-content:center; color:white; font-size:24px; box-shadow:0 8px 20px rgba(230,57,70,0.35); }
+        .delete-modal-content { padding:16px 24px 22px; text-align:center; }
+        .delete-modal-content h3 { font-size:17px; font-weight:800; color:var(--gray-900); margin-bottom:8px; }
+        .delete-modal-content p { font-size:13px; color:var(--gray-500); line-height:1.6; }
+        .delete-modal-content .incident-info { background:var(--red-50); border:1.5px solid var(--red-100); border-radius:10px; padding:10px 14px; margin:14px 0; text-align:left; }
+        .delete-modal-content .inc-id { font-size:10px; font-weight:700; color:var(--red); margin-bottom:2px; }
+        .delete-modal-content .inc-title { font-size:13px; font-weight:700; color:var(--gray-800); }
+        .delete-modal-content .warning-text { font-size:11.5px; color:var(--red); font-weight:600; display:flex; align-items:center; justify-content:center; gap:5px; margin-top:8px; }
+        .delete-modal-actions { display:flex; gap:10px; padding:0 24px 22px; }
+        .btn-cancel-delete { flex:1; padding:11px; border:1.5px solid var(--gray-200); background:white; color:var(--gray-600); border-radius:11px; font-size:13px; font-weight:600; cursor:pointer; font-family:inherit; transition:all 0.2s; }
+        .btn-cancel-delete:hover { background:var(--gray-50); }
+        .btn-confirm-delete { flex:1; padding:11px; background:linear-gradient(135deg,var(--red),var(--red-dark)); color:white; border:none; border-radius:11px; font-size:13px; font-weight:700; cursor:pointer; font-family:inherit; box-shadow:0 4px 14px rgba(230,57,70,0.3); display:flex; align-items:center; justify-content:center; gap:7px; transition:all 0.2s; }
+        .btn-confirm-delete:hover { transform:translateY(-1px); }
+        .btn-confirm-delete:disabled { opacity:0.65; cursor:not-allowed; transform:none; }
 
         @media(max-width:768px) { .sidebar{display:none;} .main-content{margin-left:0;padding:18px;} }
     </style>
@@ -286,7 +167,6 @@
 <body>
 <div class="container">
 
-    <!-- SIDEBAR -->
     <aside class="sidebar">
         <div class="logo">
             <img src="../assets/images/logo.png" style="width:36px;height:36px;object-fit:contain;border-radius:8px;" alt="Logo"
@@ -294,7 +174,6 @@
             <div class="logo-icon" id="sbFallback" style="display:none"><i class="fas fa-shield-halved"></i></div>
             <span class="logo-text">Smart<span>Incident</span></span>
         </div>
-
         <div class="nav-section-label">Menu Utama</div>
         <nav>
             <ul class="nav-menu">
@@ -308,9 +187,7 @@
         <button class="logout-link logout"><i class="fas fa-sign-out-alt"></i><span>Keluar</span></button>
     </aside>
 
-    <!-- MAIN -->
     <main class="main-content">
-
         <div class="page-header">
             <div class="page-header-left">
                 <h1>Data Insiden</h1>
@@ -334,13 +211,10 @@
                     <select class="filter-select" id="statusFilter">
                         <option value="">Semua Status</option>
                         <option value="open">Open</option>
-<option value="in_progress">On Progress</option>
+                        <option value="in_progress">On Progress</option>
                         <option value="closed">Closed</option>
                     </select>
                 </div>
-                <button class="add-btn" onclick="alert('Fitur tambah insiden segera hadir')">
-                    <i class="fas fa-plus"></i> Tambah Insiden
-                </button>
             </div>
 
             <table class="incidents-table">
@@ -362,428 +236,468 @@
                 </tbody>
             </table>
 
-            <div class="pagination" id="paginationEl">
-                <button class="page-btn"><i class="fas fa-chevron-left"></i></button>
-                <button class="page-btn active">1</button>
-                <button class="page-btn">2</button>
-                <button class="page-btn">3</button>
-                <button class="page-btn">4</button>
-                <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+            <!-- PAGINATION WRAPPER -->
+            <div class="pagination-wrap" id="paginationWrap" style="display:none;">
+                <div class="pagination-info" id="paginationInfo"></div>
+                <div class="pagination" id="paginationEl"></div>
             </div>
         </div>
     </main>
 </div>
 
-<!-- ===== MODAL ===== -->
+<!-- MODAL DETAIL/EDIT -->
 <div id="incidentModal">
     <div class="modal-box">
-
-        <!-- Red header banner -->
         <div class="modal-header">
             <h2><i class="fas fa-exclamation-circle"></i><span id="modalHeadTitle">Detail Insiden</span></h2>
             <button class="modal-close" onclick="closeIncidentModal()"><i class="fas fa-times"></i></button>
         </div>
-
         <div class="modal-body">
             <input type="hidden" id="modalIncidentId">
-
-            <!-- ID pill -->
-            <div id="modalIdPill" class="modal-id-pill"><i class="fas fa-hashtag"></i><span id="modalIdText">—</span></div>
-
-            <!-- Photo -->
-            <div id="photoWrap" class="photo-section">
-                <img id="modalPhoto" style="max-width:100%;max-height:220px;border-radius:12px;display:none;margin-bottom:16px;width:100%;object-fit:cover;">
+            <div class="modal-id-pill"><i class="fas fa-hashtag"></i><span id="modalIdText">—</span></div>
+            <div class="photo-section">
+                <img id="modalPhoto" style="display:none;max-width:100%;max-height:220px;border-radius:12px;width:100%;object-fit:cover;margin-bottom:16px;">
                 <div id="modalNoPhoto" class="photo-box"><i class="fas fa-image"></i><span>Tidak ada foto</span></div>
             </div>
-
-            <!-- Info Section -->
             <div class="modal-section-label">Informasi Insiden</div>
-
-            <div class="form-group">
-                <label><i class="fas fa-heading" style="margin-right:4px;opacity:0.7;"></i>Judul</label>
-                <input type="text" id="modalTitle" readonly>
-            </div>
+            <div class="form-group"><label>Judul</label><input type="text" id="modalTitle" readonly></div>
             <div class="modal-form-row">
-                <div class="form-group">
-                    <label><i class="fas fa-tag" style="margin-right:4px;opacity:0.7;"></i>Kategori</label>
-                    <input type="text" id="modalCategory" readonly>
-                </div>
-                <div class="form-group">
-                    <label><i class="fas fa-flag" style="margin-right:4px;opacity:0.7;"></i>Prioritas</label>
-                    <input type="text" id="modalPriority" readonly>
-                </div>
+                <div class="form-group"><label>Kategori</label><input type="text" id="modalCategory" readonly></div>
+                <div class="form-group"><label>Prioritas</label><input type="text" id="modalPriority" readonly></div>
             </div>
-            <div class="form-group">
-                <label><i class="fas fa-map-marker-alt" style="margin-right:4px;opacity:0.7;"></i>Lokasi</label>
-                <input type="text" id="modalLocation" readonly>
-            </div>
-            <div class="form-group">
-                <label><i class="fas fa-align-left" style="margin-right:4px;opacity:0.7;"></i>Deskripsi</label>
-                <textarea id="modalDescription" readonly></textarea>
-            </div>
-
-            <!-- Status & Assignment Section -->
+            <div class="form-group"><label>Lokasi</label><input type="text" id="modalLocation" readonly></div>
+            <div class="form-group"><label>Deskripsi</label><textarea id="modalDescription" readonly></textarea></div>
             <div class="modal-section-label">Status & Penugasan</div>
-
             <div class="modal-form-row">
                 <div class="form-group">
-                    <label><i class="fas fa-circle-dot" style="margin-right:4px;opacity:0.7;"></i>Status</label>
-<select id="modalStatusSelect" class="modal-status-select">
+                    <label>Status</label>
+                    <select id="modalStatusSelect" class="modal-status-select">
                         <option value="open">Open</option>
                         <option value="in_progress">On Progress</option>
                         <option value="closed">Closed</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label><i class="fas fa-user-check" style="margin-right:4px;opacity:0.7;"></i>Ditugaskan Ke</label>
-                    <input type="text" id="modalAssignedSolver" readonly>
-                </div>
+                <div class="form-group"><label>Ditugaskan Ke</label><input type="text" id="modalAssignedSolver" readonly></div>
             </div>
-
-            <!-- Notes Section -->
             <div class="modal-section-label">Catatan</div>
-
-            <div class="form-group">
-                <label><i class="fas fa-comment-dots" style="margin-right:4px;opacity:0.7;"></i>Catatan Solver</label>
-                <textarea id="modalSolverNote" readonly class="solver-note"></textarea>
-            </div>
-            <div class="form-group">
-                <label><i class="fas fa-pen" style="margin-right:4px;opacity:0.7;"></i>Catatan Admin</label>
-                <textarea id="modalAdminNote" class="admin-note-area"></textarea>
-            </div>
+            <div class="form-group"><label>Catatan Solver</label><textarea id="modalSolverNote" readonly class="solver-note"></textarea></div>
+            <div class="form-group"><label>Catatan Admin</label><textarea id="modalAdminNote" class="admin-note-area"></textarea></div>
         </div>
-
         <div class="modal-footer">
-            <button class="modal-btn-cancel" onclick="closeIncidentModal()"><i class="fas fa-times" style="margin-right:5px;font-size:11px;"></i>Batal</button>
+            <button class="modal-btn-cancel" onclick="closeIncidentModal()">Batal</button>
             <button class="modal-btn-save" id="modalSaveBtn" onclick="saveIncidentChanges()"><i class="fas fa-save"></i> Simpan</button>
+        </div>
+    </div>
+</div>
+
+<!-- DELETE CONFIRM MODAL -->
+<div id="deleteModal">
+    <div class="delete-modal-box">
+        <div class="delete-modal-icon"><div class="icon-circle"><i class="fas fa-trash-alt"></i></div></div>
+        <div class="delete-modal-content">
+            <h3>Hapus Insiden?</h3>
+            <p>Tindakan ini tidak dapat dibatalkan. Data insiden berikut akan dihapus permanen.</p>
+            <div class="incident-info">
+                <div class="inc-id" id="deleteIncidentId">—</div>
+                <div class="inc-title" id="deleteIncidentTitle">—</div>
+            </div>
+            <div class="warning-text"><i class="fas fa-exclamation-triangle"></i> Data yang dihapus tidak bisa dipulihkan</div>
+        </div>
+        <div class="delete-modal-actions">
+            <button class="btn-cancel-delete" onclick="closeDeleteModal()"><i class="fas fa-arrow-left" style="margin-right:5px;"></i>Batal</button>
+            <button class="btn-confirm-delete" id="btnConfirmDelete" onclick="confirmDelete()"><i class="fas fa-trash-alt"></i> Ya, Hapus</button>
         </div>
     </div>
 </div>
 
 <script src="../assets/js/authUtils.js"></script>
 <script>
-function formatDateDDMMYYYY(dateString) {
+/* ─── HELPERS ─── */
+function formatDate(d) {
     try {
-        const date = new Date(dateString);
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const year = date.getFullYear();
-        return `${day}-${month}-${year}`;
-    } catch (error) { return dateString; }
+        const dt = new Date(d);
+        return `${String(dt.getDate()).padStart(2,'0')}-${String(dt.getMonth()+1).padStart(2,'0')}-${dt.getFullYear()}`;
+    } catch { return d; }
 }
-
-function getAvatarInitial(name) { return name ? name.charAt(0).toUpperCase() : '?'; }
-
-function getColorFromString(str) {
-    const colors = ['#e63946','#f43f5e','#fb7185','#fda4af','#ff8080','#c0392b','#be123c','#f05a67'];
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) { hash = str.charCodeAt(i) + ((hash << 5) - hash); }
-    return colors[Math.abs(hash) % colors.length];
+function initial(n) { return n ? n.charAt(0).toUpperCase() : '?'; }
+function colorFrom(s) {
+    const c = ['#e63946','#f43f5e','#fb7185','#fda4af','#ff8080','#c0392b','#be123c','#f05a67'];
+    let h = 0; for (let i = 0; i < s.length; i++) h = s.charCodeAt(i) + ((h<<5)-h);
+    return c[Math.abs(h) % c.length];
 }
+function esc(t) { const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
 
-function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-}
-
-function showError(message) {
+function showToast(msg, type='success') {
     const t = document.createElement('div');
-    t.className = 'toast toast-error';
-    t.innerHTML = `<i class="fas fa-exclamation-circle"></i>${message}`;
+    t.className = `toast toast-${type}`;
+    t.innerHTML = `<i class="fas fa-${type==='success'?'check':'exclamation'}-circle"></i>${msg}`;
     document.body.appendChild(t);
-    setTimeout(() => t.remove(), 4000);
+    setTimeout(() => t.remove(), type==='success' ? 3000 : 4000);
 }
-
-function showSuccess(message) {
-    const t = document.createElement('div');
-    t.className = 'toast toast-success';
-    t.innerHTML = `<i class="fas fa-check-circle"></i>${message}`;
-    document.body.appendChild(t);
-    setTimeout(() => t.remove(), 3000);
-}
+const ok  = m => showToast(m,'success');
+const err = m => showToast(m,'error');
 
 function showLoading() {
-    document.getElementById('incidentsTableBody').innerHTML = `
-        <tr><td colspan="9"><div class="empty-state">
-            <i class="fas fa-spinner fa-spin"></i><p>Memuat data insiden...</p>
-        </div></td></tr>`;
+    document.getElementById('incidentsTableBody').innerHTML =
+        `<tr><td colspan="9"><div class="empty-state"><i class="fas fa-spinner fa-spin"></i><p>Memuat data...</p></div></td></tr>`;
+    document.getElementById('paginationWrap').style.display = 'none';
+}
+function showEmpty() {
+    document.getElementById('incidentsTableBody').innerHTML =
+        `<tr><td colspan="9"><div class="empty-state"><i class="fas fa-inbox"></i><p>Belum ada laporan insiden</p></div></td></tr>`;
+    document.getElementById('paginationWrap').style.display = 'none';
 }
 
-function showEmptyState() {
-    document.getElementById('incidentsTableBody').innerHTML = `
-        <tr><td colspan="9"><div class="empty-state">
-            <i class="fas fa-inbox"></i><p>Belum ada laporan insiden</p>
-        </div></td></tr>`;
+/* ─── STATE ─── */
+const PER_PAGE = 10;
+let page     = 1;
+let allData  = [];   
+let solvers  = [];
+
+const byId = id => allData.find(i => i.id === parseInt(id));
+
+/* ─── PAGINATION ─── */
+function renderPagination(total, cur) {
+    const pages = Math.ceil(total / PER_PAGE);
+    const wrap  = document.getElementById('paginationWrap');
+    const info  = document.getElementById('paginationInfo');
+    const el    = document.getElementById('paginationEl');
+
+    if (total === 0) { wrap.style.display = 'none'; return; }
+
+    const from = (cur - 1) * PER_PAGE + 1;
+    const to   = Math.min(cur * PER_PAGE, total);
+    info.textContent = `${from}–${to} dari ${total} insiden`;
+
+    if (pages <= 1) { el.innerHTML = ''; wrap.style.display = 'flex'; return; }
+
+    let s = Math.max(1, cur - 2);
+    let e = Math.min(pages, s + 4);
+    if (e - s < 4) s = Math.max(1, e - 4);
+
+    let h = '';
+
+    // Prev
+    h += `<button class="page-btn" onclick="goTo(${cur-1})" ${cur===1?'disabled':''}><i class="fas fa-chevron-left"></i></button>`;
+
+    // Halaman pertama + dots
+    if (s > 1) {
+        h += `<button class="page-btn" onclick="goTo(1)">1</button>`;
+        if (s > 2) h += `<span style="color:var(--gray-400);padding:0 2px;font-size:13px;">…</span>`;
+    }
+
+    for (let p = s; p <= e; p++) {
+        h += `<button class="page-btn ${p===cur?'active':''}" onclick="goTo(${p})">${p}</button>`;
+    }
+
+    // Dots + halaman terakhir
+    if (e < pages) {
+        if (e < pages-1) h += `<span style="color:var(--gray-400);padding:0 2px;font-size:13px;">…</span>`;
+        h += `<button class="page-btn" onclick="goTo(${pages})">${pages}</button>`;
+    }
+
+    // Next
+    h += `<button class="page-btn" onclick="goTo(${cur+1})" ${cur===pages?'disabled':''}><i class="fas fa-chevron-right"></i></button>`;
+
+    el.innerHTML = h;
+    wrap.style.display = 'flex';
 }
 
-let allIncidentsData = [];
-function getIncidentById(id) { return allIncidentsData.find(inc => inc.id === parseInt(id)); }
+function goTo(p) {
+    const pages = Math.ceil(allData.length / PER_PAGE);
+    if (p < 1 || p > pages) return;
+    page = p;
+    renderPage(allData.slice((p-1)*PER_PAGE, p*PER_PAGE));
+    renderPagination(allData.length, page);
+    document.querySelector('.card').scrollIntoView({ behavior:'smooth', block:'start' });
+}
 
-async function renderIncidents(incidents) {
+/* ─── RENDER BARIS ─── */
+function renderPage(rows) {
     const tbody = document.getElementById('incidentsTableBody');
-    allIncidentsData = incidents;
-
-    let solvers = [];
-    try {
-        const token = localStorage.getItem('token');
-        const response = await fetch('http://localhost:3000/api/admin/solvers', {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
-        });
-        if (response.ok) { const data = await response.json(); solvers = data.data || []; }
-    } catch (error) { console.error('Error fetching solvers:', error); }
-
     tbody.innerHTML = '';
-    if (!incidents || incidents.length === 0) { showEmptyState(); return; }
+    if (!rows.length) { showEmpty(); return; }
 
-    incidents.forEach((incident) => {
-        const row = document.createElement('tr');
-        const reporterName = incident.reporter_name || 'Unknown';
-        const avatarColor = getColorFromString(incident.id?.toString() || '');
-        const formattedDate = formatDateDDMMYYYY(incident.created_at);
+    rows.forEach(inc => {
+        const tr   = document.createElement('tr');
+        const name = inc.reporter_name || 'Unknown';
+        const ls   = (inc.status || '').toLowerCase();
+        let sc = 'status-open';
+        if (ls==='in_progress'||ls==='progress') sc = 'status-progress';
+        else if (ls==='closed') sc = 'status-closed';
 
-        const assignedSolver = solvers.find(s => s.id === incident.assigned_to);
-        const assignedSolverName = assignedSolver ? assignedSolver.name : null;
-        const enrichedIncident = { ...incident, assigned_solver_name: assignedSolverName };
-        const existingIndex = allIncidentsData.findIndex(inc => inc.id === incident.id);
-        if (existingIndex >= 0) allIncidentsData[existingIndex] = enrichedIncident;
-        else allIncidentsData.push(enrichedIncident);
-
-        const ls = incident.status?.toLowerCase();
-        let statusClass = 'status-open';
-        if (ls === 'progress' || ls === 'in_progress') statusClass = 'status-progress';
-        else if (ls === 'closed') statusClass = 'status-closed';
-
-        const priorityClass = 'priority-' + (incident.priority || 'medium').toLowerCase();
-
-        let solverOptions = '<option value="">-- Pilih Solver --</option>';
-        solvers.forEach(solver => {
-            const selected = incident.assigned_to === solver.id ? 'selected' : '';
-            solverOptions += `<option value="${solver.id}" ${selected}>${escapeHtml(solver.name)}</option>`;
+        let opts = '<option value="">-- Pilih Solver --</option>';
+        solvers.forEach(s => {
+            opts += `<option value="${s.id}" ${inc.assigned_to===s.id?'selected':''}>${esc(s.name)}</option>`;
         });
 
-        row.innerHTML = `
-            <td><span class="id-badge">#${String(incident.id).padStart(3,'0')}</span></td>
+        tr.innerHTML = `
+            <td><span class="id-badge">#${String(inc.id).padStart(3,'0')}</span></td>
             <td><div class="user-cell">
-                <div class="user-avatar-small" style="background:${avatarColor}">${getAvatarInitial(reporterName)}</div>
-                <span class="user-name">${escapeHtml(reporterName)}</span>
+                <div class="user-avatar-small" style="background:${colorFrom(String(inc.id))}">${initial(name)}</div>
+                <span class="user-name">${esc(name)}</span>
             </div></td>
-            <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600;color:var(--gray-800);">${escapeHtml(incident.title || '-')}</td>
-            <td><span class="cat-badge">${escapeHtml(incident.category || '-')}</span></td>
-            <td><span class="priority-badge ${priorityClass}">${escapeHtml(incident.priority || 'Medium')}</span></td>
+            <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600;color:var(--gray-800);"
+                title="${esc(inc.title||'')}">${esc(inc.title||'-')}</td>
+            <td><span class="cat-badge">${esc(inc.category||'-')}</span></td>
+            <td><span class="priority-badge priority-${(inc.priority||'medium').toLowerCase()}">${esc(inc.priority||'Medium')}</span></td>
             <td>
-                <select class="status-select ${statusClass}"
-                    onchange="updateStatus(${incident.id},this.value);this.className='status-select '+getStatusClass(this.value)">
-<option value="open"        ${ls==='open'?'selected':''}>Open</option>
+                <select class="status-select ${sc}"
+                    onchange="updateStatus(${inc.id},this.value);this.className='status-select '+statusClass(this.value)">
+                    <option value="open"        ${ls==='open'?'selected':''}>Open</option>
                     <option value="in_progress" ${ls==='in_progress'||ls==='progress'?'selected':''}>On Progress</option>
                     <option value="closed"      ${ls==='closed'?'selected':''}>Closed</option>
                 </select>
             </td>
-            <td>
-                <select class="assign-select" onchange="assignSolver(${incident.id},this.value)">
-                    ${solverOptions}
-                </select>
-            </td>
-            <td><span class="date-cell">${formattedDate}</span></td>
-            <td>
-                <div class="action-buttons">
-                    <button class="action-btn view-btn"   title="Lihat"  onclick="viewIncident(${incident.id})"><i class="fas fa-eye"></i></button>
-                    <button class="action-btn edit-btn"   title="Edit"   onclick="editIncident(${incident.id})"><i class="fas fa-edit"></i></button>
-                    <button class="action-btn delete-btn" title="Hapus"  onclick="deleteIncident(${incident.id})"><i class="fas fa-trash"></i></button>
-                </div>
-            </td>`;
-        tbody.appendChild(row);
+            <td><select class="assign-select" onchange="assignSolver(${inc.id},this.value)">${opts}</select></td>
+            <td><span class="date-cell">${formatDate(inc.created_at)}</span></td>
+            <td><div class="action-buttons">
+                <button class="action-btn view-btn"   onclick="viewIncident(${inc.id})"><i class="fas fa-eye"></i></button>
+                <button class="action-btn edit-btn"   onclick="editIncident(${inc.id})"><i class="fas fa-edit"></i></button>
+                <button class="action-btn delete-btn" onclick="deleteIncident(${inc.id})"><i class="fas fa-trash"></i></button>
+            </div></td>`;
+        tbody.appendChild(tr);
     });
 }
 
-function getStatusClass(val) {
-    if (val === 'in_progress' || val === 'progress') return 'status-progress';
-    if (val === 'closed') return 'status-closed';
+function statusClass(v) {
+    if (v==='in_progress'||v==='progress') return 'status-progress';
+    if (v==='closed') return 'status-closed';
     return 'status-open';
 }
 
-function openIncidentModal(id, isReadOnly = false) {
-    const incident = getIncidentById(id);
-    if (!incident) { showError('Insiden tidak ditemukan'); return; }
+/* ─── INISIALISASI ─── */
+async function initData(incidents) {
+    
+    if (!solvers.length) {
+        try {
+            const r = await fetch('http://localhost:3000/api/admin/solvers', {
+                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+            });
+            if (r.ok) { const d = await r.json(); solvers = d.data || []; }
+        } catch(e) { console.error(e); }
+    }
 
-    document.getElementById('modalIncidentId').value = incident.id;
-    document.getElementById('modalIdText').textContent = String(incident.id).padStart(3,'0');
-    document.getElementById('modalTitle').value        = incident.title || '';
-    document.getElementById('modalCategory').value    = incident.category || '';
-    document.getElementById('modalLocation').value    = incident.location || '';
-    document.getElementById('modalDescription').value = incident.description || '';
-    document.getElementById('modalPriority').value    = incident.priority || '';
-    document.getElementById('modalStatusSelect').value = incident.status?.toLowerCase() || 'open';
-    document.getElementById('modalAdminNote').value   = incident.admin_note || '';
-    document.getElementById('modalAssignedSolver').value = incident.assigned_solver_name || 'Belum di-assign';
-    const sn = document.getElementById('modalSolverNote');
-    if (sn) sn.value = incident.solver_note || 'Belum ada catatan dari solver';
+    // Enrich solver name
+    allData = incidents.map(inc => {
+        const sv = solvers.find(s => s.id === inc.assigned_to);
+        return { ...inc, _solverName: sv ? sv.name : null };
+    });
 
-    const photoImg = document.getElementById('modalPhoto');
-    const noPhoto  = document.getElementById('modalNoPhoto');
-    if (incident.photo) {
-        photoImg.src = `http://localhost:3000/uploads/incidents/${incident.photo}`;
-        photoImg.style.display = 'block'; noPhoto.style.display = 'none';
+    page = 1;
+    renderPage(allData.slice(0, PER_PAGE));
+    renderPagination(allData.length, page);
+}
+
+/* ─── MODAL ─── */
+function openModal(id, readOnly) {
+    const inc = byId(id);
+    if (!inc) { err('Insiden tidak ditemukan'); return; }
+
+    document.getElementById('modalIncidentId').value     = inc.id;
+    document.getElementById('modalIdText').textContent   = String(inc.id).padStart(3,'0');
+    document.getElementById('modalTitle').value          = inc.title || '';
+    document.getElementById('modalCategory').value       = inc.category || '';
+    document.getElementById('modalLocation').value       = inc.location || '';
+    document.getElementById('modalDescription').value    = inc.description || '';
+    document.getElementById('modalPriority').value       = inc.priority || '';
+    document.getElementById('modalStatusSelect').value   = (inc.status || 'open').toLowerCase();
+    document.getElementById('modalAdminNote').value      = inc.admin_note || '';
+    document.getElementById('modalAssignedSolver').value = inc._solverName || 'Belum di-assign';
+    document.getElementById('modalSolverNote').value     = inc.solver_note || 'Belum ada catatan dari solver';
+
+    const photo = document.getElementById('modalPhoto');
+    const noph  = document.getElementById('modalNoPhoto');
+    if (inc.photo) {
+        photo.src = `http://localhost:3000/uploads/incidents/${inc.photo}`;
+        photo.style.display = 'block'; noph.style.display = 'none';
     } else {
-        photoImg.style.display = 'none'; noPhoto.style.display = 'block';
+        photo.style.display = 'none'; noph.style.display = 'block';
     }
 
     const saveBtn = document.getElementById('modalSaveBtn');
-    const staticFields = [
-        document.getElementById('modalTitle'),
-        document.getElementById('modalCategory'),
-        document.getElementById('modalLocation'),
-        document.getElementById('modalDescription'),
-        document.getElementById('modalPriority'),
-    ];
-
-    if (isReadOnly) {
-        document.getElementById('modalHeadTitle').textContent = `Detail Insiden #${incident.id}`;
-        staticFields.forEach(f => f.setAttribute('readonly',''));
+    if (readOnly) {
+        document.getElementById('modalHeadTitle').textContent = `Detail Insiden #${String(inc.id).padStart(3,'0')}`;
         document.getElementById('modalStatusSelect').disabled = true;
         document.getElementById('modalAdminNote').setAttribute('readonly','');
         saveBtn.style.display = 'none';
     } else {
-        document.getElementById('modalHeadTitle').textContent = `Edit Insiden #${incident.id}`;
-        staticFields.forEach(f => f.setAttribute('readonly',''));
+        document.getElementById('modalHeadTitle').textContent = `Edit Insiden #${String(inc.id).padStart(3,'0')}`;
         document.getElementById('modalStatusSelect').disabled = false;
         document.getElementById('modalAdminNote').removeAttribute('readonly');
         saveBtn.style.display = 'flex';
     }
-
     document.getElementById('incidentModal').style.display = 'flex';
 }
 
-function closeIncidentModal() {
-    document.getElementById('incidentModal').style.display = 'none';
-}
+function closeIncidentModal() { document.getElementById('incidentModal').style.display = 'none'; }
 document.getElementById('incidentModal').addEventListener('click', e => {
     if (e.target === document.getElementById('incidentModal')) closeIncidentModal();
 });
+function viewIncident(id) { openModal(id, true); }
+function editIncident(id) { openModal(id, false); }
 
-function editIncident(id) { openIncidentModal(id, false); }
-function viewIncident(id) { openIncidentModal(id, true); }
+/* ─── DELETE ─── */
+let pendingDel = null;
 
 function deleteIncident(id) {
-    if (confirm(`Yakin ingin menghapus insiden #${id}?`)) {
-        showSuccess(`Insiden #${id} akan segera dihapus`);
+    const inc = byId(id);
+    if (!inc) { err('Insiden tidak ditemukan'); return; }
+    pendingDel = id;
+    document.getElementById('deleteIncidentId').textContent    = `Insiden #${String(id).padStart(3,'0')}`;
+    document.getElementById('deleteIncidentTitle').textContent = inc.title || '-';
+    const btn = document.getElementById('btnConfirmDelete');
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-trash-alt"></i> Ya, Hapus';
+    document.getElementById('deleteModal').style.display = 'flex';
+}
+
+function closeDeleteModal() { document.getElementById('deleteModal').style.display='none'; pendingDel=null; }
+document.getElementById('deleteModal').addEventListener('click', e => {
+    if (e.target === document.getElementById('deleteModal')) closeDeleteModal();
+});
+
+async function confirmDelete() {
+    if (!pendingDel) return;
+    const id  = pendingDel;
+    const btn = document.getElementById('btnConfirmDelete');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menghapus...';
+    try {
+        const r = await fetch(`http://localhost:3000/api/admin/incidents/${id}`, {
+            method: 'DELETE',
+            headers: { 'Content-Type':'application/json', 'Authorization':`Bearer ${localStorage.getItem('token')}` }
+        });
+        const d = await r.json();
+        if (!r.ok) throw new Error(d.message);
+        closeDeleteModal();
+        ok(`Insiden #${String(id).padStart(3,'0')} berhasil dihapus`);
+        fetchIncidents();
+    } catch(e) {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-trash-alt"></i> Ya, Hapus';
+        err('Gagal menghapus: ' + e.message);
     }
 }
 
+/* ─── API ─── */
 async function saveIncidentChanges() {
-    const incidentId = document.getElementById('modalIncidentId').value;
-    const status     = document.getElementById('modalStatusSelect').value;
-    const adminNote  = document.getElementById('modalAdminNote').value;
-    const token      = localStorage.getItem('token');
+    const id  = document.getElementById('modalIncidentId').value;
+    const tok = localStorage.getItem('token');
     try {
-        const response = await fetch(`http://localhost:3000/api/admin/incidents/${incidentId}`, {
+        const r = await fetch(`http://localhost:3000/api/admin/incidents/${id}`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-            body: JSON.stringify({ status, admin_note: adminNote })
+            headers: { 'Content-Type':'application/json', 'Authorization':`Bearer ${tok}` },
+            body: JSON.stringify({
+                status:     document.getElementById('modalStatusSelect').value,
+                admin_note: document.getElementById('modalAdminNote').value
+            })
         });
-        const responseData = await response.json();
-        if (!response.ok) throw new Error(responseData.message || 'Failed to update incident');
-        showSuccess(`Insiden #${incidentId} berhasil diperbarui`);
+        const d = await r.json();
+        if (!r.ok) throw new Error(d.message);
+        ok(`Insiden #${id} berhasil diperbarui`);
         closeIncidentModal();
         fetchIncidents();
-    } catch (error) { showError('Gagal menyimpan: ' + error.message); }
+    } catch(e) { err('Gagal menyimpan: ' + e.message); }
 }
 
-async function updateStatus(id, newStatus) {
-    const token = localStorage.getItem('token');
+async function updateStatus(id, status) {
     try {
-        const response = await fetch(`http://localhost:3000/api/admin/incidents/${id}`, {
+        const r = await fetch(`http://localhost:3000/api/admin/incidents/${id}`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-            body: JSON.stringify({ status: newStatus })
+            headers: { 'Content-Type':'application/json', 'Authorization':`Bearer ${localStorage.getItem('token')}` },
+            body: JSON.stringify({ status })
         });
-        const responseData = await response.json();
-        if (!response.ok) throw new Error(responseData.message || 'Gagal update status');
-        showSuccess(`Status insiden #${id} berhasil diubah`);
+        const d = await r.json();
+        if (!r.ok) throw new Error(d.message);
+        ok(`Status insiden #${id} berhasil diubah`);
         fetchIncidents();
-    } catch (error) { showError('Gagal mengubah status: ' + error.message); }
+    } catch(e) { err('Gagal: ' + e.message); }
 }
 
-async function assignSolver(incidentId, solverId) {
-    if (!solverId) return;
-    const token = localStorage.getItem('token');
+async function assignSolver(incId, solvId) {
+    if (!solvId) return;
     try {
-        const response = await fetch(`http://localhost:3000/api/admin/incidents/${incidentId}/assign`, {
+        const r = await fetch(`http://localhost:3000/api/admin/incidents/${incId}/assign`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-            body: JSON.stringify({ assigned_to: parseInt(solverId) })
+            headers: { 'Content-Type':'application/json', 'Authorization':`Bearer ${localStorage.getItem('token')}` },
+            body: JSON.stringify({ assigned_to: parseInt(solvId) })
         });
-        const responseData = await response.json();
-        if (!response.ok) throw new Error(responseData.message || 'Gagal assign solver');
-        showSuccess('Solver berhasil di-assign!');
+        const d = await r.json();
+        if (!r.ok) throw new Error(d.message);
+        ok('Solver berhasil di-assign!');
         fetchIncidents();
-    } catch (error) { showError('Gagal assign solver: ' + error.message); }
+    } catch(e) { err('Gagal assign: ' + e.message); }
 }
 
-async function fetchIncidents() {
-    const token = localStorage.getItem('token');
-    if (!token) { alert('Anda harus login terlebih dahulu'); window.location.href = '../auth/login.html'; return; }
+async function fetchIncidents(resetSolvers = false) {
+    const tok = localStorage.getItem('token');
+    if (!tok) { window.location.href = '../auth/login.html'; return; }
+    if (resetSolvers) solvers = [];
     showLoading();
     try {
-        const response = await fetch('http://localhost:3000/api/admin/incidents', {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
+        const r = await fetch('http://localhost:3000/api/admin/incidents', {
+            headers: { 'Content-Type':'application/json', 'Authorization':`Bearer ${tok}` }
         });
-        if (response.status === 401) { window.location.href = '../auth/login.html'; return; }
-        if (response.status === 403) { showError('Access denied'); return; }
-        if (response.status === 500) { showError('Gagal memuat data insiden'); return; }
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        if (r.status === 401) { window.location.href = '../auth/login.html'; return; }
+        if (r.status === 403) { err('Access denied'); return; }
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
 
-        const data = await response.json();
-        let incidents = data.success && Array.isArray(data.data) ? data.data : [];
+        const data = await r.json();
+        let inc = data.success && Array.isArray(data.data) ? data.data : [];
 
-        const q   = (document.getElementById('searchInput').value || '').toLowerCase();
-        const pri = (document.getElementById('priorityFilter').value || '').toLowerCase();
-        const sta = (document.getElementById('statusFilter').value || '').toLowerCase();
+        // Filter lokal
+        const q   = document.getElementById('searchInput').value.toLowerCase();
+        const pri = document.getElementById('priorityFilter').value.toLowerCase();
+        const sta = document.getElementById('statusFilter').value.toLowerCase();
 
-        if (q)   incidents = incidents.filter(i => (i.title||'').toLowerCase().includes(q)||(i.reporter_name||'').toLowerCase().includes(q)||(i.category||'').toLowerCase().includes(q));
-        if (pri) incidents = incidents.filter(i => (i.priority||'').toLowerCase() === pri);
-if (sta) incidents = incidents.filter(i => {
+        if (q)   inc = inc.filter(i =>
+            (i.title||'').toLowerCase().includes(q) ||
+            (i.reporter_name||'').toLowerCase().includes(q) ||
+            (i.category||'').toLowerCase().includes(q));
+        if (pri) inc = inc.filter(i => (i.priority||'').toLowerCase() === pri);
+        if (sta) inc = inc.filter(i => {
             const ls = (i.status||'').toLowerCase();
-            if (sta === 'in_progress') return ls==='in_progress'||ls==='progress';
-            return ls === sta;
+            return sta === 'in_progress' ? (ls==='in_progress'||ls==='progress') : ls===sta;
         });
 
-        if (incidents.length === 0) showEmptyState();
-        else renderIncidents(incidents);
-    } catch (error) {
-        console.error('Error fetching incidents:', error);
-        showError('Gagal memuat data insiden');
-        showEmptyState();
+        if (!inc.length) { showEmpty(); return; }
+
+        await initData(inc);
+    } catch(e) {
+        console.error(e);
+        err('Gagal memuat data insiden');
+        showEmpty();
     }
 }
 
-document.getElementById('searchInput').addEventListener('input', () => fetchIncidents());
-document.getElementById('priorityFilter').addEventListener('change', () => fetchIncidents());
-document.getElementById('statusFilter').addEventListener('change', () => fetchIncidents());
+/* ─── EVENTS ─── */
+document.getElementById('searchInput').addEventListener('input',  () => { page=1; fetchIncidents(); });
+document.getElementById('priorityFilter').addEventListener('change', () => { page=1; fetchIncidents(); });
+document.getElementById('statusFilter').addEventListener('change',   () => { page=1; fetchIncidents(); });
 
-document.addEventListener('DOMContentLoaded', function () {
-    // URL parameter dari dashboard redirect
-    const urlParams = new URLSearchParams(window.location.search);
-    const statusParam = urlParams.get('status');
-    if (statusParam) {
-        const filterEl = document.getElementById('statusFilter');
-        if (filterEl) {
-            filterEl.value = statusParam;
-        }
+document.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    const stPar  = params.get('status');
+    const idPar  = params.get('id');
+
+    if (stPar) document.getElementById('statusFilter').value = stPar;
+
+    fetchIncidents(true);
+
+    if (idPar) {
+        const tryOpen = () => {
+            const inc = byId(parseInt(idPar));
+            if (inc) openModal(parseInt(idPar), true);
+            else setTimeout(tryOpen, 500);
+        };
+        setTimeout(tryOpen, 1000);
     }
 
-    fetchIncidents();
-
-    const logoutBtn = document.querySelector('.logout');
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', () => {
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
-            window.location.href = '../auth/login.html';
-        });
-    }
+    document.querySelector('.logout')?.addEventListener('click', () => {
+        localStorage.clear();
+        window.location.href = '../auth/login.html';
+    });
 });
 </script>
 </body>

@@ -1,171 +1,700 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <title>Smart Incident System</title>
+  <meta charset="UTF-8"/>
+  <title>SmartIncident — Sistem Pelaporan Profesional</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700;800;900&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="assets/css/main.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    :root {
+      --red: #E8281A; --red-dark: #B81E13;
+      --red-glow: rgba(232,40,26,0.32);
+      --cream: #FAF8F5; --ink: #0E0C09; --ink2: #2C2520;
+      --muted: #8A7F78; --border: rgba(15,13,10,0.09); --white: #FFFFFF;
+    }
+    body { font-family:'Montserrat',sans-serif; background:var(--cream); color:var(--ink); overflow-x:hidden; }
+
+    @keyframes fadeUp   { from{opacity:0;transform:translateY(32px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes fadeDown { from{opacity:0;transform:translateY(-18px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes fadeIn   { from{opacity:0} to{opacity:1} }
+    @keyframes lineGrow { from{transform:scaleX(0)} to{transform:scaleX(1)} }
+    @keyframes spin     { to{transform:rotate(360deg)} }
+    @keyframes spinR    { to{transform:rotate(-360deg)} }
+    @keyframes float    { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
+    @keyframes pulse    { 0%,100%{box-shadow:0 0 0 0 var(--red-glow)} 50%{box-shadow:0 0 0 18px transparent} }
+    @keyframes ticker   { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+    .reveal { opacity:0; transform:translateY(28px); transition:opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+
+    /* HEADER */
+    @keyframes navGlow { 0%,100%{opacity:.5} 50%{opacity:1} }
+
+    header {
+      position:fixed; top:0; left:0; right:0; z-index:500;
+      height:72px; display:flex; align-items:center; justify-content:space-between;
+      padding:0 52px;
+      background:rgba(6,3,1,0.75);
+      backdrop-filter:blur(28px) saturate(180%);
+      -webkit-backdrop-filter:blur(28px) saturate(180%);
+      border-bottom:1px solid rgba(232,40,26,.35);
+      animation:fadeDown .5s ease both;
+      transition:height .3s, background .3s;
+      /* subtle red line at very top */
+    }
+    header::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:1.5px;
+      background:linear-gradient(90deg, transparent 0%, var(--red) 30%, #ff6b5e 50%, var(--red) 70%, transparent 100%);
+      animation:navGlow 3s ease-in-out infinite;
+    }
+    /* noise grain overlay on nav */
+    header::after {
+      content:''; position:absolute; inset:0; pointer-events:none; z-index:-1;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      opacity:.6;
+    }
+    header.scrolled { height:60px; background:rgba(6,3,1,0.92); }
+
+    /* LOGO */
+    .logo-wrap { display:flex; align-items:center; gap:12px; text-decoration:none; }
+    .logo-wrap img { width:36px; height:36px; object-fit:contain; transition:transform .35s cubic-bezier(.34,1.56,.64,1); filter:drop-shadow(0 0 8px rgba(232,40,26,.4)); }
+    .logo-wrap:hover img { transform:rotate(-10deg) scale(1.15); filter:drop-shadow(0 0 14px rgba(232,40,26,.7)); }
+    .logo-name {
+      font-family:'Raleway',sans-serif; font-size:17px; font-weight:900;
+      letter-spacing:-.3px;
+      background:linear-gradient(135deg,#fff 40%,rgba(255,138,128,.85) 100%);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    }
+
+    /* NAV LINKS — pill style */
+    .nav-pill {
+      display:flex; align-items:center; gap:4px;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:100px;
+      padding:5px 8px;
+      backdrop-filter:blur(8px);
+    }
+    nav a {
+      font-size:13px; font-weight:500; color:rgba(255,255,255,.55);
+      text-decoration:none; transition:all .22s ease;
+      padding:6px 16px; border-radius:100px; position:relative;
+    }
+    nav a:hover { color:white; background:rgba(255,255,255,.08); }
+    nav a.active { color:white; background:rgba(232,40,26,.18); }
+
+    /* BADGE — live indicator */
+    .nav-badge {
+      display:flex; align-items:center; gap:6px;
+      background:rgba(16,185,129,.1); border:1px solid rgba(16,185,129,.2);
+      color:#34d399; font-size:11px; font-weight:600;
+      padding:4px 12px; border-radius:100px; letter-spacing:.3px;
+    }
+    .nav-badge .live-dot { width:5px; height:5px; border-radius:50%; background:#34d399; animation:pulse 2s infinite; }
+
+    .btn-login {
+      display:flex; align-items:center; gap:8px;
+      background:linear-gradient(135deg,var(--red),#c9281e);
+      color:white; padding:10px 22px; border-radius:100px;
+      font-size:13px; font-weight:700; text-decoration:none;
+      box-shadow:0 4px 20px rgba(232,40,26,.35), inset 0 1px 0 rgba(255,255,255,.12);
+      transition:all .25s ease; position:relative; overflow:hidden;
+      letter-spacing:.2px;
+    }
+    .btn-login::before {
+      content:''; position:absolute; top:50%; left:-50%; width:30%; height:100%;
+      background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);
+      transform:translateY(-50%) skewX(-20deg); transition:left .5s ease;
+    }
+    .btn-login:hover::before { left:130%; }
+    .btn-login:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(232,40,26,.55); }
+
+    /* HERO */
+    .hero { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:100px 52px 0; position:relative; overflow:hidden; background:#080402; }
+    #hero-canvas { position:absolute; inset:0; z-index:0; width:100%; height:100%; }
+    .hero-overlay { position:absolute; inset:0; z-index:1; background:radial-gradient(ellipse 65% 85% at 20% 50%, rgba(8,4,2,0.88) 0%, rgba(8,4,2,0.5) 55%, transparent 100%); }
+
+    .hero-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(232,40,26,0.15); border:1px solid rgba(232,40,26,0.35); color:#ff8a80; font-size:12px; font-weight:600; padding:7px 16px; border-radius:100px; margin-bottom:24px; letter-spacing:.5px; animation:fadeUp .6s ease .2s both; backdrop-filter:blur(8px); }
+    .hero-badge .dot { width:6px; height:6px; border-radius:50%; background:var(--red); animation:pulse 2s infinite; }
+
+    .hero-content { position:relative; z-index:2; max-width:1200px; margin:0 auto; width:100%; display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; }
+
+    h1 { font-family:'Raleway',sans-serif; font-size:clamp(44px,5.5vw,78px); font-weight:900; line-height:1.0; letter-spacing:-2.5px; color:white; margin-bottom:22px; animation:fadeUp .7s ease .3s both; }
+    h1 .red { color:var(--red); display:inline-block; position:relative; }
+    h1 .red::after { content:''; position:absolute; bottom:2px; left:0; right:0; height:4px; background:linear-gradient(90deg,var(--red),#ff6b5e); border-radius:4px; transform:scaleX(0); transform-origin:left; animation:lineGrow .8s ease 1.1s forwards; }
+
+    .hero-desc { font-size:16px; font-weight:400; color:rgba(255,255,255,.58); line-height:1.78; max-width:440px; margin-bottom:38px; animation:fadeUp .7s ease .45s both; }
+    .hero-btns { display:flex; align-items:center; gap:14px; flex-wrap:wrap; animation:fadeUp .7s ease .6s both; }
+
+    .btn-cta { display:flex; align-items:center; gap:10px; background:linear-gradient(135deg,var(--red),#ff5a4a); color:white; padding:15px 30px; border-radius:100px; font-size:15px; font-weight:600; text-decoration:none; box-shadow:0 8px 32px var(--red-glow); transition:all .3s ease; position:relative; overflow:hidden; }
+    .btn-cta::before { content:''; position:absolute; top:50%; left:-60%; width:40%; height:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent); transform:translateY(-50%) skewX(-20deg); transition:left .6s ease; }
+    .btn-cta:hover::before { left:130%; }
+    .btn-cta:hover { transform:translateY(-3px); box-shadow:0 16px 48px rgba(232,40,26,.5); }
+
+    .btn-ghost { display:flex; align-items:center; gap:10px; background:rgba(255,255,255,.08); color:rgba(255,255,255,.85); padding:14px 26px; border-radius:100px; font-size:15px; font-weight:500; text-decoration:none; border:1.5px solid rgba(255,255,255,.18); backdrop-filter:blur(8px); transition:all .25s ease; }
+    .btn-ghost:hover { background:rgba(255,255,255,.14); transform:translateY(-2px); }
+
+    /* Hero right: floating cards */
+    .hero-right { position:relative; height:480px; animation:fadeIn .8s ease .5s both; }
+    .hcard { position:absolute; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); border-radius:20px; padding:20px 24px; backdrop-filter:blur(16px); box-shadow:0 24px 64px rgba(0,0,0,.4),0 0 0 1px rgba(255,255,255,.06); }
+    .hcard-main { top:30px; left:10px; right:10px; background:rgba(18,10,8,0.88); border-color:rgba(232,40,26,.3); animation:float 5s ease-in-out infinite; }
+    .hcard-title { font-family:'Raleway',sans-serif; font-size:12px; font-weight:700; color:rgba(255,255,255,.45); text-transform:uppercase; letter-spacing:1.5px; margin-bottom:14px; }
+    .hcard-stat { display:flex; align-items:flex-end; gap:10px; margin-bottom:16px; }
+    .hcard-num { font-family:'Raleway',sans-serif; font-size:52px; font-weight:900; color:white; line-height:1; letter-spacing:-2px; }
+    .hcard-trend { background:rgba(16,185,129,.15); color:#34d399; font-size:11px; font-weight:700; padding:4px 10px; border-radius:100px; margin-bottom:8px; }
+    .hcard-bar-wrap { display:flex; gap:5px; align-items:flex-end; height:44px; }
+    .hbar { flex:1; border-radius:4px 4px 0 0; background:linear-gradient(180deg,var(--red),rgba(232,40,26,.25)); min-height:6px; }
+    .hcard-mini { bottom:55px; right:-10px; width:195px; animation:float 6s ease-in-out .8s infinite; }
+    .hcard-mini-title { font-size:10px; color:rgba(255,255,255,.4); margin-bottom:10px; font-weight:700; letter-spacing:.6px; text-transform:uppercase; }
+    .hcard-mini-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+    .hcard-mini-label { font-size:12px; color:rgba(255,255,255,.7); display:flex; align-items:center; gap:6px; }
+    .dot-legend { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+    .hcard-mini-val { font-size:12px; font-weight:700; color:white; }
+    .hcard-alert { bottom:0; left:10px; right:215px; animation:float 4.5s ease-in-out 1.5s infinite; background:rgba(232,40,26,.12); border-color:rgba(232,40,26,.35); display:flex; align-items:center; gap:12px; }
+    .hcard-alert-icon { width:36px; height:36px; border-radius:10px; background:rgba(232,40,26,.2); display:flex; align-items:center; justify-content:center; color:var(--red); font-size:15px; flex-shrink:0; }
+    .hcard-alert-text .t1 { font-size:12px; font-weight:700; color:white; }
+    .hcard-alert-text .t2 { font-size:11px; color:rgba(255,255,255,.4); margin-top:2px; }
+
+    /* Hero stats */
+    .hero-stats { position:relative; z-index:2; display:flex; border-top:1px solid rgba(255,255,255,.07); max-width:1200px; margin:40px auto 0; width:100%; animation:fadeUp .7s ease .75s both; }
+    .hero-stat { flex:1; padding:28px 32px; border-right:1px solid rgba(255,255,255,.07); }
+    .hero-stat:last-child { border-right:none; }
+    .hero-stat-num { font-family:'Raleway',sans-serif; font-size:32px; font-weight:900; color:white; letter-spacing:-1px; }
+    .hero-stat-num span { color:var(--red); }
+    .hero-stat-label { font-size:11px; color:rgba(255,255,255,.32); margin-top:4px; text-transform:uppercase; letter-spacing:.8px; }
+
+    /* TICKER */
+    .ticker { background:var(--red); color:white; padding:12px 0; overflow:hidden; position:relative; z-index:10; }
+    .ticker-inner { display:flex; white-space:nowrap; animation:ticker 26s linear infinite; }
+    .ticker-item { display:inline-flex; align-items:center; gap:10px; padding:0 40px; font-size:13px; font-weight:600; }
+    .ticker-item i { opacity:.65; }
+
+    /* FEATURES */
+    .features {
+      padding:120px 52px; position:relative; overflow:hidden;
+      background:linear-gradient(160deg,#0f0806 0%,#1a0c09 40%,#0d0503 100%);
+    }
+    .features::before {
+      content:''; position:absolute; inset:0; pointer-events:none;
+      background:
+        radial-gradient(ellipse 60% 50% at 10% 20%,rgba(232,40,26,.12) 0%,transparent 60%),
+        radial-gradient(ellipse 50% 60% at 90% 80%,rgba(232,40,26,.09) 0%,transparent 60%);
+    }
+    .features::after {
+      content:''; position:absolute; inset:0; pointer-events:none;
+      background-image:
+        linear-gradient(rgba(232,40,26,.05) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(232,40,26,.05) 1px,transparent 1px);
+      background-size:64px 64px;
+      mask-image:radial-gradient(ellipse 100% 100% at 50% 50%,black 30%,transparent 80%);
+      -webkit-mask-image:radial-gradient(ellipse 100% 100% at 50% 50%,black 30%,transparent 80%);
+    }
+    .features-inner { max-width:1200px; margin:0 auto; position:relative; z-index:1; }
+    .section-eyebrow { display:inline-flex; align-items:center; gap:10px; font-size:11px; font-weight:700; letter-spacing:1.6px; text-transform:uppercase; color:var(--red); margin-bottom:14px; }
+    .section-eyebrow::before { content:''; width:28px; height:2px; background:var(--red); border-radius:2px; }
+    .section-title { font-family:'Raleway',sans-serif; font-size:clamp(32px,4vw,52px); font-weight:900; letter-spacing:-2px; line-height:1.05; color:white; margin-bottom:12px; }
+    .section-desc { font-size:16px; color:rgba(255,255,255,.45); font-weight:300; max-width:440px; line-height:1.65; }
+    .feat-header { display:flex; align-items:flex-end; justify-content:space-between; gap:40px; margin-bottom:52px; flex-wrap:wrap; }
+    .feat-grid-row1 { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-bottom:18px; }
+    .feat-grid-row2 { display:grid; grid-template-columns:2fr 1fr; gap:18px; }
+
+    /* Glass dark cards */
+    .feat-card { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); border-radius:28px; padding:38px 32px; position:relative; overflow:hidden; cursor:default; transition:all .4s cubic-bezier(.22,1,.36,1); backdrop-filter:blur(12px); }
+    .feat-card .card-glow { position:absolute; width:180px; height:180px; border-radius:50%; background:radial-gradient(circle,rgba(232,40,26,.16) 0%,transparent 70%); bottom:-60px; right:-40px; pointer-events:none; transition:transform .5s ease; }
+    .feat-card:hover .card-glow { transform:scale(1.6); }
+    .feat-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--red),#ff6b5e); transform:scaleX(0); transform-origin:left; transition:transform .4s cubic-bezier(.22,1,.36,1); z-index:2; border-radius:28px 28px 0 0; }
+    .feat-card:hover { background:rgba(255,255,255,.07); border-color:rgba(232,40,26,.28); box-shadow:0 24px 64px rgba(0,0,0,.4),0 0 40px rgba(232,40,26,.1); transform:translateY(-6px); }
+    .feat-card:hover::before { transform:scaleX(1); }
+    .feat-num { font-family:'Raleway',sans-serif; font-size:11px; font-weight:800; letter-spacing:2.5px; color:rgba(232,40,26,.32); margin-bottom:20px; }
+    .feat-icon { width:58px; height:58px; background:linear-gradient(135deg,rgba(232,40,26,.25),rgba(232,40,26,.1)); border:1px solid rgba(232,40,26,.25); border-radius:17px; display:flex; align-items:center; justify-content:center; font-size:22px; color:#ff8a80; margin-bottom:20px; transition:all .35s ease; box-shadow:0 6px 20px rgba(232,40,26,.2); }
+    .feat-card:hover .feat-icon { background:linear-gradient(135deg,var(--red),#ff5a4a); color:white; transform:scale(1.1) rotate(-5deg); border-color:transparent; box-shadow:0 12px 30px rgba(232,40,26,.45); }
+    .feat-card h3 { font-family:'Raleway',sans-serif; font-size:20px; font-weight:800; letter-spacing:-.4px; color:white; margin-bottom:10px; }
+    .feat-card p { font-size:14px; color:rgba(255,255,255,.45); line-height:1.7; font-weight:400; }
+    .feat-link { display:inline-flex; align-items:center; gap:8px; margin-top:22px; font-size:13px; font-weight:700; color:#ff8a80; text-decoration:none; background:rgba(232,40,26,.15); border:1px solid rgba(232,40,26,.2); padding:7px 16px; border-radius:100px; opacity:0; transform:translateY(6px); transition:all .3s ease; }
+    .feat-card:hover .feat-link { opacity:1; transform:translateY(0); }
+
+    .feat-card.dark { background:linear-gradient(135deg,rgba(232,40,26,.14) 0%,rgba(18,6,4,.96) 60%); border-color:rgba(232,40,26,.28); display:flex; align-items:center; gap:36px; box-shadow:0 8px 40px rgba(0,0,0,.4),inset 0 1px 0 rgba(232,40,26,.15); }
+    .feat-card.dark:hover { box-shadow:0 32px 80px rgba(0,0,0,.5),0 0 80px rgba(232,40,26,.22); border-color:rgba(232,40,26,.42); }
+    .feat-card.dark .feat-num { color:rgba(255,100,80,.28); }
+    .feat-card.dark .feat-icon { background:rgba(232,40,26,.25); color:#ff8a80; }
+    .feat-card.dark:hover .feat-icon { background:var(--red); color:white; }
+    .feat-card.dark .feat-link { color:#ff8a80; background:rgba(232,40,26,.15); }
+    .feat-card.dark .card-glow { width:260px; height:260px; background:radial-gradient(circle,rgba(232,40,26,.24) 0%,transparent 70%); bottom:-80px; right:-60px; }
+
+    .dark-deco { flex-shrink:0; width:130px; height:130px; border-radius:50%; background:radial-gradient(circle at 38% 38%,rgba(232,40,26,.5) 0%,rgba(232,40,26,.1) 55%,transparent 75%); display:flex; align-items:center; justify-content:center; font-size:48px; color:rgba(232,40,26,.7); position:relative; }
+    .dark-deco::after { content:''; position:absolute; inset:-16px; border-radius:50%; border:1.5px dashed rgba(232,40,26,.35); animation:spin 14s linear infinite; }
+    .dark-deco::before { content:''; position:absolute; inset:-34px; border-radius:50%; border:1px dashed rgba(232,40,26,.16); animation:spinR 22s linear infinite; }
+
+    /* HOW */
+    .how { padding:120px 52px; position:relative; overflow:hidden; background:linear-gradient(180deg,#120806 0%,#1e0e0a 50%,#160907 100%); }
+    .how::before { content:''; position:absolute; inset:0; pointer-events:none; background: radial-gradient(ellipse 70% 55% at 50% 0%,rgba(232,40,26,.11) 0%,transparent 60%), radial-gradient(ellipse 50% 50% at 80% 100%,rgba(232,40,26,.08) 0%,transparent 60%); }
+    .how-inner { max-width:1200px; margin:0 auto; position:relative; z-index:1; }
+    .how-header { text-align:center; margin-bottom:80px; }
+    .how-header .section-eyebrow { justify-content:center; }
+    .how-header .section-title { color:white; }
+    .how-header .section-desc { color:rgba(255,255,255,.45); margin:0 auto; }
+
+    .steps { display:grid; grid-template-columns:repeat(4,1fr); position:relative; gap:20px; }
+    .steps::before { content:''; position:absolute; top:36px; left:calc(12.5% + 10px); right:calc(12.5% + 10px); height:1px; background:linear-gradient(90deg,var(--red),rgba(232,40,26,.06)); z-index:0; }
+
+    .step { text-align:center; padding:36px 20px 32px; background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.07); border-radius:24px; position:relative; z-index:1; transition:all .35s ease; overflow:hidden; }
+    .step::before { content:''; position:absolute; inset:0; border-radius:24px; background:radial-gradient(circle at 50% 0%,rgba(232,40,26,.1) 0%,transparent 60%); opacity:0; transition:opacity .35s ease; }
+    .step:hover { background:rgba(255,255,255,.06); border-color:rgba(232,40,26,.25); transform:translateY(-6px); box-shadow:0 20px 50px rgba(0,0,0,.3),0 0 30px rgba(232,40,26,.08); }
+    .step:hover::before { opacity:1; }
+
+    .step-circle { width:60px; height:60px; border-radius:50%; background:rgba(255,255,255,.06); border:2px solid rgba(255,255,255,.12); display:flex; align-items:center; justify-content:center; margin:0 auto 16px; font-family:'Raleway',sans-serif; font-size:20px; font-weight:900; color:rgba(255,255,255,.4); transition:all .35s ease; position:relative; z-index:1; }
+    .step:first-child .step-circle { background:linear-gradient(135deg,var(--red),#ff5a4a); border-color:var(--red); color:white; box-shadow:0 8px 28px rgba(232,40,26,.5); }
+    .step:hover .step-circle { background:linear-gradient(135deg,var(--red),#ff5a4a); border-color:var(--red); color:white; transform:scale(1.12); box-shadow:0 10px 30px rgba(232,40,26,.5); }
+    .step-icon { font-size:20px; color:rgba(232,40,26,.4); margin-bottom:12px; transition:all .35s ease; position:relative; z-index:1; }
+    .step:hover .step-icon { color:var(--red); transform:scale(1.1); }
+    .step h4 { font-family:'Raleway',sans-serif; font-size:16px; font-weight:800; color:white; margin-bottom:8px; position:relative; z-index:1; }
+    .step p { font-size:13px; color:rgba(255,255,255,.42); line-height:1.65; font-weight:300; position:relative; z-index:1; }
+
+    /* TRUST */
+    .trust { padding:22px 52px; background:rgba(8,4,2,.95); border-top:1px solid rgba(232,40,26,.12); border-bottom:1px solid rgba(232,40,26,.12); }
+    .trust-inner { max-width:1000px; margin:0 auto; display:flex; align-items:center; justify-content:center; flex-wrap:wrap; }
+    .trust-item { display:flex; align-items:center; gap:10px; padding:10px 36px; border-right:1px solid rgba(255,255,255,.07); font-size:13px; font-weight:500; color:rgba(255,255,255,.55); }
+    .trust-item:last-child { border-right:none; }
+    .trust-item i { color:var(--red); font-size:14px; }
+
+    /* CTA */
+    .cta-section { padding:120px 52px; background:linear-gradient(135deg,#0a0604 0%,#1a0c0a 100%); position:relative; overflow:hidden; }
+    .cta-section::before { content:''; position:absolute; width:700px; height:700px; border-radius:50%; top:50%; left:50%; transform:translate(-50%,-50%); background:radial-gradient(circle,rgba(232,40,26,.14) 0%,transparent 70%); pointer-events:none; }
+    .cta-inner { max-width:760px; margin:0 auto; text-align:center; position:relative; z-index:1; }
+    .cta-inner .section-eyebrow { justify-content:center; color:#ff8a80; }
+    .cta-inner .section-eyebrow::before { background:#ff8a80; }
+    .cta-title { font-family:'Raleway',sans-serif; font-size:clamp(34px,5vw,56px); font-weight:900; letter-spacing:-2px; line-height:1.05; color:white; margin:12px 0 16px; }
+    .cta-title span { color:var(--red); }
+    .cta-desc { font-size:16.5px; color:rgba(255,255,255,.48); font-weight:300; line-height:1.65; max-width:460px; margin:0 auto 38px; }
+    .cta-btns { display:flex; align-items:center; justify-content:center; gap:14px; flex-wrap:wrap; }
+
+    /* FOOTER */
+    footer { background:#060402; padding:44px 52px 30px; border-top:1px solid rgba(255,255,255,.06); }
+    .footer-inner { max-width:1200px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; }
+    .footer-logo { display:flex; align-items:center; gap:10px; }
+    .footer-logo img { width:36px; height:36px; object-fit:contain; }
+    .footer-logo-name { font-family:'Raleway',sans-serif; font-size:17px; font-weight:800; color:white; }
+    .footer-copy { font-size:12.5px; color:rgba(255,255,255,.25); }
+
+    /* RESPONSIVE */
+    @media(max-width:960px){
+      header { padding:0 24px; } nav { display:none; }
+      .hero { padding:110px 24px 0; }
+      .hero-content { grid-template-columns:1fr; gap:40px; }
+      .hero-right { height:260px; }
+      .feat-grid-row1 { grid-template-columns:1fr; }
+      .feat-grid-row2 { grid-template-columns:1fr; }
+      .feat-card.dark { flex-direction:column; }
+      .dark-deco { display:none; }
+      .steps { grid-template-columns:repeat(2,1fr); gap:40px; }
+      .steps::before { display:none; }
+      .features,.how,.cta-section { padding:80px 24px; }
+      footer { padding:36px 24px 24px; }
+    }
+    @media(max-width:560px){
+      .hero-btns,.cta-btns { flex-direction:column; }
+      .steps { grid-template-columns:1fr; }
+      .trust-item { border-right:none; width:100%; justify-content:center; }
+      .footer-inner { flex-direction:column; text-align:center; }
+      .hero-stats { flex-wrap:wrap; }
+      .hero-stat { min-width:50%; border-bottom:1px solid rgba(255,255,255,.07); }
+    }
+  </style>
 </head>
 <body>
 
-  <header class="header">
-    <div class="logo-wrapper">
-      <img src="assets/images/logo.png" class="logo" alt="Logo" onerror="this.style.display='none'">
-      <span class="logo-text">SmartIncident</span>
+<!-- HEADER -->
+<header id="hdr">
+  <a href="#" class="logo-wrap">
+    <img src="../assets/images/logo.png" alt="Logo">
+    <span class="logo-name">SmartIncident</span>
+  </a>
+  <nav>
+    <div class="nav-pill">
+      <a href="#features" class="active">Fitur</a>
+      <a href="#how">Cara Kerja</a>
+      <a href="#">Tentang</a>
     </div>
-    <a href="auth/login.html" class="login-btn">
+  </nav>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <a href="auth/login.html" class="btn-login">
       <i class="fa-solid fa-right-to-bracket"></i> Login
     </a>
-  </header>
+  </div>
+</header>
 
-  <section class="hero">
-    <div class="hero-blob-center"></div>
+<!-- HERO -->
+<section class="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-overlay"></div>
+
+  <div style="position:relative;z-index:2;width:100%;max-width:1200px;margin:0 auto;">
     <div class="hero-content">
-      <span class="hero-badge">
-        <i class="fa-solid fa-circle-check"></i> PROFESSIONAL REPORTING SYSTEM
-      </span>
-      <h1>
-        Kelola Insiden <br>
-        <span class="highlight">Cepat & Akurat</span>
-      </h1>
-      <p>
-        Platform terpadu untuk pelaporan, pemantauan, dan penanganan insiden secara real-time. Transparan, aman, dan efisien.
-      </p>
-      <div class="hero-buttons">
-        <a href="auth/login.html" class="btn-primary">
-          <i class="fa-solid fa-right-to-bracket"></i> Login Sistem
-        </a>
-        <a href="#features" class="btn-secondary">
-          <i class="fa-solid fa-circle-info"></i> Pelajari Lebih Lanjut
-        </a>
+      <div class="hero-left">
+        <div class="hero-badge"><span class="dot"></span> Sistem Aktif &amp; Real-time</div>
+        <h1>Kelola Insiden<br><span class="red">Cepat &amp; Akurat</span></h1>
+        <p class="hero-desc">Platform terpadu untuk pelaporan, pemantauan, dan penanganan insiden secara real-time. Transparan, aman, dan efisien.</p>
+        <div class="hero-btns">
+          <a href="auth/login.html" class="btn-cta"><i class="fa-solid fa-right-to-bracket"></i> Login Sistem</a>
+          <a href="#features" class="btn-ghost"><i class="fa-solid fa-circle-info"></i> Pelajari Lebih Lanjut</a>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="hcard hcard-main">
+          <div class="hcard-title">Insiden Bulan Ini</div>
+          <div class="hcard-stat">
+            <div class="hcard-num" id="stat-total">—</div>
+            <div class="hcard-trend" id="stat-resolved-pct">↑ memuat...</div>
+          </div>
+          <div class="hcard-bar-wrap" id="stat-bars">
+            <div class="hbar" style="height:20%"></div>
+            <div class="hbar" style="height:14%"></div>
+            <div class="hbar" style="height:18%"></div>
+            <div class="hbar" style="height:11%"></div>
+            <div class="hbar" style="height:16%"></div>
+            <div class="hbar" style="height:9%"></div>
+            <div class="hbar" style="height:20%"></div>
+          </div>
+        </div>
+        <div class="hcard hcard-mini">
+          <div class="hcard-mini-title">Aktivitas</div>
+          <div class="hcard-mini-row"><span class="hcard-mini-label"><span class="dot-legend" style="background:#E8281A"></span>Low</span><span class="hcard-mini-val" id="stat-open-pct">—</span></div>
+          <div class="hcard-mini-row"><span class="hcard-mini-label"><span class="dot-legend" style="background:#F59E0B"></span>Medium</span><span class="hcard-mini-val" id="stat-inprogress-pct">—</span></div>
+          <div class="hcard-mini-row"><span class="hcard-mini-label"><span class="dot-legend" style="background:#22c55e"></span>High</span><span class="hcard-mini-val" id="stat-closed-pct">—</span></div>
+        </div>
+        <div class="hcard hcard-alert">
+          <div class="hcard-alert-icon"><i class="fa-solid fa-robot"></i></div>
+          <div class="hcard-alert-text">
+            <div class="t1">AI Rekomendasi Aktif</div>
+            <div class="t2">Saran otomatis tersedia</div>
+          </div>
+        </div>
       </div>
     </div>
-  </section>
 
-  <!-- STATS BAR -->
-  <div class="stats-bar">
-    <div class="container">
-      <div class="stats-row">
-        <div class="stat-item">
-          <span class="stat-num">247+</span>
-          <span class="stat-label">Insiden Selesai</span>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="hero-stat-num" id="stat-closed">—</div><div class="hero-stat-label">Insiden Selesai</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">4.2<span>m</span></div><div class="hero-stat-label">Rata-rata Respons</div></div>
+      <div class="hero-stat"><div class="hero-stat-num" id="stat-resolve-rate">—</div><div class="hero-stat-label">Tingkat Resolusi</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">24<span>/7</span></div><div class="hero-stat-label">Monitoring Aktif</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <span class="ticker-item"><i class="fa-solid fa-bolt"></i> Respons Cepat</span>
+    <span class="ticker-item"><i class="fa-solid fa-eye"></i> Transparan</span>
+    <span class="ticker-item"><i class="fa-solid fa-chart-line"></i> Analitik Cerdas</span>
+    <span class="ticker-item"><i class="fa-solid fa-robot"></i> AI SmartIncident</span>
+    <span class="ticker-item"><i class="fa-solid fa-users"></i> Multi-Role Access</span>
+    <span class="ticker-item"><i class="fa-solid fa-lock"></i> Enkripsi AES-256</span>
+    <span class="ticker-item"><i class="fa-solid fa-server"></i> 99.9% Uptime</span>
+    <span class="ticker-item"><i class="fa-solid fa-bolt"></i> Respons Cepat</span>
+    <span class="ticker-item"><i class="fa-solid fa-eye"></i> Transparan</span>
+    <span class="ticker-item"><i class="fa-solid fa-chart-line"></i> Analitik Cerdas</span>
+    <span class="ticker-item"><i class="fa-solid fa-robot"></i> AI SmartIncident</span>
+    <span class="ticker-item"><i class="fa-solid fa-users"></i> Multi-Role Access</span>
+    <span class="ticker-item"><i class="fa-solid fa-lock"></i> Enkripsi AES-256</span>
+    <span class="ticker-item"><i class="fa-solid fa-server"></i> 99.9% Uptime</span>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="features-inner">
+    <div class="feat-header reveal">
+      <div>
+        <div class="section-eyebrow">Mengapa Kami</div>
+        <div class="section-title">Dirancang untuk<br>Kecepatan &amp; Kontrol</div>
+      </div>
+      <p class="section-desc">Solusi terbaik untuk manajemen insiden perusahaan Anda — dari laporan pertama hingga resolusi penuh.</p>
+    </div>
+    <div class="feat-grid-row1">
+      <div class="feat-card reveal">
+        <div class="card-glow"></div>
+        <div class="feat-num">01</div>
+        <div class="feat-icon"><i class="fa-solid fa-bolt"></i></div>
+        <h3>Respons Cepat</h3>
+        <p>Notifikasi instan dan alur kerja otomatis memungkinkan tim bertindak segera saat insiden terjadi.</p>
+        <a href="#" class="feat-link">Pelajari <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+      <div class="feat-card reveal">
+        <div class="card-glow"></div>
+        <div class="feat-num">02</div>
+        <div class="feat-icon"><i class="fa-solid fa-eye"></i></div>
+        <h3>Transparan</h3>
+        <p>Lacak status laporan secara real-time dari awal pelaporan hingga penyelesaian masalah secara penuh.</p>
+        <a href="#" class="feat-link">Pelajari <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+      <div class="feat-card reveal">
+        <div class="card-glow"></div>
+        <div class="feat-num">03</div>
+        <div class="feat-icon"><i class="fa-solid fa-chart-line"></i></div>
+        <h3>Analitik Cerdas</h3>
+        <p>Dashboard komprehensif dengan grafik tren dan laporan otomatis untuk pengambilan keputusan strategis.</p>
+        <a href="#" class="feat-link">Pelajari <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+    </div>
+    <div class="feat-grid-row2">
+      <div class="feat-card dark reveal">
+        <div class="card-glow"></div>
+        <div class="dark-deco"><i class="fa-solid fa-robot"></i></div>
+        <div>
+          <div class="feat-num">04</div>
+          <div class="feat-icon"><i class="fa-solid fa-robot"></i></div>
+          <h3>AI SmartIncident</h3>
+          <p>Rekomendasi cerdas berbasis AI untuk setiap insiden — mulai dari analisis akar masalah, saran penanganan, hingga estimasi waktu resolusi secara otomatis.</p>
+          <a href="#" class="feat-link">Pelajari <i class="fa-solid fa-arrow-right"></i></a>
         </div>
-        <div class="stat-divider"></div>
-        <div class="stat-item">
-          <span class="stat-num">4.2m</span>
-          <span class="stat-label">Rata-rata Respons</span>
-        </div>
-        <div class="stat-divider"></div>
-        <div class="stat-item">
-          <span class="stat-num">98.7%</span>
-          <span class="stat-label">Tingkat Resolusi</span>
-        </div>
-        <div class="stat-divider"></div>
-        <div class="stat-item">
-          <span class="stat-num">24/7</span>
-          <span class="stat-label">Monitoring Aktif</span>
-        </div>
+      </div>
+      <div class="feat-card reveal">
+        <div class="card-glow"></div>
+        <div class="feat-num">05</div>
+        <div class="feat-icon"><i class="fa-solid fa-users"></i></div>
+        <h3>Multi-Role Access</h3>
+        <p>Atur hak akses pelapor, admin, dan tim teknis secara granular sesuai struktur organisasi Anda.</p>
+        <a href="#" class="feat-link">Pelajari <i class="fa-solid fa-arrow-right"></i></a>
       </div>
     </div>
   </div>
+</section>
 
-  <section class="features" id="features">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-tag">Mengapa Kami</span>
-        <h2>Mengapa Memilih Kami?</h2>
-        <p>Solusi terbaik untuk manajemen insiden perusahaan Anda.</p>
-      </div>
-
-      <div class="card-grid">
-        <div class="card">
-          <div class="card-icon">
-            <i class="fa-solid fa-bolt"></i>
-          </div>
-          <h3>Respons Cepat</h3>
-          <p>Notifikasi instan dan pelaporan cepat memungkinkan tim penanganan bertindak segera saat insiden terjadi.</p>
-          <div class="card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-        </div>
-        <div class="card">
-          <div class="card-icon">
-            <i class="fa-solid fa-eye"></i>
-          </div>
-          <h3>Transparan</h3>
-          <p>Lacak status laporan secara real-time dari awal pelaporan hingga penyelesaian masalah.</p>
-          <div class="card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-        </div>
-        <div class="card">
-          <div class="card-icon">
-            <i class="fa-solid fa-shield-halved"></i>
-          </div>
-          <h3>Aman & Terenkripsi</h3>
-          <p>Data pelapor dan detail insiden dilindungi dengan standar keamanan tingkat tinggi.</p>
-          <div class="card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-        </div>
-      </div>
+<!-- HOW -->
+<section class="how" id="how">
+  <div class="how-inner">
+    <div class="how-header reveal">
+      <div class="section-eyebrow">Cara Kerja</div>
+      <div class="section-title">Empat Langkah Mudah</div>
+      <p class="section-desc">Proses sederhana, hasil maksimal — dari laporan hingga resolusi tuntas.</p>
     </div>
-  </section>
-
-  <!-- CTA STRIP -->
-  <!-- Trust strip -->
-  <div class="trust-strip">
-    <div class="container">
-      <div class="trust-row">
-        <div class="trust-item">
-          <i class="fa-solid fa-lock"></i>
-          <span>Enkripsi AES-256</span>
-        </div>
-        <div class="trust-sep"></div>
-        <div class="trust-item">
-          <i class="fa-solid fa-server"></i>
-          <span>99.9% Uptime</span>
-        </div>
-        <div class="trust-sep"></div>
-        <div class="trust-item">
-          <i class="fa-solid fa-users"></i>
-          <span>Multi-role Access</span>
-        </div>
-        <div class="trust-sep"></div>
-        <div class="trust-item">
-          <i class="fa-solid fa-clock-rotate-left"></i>
-          <span>Audit Trail Lengkap</span>
-        </div>
-      </div>
+    <div class="steps">
+      <div class="step reveal"><div class="step-circle">1</div><div class="step-icon"><i class="fa-solid fa-file-pen"></i></div><h4>Laporkan</h4><p>Isi formulir insiden dengan detail kejadian, lokasi, dan dokumentasi foto.</p></div>
+      <div class="step reveal"><div class="step-circle">2</div><div class="step-icon"><i class="fa-solid fa-robot"></i></div><h4>Verifikasi</h4><p>Admin memvalidasi laporan. Prioritas insiden ditentukan secara otomatis oleh AI <em>rule-based</em> sesuai kategori dan tingkat keparahan.</p></div>
+      <div class="step reveal"><div class="step-circle">3</div><div class="step-icon"><i class="fa-solid fa-screwdriver-wrench"></i></div><h4>Tangani</h4><p>Tim ditugaskan dan mulai menangani insiden secara langsung dengan panduan sistem.</p></div>
+      <div class="step reveal"><div class="step-circle">4</div><div class="step-icon"><i class="fa-solid fa-circle-check"></i></div><h4>Selesai</h4><p>Resolusi dikirim ke pelapor dan data tersimpan untuk analisis masa depan.</p></div>
     </div>
   </div>
+</section>
 
-  <footer>
-    <div class="container">
-      <div class="footer-content">
-        <div class="footer-logo">
-          <span>SmartIncident</span>
-        </div>
-        <div class="copyright">
-          &copy; 2024 Smart Incident System. All Rights Reserved.
-        </div>
-      </div>
+<!-- TRUST -->
+<div class="trust">
+  <div class="trust-inner">
+    <div class="trust-item reveal"><i class="fa-solid fa-lock"></i> Enkripsi AES-256</div>
+    <div class="trust-item reveal"><i class="fa-solid fa-server"></i> 99.9% Uptime</div>
+    <div class="trust-item reveal"><i class="fa-solid fa-users"></i> Multi-role Access</div>
+    <div class="trust-item reveal"><i class="fa-solid fa-clock-rotate-left"></i> Audit Trail Lengkap</div>
+  </div>
+</div>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-inner reveal">
+    <div class="section-eyebrow">Mulai Sekarang</div>
+    <div class="cta-title">Siap Mengelola Insiden<br><span>Lebih Cerdas?</span></div>
+    <p class="cta-desc">Bergabunglah dengan organisasi yang sudah mempercayakan manajemen insiden mereka kepada SmartIncident.</p>
+    <div class="cta-btns">
+      <a href="auth/login.html" class="btn-cta"><i class="fa-solid fa-right-to-bracket"></i> Login Sistem</a>
+      <a href="#features" class="btn-ghost"><i class="fa-solid fa-circle-info"></i> Pelajari Lebih Lanjut</a>
     </div>
-  </footer>
+  </div>
+</section>
 
-  <script>
-    // Scroll reveal
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('visible');
-          observer.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.12 });
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <img src="../assets/images/logo.png" alt="Logo">
+      <span class="footer-logo-name">SmartIncident</span>
+    </div>
+    <div class="footer-copy">&copy; 2024 Smart Incident System. All Rights Reserved.</div>
+  </div>
+</footer>
 
-    document.querySelectorAll('.card, .section-header, .stat-item, .trust-item').forEach((el, i) => {
-      el.style.transitionDelay = (i * 0.08) + 's';
-      observer.observe(el);
+<script>
+/* THREE.JS — 3D particle field + geometry */
+(function(){
+  const canvas = document.getElementById('hero-canvas');
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:false });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x080402);
+  scene.fog = new THREE.FogExp2(0x080402, 0.065);
+
+  const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 100);
+  camera.position.z = 5;
+
+  function resize(){
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    renderer.setSize(w, h, false);
+    camera.aspect = w/h;
+    camera.updateProjectionMatrix();
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  /* Particles */
+  const count = 2200;
+  const geo = new THREE.BufferGeometry();
+  const pos = new Float32Array(count*3);
+  const col = new Float32Array(count*3);
+  for(let i=0;i<count;i++){
+    pos[i*3]   = (Math.random()-.5)*26;
+    pos[i*3+1] = (Math.random()-.5)*18;
+    pos[i*3+2] = (Math.random()-.5)*14;
+    const r = Math.random();
+    if(r<0.28){ col[i*3]=0.91;col[i*3+1]=0.16;col[i*3+2]=0.10; }
+    else if(r<0.46){ col[i*3]=0.88;col[i*3+1]=0.45;col[i*3+2]=0.35; }
+    else{ const v=0.12+Math.random()*.28; col[i*3]=v;col[i*3+1]=v*.88;col[i*3+2]=v*.82; }
+  }
+  geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
+  geo.setAttribute('color',   new THREE.BufferAttribute(col,3));
+  const ptMat = new THREE.PointsMaterial({ size:.05, vertexColors:true, transparent:true, opacity:.85, sizeAttenuation:true });
+  scene.add(new THREE.Points(geo,ptMat));
+
+  /* Wireframe shapes */
+  const wMat  = new THREE.MeshBasicMaterial({color:0xE8281A,wireframe:true,transparent:true,opacity:.16});
+  const wMat2 = new THREE.MeshBasicMaterial({color:0xff6b5e,wireframe:true,transparent:true,opacity:.10});
+  const shapeGeos = [
+    new THREE.IcosahedronGeometry(.32,0),
+    new THREE.OctahedronGeometry(.28,0),
+    new THREE.TetrahedronGeometry(.3,0),
+  ];
+  const shapes = [];
+  for(let i=0;i<10;i++){
+    const m = new THREE.Mesh(shapeGeos[i%3], i%2===0?wMat:wMat2);
+    m.position.set((Math.random()-.5)*16,(Math.random()-.5)*11,(Math.random()-.5)*7);
+    m.rotation.set(Math.random()*Math.PI,Math.random()*Math.PI,Math.random()*Math.PI);
+    m.userData={ rx:(Math.random()-.5)*.009, ry:(Math.random()-.5)*.013, fs:.3+Math.random()*.5, fa:.04+Math.random()*.09, oy:m.position.y };
+    scene.add(m); shapes.push(m);
+  }
+
+  /* Torus rings */
+  const torus = new THREE.Mesh(new THREE.TorusGeometry(1.4,.013,8,90), new THREE.MeshBasicMaterial({color:0xE8281A,transparent:true,opacity:.2}));
+  torus.position.set(3.5,0,-1); scene.add(torus);
+  const torus2 = new THREE.Mesh(new THREE.TorusGeometry(2.2,.008,8,110), new THREE.MeshBasicMaterial({color:0xE8281A,transparent:true,opacity:.09}));
+  torus2.position.set(3.5,0,-1); torus2.rotation.x=Math.PI/4; scene.add(torus2);
+
+  /* Mouse parallax */
+  let mx=0,my=0;
+  document.addEventListener('mousemove',e=>{ mx=(e.clientX/window.innerWidth-.5)*2; my=(e.clientY/window.innerHeight-.5)*2; });
+
+  const clock = new THREE.Clock();
+  function animate(){
+    requestAnimationFrame(animate);
+    const t = clock.getElapsedTime();
+
+    scene.children[0].rotation.y = t*.016;
+    scene.children[0].rotation.x = t*.005;
+
+    torus.rotation.z  = t*.22; torus.rotation.x  = t*.07;
+    torus2.rotation.z = -t*.13; torus2.rotation.y = t*.09;
+
+    shapes.forEach(s=>{
+      s.rotation.x += s.userData.rx;
+      s.rotation.y += s.userData.ry;
+      s.position.y  = s.userData.oy + Math.sin(t*s.userData.fs)*s.userData.fa;
     });
-  </script>
+
+    camera.position.x += (mx*.28 - camera.position.x)*.04;
+    camera.position.y += (-my*.18 - camera.position.y)*.04;
+    camera.lookAt(scene.position);
+    renderer.render(scene,camera);
+  }
+  animate();
+})();
+
+/* Scroll reveal */
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);} });
+},{threshold:.08});
+document.querySelectorAll('.reveal').forEach((el,i)=>{ el.style.transitionDelay=(i%4*.1)+'s'; io.observe(el); });
+
+/* Header scroll */
+window.addEventListener('scroll',()=>{ document.getElementById('hdr').classList.toggle('scrolled',window.scrollY>40); });
+
+/* 3D tilt on feature cards */
+document.querySelectorAll('.feat-card').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const x=(e.clientX-r.left)/r.width-.5;
+    const y=(e.clientY-r.top)/r.height-.5;
+    card.style.transform=`translateY(-10px) perspective(900px) rotateX(${-y*7}deg) rotateY(${x*7}deg)`;
+  });
+  card.addEventListener('mouseleave',()=>{ card.style.transform=''; });
+});
+/* ========== LIVE STATS dari API ========== */
+(function fetchLiveStats() {
+  const API_BASE = '/api';
+
+  function countUp(el, target, suffix = '') {
+    if (!el) return;
+    const duration = 1000;
+    const start = performance.now();
+    function step(now) {
+      const progress = Math.min((now - start) / duration, 1);
+      const ease = 1 - Math.pow(1 - progress, 3);
+      el.innerHTML = Math.round(target * ease) + suffix;
+      if (progress < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  async function loadStats() {
+    try {
+      const res = await fetch(`${API_BASE}/incidents/public-stats`);
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const d = await res.json();
+
+      // hcard-main: total & resolved %
+      countUp(document.getElementById('stat-total'), d.total || 0);
+      const trendEl = document.getElementById('stat-resolved-pct');
+      if (trendEl) trendEl.textContent = `↑ ${d.resolved_pct || 0}% resolved`;
+
+      // bar chart
+      const bars = document.querySelectorAll('#stat-bars .hbar');
+      if (bars.length) {
+        const maxH = Math.max(d.open || 0, d.in_progress || 0, d.closed || 0, 1);
+        const toH = v => Math.max(8, Math.round(((v||0) / maxH) * 100));
+        [20, 14, 18, 11].forEach((h, i) => { if (bars[i]) bars[i].style.height = h + '%'; });
+        if (bars[4]) bars[4].style.height = toH(d.open) + '%';
+        if (bars[5]) bars[5].style.height = toH(d.in_progress) + '%';
+        if (bars[6]) bars[6].style.height = toH(d.closed) + '%';
+      }
+
+      // hcard-mini: Low / Medium / High priority
+      const prio = d.priority || {};
+      const prioTotal = (prio.low||0) + (prio.medium||0) + (prio.high||0) || 1;
+      const pct = v => Math.round(((v||0) / prioTotal) * 100) + '%';
+      const elLow  = document.getElementById('stat-open-pct');
+      const elMed  = document.getElementById('stat-inprogress-pct');
+      const elHigh = document.getElementById('stat-closed-pct');
+      if (elLow)  elLow.textContent  = pct(prio.low);
+      if (elMed)  elMed.textContent  = pct(prio.medium);
+      if (elHigh) elHigh.textContent = pct(prio.high);
+
+      // hero bottom stats
+      countUp(document.getElementById('stat-closed'), d.closed || 0);
+      const rateEl = document.getElementById('stat-resolve-rate');
+      if (rateEl) rateEl.innerHTML = (d.resolved_pct || 0) + '<span>%</span>';
+
+    } catch (err) {
+      console.warn('[SmartIncident] Gagal memuat stats:', err.message);
+    }
+  }
+
+  loadStats();
+  setInterval(loadStats, 60000);
+})();
+</script>
 </body>
 </html>

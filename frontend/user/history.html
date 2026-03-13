@@ -217,12 +217,8 @@
         <i class="fas fa-search"></i>
         <input type="text" id="searchInput" placeholder="Cari judul atau kategori..."/>
       </div>
-      <div class="topbar-user">
-        <div class="topbar-ava" id="topbarAva">B</div>
-        <span class="topbar-name" id="topbarName">–</span>
-        <i class="fas fa-chevron-down topbar-chevron"></i>
-      </div>
     </div>
+
   </div>
 
   <div class="content">
@@ -371,7 +367,6 @@ if (sta) f = f.filter(i => {
 
   // Delete report function
   async function deleteReport(id) {
-    // Show confirmation dialog in Bahasa Indonesia
     const confirmed = confirm('Apakah Anda yakin ingin menghapus laporan ini?');
     
     if (!confirmed) return;
@@ -394,12 +389,9 @@ if (sta) f = f.filter(i => {
       const data = await res.json();
       
       if (res.ok && data.success) {
-        // Show success alert in Bahasa Indonesia
         alert('Laporan berhasil dihapus');
-        // Refresh the report history table without reloading the page
         loadIncidents(token);
       } else {
-        // Show error alert in Bahasa Indonesia
         alert(data.message || 'Gagal menghapus laporan');
       }
     } catch(err) {

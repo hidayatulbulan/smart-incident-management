@@ -142,20 +142,6 @@
     .hero-email i { color: white; font-size: 11px; flex-shrink: 0; }
     .hero-email span { font-size: 11.5px; font-weight: 600; color: white; word-break: break-all; text-align: left; line-height: 1.4; }
 
-    /* Stats mini row */
-    .stats-row {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 10px; margin-bottom: 14px;
-    }
-    .stat-item {
-      background: white; border-radius: var(--rsm); padding: 14px;
-      text-align: center; border: 1px solid var(--gray-100);
-      box-shadow: var(--shadow);
-    }
-    .stat-num { font-size: 20px; font-weight: 800; color: var(--gray-900); line-height: 1; margin-bottom: 4px; }
-    .stat-num span { font-size: 12px; color: var(--red); }
-    .stat-lbl { font-size: 10px; font-weight: 600; color: var(--gray-400); }
-
     /* Security mini card */
     .sec-mini {
       background: white; border-radius: var(--rsm); padding: 16px;
@@ -263,17 +249,36 @@
       font-size: 12.5px; font-weight: 700; color: var(--red);
       text-decoration: none; padding: 7px 14px; border-radius: 9px;
       background: var(--red-50); border: 1.5px solid var(--red-100);
-      transition: all .2s;
+      transition: all .2s; cursor: pointer;
     }
     .update-link:hover { background: var(--red); color: white; border-color: var(--red); }
 
-    /* Toggle */
-    .toggle { position: relative; width: 42px; height: 24px; cursor: pointer; display: block; flex-shrink: 0; }
-    .toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
-    .toggle-slider { position: absolute; inset: 0; background: var(--gray-200); border-radius: 24px; transition: background .25s; }
-    .toggle-slider::before { content: ''; position: absolute; left: 3px; top: 3px; width: 18px; height: 18px; border-radius: 50%; background: white; transition: transform .25s; box-shadow: 0 1px 4px rgba(0,0,0,.18); }
-    .toggle input:checked + .toggle-slider { background: linear-gradient(135deg,var(--red),var(--red-dark)); }
-    .toggle input:checked + .toggle-slider::before { transform: translateX(18px); }
+    /* ===== MODAL ===== */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,.45); z-index: 1000;
+      align-items: center; justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: white; border-radius: var(--radius); padding: 28px;
+      width: 420px; max-width: 90%;
+      box-shadow: 0 8px 32px rgba(0,0,0,.18);
+      animation: scaleIn .3s cubic-bezier(0.22,1,0.36,1);
+    }
+    .modal-title { font-size: 16px; font-weight: 800; color: var(--gray-900); margin-bottom: 4px; }
+    .modal-subtitle { font-size: 12px; color: var(--gray-400); font-weight: 500; margin-bottom: 20px; }
+
+    /* Password toggle eye */
+    .pw-wrap { position: relative; }
+    .pw-wrap input { padding-left: 36px; padding-right: 38px; }
+    .pw-wrap .eye-btn {
+      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; cursor: pointer; color: var(--gray-400);
+      font-size: 13px; padding: 0; display: flex; align-items: center;
+      transition: color .2s;
+    }
+    .pw-wrap .eye-btn:hover { color: var(--red); }
 
     /* Toast */
     .toast { position: fixed; top: 20px; right: 20px; padding: 13px 20px; border-radius: 12px; color: white; font-size: 13px; font-weight: 700; z-index: 9999; box-shadow: 0 8px 24px rgba(0,0,0,.14); animation: toastIn .3s ease; display: flex; align-items: center; gap: 8px; }
@@ -306,7 +311,7 @@
 
   <div class="sidebar-spacer"></div>
   <div class="sidebar-divider"></div>
-  <div class="sidebar-user">
+  <div class="sidebar-user" style="display: none;">
     <div class="user-ava" id="sidebarAva">B</div>
     <div>
       <div class="user-name-sm" id="sidebarName">–</div>
@@ -314,8 +319,10 @@
     </div>
   </div>
   <button class="logout-btn" id="logoutBtn">
+
     <i class="fas fa-sign-out-alt"></i><span>Keluar</span>
   </button>
+
 </aside>
 
 <!-- ===== MAIN ===== -->
@@ -435,26 +442,55 @@
                 <div class="sec-desc">Perbarui kata sandi secara berkala</div>
               </div>
             </div>
-            <a class="update-link" href="#">Perbarui</a>
-          </div>
-
-          <div class="sec-row">
-            <div class="sec-row-left">
-              <div class="sec-icon"><i class="fas fa-mobile-screen"></i></div>
-              <div>
-                <div class="sec-title">Autentikasi Dua Faktor</div>
-                <div class="sec-desc">Tambahkan lapisan keamanan ekstra</div>
-              </div>
-            </div>
-            <label class="toggle">
-              <input type="checkbox" id="twofa">
-              <span class="toggle-slider"></span>
-            </label>
+            <!--  Tombol Perbarui Sandi -->
+            <a class="update-link" href="#" onclick="openPasswordModal(); return false;">Perbarui</a>
           </div>
 
         </div>
       </div>
 
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL UBAH KATA SANDI ===== -->
+<div class="modal-overlay" id="passwordModal">
+  <div class="modal-box">
+    <div class="modal-title"><i class="fas fa-key" style="color:var(--red);margin-right:8px;"></i>Ubah Kata Sandi</div>
+    <div class="modal-subtitle">Masukkan kata sandi lama dan baru Anda</div>
+
+    <div class="fg">
+      <label>Kata Sandi Lama</label>
+      <div class="input-wrap has-icon pw-wrap">
+        <i class="fas fa-lock"></i>
+        <input type="password" id="oldPassword" placeholder="Kata sandi saat ini"/>
+        <button type="button" class="eye-btn" onclick="togglePw('oldPassword', this)"><i class="fas fa-eye"></i></button>
+      </div>
+    </div>
+
+    <div class="fg">
+      <label>Kata Sandi Baru</label>
+      <div class="input-wrap has-icon pw-wrap">
+        <i class="fas fa-lock"></i>
+        <input type="password" id="newPassword" placeholder="Min. 8 karakter"/>
+        <button type="button" class="eye-btn" onclick="togglePw('newPassword', this)"><i class="fas fa-eye"></i></button>
+      </div>
+    </div>
+
+    <div class="fg no-mb">
+      <label>Konfirmasi Kata Sandi Baru</label>
+      <div class="input-wrap has-icon pw-wrap">
+        <i class="fas fa-lock"></i>
+        <input type="password" id="confirmPassword" placeholder="Ulangi kata sandi baru"/>
+        <button type="button" class="eye-btn" onclick="togglePw('confirmPassword', this)"><i class="fas fa-eye"></i></button>
+      </div>
+    </div>
+
+    <div class="form-actions" style="margin-top:20px;">
+      <button class="cancel-btn" onclick="closePasswordModal()">Batal</button>
+      <button class="save-btn" id="changePwBtn" onclick="changePassword()">
+        <i class="fas fa-key"></i> Ubah Kata Sandi
+      </button>
     </div>
   </div>
 </div>
@@ -478,8 +514,14 @@
     document.getElementById('photoInput').addEventListener('change', e => {
       if (e.target.files[0]) uploadPhoto(e.target.files[0]);
     });
+
+    // Tutup modal jika klik area luar
+    document.getElementById('passwordModal').addEventListener('click', function(e) {
+      if (e.target === this) closePasswordModal();
+    });
   });
 
+  /* ===== PROFILE ===== */
   async function loadProfile(token) {
     try {
       const res = await fetch(`${API_BASE}/auth/profile`, {
@@ -487,7 +529,6 @@
       });
       const result = await res.json();
       if (!result.success) { window.location.href = '../auth/login.html'; return; }
-
       currentUser = result.data;
       fillUI(currentUser);
     } catch(e) {
@@ -505,12 +546,10 @@
     const initial = user.name ? user.name.charAt(0).toUpperCase() : 'U';
     const role    = user.role ? user.role.charAt(0).toUpperCase() + user.role.slice(1) : '–';
 
-    // Hero card
     document.getElementById('heroName').textContent  = user.name || '–';
     document.getElementById('heroRole').textContent  = role;
     document.getElementById('heroEmail').textContent = user.email || '–';
 
-    // Avatar
     const ai = document.getElementById('avatarInner');
     if (user.profile_photo) {
       ai.innerHTML = `<img src="http://localhost:3000/uploads/${user.profile_photo}" alt="avatar">`;
@@ -518,7 +557,6 @@
       ai.textContent = initial;
     }
 
-    // Sidebar
     document.getElementById('sidebarAva').textContent  = initial;
     document.getElementById('sidebarName').textContent = user.name || '–';
     document.getElementById('sidebarRole').textContent = role;
@@ -589,6 +627,65 @@
     ai.style.opacity = '1';
   }
 
+  /* ===== MODAL KATA SANDI ===== */
+  function openPasswordModal() {
+    document.getElementById('oldPassword').value = '';
+    document.getElementById('newPassword').value = '';
+    document.getElementById('confirmPassword').value = '';
+    document.getElementById('passwordModal').classList.add('open');
+    document.getElementById('oldPassword').focus();
+  }
+
+  function closePasswordModal() {
+    document.getElementById('passwordModal').classList.remove('open');
+  }
+
+  function togglePw(inputId, btn) {
+    const input = document.getElementById(inputId);
+    const icon  = btn.querySelector('i');
+    if (input.type === 'password') {
+      input.type = 'text';
+      icon.classList.replace('fa-eye', 'fa-eye-slash');
+    } else {
+      input.type = 'password';
+      icon.classList.replace('fa-eye-slash', 'fa-eye');
+    }
+  }
+
+  async function changePassword() {
+    const oldPw  = document.getElementById('oldPassword').value.trim();
+    const newPw  = document.getElementById('newPassword').value.trim();
+    const confPw = document.getElementById('confirmPassword').value.trim();
+
+    if (!oldPw || !newPw || !confPw) { showToast('Semua kolom wajib diisi', 'error'); return; }
+    if (newPw.length < 8)            { showToast('Kata sandi baru minimal 8 karakter', 'error'); return; }
+    if (newPw !== confPw)            { showToast('Konfirmasi kata sandi tidak cocok', 'error'); return; }
+
+    const btn   = document.getElementById('changePwBtn');
+    const token = localStorage.getItem('token');
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
+    btn.disabled  = true;
+
+    try {
+      const res = await fetch(`${API_BASE}/auth/change-password`, {
+        method: 'PUT',
+        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ oldPassword: oldPw, newPassword: newPw })
+      });
+      const result = await res.json();
+      if (!result.success) throw new Error(result.message);
+
+      closePasswordModal();
+      showToast('Kata sandi berhasil diubah!', 'success');
+    } catch(e) {
+      showToast('Gagal: ' + e.message, 'error');
+    }
+
+    btn.innerHTML = '<i class="fas fa-key"></i> Ubah Kata Sandi';
+    btn.disabled  = false;
+  }
+
+  /* ===== TOAST ===== */
   function showToast(msg, type = 'success') {
     const t = document.createElement('div');
     t.className = `toast toast-${type}`;

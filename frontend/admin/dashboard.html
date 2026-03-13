@@ -71,32 +71,31 @@
         @keyframes pulseDot { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.3;transform:scale(0.55);} }
 
         .stat-card { border-radius:var(--radius); padding:20px 20px 18px; position:relative; overflow:hidden; cursor:pointer; color:white; min-height:148px; display:flex; flex-direction:column; justify-content:space-between; animation:fadeInUp 0.6s cubic-bezier(0.22,1,0.36,1) both; transition:transform 0.28s cubic-bezier(0.22,1,0.36,1), box-shadow 0.28s ease; }
-        .stat-card:nth-child(1) { animation-delay:0.04s; background:linear-gradient(125deg,#e84c58 0%,#f07888 40%,#f9c5ca 100%); box-shadow:0 8px 28px rgba(232,76,88,0.28); }
-        .stat-card:nth-child(2) { animation-delay:0.12s; background:linear-gradient(125deg,#b8202e 0%,#d84a5a 40%,#f09aa8 100%); box-shadow:0 8px 28px rgba(184,32,46,0.28); }
-        .stat-card:nth-child(3) { animation-delay:0.20s; background:linear-gradient(125deg,#e04060 0%,#ec7888 40%,#fbbdc8 100%); box-shadow:0 8px 28px rgba(224,64,96,0.26); }
-        .stat-card:nth-child(4) { animation-delay:0.28s; background:linear-gradient(125deg,#8c1b28 0%,#b82535 40%,#e07082 100%); box-shadow:0 8px 28px rgba(140,27,40,0.32); }
+        .stat-card:nth-child(1){animation-delay:.04s;background:linear-gradient(125deg,#e84c58 0%,#f07888 40%,#f9c5ca 100%);box-shadow:0 8px 28px rgba(232,76,88,0.28);}
+        .stat-card:nth-child(2){animation-delay:.12s;background:linear-gradient(125deg,#b8202e 0%,#d84a5a 40%,#f09aa8 100%);box-shadow:0 8px 28px rgba(184,32,46,0.28);}
+        .stat-card:nth-child(3){animation-delay:.20s;background:linear-gradient(125deg,#e04060 0%,#ec7888 40%,#fbbdc8 100%);box-shadow:0 8px 28px rgba(224,64,96,0.26);}
+        .stat-card:nth-child(4){animation-delay:.28s;background:linear-gradient(125deg,#8c1b28 0%,#b82535 40%,#e07082 100%);box-shadow:0 8px 28px rgba(140,27,40,0.32);}
         .stat-card::before { content:''; position:absolute; top:0; left:-60%; width:35%; height:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.22),transparent); transform:skewX(-18deg); pointer-events:none; }
         .stat-card:hover::before { animation:shimmerSweep 0.55s ease forwards; }
         .bubble-lg { position:absolute; right:-24px; bottom:-24px; width:105px; height:105px; border-radius:50%; background:rgba(255,255,255,0.14); pointer-events:none; animation:floatBubble 5s ease-in-out infinite; }
         .bubble-md { position:absolute; right:44px; bottom:36px; width:58px; height:58px; border-radius:50%; background:rgba(255,255,255,0.09); pointer-events:none; animation:floatBubbleSm 5s ease-in-out infinite; }
-        .stat-card:nth-child(2) .bubble-lg { animation-delay:1s; } .stat-card:nth-child(2) .bubble-md { animation-delay:1.3s; }
-        .stat-card:nth-child(3) .bubble-lg { animation-delay:2s; } .stat-card:nth-child(3) .bubble-md { animation-delay:2.3s; }
-        .stat-card:nth-child(4) .bubble-lg { animation-delay:3s; } .stat-card:nth-child(4) .bubble-md { animation-delay:3.3s; }
+        .stat-card:nth-child(2) .bubble-lg{animation-delay:1s;} .stat-card:nth-child(2) .bubble-md{animation-delay:1.3s;}
+        .stat-card:nth-child(3) .bubble-lg{animation-delay:2s;} .stat-card:nth-child(3) .bubble-md{animation-delay:2.3s;}
+        .stat-card:nth-child(4) .bubble-lg{animation-delay:3s;} .stat-card:nth-child(4) .bubble-md{animation-delay:3.3s;}
         .stat-card:hover { transform:translateY(-6px) scale(1.025); }
-        .stat-card:nth-child(1):hover { box-shadow:0 18px 44px rgba(232,76,88,0.40); }
-        .stat-card:nth-child(2):hover { box-shadow:0 18px 44px rgba(184,32,46,0.40); }
-        .stat-card:nth-child(3):hover { box-shadow:0 18px 44px rgba(224,64,96,0.38); }
-        .stat-card:nth-child(4):hover { box-shadow:0 18px 44px rgba(140,27,40,0.44); }
+        .stat-card:nth-child(1):hover{box-shadow:0 18px 44px rgba(232,76,88,0.40);}
+        .stat-card:nth-child(2):hover{box-shadow:0 18px 44px rgba(184,32,46,0.40);}
+        .stat-card:nth-child(3):hover{box-shadow:0 18px 44px rgba(224,64,96,0.38);}
+        .stat-card:nth-child(4):hover{box-shadow:0 18px 44px rgba(140,27,40,0.44);}
         .stat-top { display:flex; align-items:center; gap:10px; position:relative; z-index:1; }
         .stat-icon { width:36px; height:36px; border-radius:10px; background:rgba(255,255,255,0.22); border:1px solid rgba(255,255,255,0.30); display:flex; align-items:center; justify-content:center; font-size:15px; color:white; flex-shrink:0; box-shadow:0 2px 8px rgba(0,0,0,0.12); }
         .stat-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.7px; color:rgba(255,255,255,0.88); line-height:1.4; }
         .stat-number { font-size:34px; font-weight:800; color:white; line-height:1; letter-spacing:-0.5px; position:relative; z-index:1; animation:countPop 0.55s cubic-bezier(0.22,1,0.36,1) both; animation-delay:0.35s; }
-
         .stat-footer { display:flex; align-items:center; gap:6px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.22); position:relative; z-index:1; }
         .stat-footer-dot { width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,0.7); animation:pulseDot 2.2s ease-in-out infinite; }
-        .stat-card:nth-child(2) .stat-footer-dot { animation-delay:0.5s; }
-        .stat-card:nth-child(3) .stat-footer-dot { animation-delay:1s; }
-        .stat-card:nth-child(4) .stat-footer-dot { animation-delay:1.5s; }
+        .stat-card:nth-child(2) .stat-footer-dot{animation-delay:.5s;}
+        .stat-card:nth-child(3) .stat-footer-dot{animation-delay:1s;}
+        .stat-card:nth-child(4) .stat-footer-dot{animation-delay:1.5s;}
         .stat-footer-text { font-size:11.5px; font-weight:600; color:rgba(255,255,255,0.75); display:flex; align-items:center; gap:4px; }
 
         /* MIDDLE */
@@ -106,19 +105,49 @@
         .card-title { font-size:15.5px; font-weight:800; color:var(--gray-900); letter-spacing:-0.3px; }
         .card-subtitle { font-size:11.5px; color:var(--gray-400); font-weight:600; }
         .chart-container { height:225px; position:relative; }
-        .activity-circle { width:175px; height:175px; margin:0 auto 20px; position:relative; }
-        .circle-svg { transform:rotate(-90deg); }
-        .circle-bg { fill:none; stroke:var(--gray-100); stroke-width:10; }
-        .circle-progress { fill:none; stroke:url(#redGrad); stroke-width:10; stroke-linecap:round; stroke-dasharray:440; stroke-dashoffset:440; transition:stroke-dashoffset 1.4s cubic-bezier(0.4,0,0.2,1); }
-        .circle-text { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center; }
-        .circle-amount { font-size:24px; font-weight:800; color:var(--gray-900); letter-spacing:-1px; }
-        .circle-label { font-size:9.5px; color:var(--gray-400); font-weight:700; text-transform:uppercase; letter-spacing:1px; }
+
+        /*  AKTIVITAS — doughnut chart wrapper */
+        .activity-donut-wrap {
+            position: relative;
+            width: 175px;
+            height: 175px;
+            margin: 0 auto 20px;
+        }
+        .activity-donut-wrap canvas {
+            position: absolute;
+            top: 0; left: 0;
+        }
+        .donut-center-text {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            pointer-events: none;
+        }
+        .donut-center-num {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--gray-900);
+            line-height: 1;
+            letter-spacing: -1px;
+        }
+        .donut-center-lbl {
+            font-size: 9.5px;
+            color: var(--gray-400);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 2px;
+        }
+
         .activity-legend { display:flex; flex-direction:column; gap:12px; }
-        .legend-item { display:flex; justify-content:space-between; align-items:center; padding:9px 13px; border-radius:var(--radius-sm); background:var(--gray-50); transition:background 0.2s; }
+        .legend-item { display:flex; justify-content:space-between; align-items:center; padding:9px 13px; border-radius:var(--radius-sm); background:var(--gray-50); transition:background 0.2s; cursor:default; }
         .legend-item:hover { background:var(--red-50); }
         .legend-label { display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--gray-600); font-weight:600; }
         .legend-dot { width:9px; height:9px; border-radius:50%; }
-        .legend-dot.low { background:#f5536b; } .legend-dot.medium { background:#ee8626; } .legend-dot.high { background:var(--red-dark); }
+        .legend-dot.low    { background:#f5536b; }
+        .legend-dot.medium { background:#ee8626; }
+        .legend-dot.high   { background:var(--red-dark); }
         .legend-value { font-weight:800; font-size:13.5px; color:var(--gray-900); }
 
         /* BOTTOM */
@@ -129,7 +158,6 @@
         .filter-tab:hover { border-color:var(--red-light); color:var(--red); background:var(--red-50); }
         .filter-tab.active { background:var(--red); color:white; border-color:var(--red); box-shadow:0 3px 10px rgba(230,57,70,0.22); }
 
-        /*  TABLE */
         .incidents-table { width:100%; border-collapse:collapse; }
         .incidents-table thead tr { border-bottom:2px solid var(--gray-100); }
         .incidents-table th { padding:10px 12px; text-align:left; font-size:10px; font-weight:700; color:var(--gray-400); text-transform:uppercase; letter-spacing:0.7px; }
@@ -137,35 +165,29 @@
         .incidents-table tbody tr { transition:background 0.15s; }
         .incidents-table tbody tr:hover { background:var(--red-50); }
         .incidents-table tbody tr:last-child td { border-bottom:none; }
-
         .user-cell { display:flex; align-items:center; gap:8px; }
         .user-avatar-small { width:28px; height:28px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:white; flex-shrink:0; }
         .user-name { font-weight:600; color:var(--gray-800); font-size:12.5px; }
-
         .priority-badge { padding:2px 10px; border-radius:20px; font-size:10.5px; font-weight:700; display:inline-block; }
-        .priority-high { background:#fff0f2; color:var(--red); }
+        .priority-high   { background:#fff0f2; color:var(--red); }
         .priority-medium { background:#fff7ed; color:#ea580c; }
-        .priority-low { background:#f0fdf4; color:#ea7fb5; }
-
+        .priority-low    { background:#f0fdf4; color:#ea7fb5; }
         .status-badge { padding:2px 10px; border-radius:20px; font-size:10.5px; font-weight:700; display:inline-block; white-space:nowrap; }
-        .status-open { background:#fff7ed; color:#c2410c; }
+        .status-open     { background:#fff7ed; color:#c2410c; }
         .status-progress { background:#eff6ff; color:#d8931d; }
-        .status-closed { background:#f0fdf4; color:#0ca55b; }
-
+        .status-closed   { background:#f0fdf4; color:#0ca55b; }
         .cat-badge { background:var(--gray-100); color:var(--gray-600); padding:2px 9px; border-radius:7px; font-size:10.5px; font-weight:600; }
-
         .view-all-btn { text-align:center; padding:13px; color:var(--red); font-weight:700; cursor:pointer; font-size:12.5px; border-top:1px solid var(--gray-100); transition:background 0.2s; border-radius:0 0 var(--radius) var(--radius); }
         .view-all-btn:hover { background:var(--red-50); }
-
         .incidents-summary { display:flex; flex-direction:column; gap:14px; }
         .summary-item { display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; }
         .summary-label { font-size:12.5px; color:var(--gray-600); font-weight:600; }
         .summary-value { font-size:17px; font-weight:800; color:var(--gray-900); }
         .summary-bar { width:100%; height:7px; background:var(--gray-100); border-radius:10px; overflow:hidden; }
         .summary-bar-fill { height:100%; border-radius:10px; transition:width 1.2s cubic-bezier(0.4,0,0.2,1); }
-        .summary-bar-fill.low { background:linear-gradient(90deg,#f5536b,#f5536b); }
+        .summary-bar-fill.low    { background:linear-gradient(90deg,#f5536b,#f5536b); }
         .summary-bar-fill.medium { background:linear-gradient(90deg,#ee8626,#ee8626); }
-        .summary-bar-fill.high { background:linear-gradient(90deg,#c1121f,#8c1b28); }
+        .summary-bar-fill.high   { background:linear-gradient(90deg,#c1121f,#8c1b28); }
         .view-all-summary { background:linear-gradient(135deg,var(--red),var(--red-dark)); color:white; padding:12px; text-align:center; border-radius:12px; cursor:pointer; font-weight:700; font-size:12.5px; margin-top:18px; border:none; width:100%; font-family:inherit; transition:all 0.2s; box-shadow:0 4px 14px rgba(230,57,70,0.22); }
         .view-all-summary:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(230,57,70,0.34); }
 
@@ -175,13 +197,13 @@
         @keyframes pulseBadge { 0%,100%{transform:scale(1);}50%{transform:scale(1.15);} }
         #notifBadge { animation:pulseBadge 2s infinite; }
 
-        .dashboard-grid .card:nth-child(1) { animation-delay:0.28s; }
-        .dashboard-grid .card:nth-child(2) { animation-delay:0.36s; }
-        .incidents-grid .card:nth-child(1) { animation-delay:0.42s; }
-        .incidents-grid .card:nth-child(2) { animation-delay:0.48s; }
+        .dashboard-grid .card:nth-child(1){animation-delay:0.28s;}
+        .dashboard-grid .card:nth-child(2){animation-delay:0.36s;}
+        .incidents-grid  .card:nth-child(1){animation-delay:0.42s;}
+        .incidents-grid  .card:nth-child(2){animation-delay:0.48s;}
 
-        @media(max-width:1200px) { .dashboard-grid,.incidents-grid{grid-template-columns:1fr;} .stats-grid{grid-template-columns:repeat(2,1fr);} }
-        @media(max-width:768px) { .sidebar{display:none;} .main-content{margin-left:0;padding:18px;} .stats-grid{grid-template-columns:1fr 1fr;} .header{flex-direction:column;align-items:flex-start;gap:12px;} }
+        @media(max-width:1200px){.dashboard-grid,.incidents-grid{grid-template-columns:1fr;}.stats-grid{grid-template-columns:repeat(2,1fr);}}
+        @media(max-width:768px){.sidebar{display:none;}.main-content{margin-left:0;padding:18px;}.stats-grid{grid-template-columns:1fr 1fr;}.header{flex-direction:column;align-items:flex-start;gap:12px;}}
     </style>
 </head>
 <body>
@@ -231,40 +253,37 @@
                 <div class="user-profile">
                     <div class="user-avatar" id="adminAvatar">A</div>
                     <div class="user-info"><p id="adminName">Admin</p></div>
-                    <i class="fas fa-chevron-down" style="font-size:10px;color:var(--gray-400);"></i>
                 </div>
             </div>
         </header>
 
         <!-- STAT CARDS -->
         <section class="stats-grid">
-            <div class="stat-card">
+            <div class="stat-card" onclick="window.location.href='incidents.html'">
                 <div class="bubble-lg"></div><div class="bubble-md"></div>
-                <div class="stat-top"><div class="stat-icon"><i class="fas fa-clipboard-list"></i></div><span class="stat-label">TOTAL INSIDEN</span></div>
+                <div class="stat-top"><div class="stat-icon"><i class="fas fa-clipboard-list"></i></div><span class="stat-label">TOTAL INCIDENTS</span></div>
                 <div class="stat-number" id="totalVal">0</div>
                 <div class="stat-footer"><div class="stat-footer-dot"></div><span class="stat-footer-text"><i class="far fa-calendar-alt" style="font-size:10px;"></i> bulan ini</span></div>
             </div>
-            <div class="stat-card">
+            <div class="stat-card" onclick="window.location.href='incidents.html?status=open'">
                 <div class="bubble-lg"></div><div class="bubble-md"></div>
-                <div class="stat-top"><div class="stat-icon"><i class="fas fa-folder-open"></i></div><span class="stat-label">INSIDEN TERBUKA</span></div>
+                <div class="stat-top"><div class="stat-icon"><i class="fas fa-folder-open"></i></div><span class="stat-label"> OPEN INCIDENTS</span></div>
                 <div class="stat-number" id="openVal">0</div>
                 <div class="stat-footer"><div class="stat-footer-dot"></div><span class="stat-footer-text"><i class="far fa-calendar-alt" style="font-size:10px;"></i> bulan ini</span></div>
             </div>
-            <div class="stat-card">
+            <div class="stat-card" onclick="window.location.href='incidents.html?status=in_progress'">
                 <div class="bubble-lg"></div><div class="bubble-md"></div>
-                <div class="stat-top"><div class="stat-icon"><i class="fas fa-spinner"></i></div><span class="stat-label">SEDANG DIPROSES</span></div>
+                <div class="stat-top"><div class="stat-icon"><i class="fas fa-spinner"></i></div><span class="stat-label">ON PROGRESS</span></div>
                 <div class="stat-number" id="progressVal">0</div>
                 <div class="stat-footer"><div class="stat-footer-dot"></div><span class="stat-footer-text"><i class="far fa-calendar-alt" style="font-size:10px;"></i> bulan ini</span></div>
             </div>
-            <div class="stat-card">
+            <div class="stat-card" onclick="window.location.href='incidents.html?priority=high'">
                 <div class="bubble-lg"></div><div class="bubble-md"></div>
-                <div class="stat-top"><div class="stat-icon"><i class="fas fa-flag"></i></div><span class="stat-label">PRIORITAS TINGGI</span></div>
+                <div class="stat-top"><div class="stat-icon"><i class="fas fa-flag"></i></div><span class="stat-label">HIGH</span></div>
                 <div class="stat-number" id="highVal">0</div>
                 <div class="stat-footer"><div class="stat-footer-dot"></div><span class="stat-footer-text"><i class="far fa-calendar-alt" style="font-size:10px;"></i> bulan ini</span></div>
             </div>
         </section>
-
-        <span id="totalBadge" style="display:none">0</span><span id="openBadge" style="display:none">0</span><span id="progressBadge" style="display:none">0</span><span id="highBadge" style="display:none">0</span>
 
         <!-- Grafik + Aktivitas -->
         <section class="dashboard-grid">
@@ -272,20 +291,32 @@
                 <div class="card-header"><h3 class="card-title">Tren Insiden</h3><span class="card-subtitle">6 bulan terakhir</span></div>
                 <div class="chart-container"><canvas id="incidentChart"></canvas></div>
             </div>
+
+            <!--  AKTIVITAS — doughnut chart -->
             <div class="card">
                 <div class="card-header"><h3 class="card-title">Aktivitas</h3><span class="card-subtitle">Bulan ini</span></div>
-                <div class="activity-circle">
-                    <svg class="circle-svg" width="175" height="175" viewBox="0 0 175 175">
-                        <defs><linearGradient id="redGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#e63946;stop-opacity:1"/><stop offset="100%" style="stop-color:#ff8fa3;stop-opacity:1"/></linearGradient></defs>
-                        <circle class="circle-bg" cx="87.5" cy="87.5" r="70"/>
-                        <circle class="circle-progress" cx="87.5" cy="87.5" r="70" id="circleEl"/>
-                    </svg>
-                    <div class="circle-text"><div class="circle-amount" id="circleTotal">0</div><div class="circle-label">Total</div></div>
+
+                <div class="activity-donut-wrap">
+                    <canvas id="donutChart" width="175" height="175"></canvas>
+                    <div class="donut-center-text">
+                        <div class="donut-center-num" id="circleTotal">0</div>
+                        <div class="donut-center-lbl">Total</div>
+                    </div>
                 </div>
+
                 <div class="activity-legend">
-                    <div class="legend-item"><div class="legend-label"><span class="legend-dot low"></span><span>Low</span></div><div class="legend-value" id="lowPct">0%</div></div>
-                    <div class="legend-item"><div class="legend-label"><span class="legend-dot medium"></span><span>Medium</span></div><div class="legend-value" id="medPct">0%</div></div>
-                    <div class="legend-item"><div class="legend-label"><span class="legend-dot high"></span><span>High</span></div><div class="legend-value" id="highPct">0%</div></div>
+                    <div class="legend-item">
+                        <div class="legend-label"><span class="legend-dot low"></span><span>Low</span></div>
+                        <div class="legend-value" id="lowPct">0%</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-label"><span class="legend-dot medium"></span><span>Medium</span></div>
+                        <div class="legend-value" id="medPct">0%</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-label"><span class="legend-dot high"></span><span>High</span></div>
+                        <div class="legend-value" id="highPct">0%</div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -296,8 +327,8 @@
                 <div class="table-header">
                     <h3 class="card-title">Insiden Terbaru</h3>
                     <div class="filter-tabs">
-                         <button class="filter-tab" onclick="window.location.href='incidents.html'">Semua</button>
-                        <button class="filter-tab active" onclick="filterTable('open',this); window.location.href='incidents.html?status=open'">Open</button>
+                        <button class="filter-tab" onclick="window.location.href='incidents.html'">Semua</button>
+                        <button class="filter-tab active" onclick="window.location.href='incidents.html?status=open'">Open</button>
                         <button class="filter-tab" onclick="window.location.href='incidents.html?status=in_progress'">On Progress</button>
                         <button class="filter-tab" onclick="window.location.href='incidents.html?status=closed'">Closed</button>
                     </div>
@@ -347,43 +378,48 @@
 <script>
     const API = 'http://localhost:3000/api';
     let allIncidents = [];
-    let chart;
+    let lineChart, donutChart;
     const COLORS = ['#e63946','#f43f5e','#fb7185','#fda4af','#ff8080','#c0392b','#be123c','#9f1239'];
 
     document.getElementById('todayDate').textContent = new Date().toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
 
     try {
-        const u = JSON.parse(localStorage.getItem('user')||'{}');
-        if(u.name){ document.getElementById('adminName').textContent=u.name; document.getElementById('adminAvatar').textContent=u.name.charAt(0).toUpperCase(); }
-    } catch(e){}
+        const u = JSON.parse(localStorage.getItem('user') || '{}');
+        if (u.name) {
+            document.getElementById('adminName').textContent = u.name;
+            document.getElementById('adminAvatar').textContent = u.name.charAt(0).toUpperCase();
+        }
+    } catch(e) {}
 
-    function logout(){ localStorage.removeItem('token'); localStorage.removeItem('user'); window.location.href='../auth/login.html'; }
+    function logout() {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.href = '../auth/login.html';
+    }
 
-    function getPriorityBadge(p){
-        const lp=(p||'').toLowerCase();
-        if(lp==='high')   return `<span class="priority-badge priority-high">High</span>`;
-        if(lp==='medium') return `<span class="priority-badge priority-medium">Medium</span>`;
+    function getPriorityBadge(p) {
+        const lp = (p||'').toLowerCase();
+        if (lp==='high')   return `<span class="priority-badge priority-high">High</span>`;
+        if (lp==='medium') return `<span class="priority-badge priority-medium">Medium</span>`;
         return `<span class="priority-badge priority-low">Low</span>`;
     }
 
-    
-    function getStatusBadge(s){
-        const ls=(s||'').toLowerCase();
-        if(ls==='open')                         return `<span class="status-badge status-open">Open</span>`;
-        if(ls==='progress'||ls==='in_progress') return `<span class="status-badge status-progress">In Progress</span>`;
-        if(ls==='closed')                       return `<span class="status-badge status-closed">Closed</span>`;
+    function getStatusBadge(s) {
+        const ls = (s||'').toLowerCase();
+        if (ls==='open')                          return `<span class="status-badge status-open">Open</span>`;
+        if (ls==='progress'||ls==='in_progress')  return `<span class="status-badge status-progress">In Progress</span>`;
+        if (ls==='closed')                        return `<span class="status-badge status-closed">Closed</span>`;
         return `<span class="status-badge status-closed">Closed</span>`;
     }
 
-    //  Tabel 
-    function renderTable(data){
+    function renderTable(data) {
         const tbody = document.getElementById('tableBody');
-        if(!data.length){
-            tbody.innerHTML='<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--gray-400);">Tidak ada insiden ditemukan</td></tr>';
+        if (!data.length) {
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--gray-400);">Tidak ada insiden ditemukan</td></tr>';
             return;
         }
-        const sorted = [...data].sort((a,b)=>new Date(b.created_at||0)-new Date(a.created_at||0));
-        tbody.innerHTML = sorted.slice(0,8).map((inc,i)=>`
+        const sorted = [...data].sort((a,b) => new Date(b.created_at||0) - new Date(a.created_at||0));
+        tbody.innerHTML = sorted.slice(0,8).map((inc,i) => `
             <tr>
                 <td><div class="user-cell">
                     <div class="user-avatar-small" style="background:${COLORS[i%COLORS.length]}">${(inc.reporter_name||'U').charAt(0).toUpperCase()}</div>
@@ -397,134 +433,232 @@
         `).join('');
     }
 
-    function filterTable(status,btn){
-        document.querySelectorAll('.filter-tab').forEach(b=>b.classList.remove('active'));
-        btn.classList.add('active');
-        const filtered = status==='all' ? allIncidents : allIncidents.filter(i=>{
-            const ls=i.status?.toLowerCase();
-            if(status==='progress') return ls==='progress'||ls==='in_progress';
-            if(status==='open')     return ls==='open';
-            if(status==='closed')   return ls==='closed';
-            return true;
-        });
-        renderTable(filtered);
-    }
-
-    function initChart(incidents){
-        const months=[],counts=[];
-        for(let i=5;i>=0;i--){
-            const d=new Date(); d.setMonth(d.getMonth()-i);
-            months.push(d.toLocaleDateString('id-ID',{month:'short'}));
-            const m=d.toISOString().slice(0,7);
-            counts.push(incidents.filter(inc=>(inc.created_at||'').startsWith(m)).length);
+    function initLineChart(incidents) {
+        const months = [], counts = [];
+        for (let i = 5; i >= 0; i--) {
+            const d = new Date(); d.setMonth(d.getMonth() - i);
+            months.push(d.toLocaleDateString('id-ID', {month:'short'}));
+            const m = d.toISOString().slice(0,7);
+            counts.push(incidents.filter(inc => (inc.created_at||'').startsWith(m)).length);
         }
-        const ctx=document.getElementById('incidentChart').getContext('2d');
-        if(chart) chart.destroy();
-        const gradient=ctx.createLinearGradient(0,0,0,225);
+        const ctx = document.getElementById('incidentChart').getContext('2d');
+        if (lineChart) lineChart.destroy();
+        const gradient = ctx.createLinearGradient(0,0,0,225);
         gradient.addColorStop(0,'rgba(230,57,70,0.16)');
         gradient.addColorStop(1,'rgba(230,57,70,0)');
-        chart=new Chart(ctx,{
-            type:'line',
-            data:{labels:months,datasets:[{label:'Insiden',data:counts,borderColor:'#e63946',backgroundColor:gradient,borderWidth:2.5,pointBackgroundColor:'#e63946',pointBorderColor:'#fff',pointBorderWidth:2,pointRadius:5,pointHoverRadius:7,tension:0.4,fill:true}]},
-            options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#1f2937',titleColor:'#fff',bodyColor:'#9ca3af',padding:11,cornerRadius:10,callbacks:{label:ctx=>` ${ctx.raw} insiden`}}},scales:{x:{grid:{display:false},ticks:{font:{size:11,family:'Plus Jakarta Sans'},color:'#9e9e9e'}},y:{grid:{color:'#f5f5f5'},ticks:{font:{size:11,family:'Plus Jakarta Sans'},color:'#9e9e9e',stepSize:1},beginAtZero:true}}}
+        lineChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: months,
+                datasets: [{
+                    label: 'Insiden', data: counts,
+                    borderColor: '#e63946', backgroundColor: gradient,
+                    borderWidth: 2.5, pointBackgroundColor: '#e63946',
+                    pointBorderColor: '#fff', pointBorderWidth: 2,
+                    pointRadius: 5, pointHoverRadius: 7,
+                    tension: 0.4, fill: true
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false }, tooltip: { backgroundColor: '#1f2937', titleColor: '#fff', bodyColor: '#9ca3af', padding: 11, cornerRadius: 10, callbacks: { label: ctx => ` ${ctx.raw} insiden` } } },
+                scales: {
+                    x: { grid: { display: false }, ticks: { font: { size:11, family:'Plus Jakarta Sans' }, color:'#9e9e9e' } },
+                    y: { grid: { color:'#f5f5f5' }, ticks: { font: { size:11, family:'Plus Jakarta Sans' }, color:'#9e9e9e', stepSize: 1 }, beginAtZero: true }
+                }
+            }
         });
     }
 
-    async function loadDashboard(){
-        try{
-            const token=localStorage.getItem('token');
-            if(!token){ window.location.href='../auth/login.html'; return; }
-            const res=await fetch(`${API}/admin/incidents`,{headers:{'Authorization':`Bearer ${token}`,'Content-Type':'application/json'}});
-            if(res.status===401){ window.location.href='../auth/login.html'; return; }
-            if(!res.ok){ console.error('API error',res.status); return; }
-            const data=await res.json();
-            const incidents=(data.success?data.data:data.incidents)||[];
-            allIncidents=incidents;
-            const total=incidents.length;
-            const open=incidents.filter(i=>i.status?.toLowerCase()==='open').length;
-            const inProg=incidents.filter(i=>['in_progress','progress'].includes(i.status?.toLowerCase())).length;
-            const high=incidents.filter(i=>i.priority?.toLowerCase()==='high').length;
-            const medium=incidents.filter(i=>i.priority?.toLowerCase()==='medium').length;
-            const low=incidents.filter(i=>i.priority?.toLowerCase()==='low').length;
+    /* ✅ Doughnut chart 3 warna Low / Medium / High */
+    function initDonutChart(low, medium, high) {
+        const ctx = document.getElementById('donutChart').getContext('2d');
+        if (donutChart) donutChart.destroy();
 
-            document.getElementById('totalVal').textContent=total;
-            document.getElementById('openVal').textContent=open;
-            document.getElementById('progressVal').textContent=inProg;
-            document.getElementById('highVal').textContent=high;
-            document.getElementById('totalBadge').textContent=total;
-            document.getElementById('openBadge').textContent=open;
-            document.getElementById('progressBadge').textContent=inProg;
-            document.getElementById('highBadge').textContent=high;
+        const total = low + medium + high;
+        // Kalau semua 0, tampilkan placeholder abu-abu
+        const data   = total > 0 ? [low, medium, high] : [1];
+        const colors = total > 0 ? ['#f5536b', '#ee8626', '#c1121f'] : ['#e4e6ea'];
+        const labels = total > 0 ? ['Low', 'Medium', 'High'] : ['Tidak ada data'];
 
-            document.getElementById('circleTotal').textContent=total;
-            const circ=2*Math.PI*70;
-            const pct=total>0?(open+inProg)/total:0;
-            document.getElementById('circleEl').style.strokeDasharray=circ;
-            document.getElementById('circleEl').style.strokeDashoffset=circ*(1-pct);
-            document.getElementById('lowPct').textContent=total?Math.round(low/total*100)+'%':'0%';
-            document.getElementById('medPct').textContent=total?Math.round(medium/total*100)+'%':'0%';
-            document.getElementById('highPct').textContent=total?Math.round(high/total*100)+'%':'0%';
-            document.getElementById('lowCount').textContent=low;
-            document.getElementById('medCount').textContent=medium;
-            document.getElementById('highCount').textContent=high;
-            if(total>0){
-                document.getElementById('lowBar').style.width=Math.round(low/total*100)+'%';
-                document.getElementById('medBar').style.width=Math.round(medium/total*100)+'%';
-                document.getElementById('highBar').style.width=Math.round(high/total*100)+'%';
+        donutChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels,
+                datasets: [{
+                    data,
+                    backgroundColor: colors,
+                    borderColor: '#ffffff',
+                    borderWidth: 3,
+                    hoverOffset: 6
+                }]
+            },
+            options: {
+                responsive: false,
+                cutout: '70%',
+                animation: { animateRotate: true, duration: 900, easing: 'easeInOutQuart' },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        enabled: total > 0,
+                        backgroundColor: '#1f2937',
+                        titleColor: '#fff',
+                        bodyColor: '#9ca3af',
+                        padding: 10,
+                        cornerRadius: 10,
+                        callbacks: {
+                            label: ctx => {
+                                const val = ctx.raw;
+                                const pct = total > 0 ? Math.round(val / total * 100) : 0;
+                                return ` ${val} insiden (${pct}%)`;
+                            }
+                        }
+                    }
+                }
             }
-            renderTable(incidents.filter(i => i.status?.toLowerCase() === 'open'));
-            initChart(incidents);
-        } catch(err){ console.error('Dashboard error:',err); }
+        });
     }
 
-    document.getElementById('searchInput').addEventListener('input',function(){
-        const q=this.value.toLowerCase();
-        renderTable(allIncidents.filter(i=>(i.title||'').toLowerCase().includes(q)||(i.category||'').toLowerCase().includes(q)||(i.reporter_name||'').toLowerCase().includes(q)));
+    async function loadDashboard() {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) { window.location.href = '../auth/login.html'; return; }
+
+            const res = await fetch(`${API}/admin/incidents`, {
+                headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
+            });
+            if (res.status === 401) { window.location.href = '../auth/login.html'; return; }
+            if (!res.ok) { console.error('API error', res.status); return; }
+
+            const data = await res.json();
+            const incidents = (data.success ? data.data : data.incidents) || [];
+            allIncidents = incidents;
+
+            const total   = incidents.length;
+            const open    = incidents.filter(i => i.status?.toLowerCase() === 'open').length;
+            const inProg  = incidents.filter(i => ['in_progress','progress'].includes(i.status?.toLowerCase())).length;
+            const high    = incidents.filter(i => i.priority?.toLowerCase() === 'high').length;
+            const medium  = incidents.filter(i => i.priority?.toLowerCase() === 'medium').length;
+            const low     = incidents.filter(i => i.priority?.toLowerCase() === 'low').length;
+
+            // Stat cards
+            document.getElementById('totalVal').textContent    = total;
+            document.getElementById('openVal').textContent     = open;
+            document.getElementById('progressVal').textContent = inProg;
+            document.getElementById('highVal').textContent     = high;
+
+            // Donut center
+            document.getElementById('circleTotal').textContent = total;
+
+            // Legend persentase
+            document.getElementById('lowPct').textContent  = total ? Math.round(low    / total * 100) + '%' : '0%';
+            document.getElementById('medPct').textContent  = total ? Math.round(medium / total * 100) + '%' : '0%';
+            document.getElementById('highPct').textContent = total ? Math.round(high   / total * 100) + '%' : '0%';
+
+            // Ringkasan prioritas
+            document.getElementById('lowCount').textContent  = low;
+            document.getElementById('medCount').textContent  = medium;
+            document.getElementById('highCount').textContent = high;
+            if (total > 0) {
+                document.getElementById('lowBar').style.width  = Math.round(low    / total * 100) + '%';
+                document.getElementById('medBar').style.width  = Math.round(medium / total * 100) + '%';
+                document.getElementById('highBar').style.width = Math.round(high   / total * 100) + '%';
+            }
+
+            // ✅ Render donut chart
+            initDonutChart(low, medium, high);
+
+            // Tabel default tampilkan Open
+            renderTable(incidents.filter(i => i.status?.toLowerCase() === 'open'));
+            initLineChart(incidents);
+
+        } catch(err) {
+            console.error('Dashboard error:', err);
+        }
+    }
+
+    document.getElementById('searchInput').addEventListener('input', function() {
+        const q = this.value.toLowerCase();
+        renderTable(allIncidents.filter(i =>
+            (i.title||'').toLowerCase().includes(q) ||
+            (i.category||'').toLowerCase().includes(q) ||
+            (i.reporter_name||'').toLowerCase().includes(q)
+        ));
     });
 
-    async function loadNotifications(){
-        const token=localStorage.getItem('token');
-        if(!token) return;
-        try{
-            const res=await fetch('http://localhost:3000/api/notifications',{headers:{'Authorization':`Bearer ${token}`}});
-            const data=await res.json();
-            const notifs=data.notifications||[];
-            const unread=notifs.filter(n=>!n.is_read).length;
-            const badge=document.getElementById('notifBadge');
-            if(badge){ badge.textContent=unread; badge.style.display=unread>0?'flex':'none'; }
-            const list=document.getElementById('notifList');
-            if(!list) return;
-            if(notifs.length===0){ list.innerHTML='<div style="padding:22px;text-align:center;color:#9ca3af;font-size:12.5px;">Tidak ada notifikasi</div>'; return; }
-            list.innerHTML=notifs.map(n=>`
-                <div onclick="markRead(${n.id})" style="padding:13px 17px;border-bottom:1px solid #f5f5f5;background:${n.is_read?'#fff':'#fff5f7'};cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='#fff0f2'" onmouseout="this.style.background='${n.is_read?'#fff':'#fff5f7'}'">
+    async function loadNotifications() {
+        const token = localStorage.getItem('token');
+        if (!token) return;
+        try {
+            const res = await fetch('http://localhost:3000/api/notifications', { headers: { 'Authorization': `Bearer ${token}` } });
+            const data = await res.json();
+            const notifs = data.notifications || [];
+            const unread = notifs.filter(n => !n.is_read).length;
+            const badge = document.getElementById('notifBadge');
+            if (badge) { badge.textContent = unread; badge.style.display = unread > 0 ? 'flex' : 'none'; }
+            const list = document.getElementById('notifList');
+            if (!list) return;
+            if (notifs.length === 0) {
+                list.innerHTML = '<div style="padding:22px;text-align:center;color:#9ca3af;font-size:12.5px;">Tidak ada notifikasi</div>';
+                return;
+            }
+            list.innerHTML = notifs.map(n => `
+                <div onclick="handleNotificationClick(${n.id}, ${n.incident_id})" style="padding:13px 17px;border-bottom:1px solid #f5f5f5;background:${n.is_read?'#fff':'#fff5f7'};cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='#fff0f2'" onmouseout="this.style.background='${n.is_read?'#fff':'#fff5f7'}'">
                     <div style="font-size:12.5px;font-weight:700;color:#1f2937;margin-bottom:3px;">${n.title}</div>
                     <div style="font-size:11.5px;color:#757575;">${n.message}</div>
                     <div style="font-size:10.5px;color:#9ca3af;margin-top:3px;">${new Date(n.created_at).toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})}</div>
                 </div>
             `).join('');
-        } catch(e){ console.error(e); }
+        } catch(e) { console.error(e); }
     }
 
-    function toggleNotifications(){
-        const dd=document.getElementById('notifDropdown');
-        if(!dd) return;
-        const vis=dd.style.display!=='none'&&dd.style.display!=='';
-        dd.style.display=vis?'none':'block';
-        if(!vis) loadNotifications();
+    // Handle notification click - navigate to incident detail and mark as read
+    async function handleNotificationClick(notifId, incidentId) {
+        // Mark notification as read
+        const token = localStorage.getItem('token');
+        if (token) {
+            await fetch(`http://localhost:3000/api/notifications/${notifId}/read`, { method:'PUT', headers:{ 'Authorization':`Bearer ${token}` } });
+        }
+        
+        // Close dropdown
+        document.getElementById('notifDropdown').style.display = 'none';
+        
+        // Navigate to incidents page with id parameter
+        if (incidentId) {
+            window.location.href = `incidents.html?id=${incidentId}`;
+        } else {
+            window.location.href = 'incidents.html';
+        }
     }
 
-    async function markRead(id){ const token=localStorage.getItem('token'); await fetch(`http://localhost:3000/api/notifications/${id}/read`,{method:'PUT',headers:{'Authorization':`Bearer ${token}`}}); loadNotifications(); }
-    async function markAllRead(){ const token=localStorage.getItem('token'); await fetch('http://localhost:3000/api/notifications/read-all',{method:'PUT',headers:{'Authorization':`Bearer ${token}`}}); loadNotifications(); }
+    function toggleNotifications() {
+        const dd = document.getElementById('notifDropdown');
+        if (!dd) return;
+        const vis = dd.style.display !== 'none' && dd.style.display !== '';
+        dd.style.display = vis ? 'none' : 'block';
+        if (!vis) loadNotifications();
+    }
 
-    document.addEventListener('click',(e)=>{
-        const dd=document.getElementById('notifDropdown');
-        if(dd&&!dd.contains(e.target)&&!e.target.closest('.icon-btn')) dd.style.display='none';
+    async function markRead(id) {
+        const token = localStorage.getItem('token');
+        await fetch(`http://localhost:3000/api/notifications/${id}/read`, { method:'PUT', headers:{ 'Authorization':`Bearer ${token}` } });
+        loadNotifications();
+    }
+    async function markAllRead() {
+        const token = localStorage.getItem('token');
+        await fetch('http://localhost:3000/api/notifications/read-all', { method:'PUT', headers:{ 'Authorization':`Bearer ${token}` } });
+        loadNotifications();
+    }
+
+    document.addEventListener('click', (e) => {
+        const dd = document.getElementById('notifDropdown');
+        if (dd && !dd.contains(e.target) && !e.target.closest('.icon-btn')) dd.style.display = 'none';
     });
 
     loadNotifications();
-    setInterval(loadNotifications,30000);
+    setInterval(loadNotifications, 30000);
     loadDashboard();
-    setInterval(loadDashboard,30000);
+    setInterval(loadDashboard, 30000);
 </script>
 </body>
 </html>

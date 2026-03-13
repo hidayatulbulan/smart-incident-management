@@ -35,6 +35,7 @@
     @keyframes aiCardIn    { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
     @keyframes aiGlow      { 0%,100%{box-shadow:0 4px 24px rgba(230,57,70,.18)} 50%{box-shadow:0 8px 32px rgba(230,57,70,.28)} }
     @keyframes sparkle     { 0%,100%{transform:scale(1) rotate(0deg)} 50%{transform:scale(1.2) rotate(15deg)} }
+    @keyframes feedbackIn  { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
 
     /* ── SIDEBAR ── */
     .sidebar { width:var(--sidebar); background:var(--white); padding:24px 14px; box-shadow:2px 0 20px rgba(0,0,0,0.05); display:flex; flex-direction:column; position:fixed; top:0; left:0; bottom:0; z-index:100; border-right:1px solid var(--red-100); animation:slideInLeft 0.45s cubic-bezier(0.22,1,0.36,1); }
@@ -72,41 +73,12 @@
     .cetak-btn:hover { border-color:var(--red); color:var(--red); background:var(--red-50); }
 
     /* ── LAYOUT ── */
-    .layout {
-      display: flex;
-      gap: 20px;
-      align-items: flex-start;
-    }
-
-    /* Kolom kiri: info + foto + AI */
-    .left-col {
-      flex: 1;
-      min-width: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    /* Kolom kanan: status + SLA + solver — sticky */
-    .right-col {
-      width: 268px;
-      flex-shrink: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      position: sticky;
-      top: 24px;
-    }
+    .layout { display:flex; gap:20px; align-items:flex-start; }
+    .left-col { flex:1; min-width:0; display:flex; flex-direction:column; gap:20px; }
+    .right-col { width:268px; flex-shrink:0; display:flex; flex-direction:column; gap:14px; position:sticky; top:24px; }
 
     /* ── CARDS ── */
-    .card {
-      background: white;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      border: 1px solid var(--gray-100);
-      overflow: hidden;
-    }
-
+    .card { background:white; border-radius:var(--radius); box-shadow:var(--shadow); border:1px solid var(--gray-100); overflow:hidden; }
     .card-banner { background:linear-gradient(135deg,var(--red) 0%,var(--red-dark) 100%); padding:18px 24px; display:flex; align-items:center; justify-content:space-between; position:relative; overflow:hidden; }
     .card-banner::before { content:''; position:absolute; top:-30px; right:-30px; width:120px; height:120px; border-radius:50%; background:rgba(255,255,255,.08); }
     .card-banner::after  { content:''; position:absolute; bottom:-40px; right:60px; width:90px; height:90px; border-radius:50%; background:rgba(255,255,255,.05); }
@@ -132,7 +104,7 @@
     .foto-item:hover .foto-overlay i { opacity:1; }
     .no-foto { padding:18px 0; color:var(--gray-400); font-size:13px; font-weight:500; display:flex; align-items:center; gap:8px; }
 
-    /* ── AI CARD (di kiri, lebar penuh) ── */
+    /* ── AI CARD ── */
     .ai-card {
       border-radius: var(--radius);
       overflow: hidden;
@@ -150,7 +122,7 @@
     .ai-banner-title { font-size:14px; font-weight:800; color:white; }
     .ai-banner-sub   { font-size:10.5px; font-weight:500; color:rgba(255,255,255,.4); margin-top:1px; }
     .ai-badge-tag { font-size:9px; font-weight:800; text-transform:uppercase; color:rgba(255,255,255,.5); background:rgba(255,255,255,.08); padding:3px 8px; border-radius:6px; border:1px solid rgba(255,255,255,.1); }
-    .ai-body { padding:18px 20px 20px; position:relative; z-index:1; }
+    .ai-body { padding:20px 22px 22px; position:relative; z-index:1; }
     .ai-loading { display:flex; align-items:center; gap:14px; padding:10px 0; }
     .ai-loading-dots { display:flex; gap:5px; }
     .ai-loading-dots span { width:8px; height:8px; border-radius:50%; background:var(--red-light); animation:aiTyping 1.2s ease-in-out infinite; }
@@ -159,54 +131,162 @@
     .ai-loading-text { font-size:13px; color:rgba(255,255,255,.4); font-weight:500; }
     .ai-content { animation:aiCardIn .5s cubic-bezier(0.22,1,0.36,1); }
 
-    /* AI content layout: 2 kolom saat lebar */
-    .ai-content-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      margin-bottom: 14px;
-    }
-    .ai-content-full { margin-bottom: 14px; }
+    .ai-content-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:16px; }
+    .ai-content-full { margin-bottom:16px; }
 
-    .ai-level-banner { display:flex; align-items:center; gap:8px; padding:10px 14px; border-radius:10px; margin-bottom:14px; }
+    .ai-level-banner { display:flex; align-items:center; gap:8px; padding:11px 15px; border-radius:11px; margin-bottom:16px; }
     .ai-level-banner.info    { background:rgba(59,130,246,.15);  border:1px solid rgba(59,130,246,.25); }
     .ai-level-banner.warning { background:rgba(217,119,6,.15);   border:1px solid rgba(217,119,6,.25); }
     .ai-level-banner.urgent  { background:rgba(230,57,70,.18);   border:1px solid rgba(230,57,70,.3); }
     .ai-level-banner.success { background:rgba(22,163,74,.15);   border:1px solid rgba(22,163,74,.25); }
-    .ai-level-icon { font-size:15px; }
-    .ai-level-text { font-size:12.5px; font-weight:700; }
+    .ai-level-icon { font-size:16px; }
+    .ai-level-text { font-size:13.5px; font-weight:700; }
     .ai-level-banner.info    .ai-level-text { color:#93c5fd; }
     .ai-level-banner.warning .ai-level-text { color:#fcd34d; }
     .ai-level-banner.urgent  .ai-level-text { color:var(--red-light); }
     .ai-level-banner.success .ai-level-text { color:#86efac; }
-    .ai-section-lbl { font-size:9.5px; font-weight:700; color:rgba(255,255,255,.3); text-transform:uppercase; letter-spacing:1px; margin-bottom:7px; }
-    .ai-text-wrap { background:rgba(255,255,255,.05); border-radius:10px; border:1px solid rgba(255,255,255,.07); padding:12px 14px; height:100%; }
-    .ai-text { font-size:13px; font-weight:500; color:rgba(255,255,255,.78); line-height:1.7; }
-    .ai-sla-info { font-size:12px; color:rgba(255,255,255,.55); background:rgba(255,255,255,.04); border-left:2.5px solid rgba(230,57,70,.5); border-radius:0 9px 9px 0; padding:10px 13px; line-height:1.65; height:100%; }
-    .ai-saran-list { list-style:none; display:flex; flex-direction:column; gap:8px; }
-    .ai-saran-item { display:flex; align-items:flex-start; gap:9px; font-size:12.5px; color:rgba(255,255,255,.68); line-height:1.55; }
-    .ai-saran-num  { width:20px; height:20px; border-radius:50%; background:rgba(230,57,70,.25); display:flex; align-items:center; justify-content:center; font-size:9.5px; color:var(--red-light); font-weight:800; flex-shrink:0; margin-top:1px; }
-    .ai-estimasi { display:flex; align-items:center; gap:8px; background:rgba(255,255,255,.05); border-radius:9px; padding:10px 13px; }
-    .ai-estimasi i { color:rgba(255,255,255,.3); font-size:12px; }
-    .ai-estimasi span { font-size:12px; color:rgba(255,255,255,.55); }
-    .ai-estimasi strong { color:rgba(255,255,255,.82); }
-    .ai-motivasi { text-align:center; padding:11px 14px; background:rgba(230,57,70,.12); border-radius:10px; font-size:12.5px; font-weight:600; color:rgba(255,255,255,.68); line-height:1.55; border:1px solid rgba(230,57,70,.2); }
-    .ai-footer { display:flex; align-items:center; justify-content:space-between; padding-top:12px; border-top:1px solid rgba(255,255,255,.07); margin-top:14px; }
-    .ai-source  { font-size:10px; color:rgba(255,255,255,.25); display:flex; align-items:center; gap:4px; }
-    .ai-refresh { display:flex; align-items:center; gap:5px; font-size:11.5px; font-weight:700; color:var(--red-light); background:rgba(230,57,70,.15); border:1px solid rgba(230,57,70,.25); border-radius:8px; padding:6px 13px; cursor:pointer; font-family:inherit; transition:all .2s; }
+
+    .ai-section-lbl { font-size:10px; font-weight:700; color:rgba(255,255,255,.3); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; }
+    .ai-text-wrap { background:rgba(255,255,255,.05); border-radius:11px; border:1px solid rgba(255,255,255,.07); padding:14px 16px; height:100%; }
+    .ai-text { font-size:14px; font-weight:500; color:rgba(255,255,255,.82); line-height:1.75; }
+    .ai-sla-info { font-size:13px; color:rgba(255,255,255,.6); background:rgba(255,255,255,.04); border-left:3px solid rgba(230,57,70,.5); border-radius:0 10px 10px 0; padding:12px 14px; line-height:1.7; height:100%; }
+
+    /* ── SARAN LIST — lebih besar dan lega ── */
+    .ai-saran-list { list-style:none; display:flex; flex-direction:column; gap:10px; }
+    .ai-saran-item {
+      display:flex;
+      align-items:flex-start;
+      gap:12px;
+      font-size:14px;
+      font-weight:500;
+      color:rgba(255,255,255,.82);
+      line-height:1.65;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:10px;
+      padding:12px 14px;
+    }
+    .ai-saran-num {
+      width:24px; height:24px;
+      border-radius:50%;
+      background:rgba(230,57,70,.3);
+      display:flex; align-items:center; justify-content:center;
+      font-size:11px; color:var(--red-light);
+      font-weight:800; flex-shrink:0; margin-top:1px;
+    }
+    .ai-saran-text { flex:1; }
+
+    .ai-estimasi { display:flex; align-items:center; gap:9px; background:rgba(255,255,255,.05); border-radius:10px; padding:12px 14px; }
+    .ai-estimasi i { color:rgba(255,255,255,.3); font-size:13px; }
+    .ai-estimasi span { font-size:13px; color:rgba(255,255,255,.55); }
+    .ai-estimasi strong { color:rgba(255,255,255,.85); font-size:13.5px; }
+    .ai-motivasi { text-align:center; padding:12px 16px; background:rgba(230,57,70,.12); border-radius:11px; font-size:13px; font-weight:600; color:rgba(255,255,255,.72); line-height:1.6; border:1px solid rgba(230,57,70,.2); }
+
+    /* ── FEEDBACK SECTION ── */
+    .ai-feedback {
+      margin-top:16px;
+      padding-top:14px;
+      border-top:1px solid rgba(255,255,255,.07);
+    }
+    .ai-feedback-label {
+      font-size:11px;
+      color:rgba(255,255,255,.3);
+      font-weight:600;
+      margin-bottom:10px;
+      text-align:center;
+    }
+    .ai-feedback-btns {
+      display:flex;
+      gap:10px;
+      justify-content:center;
+    }
+    .feedback-btn {
+      display:flex; align-items:center; gap:7px;
+      font-size:13px; font-weight:700;
+      padding:9px 22px;
+      border-radius:10px;
+      border:none; cursor:pointer;
+      font-family:inherit;
+      transition:all .2s;
+    }
+    .feedback-btn.like {
+      background:rgba(22,163,74,.15);
+      border:1.5px solid rgba(22,163,74,.3);
+      color:#86efac;
+    }
+    .feedback-btn.like:hover {
+      background:rgba(22,163,74,.28);
+      transform:translateY(-1px);
+    }
+    .feedback-btn.dislike {
+      background:rgba(230,57,70,.12);
+      border:1.5px solid rgba(230,57,70,.25);
+      color:var(--red-light);
+    }
+    .feedback-btn.dislike:hover {
+      background:rgba(230,57,70,.25);
+      transform:translateY(-1px);
+    }
+    .feedback-btn:disabled {
+      opacity:0.5; cursor:default; transform:none;
+    }
+
+    /* Alasan feedback */
+    .ai-feedback-reason {
+      margin-top:12px;
+      animation:feedbackIn .3s ease;
+    }
+    .ai-feedback-reason-label {
+      font-size:11.5px; color:rgba(255,255,255,.45);
+      font-weight:600; margin-bottom:8px;
+      text-align:center;
+    }
+    .feedback-reason-btns {
+      display:flex; flex-wrap:wrap; gap:7px; justify-content:center;
+    }
+    .reason-btn {
+      font-size:11.5px; font-weight:600;
+      padding:7px 14px; border-radius:8px;
+      border:1.5px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.06);
+      color:rgba(255,255,255,.55);
+      cursor:pointer; font-family:inherit;
+      transition:all .2s;
+    }
+    .reason-btn:hover {
+      border-color:var(--red-light);
+      color:var(--red-light);
+      background:rgba(230,57,70,.12);
+    }
+    .reason-btn.selected {
+      border-color:var(--red);
+      color:var(--red-light);
+      background:rgba(230,57,70,.2);
+    }
+    .feedback-sent {
+      text-align:center; padding:10px;
+      font-size:12.5px; font-weight:600;
+      color:rgba(255,255,255,.4);
+      animation:feedbackIn .3s ease;
+    }
+
+    /* ── FOOTER AI ── */
+    .ai-footer { display:flex; align-items:center; justify-content:space-between; padding-top:14px; border-top:1px solid rgba(255,255,255,.07); margin-top:16px; }
+    .ai-source  { font-size:10.5px; color:rgba(255,255,255,.25); display:flex; align-items:center; gap:5px; }
+    .ai-refresh { display:flex; align-items:center; gap:6px; font-size:12px; font-weight:700; color:var(--red-light); background:rgba(230,57,70,.15); border:1px solid rgba(230,57,70,.25); border-radius:9px; padding:8px 16px; cursor:pointer; font-family:inherit; transition:all .2s; }
     .ai-refresh:hover { background:rgba(230,57,70,.28); }
+
     .ai-empty { text-align:center; padding:28px 20px; }
     .ai-empty i { font-size:32px; color:rgba(255,255,255,.15); display:block; margin-bottom:10px; }
-    .ai-empty p { font-size:12.5px; color:rgba(255,255,255,.35); line-height:1.6; }
+    .ai-empty p { font-size:13px; color:rgba(255,255,255,.35); line-height:1.6; }
     .ai-gen-btn { display:inline-flex; align-items:center; gap:7px; margin-top:13px; padding:10px 20px; background:linear-gradient(135deg,var(--red),var(--red-dark)); color:white; border:none; border-radius:10px; font-size:13px; font-weight:700; cursor:pointer; font-family:inherit; transition:all .2s; box-shadow:0 4px 14px rgba(230,57,70,.4); }
     .ai-gen-btn:hover { transform:translateY(-1px); box-shadow:0 6px 20px rgba(230,57,70,.5); }
 
-    /* ── RIGHT PANEL CARDS ── */
+    /* ── RIGHT PANEL ── */
     .panel-card { background:white; border-radius:var(--radius); box-shadow:var(--shadow); border:1px solid var(--gray-100); overflow:hidden; }
     .panel-header { padding:13px 17px; border-bottom:1px solid var(--gray-100); display:flex; align-items:center; gap:8px; font-size:12.5px; font-weight:800; color:var(--gray-900); }
     .panel-header i { color:var(--red); font-size:12px; }
 
-    /* Timeline */
     .timeline { padding:14px 17px; display:flex; flex-direction:column; }
     .tl-item { display:flex; gap:11px; }
     .tl-left { display:flex; flex-direction:column; align-items:center; width:24px; flex-shrink:0; }
@@ -225,7 +305,6 @@
     .tl-time { font-size:10.5px; color:var(--gray-400); margin-bottom:2px; }
     .tl-note { font-size:11px; color:var(--gray-500); font-style:italic; line-height:1.5; }
 
-    /* SLA */
     .sla-body { padding:14px 17px 16px; }
     .sla-overall { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px; margin-bottom:12px; }
     .sla-overall.on_track { background:var(--green-50); border:1.5px solid var(--green-100); }
@@ -254,7 +333,6 @@
     .sla-target-lbl { font-size:9px; font-weight:700; color:var(--gray-400); text-transform:uppercase; letter-spacing:.5px; margin-bottom:3px; }
     .sla-target-val { font-size:12.5px; font-weight:800; color:var(--gray-800); }
 
-    /* Solver note */
     .solver-body { padding:13px 17px; }
     .solver-text { font-size:12px; font-weight:500; color:var(--gray-700); line-height:1.7; border-left:3px solid var(--green); background:var(--green-50); border-radius:0 8px 8px 0; padding:9px 11px; }
 
@@ -292,14 +370,8 @@
   </nav>
   <div class="sidebar-spacer"></div>
   <div class="sidebar-divider"></div>
-  <div class="sidebar-user">
-    <div class="user-ava" id="sidebarAva">U</div>
-    <div>
-      <div class="user-name-sm" id="sidebarName">–</div>
-      <div class="user-role-sm" id="sidebarRole">–</div>
-    </div>
-  </div>
   <button class="logout-btn" id="logoutBtn">
+
     <i class="fas fa-sign-out-alt"></i><span>Keluar</span>
   </button>
 </aside>
@@ -321,8 +393,6 @@
   </div>
 
   <div class="layout">
-
-    <!-- ══ Info + Foto + AI ══ -->
     <div class="left-col">
 
       <!-- Info card -->
@@ -363,7 +433,7 @@
         </div>
       </div>
 
-      <!-- ══ AI Card ══ -->
+      <!-- AI Card -->
       <div class="ai-card" id="aiCard">
         <div class="ai-banner">
           <div class="ai-banner-icon"><i class="fas fa-star"></i></div>
@@ -383,25 +453,21 @@
 
     </div>
 
-    <!-- ══  Status + SLA + Solver ══ -->
+    <!-- Right col -->
     <div class="right-col">
-
       <div class="panel-card">
         <div class="panel-header"><i class="fas fa-timeline"></i> Status Terakhir</div>
         <div class="timeline" id="timelineContainer">
           <div style="text-align:center;color:var(--gray-400);padding:20px;font-size:12px;">Memuat...</div>
         </div>
       </div>
-
       <div class="panel-card">
         <div class="panel-header"><i class="fas fa-stopwatch"></i> Status SLA</div>
         <div class="sla-body" id="slaBody">
           <div style="text-align:center;color:var(--gray-400);padding:14px 0;font-size:12px;">Memuat SLA...</div>
         </div>
       </div>
-
       <div id="solverCardWrap"></div>
-
     </div>
   </div>
 </div>
@@ -423,6 +489,16 @@
     urgent:  { icon:'🚨', label:'Segera Ditindaklanjuti' },
     success: { icon:'🎉', label:'Selesai' },
   };
+
+  const FEEDBACK_REASONS = [
+    'Kategori tidak sesuai',
+    'Saran tidak relevan',
+    'Masalah berbeda',
+    'Estimasi tidak akurat',
+    'Lainnya',
+  ];
+
+  let currentFeedback = null; // 'like' | 'dislike'
 
   function esc(t){ if(!t)return''; const d=document.createElement('div'); d.textContent=t; return d.innerHTML; }
   function fmtDate(s){ if(!s)return'–'; try{return new Date(s).toLocaleDateString('id-ID',{day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'});}catch(e){return s;} }
@@ -476,30 +552,22 @@
   function render(inc){
     const pt=document.getElementById('pageTitle');
     if(pt) pt.textContent=`Detail: ${inc.title||'N/A'}`;
-
     const statusKey=(inc.status||'open').toLowerCase();
     const SMAP={open:'Open',progress:'On Progress',in_progress:'On Progress',closed:'Closed'};
     const sb=document.getElementById('statusBadgeBanner');
     if(sb) sb.textContent=SMAP[statusKey]||inc.status||'–';
-
     const idEl=document.getElementById('idValue');
     if(idEl) idEl.innerHTML=`<span class="meta-id">#INC-${String(inc.id).padStart(4,'0')}</span>`;
-
     const catEl=document.getElementById('categoryValue');
     if(catEl) catEl.textContent=inc.category||inc.type||'–';
-
     const loc=document.getElementById('locationValue');
     if(loc) loc.innerHTML=`<i class="fas fa-location-dot"></i> ${esc(inc.location||'–')}`;
-
     const dt=document.getElementById('dateValue');
     if(dt) dt.innerHTML=`<i class="fas fa-calendar"></i> ${fmtDate(inc.created_at)}`;
-
     const desc=document.getElementById('descriptionValue');
     if(desc) desc.textContent=inc.description||'Tidak ada deskripsi';
-
     renderPhotos(inc);
     renderTimeline(inc);
-
     const norm=(inc.status||'').toLowerCase().replace('_','');
     if(inc.solver_note&&norm==='closed'){
       const wrap=document.getElementById('solverCardWrap');
@@ -538,8 +606,8 @@
     const container=document.getElementById('timelineContainer');
     if(!container) return;
     const steps=[
-      { key:'open',        label:'Dilaporkan', note:'Laporan diterima', icon:'fa-flag'         },
-      { key:'in_progress', label:'Diproses',   note:'Teknisi ditugaskan', icon:'fa-gear'       },
+      { key:'open',        label:'Dilaporkan', note:'Laporan diterima',     icon:'fa-flag'         },
+      { key:'in_progress', label:'Diproses',   note:'Teknisi ditugaskan',   icon:'fa-gear'         },
       { key:'closed',      label:'Selesai',    note:'Laporan diselesaikan', icon:'fa-circle-check' }
     ];
     const ORDER={open:0,in_progress:1,inprogress:1,progress:1,closed:2};
@@ -623,12 +691,72 @@
     body.innerHTML=`<div class="ai-content">
       <div class="ai-level-banner info"><div class="ai-level-icon">💡</div><div class="ai-level-text">Informasi</div></div>
       <div class="ai-text-wrap"><div class="ai-text">${esc(text)}</div></div>
+      ${renderFeedbackHTML()}
       <div class="ai-footer">
         <div class="ai-source"><i class="fas fa-microchip"></i> Lokal</div>
         <button class="ai-refresh" onclick="refreshAI()"><i class="fas fa-rotate-right"></i> Perbarui</button>
       </div>
     </div>`;
+    bindFeedback();
   }
+
+  function renderFeedbackHTML(){
+    return `<div class="ai-feedback">
+      <div class="ai-feedback-label">Apakah saran ini membantu?</div>
+      <div class="ai-feedback-btns">
+        <button class="feedback-btn like" onclick="handleFeedback('like')">
+          <i class="fas fa-thumbs-up"></i> Ya, membantu
+        </button>
+        <button class="feedback-btn dislike" onclick="handleFeedback('dislike')">
+          <i class="fas fa-thumbs-down"></i> Tidak relevan
+        </button>
+      </div>
+      <div id="feedbackReason" style="display:none"></div>
+    </div>`;
+  }
+
+  function handleFeedback(type){
+    currentFeedback = type;
+
+    // Update tombol visual
+    document.querySelectorAll('.feedback-btn').forEach(btn => {
+      btn.disabled = true;
+      btn.style.opacity = btn.classList.contains(type) ? '1' : '0.35';
+    });
+
+    if(type === 'like'){
+      const fr = document.getElementById('feedbackReason');
+      if(fr) { fr.style.display='block'; fr.innerHTML=`<div class="feedback-sent">✅ Terima kasih atas feedback Anda!</div>`; }
+    } else {
+      // Tampilkan pilihan alasan
+      const fr = document.getElementById('feedbackReason');
+      if(fr){
+        fr.style.display='block';
+        fr.innerHTML=`
+          <div class="ai-feedback-reason">
+            <div class="ai-feedback-reason-label">Apa yang tidak sesuai?</div>
+            <div class="feedback-reason-btns">
+              ${FEEDBACK_REASONS.map(r=>`<button class="reason-btn" onclick="selectReason(this,'${esc(r)}')">${esc(r)}</button>`).join('')}
+            </div>
+          </div>`;
+      }
+    }
+  }
+
+  function selectReason(btn, reason){
+    document.querySelectorAll('.reason-btn').forEach(b=>b.classList.remove('selected'));
+    btn.classList.add('selected');
+
+    // Simpan feedback (bisa dikirim ke API jika ada endpoint-nya)
+    console.log('[Feedback] dislike — alasan:', reason);
+
+    setTimeout(()=>{
+      const fr = document.getElementById('feedbackReason');
+      if(fr) fr.innerHTML=`<div class="feedback-sent">✅ Feedback diterima. Sistem akan terus belajar dari masukan Anda.</div>`;
+    }, 600);
+  }
+
+  function bindFeedback(){ /* event binding sudah inline */ }
 
   function renderAI(aiData, source){
     const body=document.getElementById('aiBody');
@@ -658,7 +786,11 @@
         <div class="ai-content-full">
           <div class="ai-section-lbl">Saran untuk Anda</div>
           <ul class="ai-saran-list">
-            ${saranList.map((s,i)=>`<li class="ai-saran-item"><div class="ai-saran-num">${i+1}</div>${esc(s)}</li>`).join('')}
+            ${saranList.map((s,i)=>`
+              <li class="ai-saran-item">
+                <div class="ai-saran-num">${i+1}</div>
+                <div class="ai-saran-text">${esc(s)}</div>
+              </li>`).join('')}
           </ul>
         </div>`:''}
       ${aiData.estimasi||aiData.pesan_motivasi?`
@@ -666,6 +798,7 @@
           ${aiData.estimasi?`<div class="ai-estimasi"><i class="fas fa-calendar-clock"></i><span>Estimasi: <strong>${esc(aiData.estimasi)}</strong></span></div>`:''}
           ${aiData.pesan_motivasi?`<div class="ai-motivasi">${esc(aiData.pesan_motivasi)}</div>`:''}
         </div>`:''}
+      ${renderFeedbackHTML()}
       <div class="ai-footer">
         <div class="ai-source"><i class="fas fa-microchip"></i> ${srcLabel}</div>
         <button class="ai-refresh" onclick="refreshAI()"><i class="fas fa-rotate-right"></i> Perbarui</button>

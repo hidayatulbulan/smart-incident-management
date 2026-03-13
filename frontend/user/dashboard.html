@@ -8,7 +8,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
       --red:#e63946; --red-dark:#c1121f; --red-deep:#8c1b28; --red-light:#ff8fa3;
       --red-50:#fff5f7; --red-100:#ffe0e5;
@@ -19,15 +18,11 @@
       --shadow-r:0 8px 28px rgba(230,57,70,0.22);
       --radius:20px; --rsm:14px;
     }
-
     body { font-family:'Plus Jakarta Sans',sans-serif; background:var(--gray-50); min-height:100vh; display:flex; overflow-x:hidden; color:var(--gray-900); }
-
-    /* ── KEYFRAMES ── */
     @keyframes slideInLeft { from{transform:translateX(-110%);opacity:0} to{transform:translateX(0);opacity:1} }
     @keyframes fadeInDown  { from{transform:translateY(-22px);opacity:0} to{transform:translateY(0);opacity:1} }
     @keyframes fadeInUp    { from{transform:translateY(28px);opacity:0}  to{transform:translateY(0);opacity:1} }
     @keyframes fadeInRight { from{transform:translateX(32px);opacity:0}  to{transform:translateX(0);opacity:1} }
-    @keyframes popIn       { 0%{opacity:0;transform:scale(.55)} 70%{transform:scale(1.06)} 100%{opacity:1;transform:scale(1)} }
     @keyframes shimmer     { 0%{left:-70%} 100%{left:130%} }
     @keyframes toastIn     { from{transform:translateX(115%);opacity:0} to{transform:translateX(0);opacity:1} }
     @keyframes floatA      { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-11px)} }
@@ -38,15 +33,8 @@
     @keyframes stepDone    { 0%{transform:scale(0)} 65%{transform:scale(1.2)} 100%{transform:scale(1)} }
     @keyframes lineGrow    { from{width:0} to{width:100%} }
 
-    /* ── SIDEBAR ── */
-    .sidebar {
-      width:var(--sw); background:var(--white);
-      display:flex; flex-direction:column; padding:26px 14px 20px;
-      min-height:100vh; box-shadow:2px 0 20px rgba(0,0,0,.05);
-      position:fixed; top:0; left:0; bottom:0; z-index:200;
-      border-right:1px solid var(--red-100);
-      animation:slideInLeft .45s cubic-bezier(.22,1,.36,1);
-    }
+    /* SIDEBAR */
+    .sidebar { width:var(--sw); background:var(--white); display:flex; flex-direction:column; padding:26px 14px 20px; min-height:100vh; box-shadow:2px 0 20px rgba(0,0,0,.05); position:fixed; top:0; left:0; bottom:0; z-index:200; border-right:1px solid var(--red-100); animation:slideInLeft .45s cubic-bezier(.22,1,.36,1); }
     .sb-logo { display:flex; align-items:center; gap:11px; margin-bottom:32px; padding:6px 10px; }
     .sb-icon  { width:38px; height:38px; background:linear-gradient(135deg,var(--red),var(--red-dark)); border-radius:11px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:17px; box-shadow:0 4px 12px rgba(230,57,70,.32); flex-shrink:0; }
     .sb-brand { font-size:15.5px; font-weight:800; color:var(--gray-900); }
@@ -62,10 +50,10 @@
     .logout:hover { background:#fff5f5; color:var(--red); }
     .logout svg { width:16px; height:16px; }
 
-    /* ── MAIN ── */
+    /* MAIN */
     .main { margin-left:var(--sw); flex:1; display:flex; flex-direction:column; }
 
-    /* ── TOPBAR ── */
+    /* TOPBAR */
     .topbar { display:flex; align-items:center; justify-content:space-between; padding:22px 32px 0; animation:fadeInDown .5s cubic-bezier(.22,1,.36,1); }
     .t-greet      { font-size:21px; font-weight:800; color:var(--gray-900); letter-spacing:-.5px; }
     .t-greet-acc  { color:var(--red); }
@@ -76,12 +64,10 @@
     .search-bar svg  { width:14px; height:14px; color:var(--gray-400); flex-shrink:0; }
     .search-bar input { flex:1; border:none; outline:none; font-size:12.5px; font-family:inherit; color:var(--gray-900); background:transparent; }
     .search-bar input::placeholder { color:var(--gray-400); }
-
     .nbell { position:relative; cursor:pointer; }
     .nbell i { font-size:18px; color:var(--gray-400); transition:color .2s; }
     .nbell:hover i { color:var(--red); }
     #notifBadge { display:none; position:absolute; top:-6px; right:-6px; background:var(--red); color:#fff; border-radius:50%; width:18px; height:18px; font-size:10px; font-weight:700; align-items:center; justify-content:center; border:2px solid var(--gray-50); }
-
     #notifDropdown { display:none; position:fixed; top:66px; right:22px; width:340px; background:#fff; border-radius:16px; box-shadow:0 12px 40px rgba(0,0,0,.12); z-index:999; border:1px solid var(--gray-200); overflow:hidden; }
     .nd-head  { padding:14px 18px; border-bottom:1px solid var(--gray-100); display:flex; justify-content:space-between; align-items:center; }
     .nd-ttl   { font-size:14px; font-weight:800; color:var(--gray-900); }
@@ -96,16 +82,23 @@
     .nd-itime  { font-size:11px; color:var(--gray-400); margin-top:4px; }
     .nd-empty  { padding:28px; text-align:center; color:var(--gray-400); font-size:13px; font-weight:500; }
 
-    .uchip { display:flex; align-items:center; gap:9px; cursor:pointer; }
-    .uchip-av { width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg,var(--red-light),var(--red)); display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:800; color:#fff; box-shadow:0 3px 10px rgba(230,57,70,.28); }
+    /* ── USER CHIP: icon + nama saja, tanpa chevron/dropdown ── */
+    .uchip    { display:flex; align-items:center; gap:9px; }
+    .uchip-av {
+      width:36px; height:36px; border-radius:50%;
+      background:linear-gradient(135deg,var(--red-light),var(--red));
+      display:flex; align-items:center; justify-content:center;
+      font-size:14px; font-weight:800; color:#fff;
+      box-shadow:0 3px 10px rgba(230,57,70,.28); flex-shrink:0; overflow:hidden;
+    }
+    .uchip-av img { width:100%; height:100%; object-fit:cover; border-radius:50%; }
     .uchip-nm { font-size:13.5px; font-weight:700; color:var(--gray-800); }
-    .uchip svg { width:14px; height:14px; color:var(--gray-400); }
 
-    /* ── CONTENT ── */
+    /* CONTENT */
     .content  { display:flex; gap:22px; padding:22px 32px 32px; flex:1; }
     .col-left { flex:1; display:flex; flex-direction:column; gap:20px; }
 
-    /* ── STAT CARDS ── */
+    /* STAT CARDS */
     .stat-row { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
     .sc { border-radius:var(--radius); padding:20px 22px; position:relative; overflow:hidden; min-height:116px; display:flex; flex-direction:column; justify-content:space-between; box-shadow:0 6px 24px rgba(0,0,0,.13); animation:fadeInUp .55s cubic-bezier(.22,1,.36,1) both; transition:transform .25s,box-shadow .25s; cursor:default; }
     .sc:nth-child(1){animation-delay:.08s} .sc:nth-child(2){animation-delay:.16s}
@@ -116,18 +109,16 @@
     .bbl { position:absolute; border-radius:50%; opacity:.22; pointer-events:none; }
     .bbl-lg { width:100px; height:100px; bottom:-22px; right:-20px; animation:floatA 5.5s ease-in-out infinite; }
     .bbl-sm { width:56px;  height:56px;  bottom:14px;  right:62px;  animation:floatB 5s ease-in-out infinite .6s; }
-    .sc-1 { background:linear-gradient(135deg,#e63946,#c1121f); } .sc-1 .bbl { background:#ff6b78; }
-    .sc-2 { background:linear-gradient(135deg,#c1121f,#8c1b28); } .sc-2 .bbl { background:#e63946; }
-    .sc-3 { background:linear-gradient(135deg,#f05a67,#e63946); } .sc-3 .bbl { background:#ff8fa3; }
-    .sc-4 { background:linear-gradient(135deg,#8c1b28,#5a0f18); } .sc-4 .bbl { background:#c1121f; }
+    .sc-1{background:linear-gradient(135deg,#e63946,#c1121f)} .sc-1 .bbl{background:#ff6b78}
+    .sc-2{background:linear-gradient(135deg,#c1121f,#8c1b28)} .sc-2 .bbl{background:#e63946}
+    .sc-3{background:linear-gradient(135deg,#f05a67,#e63946)} .sc-3 .bbl{background:#ff8fa3}
+    .sc-4{background:linear-gradient(135deg,#8c1b28,#5a0f18)} .sc-4 .bbl{background:#c1121f}
     .sc-top  { display:flex; align-items:center; justify-content:space-between; }
     .sc-lbl  { font-size:10px; font-weight:700; color:rgba(255,255,255,.85); text-transform:uppercase; letter-spacing:.7px; }
     .sc-icon { width:34px; height:34px; border-radius:10px; background:rgba(255,255,255,.22); display:flex; align-items:center; justify-content:center; font-size:14px; color:#fff; }
     .sc-val  { font-size:34px; font-weight:900; color:#fff; line-height:1; position:relative; z-index:1; animation:countUp .6s cubic-bezier(.22,1,.36,1) .5s both; }
-    .sc-foot { display:flex; align-items:center; gap:6px; font-size:10.5px; color:rgba(255,255,255,.75); font-weight:600; }
-    .pdot    { width:7px; height:7px; border-radius:50%; background:rgba(255,255,255,.7); animation:pulse 2s ease-in-out infinite; }
 
-    /* ── TABLE PANEL ── */
+    /* TABLE PANEL */
     .panel { background:var(--white); border-radius:var(--radius); box-shadow:var(--shadow); border:1px solid var(--gray-100); overflow:hidden; animation:fadeInUp .5s cubic-bezier(.22,1,.36,1) .38s both; }
     .panel-hd  { padding:20px 24px 0; display:flex; justify-content:space-between; align-items:center; }
     .panel-ttl { font-size:15px; font-weight:800; color:var(--gray-900); }
@@ -138,7 +129,7 @@
     tbody tr:hover { background:var(--red-50); }
     tbody td { padding:13px 20px; font-size:13px; font-weight:600; color:var(--gray-800); border-bottom:1px solid var(--gray-50); }
     tbody tr:last-child td { border-bottom:none; }
-    .badge { display:inline-block; padding:3px 11px; border-radius:20px; font-size:10.5px; font-weight:700; }
+    .badge        { display:inline-block; padding:3px 11px; border-radius:20px; font-size:10.5px; font-weight:700; }
     .badge-high   { background:var(--red-100); color:var(--red); }
     .badge-medium { background:#fff3e0; color:#ea580c; }
     .badge-low    { background:rgba(230,57,70,.07); color:var(--red-dark); }
@@ -152,9 +143,8 @@
     .empty-st { text-align:center; padding:36px; color:var(--gray-400); font-size:13px; font-weight:600; }
     .empty-st i { font-size:28px; display:block; margin-bottom:10px; opacity:.35; }
 
-    /* ── RIGHT COLUMN ── */
+    /* RIGHT COLUMN */
     .col-right { width:242px; flex-shrink:0; display:flex; flex-direction:column; gap:16px; }
-
     .prog-card { background:var(--white); border-radius:var(--radius); padding:20px 22px; box-shadow:var(--shadow); border:1px solid var(--gray-100); animation:fadeInRight .5s cubic-bezier(.22,1,.36,1) .18s both; }
     .prog-ttl  { font-size:14px; font-weight:800; color:var(--gray-900); margin-bottom:20px; }
     .steps     { display:flex; align-items:flex-start; }
@@ -170,7 +160,6 @@
     .step-lbl  { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; text-align:center; color:var(--gray-400); transition:color .3s; }
     .step-lbl.dc { color:var(--red); }
     .step-lbl.ac { color:var(--gray-700); }
-
     .detail-card { background:var(--white); border-radius:var(--radius); padding:20px 22px; box-shadow:var(--shadow); border:1px solid var(--gray-100); animation:fadeInRight .5s cubic-bezier(.22,1,.36,1) .28s both; }
     .dc-lbl  { font-size:9px; font-weight:700; color:var(--gray-400); text-transform:uppercase; letter-spacing:.7px; margin-bottom:10px; }
     .dc-ttl  { font-size:14px; font-weight:800; color:var(--gray-900); margin-bottom:4px; line-height:1.35; }
@@ -178,13 +167,11 @@
     .dc-div  { height:1px; background:var(--gray-100); margin:12px 0; }
     .dc-meta { display:flex; align-items:center; gap:7px; font-size:11.5px; color:var(--gray-500); font-weight:500; margin-bottom:7px; }
     .dc-meta svg { width:13px; height:13px; color:var(--gray-400); flex-shrink:0; }
-
     .rep-btn { display:flex; align-items:center; justify-content:center; gap:8px; background:linear-gradient(135deg,var(--red),var(--red-dark)); color:#fff; font-size:13px; font-weight:800; border:none; border-radius:var(--rsm); padding:15px; cursor:pointer; font-family:inherit; box-shadow:var(--shadow-r); transition:transform .2s,box-shadow .2s; width:100%; letter-spacing:.2px; animation:fadeInRight .5s cubic-bezier(.22,1,.36,1) .38s both; position:relative; overflow:hidden; }
     .rep-btn::after { content:''; position:absolute; top:0; left:-70%; width:40%; height:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent); transform:skewX(-18deg); }
     .rep-btn:hover { transform:translateY(-3px); box-shadow:0 12px 34px rgba(230,57,70,.38); }
     .rep-btn:hover::after { animation:shimmer .55s ease forwards; }
     .rep-btn svg { width:16px; height:16px; }
-
     .toast { position:fixed; top:20px; right:20px; padding:13px 20px; border-radius:13px; color:#fff; font-size:13px; font-weight:700; z-index:9999; box-shadow:0 8px 24px rgba(0,0,0,.14); animation:toastIn .3s ease; display:flex; align-items:center; gap:8px; }
     .toast-s { background:linear-gradient(135deg,#22c55e,#16a34a); }
     .toast-e { background:linear-gradient(135deg,var(--red),var(--red-dark)); }
@@ -204,7 +191,7 @@
     <div class="sb-icon" id="sbFall" style="display:none"><i class="fas fa-shield-halved"></i></div>
     <span class="sb-brand">Smart<span>Incident</span></span>
   </div>
-  <div class="sb-lbl">Menu</div>
+  <div class="sb-lbl">Menu Utama</div>
   <nav>
     <a class="nav-a active" href="dashboard.html">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -262,18 +249,17 @@
         </div>
         <div class="nd-list" id="notifList"><div class="nd-empty">Tidak ada notifikasi</div></div>
       </div>
+
+      <!-- USER CHIP: hanya icon + nama, tanpa chevron/dropdown -->
       <div class="uchip">
         <div class="uchip-av" id="userAvatar">?</div>
         <span class="uchip-nm" id="userName">...</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
     </div>
   </div>
 
   <div class="content">
     <div class="col-left">
-
-      <!-- STAT CARDS -->
       <div class="stat-row">
         <div class="sc sc-1">
           <div class="bbl bbl-lg"></div><div class="bbl bbl-sm"></div>
@@ -297,7 +283,6 @@
         </div>
       </div>
 
-      <!-- TABLE -->
       <div class="panel">
         <div class="panel-hd">
           <div class="panel-ttl">Insiden Terbaru Saya</div>
@@ -317,13 +302,9 @@
           </button>
         </div>
       </div>
-
     </div>
 
-    <!-- RIGHT -->
     <div class="col-right">
-
-      <!-- Progress -->
       <div class="prog-card">
         <div class="prog-ttl">Progres Insiden</div>
         <div class="steps" id="progressSteps">
@@ -346,7 +327,6 @@
         </div>
       </div>
 
-      <!-- Latest Incident -->
       <div class="detail-card" id="latestIncidentCard">
         <div class="dc-lbl">Insiden Terakhir</div>
         <div class="dc-ttl" id="latestTitle">—</div>
@@ -370,31 +350,20 @@
         </div>
       </div>
 
-      <!-- Report Btn -->
       <button class="rep-btn" onclick="window.location.href='report.html'">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
           <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
         </svg>
         Lapor kejadian baru
       </button>
-
     </div>
   </div>
 </div>
 
-<!-- ═══ ORIGINAL JS — 100% INTACT ═══ -->
 <script>
 const API_BASE = 'http://localhost:3000/api';
 
-function escapeHtml(text) {
-  if (!text) return '';
-  const map={'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'};
-  return text.replace(/[&<>"']/g,m=>map[m]);
-}
-function capitalizeFirst(str){if(!str)return '';return str.charAt(0).toUpperCase()+str.slice(1);}
-
-const statusMap={open:{label:'Open',bg:'#e3f2fd',color:'#1976d2'},progress:{label:'On Progress',bg:'#fff3e0',color:'#f57c00'},closed:{label:'Closed',bg:'#f1f8e9',color:'#689f38'}};
-
+function escapeHtml(t){if(!t)return '';const m={'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'};return t.replace(/[&<>"']/g,c=>m[c]);}
 function getStatusBadge(status){
   const s=status?.toLowerCase();
   if(s==='open')return '<span class="st-open">Open</span>';
@@ -409,28 +378,24 @@ function getPriorityBadge(priority){
   return '<span class="badge badge-low">Low</span>';
 }
 function formatDate(ds){if(!ds)return '-';return new Date(ds).toLocaleDateString('en-US',{month:'short',day:'2-digit',year:'numeric'});}
-function formatStatus(s){const m={open:'Open',progress:'On Progress',closed:'Closed'};return m[s?.toLowerCase()]||s;}
 function getToken(){return localStorage.getItem('token');}
 function redirectToLogin(){localStorage.removeItem('token');localStorage.removeItem('user');window.location.href='../auth/login.html';}
 function logout(){localStorage.removeItem('token');localStorage.removeItem('user');window.location.href='../auth/login.html';}
+function animateCount(el,target){if(!el)return;let cur=0;const step=Math.max(1,Math.ceil(target/22));const t=setInterval(()=>{cur=Math.min(cur+step,target);el.textContent=cur;if(cur>=target)clearInterval(t);},40);}
 
-function animateCount(el,target){
-  if(!el)return; let cur=0;
-  const step=Math.max(1,Math.ceil(target/22));
-  const t=setInterval(()=>{cur=Math.min(cur+step,target);el.textContent=cur;if(cur>=target)clearInterval(t);},40);
+/* Set nama & avatar di topbar dari data user */
+function setUserChip(user){
+  if(!user||!user.name)return;
+  const initial=user.name.charAt(0).toUpperCase();
+  document.getElementById('greeting').innerHTML=`Hi, <span class="t-greet-acc">${escapeHtml(user.name)}</span> 👋`;
+  document.getElementById('userName').textContent=escapeHtml(user.name);
+  const av=document.getElementById('userAvatar');
+  if(user.profile_photo){
+    av.innerHTML=`<img src="http://localhost:3000/uploads/${escapeHtml(user.profile_photo)}" alt="foto">`;
+  }else{
+    av.textContent=initial;
+  }
 }
-
-async function goToLatestIncident(){
-  try{
-    const token=getToken();if(!token){window.location.href='../auth/login.html';return;}
-    const r=await fetch(`${API_BASE}/incidents`,{headers:{'Authorization':`Bearer ${token}`}});
-    const d=await r.json();
-    if(d.incidents&&d.incidents.length>0){window.location.href=`incident-detail.html?id=${d.incidents[0].id}`;}
-    else{alert('Belum ada laporan insiden.');}
-  }catch(e){alert('Gagal memuat laporan.');}
-}
-
-function getStatusClass(s){const m=s?.toLowerCase();if(m==='open')return 'status-open';if(m==='progress')return 'status-progress';return 'status-closed';}
 
 function updateProgressIndicator(incidents){
   if(!incidents||incidents.length===0)return;
@@ -459,8 +424,7 @@ function updateProgressIndicator(incidents){
 }
 
 function filterIncidentsTable(searchTerm){
-  const rows=document.querySelectorAll('#incidentsTableBody tr');
-  rows.forEach(row=>{
+  document.querySelectorAll('#incidentsTableBody tr').forEach(row=>{
     const es=row.querySelector('.empty-st');if(es)return;
     const t0=row.cells[0]?.textContent.toLowerCase()||'';
     const t1=row.cells[1]?.textContent.toLowerCase()||'';
@@ -470,28 +434,35 @@ function filterIncidentsTable(searchTerm){
 
 async function loadDashboard(){
   const token=getToken();if(!token){redirectToLogin();return;}
-  const now=new Date();
-  const ds=now.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  const ds=new Date().toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
   const dateEl=document.querySelector('#topbarDate span');if(dateEl)dateEl.textContent=ds;
-  const user=JSON.parse(localStorage.getItem('user'))||{};
-  if(user.name){
-    document.getElementById('greeting').innerHTML=`Hi, <span class="t-greet-acc">${escapeHtml(user.name)}</span> 👋`;
-    document.getElementById('userName').textContent=escapeHtml(user.name);
-    document.getElementById('userAvatar').textContent=user.name.charAt(0).toUpperCase();
+
+  /* ── Ambil profil dari API  ── */
+  try{
+    const rp=await fetch(`${API_BASE}/auth/profile`,{headers:{'Authorization':`Bearer ${token}`}});
+    if(rp.ok){
+      const pd=await rp.json();
+      if(pd.success&&pd.data){
+        localStorage.setItem('user',JSON.stringify(pd.data));
+        setUserChip(pd.data);
+      }
+    }else{
+      setUserChip(JSON.parse(localStorage.getItem('user')||'{}'));
+    }
+  }catch(e){
+    setUserChip(JSON.parse(localStorage.getItem('user')||'{}'));
   }
+
+  /* ── Ambil data insiden ── */
   try{
     const response=await fetch(`${API_BASE}/incidents`,{headers:{'Authorization':`Bearer ${token}`}});
     if(response.status===401){redirectToLogin();return;}
     const data=await response.json();
     const incidents=data.incidents||[];
-    const total=incidents.length;
-    const open=incidents.filter(i=>i.status?.toLowerCase()==='open').length;
-    const inProgress=incidents.filter(i=>['in_progress','inprogress','progress'].includes(i.status?.toLowerCase())).length;
-    const closed=incidents.filter(i=>i.status?.toLowerCase()==='closed').length;
-    animateCount(document.getElementById('totalReports'),total);
-    animateCount(document.getElementById('openIncidents'),open);
-    animateCount(document.getElementById('inProgressIncidents'),inProgress);
-    animateCount(document.getElementById('closedIncidents'),closed);
+    animateCount(document.getElementById('totalReports'),incidents.length);
+    animateCount(document.getElementById('openIncidents'),incidents.filter(i=>i.status?.toLowerCase()==='open').length);
+    animateCount(document.getElementById('inProgressIncidents'),incidents.filter(i=>['in_progress','inprogress','progress'].includes(i.status?.toLowerCase())).length);
+    animateCount(document.getElementById('closedIncidents'),incidents.filter(i=>i.status?.toLowerCase()==='closed').length);
     const tbody=document.getElementById('incidentsTableBody');
     const countEl=document.getElementById('incidentCount');
     if(countEl)countEl.textContent=`${incidents.length} insiden`;
@@ -505,8 +476,7 @@ async function loadDashboard(){
           <td>${getPriorityBadge(inc.priority)}</td>
           <td>${getStatusBadge(inc.status)}</td>
           <td style="font-size:12px;color:var(--gray-500);">${formatDate(inc.created_at)}</td>
-        </tr>
-      `).join('');
+        </tr>`).join('');
     }
     if(incidents.length>0){
       const latest=incidents[0];
@@ -518,50 +488,50 @@ async function loadDashboard(){
       document.getElementById('latestUpdated').textContent=`Updated ${formatDate(latest.updated_at)}`;
     }
     const si=document.getElementById('searchInput');
-    if(si)si.addEventListener('input',function(){filterIncidentsTable(this.value.toLowerCase());});
+    if(si&&!si._bound){si._bound=true;si.addEventListener('input',function(){filterIncidentsTable(this.value.toLowerCase());});}
     updateProgressIndicator(incidents);
-  }catch(err){console.error('Error loading dashboard:',err);}
+  }catch(err){console.error('Error:',err);}
 }
 
 async function loadNotifications(){
   const token=localStorage.getItem('token');if(!token)return;
   try{
-    const res=await fetch('http://localhost:3000/api/notifications',{headers:{'Authorization':`Bearer ${token}`}});
+    const res=await fetch(`${API_BASE}/notifications`,{headers:{'Authorization':`Bearer ${token}`}});
     const data=await res.json();
     const notifs=data.notifications||[];
     const unread=notifs.filter(n=>!n.is_read).length;
     const badge=document.getElementById('notifBadge');
     if(badge){badge.textContent=unread;badge.style.display=unread>0?'flex':'none';}
     const list=document.getElementById('notifList');if(!list)return;
-    if(notifs.length===0){list.innerHTML='<div class="nd-empty"><i class="fas fa-bell-slash" style="font-size:22px;display:block;margin-bottom:8px;opacity:.3;"></i>Tidak ada notifikasi</div>';return;}
+    if(!notifs.length){list.innerHTML='<div class="nd-empty"><i class="fas fa-bell-slash" style="font-size:22px;display:block;margin-bottom:8px;opacity:.3;"></i>Tidak ada notifikasi</div>';return;}
     list.innerHTML=notifs.map(n=>`
       <div class="nd-item ${n.is_read?'':'unread'}" onclick="markRead(${n.id})">
         <div class="nd-ititle">${escapeHtml(n.title)}</div>
         <div class="nd-imsg">${escapeHtml(n.message)}</div>
         <div class="nd-itime">${new Date(n.created_at).toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})}</div>
-      </div>
-    `).join('');
+      </div>`).join('');
   }catch(e){console.error(e);}
 }
 function toggleNotifications(){
   const dd=document.getElementById('notifDropdown');if(!dd)return;
-  dd.style.display=dd.style.display==='none'?'block':'none';
+  dd.style.display=dd.style.display==='block'?'none':'block';
   if(dd.style.display==='block')loadNotifications();
 }
 async function markRead(id){
   const token=localStorage.getItem('token');
-  await fetch(`http://localhost:3000/api/notifications/${id}/read`,{method:'PUT',headers:{'Authorization':`Bearer ${token}`}});
+  await fetch(`${API_BASE}/notifications/${id}/read`,{method:'PUT',headers:{'Authorization':`Bearer ${token}`}});
   loadNotifications();
 }
 async function markAllRead(){
   const token=localStorage.getItem('token');
-  await fetch('http://localhost:3000/api/notifications/read-all',{method:'PUT',headers:{'Authorization':`Bearer ${token}`}});
+  await fetch(`${API_BASE}/notifications/read-all`,{method:'PUT',headers:{'Authorization':`Bearer ${token}`}});
   loadNotifications();
 }
 document.addEventListener('click',e=>{
   const dd=document.getElementById('notifDropdown');
   if(dd&&!dd.contains(e.target)&&!e.target.closest('.nbell'))dd.style.display='none';
 });
+
 loadNotifications();
 setInterval(loadNotifications,30000);
 loadDashboard();
