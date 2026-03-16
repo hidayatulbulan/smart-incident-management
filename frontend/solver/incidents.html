@@ -39,7 +39,7 @@
       --sidebar:   230px;
     }
 
-    body { font-family:'Plus Jakarta Sans',sans-serif; background:var(--bg); color:var(--gray-900); min-height:100vh; display:flex; overflow-x:hidden; }
+    body { font-family:'Plus Jakarta Sans',sans-serif; background:var(--bg); color:#0f172a; min-height:100vh; display:flex; overflow-x:hidden; }
 
     @keyframes slideLeft  { from{transform:translateX(-100%);opacity:0} to{transform:translateX(0);opacity:1} }
     @keyframes fadeDown   { from{transform:translateY(-14px);opacity:0} to{transform:translateY(0);opacity:1} }
@@ -48,75 +48,86 @@
     @keyframes rowIn      { from{opacity:0;transform:translateX(-8px)} to{opacity:1;transform:translateX(0)} }
     @keyframes pulse      { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.5);opacity:.5} }
 
+    /* ═══ SIDEBAR ═══ */
     .sidebar { width:var(--sidebar);background:var(--white);display:flex;flex-direction:column;padding:24px 14px;min-height:100vh;position:fixed;top:0;left:0;bottom:0;z-index:200;border-right:1px solid var(--red-100);box-shadow:2px 0 18px rgba(0,0,0,0.055);animation:slideLeft .42s cubic-bezier(.22,1,.36,1); }
     .sb-logo { display:flex;align-items:center;gap:10px;padding:4px 8px 24px;border-bottom:1px solid var(--gray-100);margin-bottom:6px; }
     .sb-logo img { width:36px;height:36px;object-fit:contain;border-radius:8px; }
     .sb-logo-icon { width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--red),var(--red-dark));display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;box-shadow:0 4px 10px rgba(230,57,70,.3);flex-shrink:0; }
-    .sb-brand { font-size:15px;font-weight:800;color:var(--gray-900); }
+    .sb-brand { font-size:15px;font-weight:800;color:#0f172a; }
     .sb-brand span { color:var(--red); }
-    .sb-section { font-size:9.5px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:1.3px;padding:0 10px;margin:18px 0 6px; }
-    .nav-a { display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--rsm);font-size:13px;font-weight:600;color:var(--gray-500);text-decoration:none;transition:all .2s;position:relative;margin-bottom:2px; }
-    .nav-a i { width:16px;text-align:center;font-size:13px; }
+    /* MENU UTAMA label */
+    .sb-section { font-size:9.5px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:1.3px;padding:0 10px;margin:18px 0 6px; }
+    /* nav links */
+    .nav-a { display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--rsm);font-size:13px;font-weight:600;color:#1e293b;text-decoration:none;transition:all .2s;position:relative;margin-bottom:2px; }
+    .nav-a i { width:16px;text-align:center;font-size:13px;color:inherit; }
     .nav-a:hover { background:var(--red-50);color:var(--red); }
     .nav-a.active { background:linear-gradient(135deg,var(--red),#f05060);color:#fff;box-shadow:0 4px 14px rgba(230,57,70,.28); }
     .nav-a.active::before { content:'';position:absolute;left:-14px;width:4px;height:22px;background:var(--red);border-radius:0 3px 3px 0; }
     .sb-spacer { flex:1; }
     .sb-divider { height:1px;background:var(--gray-100);margin:12px 0; }
-    .sb-logout { display:flex;align-items:center;gap:10px;padding:10px 12px;color:var(--gray-400);font-size:13px;font-weight:600;cursor:pointer;border:none;background:none;font-family:inherit;border-radius:var(--rsm);transition:all .2s;width:100%; }
+    /* Keluar button */
+    .sb-logout { display:flex;align-items:center;gap:10px;padding:10px 12px;color:#374151;font-size:13px;font-weight:600;cursor:pointer;border:none;background:none;font-family:inherit;border-radius:var(--rsm);transition:all .2s;width:100%; }
     .sb-logout:hover { background:#fff5f5;color:var(--red); }
 
     .main { margin-left:var(--sidebar);flex:1;display:flex;flex-direction:column;min-height:100vh; }
 
-    /* ← TOPBAR */
+    /* ═══ TOPBAR ═══ */
     .topbar { display:flex;align-items:center;justify-content:space-between;padding:26px 32px 0;animation:fadeDown .45s cubic-bezier(.22,1,.36,1); }
-    .tb-left h2 { font-size:24px;font-weight:800;color:var(--gray-900);letter-spacing:-.5px; }
-    .tb-left p  { font-size:13px;color:var(--gray-500);margin-top:3px;font-weight:500; }
+    .tb-left h2 { font-size:24px;font-weight:800;color:#0f172a;letter-spacing:-.5px; }
+    .tb-left p  { font-size:13px;color:#475569;margin-top:3px;font-weight:500; }
     .tb-right { display:flex;align-items:center;gap:12px; }
 
     .notif-wrap { position:relative; }
     .notif-btn { width:38px;height:38px;background:var(--white);border:1.5px solid var(--gray-200);border-radius:11px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;box-shadow:var(--shadow-sm); }
     .notif-btn:hover { border-color:var(--red-light);background:var(--red-50); }
-    .notif-btn i { font-size:15px;color:var(--gray-500); }
+    .notif-btn i { font-size:15px;color:#475569; }
     #notifBadge { position:absolute;top:-5px;right:-5px;background:var(--red);color:#fff;border-radius:50%;width:18px;height:18px;font-size:9.5px;font-weight:800;display:none;align-items:center;justify-content:center;border:2px solid var(--white);z-index:1; }
     .notif-dd { display:none;position:fixed;top:76px;right:24px;width:340px;background:var(--white);border-radius:var(--radius);box-shadow:0 8px 30px rgba(0,0,0,.12);z-index:999;border:1.5px solid var(--gray-200);overflow:hidden; }
     .notif-hdr { padding:14px 18px;border-bottom:1px solid var(--gray-100);display:flex;justify-content:space-between;align-items:center; }
-    .notif-hdr strong { font-size:14px;font-weight:800;color:var(--gray-900); }
+    .notif-hdr strong { font-size:14px;font-weight:800;color:#0f172a; }
     .notif-hdr a { font-size:12px;color:var(--red);cursor:pointer;font-weight:600; }
     .notif-list { max-height:320px;overflow-y:auto; }
     .ni { padding:13px 18px;border-bottom:1px solid var(--gray-50);cursor:pointer;transition:background .15s; }
     .ni:hover { background:var(--gray-50); }
     .ni.unread { background:var(--red-50);border-left:3px solid var(--red-light); }
-    .ni-title { font-size:13px;font-weight:700;color:var(--gray-900);margin-bottom:2px; }
-    .ni-msg   { font-size:12px;color:var(--gray-500);line-height:1.4; }
-    .ni-time  { font-size:11px;color:var(--gray-400);margin-top:3px; }
-    .ni-arrow { font-size:10px;color:var(--gray-300);margin-top:4px;display:flex;align-items:center;gap:4px;font-weight:600; }
+    .ni-title { font-size:13px;font-weight:700;color:#0f172a;margin-bottom:2px; }
+    .ni-msg   { font-size:12px;color:#475569;line-height:1.4; }
+    .ni-time  { font-size:11px;color:#64748b;margin-top:3px; }
+    .ni-arrow { font-size:10px;color:#94a3b8;margin-top:4px;display:flex;align-items:center;gap:4px;font-weight:600; }
     .ni-arrow i { font-size:9px; }
     .ni.has-incident .ni-arrow { color:var(--red-light); }
 
     .content { padding:16px 32px 48px;display:flex;flex-direction:column;gap:20px;animation:fadeIn .5s ease; }
 
+    /* ═══ FILTER BAR ═══ */
     .filter-bar { background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--gray-100);padding:16px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;animation:fadeUp .45s cubic-bezier(.22,1,.36,1) .08s both; }
     .fl-group { display:flex;align-items:center;gap:10px; }
-    .fl-label { font-size:11px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:.8px;white-space:nowrap; }
+    /* filter label */
+    .fl-label { font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.8px;white-space:nowrap; }
     .fl-search { display:flex;align-items:center;gap:8px;background:var(--gray-50);border:1.5px solid var(--gray-200);border-radius:10px;padding:8px 14px;min-width:240px;transition:border-color .2s; }
     .fl-search:focus-within { border-color:var(--red-light);background:var(--white); }
-    .fl-search i { color:var(--gray-400);font-size:12px; }
-    .fl-search input { border:none;outline:none;font-size:13px;font-family:inherit;color:var(--gray-900);background:transparent;flex:1; }
-    .fl-search input::placeholder { color:var(--gray-400); }
-    .fl-select { appearance:none;-webkit-appearance:none;background:var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23b0b5c0' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 12px center;border:1.5px solid var(--gray-200);border-radius:10px;padding:8px 34px 8px 13px;font-size:13px;font-weight:600;color:var(--gray-700);font-family:inherit;cursor:pointer;transition:border-color .2s;min-width:150px; }
+    .fl-search i { color:#64748b;font-size:12px; }
+    .fl-search input { border:none;outline:none;font-size:13px;font-family:inherit;color:#0f172a;background:transparent;flex:1; }
+    .fl-search input::placeholder { color:#94a3b8; }
+    .fl-select { appearance:none;-webkit-appearance:none;background:var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23b0b5c0' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 12px center;border:1.5px solid var(--gray-200);border-radius:10px;padding:8px 34px 8px 13px;font-size:13px;font-weight:600;color:#1e293b;font-family:inherit;cursor:pointer;transition:border-color .2s;min-width:150px; }
     .fl-select:focus { outline:none;border-color:var(--red-light); }
     .fl-spacer { flex:1; }
     .count-badge { background:var(--red-50);color:var(--red);border:1px solid var(--red-100);font-size:11.5px;font-weight:700;padding:5px 13px;border-radius:20px;white-space:nowrap; }
 
+    /* ═══ TABLE ═══ */
     .panel { background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--gray-100);overflow:hidden;animation:fadeUp .5s cubic-bezier(.22,1,.36,1) .14s both; }
     table { width:100%;border-collapse:collapse; }
-    thead th { padding:13px 20px 12px;font-size:11px;font-weight:700;color:var(--gray-400);text-align:left;text-transform:uppercase;letter-spacing:.5px;border-bottom:1.5px solid var(--gray-100);white-space:nowrap;background:var(--gray-50); }
+    /* header columns */
+    thead th { padding:13px 20px 12px;font-size:11px;font-weight:700;color:#334155;text-align:left;text-transform:uppercase;letter-spacing:.5px;border-bottom:1.5px solid var(--gray-100);white-space:nowrap;background:var(--gray-50); }
     tbody tr { transition:background .15s;animation:rowIn .3s ease both; }
     tbody tr:hover { background:var(--red-50); }
-    tbody td { padding:14px 20px;font-size:13px;font-weight:600;color:var(--gray-800);border-bottom:1px solid var(--gray-50);vertical-align:middle; }
+    /* body cells */
+    tbody td { padding:14px 20px;font-size:13px;font-weight:600;color:#0f172a;border-bottom:1px solid var(--gray-50);vertical-align:middle; }
     tbody tr:last-child td { border-bottom:none; }
-    .td-no { color:var(--gray-400);font-weight:700;width:48px; }
-    .cat-tag { background:var(--gray-100);color:var(--gray-600);padding:3px 10px;border-radius:8px;font-size:12px;font-weight:700; }
+    /* nomor baris */
+    .td-no { color:#64748b;font-weight:700;width:48px; }
+    /* kategori chip */
+    .cat-tag { background:#dde3ec;color:#1e293b;padding:3px 10px;border-radius:8px;font-size:12px;font-weight:700; }
 
     .badge { display:inline-flex;align-items:center;gap:3px;padding:3px 10px;border-radius:20px;font-size:11.5px;font-weight:700; }
     .b-high    { background:#fdecea;color:#e05b5b; }
@@ -135,21 +146,22 @@
     .btn-detail:hover { transform:translateY(-1px);box-shadow:0 6px 18px rgba(230,57,70,.38);color:#fff; }
     .btn-detail i { font-size:11px; }
 
-    .empty { text-align:center;padding:52px 20px;color:var(--gray-400);font-size:14px;font-weight:600; }
+    .empty { text-align:center;padding:52px 20px;color:#64748b;font-size:14px;font-weight:600; }
     .empty i { font-size:38px;display:block;margin-bottom:12px;opacity:.22; }
-    .empty span { display:block;font-size:12.5px;color:var(--gray-300);margin-top:4px;font-weight:500; }
+    .empty span { display:block;font-size:12.5px;color:#94a3b8;margin-top:4px;font-weight:500; }
 
     .reporter-wrap { display:flex;align-items:center;gap:7px; }
     .reporter-ava { width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--red-light),var(--red));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0; }
 
+    /* ═══ PAGINATION ═══ */
     .pagination-wrap { display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;border-top:1.5px solid var(--gray-100);background:var(--white); }
-    .pg-info { font-size:13px;font-weight:600;color:var(--gray-500); }
+    .pg-info { font-size:13px;font-weight:600;color:#374151; }
     .pg-btns { display:flex;align-items:center;gap:8px; }
-    .pg-btn { min-width:36px;height:36px;padding:0 8px;border-radius:10px;border:1.5px solid var(--gray-200);background:var(--white);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--gray-600);cursor:pointer;transition:all .18s;font-family:inherit; }
+    .pg-btn { min-width:36px;height:36px;padding:0 8px;border-radius:10px;border:1.5px solid var(--gray-200);background:var(--white);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#334155;cursor:pointer;transition:all .18s;font-family:inherit; }
     .pg-btn:hover:not(:disabled):not(.pg-dots) { border-color:var(--red-light);color:var(--red);background:var(--red-50); }
     .pg-btn.active { background:linear-gradient(135deg,var(--red),var(--red-dark));color:#fff;border-color:var(--red);box-shadow:0 4px 12px rgba(230,57,70,.28); }
     .pg-btn:disabled { opacity:.35;cursor:not-allowed; }
-    .pg-btn.pg-dots { border:none;background:none;cursor:default;color:var(--gray-400); }
+    .pg-btn.pg-dots { border:none;background:none;cursor:default;color:#94a3b8; }
     .pg-btn i { font-size:12px; }
 
     @keyframes toastSlide { from{transform:translateX(110%);opacity:0} to{transform:translateX(0);opacity:1} }
@@ -180,8 +192,6 @@
 </aside>
 
 <div class="main">
-
-  <!-- ← TOPBAR -->
   <div class="topbar">
     <div class="tb-left">
       <h2>Daftar Insiden</h2>
@@ -205,7 +215,6 @@
   </div>
 
   <div class="content">
-
     <div class="filter-bar">
       <div class="fl-group">
         <span class="fl-label">Cari</span>
@@ -257,7 +266,6 @@
           </td></tr>
         </tbody>
       </table>
-
       <div class="pagination-wrap" id="paginationWrap" style="display:none;">
         <div class="pg-info" id="pgInfo"></div>
         <div class="pg-btns" id="pgBtns"></div>
@@ -298,19 +306,17 @@ function getPriorityBadge(p){
 function formatDate(ds){ if(!ds) return '–'; return new Date(ds).toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'}); }
 
 function renderPagination(total) {
-  const wrap       = document.getElementById('paginationWrap');
-  const infoEl     = document.getElementById('pgInfo');
-  const btnsEl     = document.getElementById('pgBtns');
-  const totalPages = Math.ceil(total / PER_PAGE);
-  if(total===0 || totalPages<=1){ wrap.style.display='none'; return; }
+  const wrap=document.getElementById('paginationWrap');
+  const infoEl=document.getElementById('pgInfo');
+  const btnsEl=document.getElementById('pgBtns');
+  const totalPages=Math.ceil(total/PER_PAGE);
+  if(total===0||totalPages<=1){wrap.style.display='none';return;}
   wrap.style.display='flex';
   const start=(currentPage-1)*PER_PAGE+1;
   const end=Math.min(currentPage*PER_PAGE,total);
   infoEl.innerHTML=`Menampilkan ${start}–${end} dari ${total} insiden`;
-  const delta=2, range=[];
-  for(let p=1;p<=totalPages;p++){
-    if(p===1||p===totalPages||(p>=currentPage-delta&&p<=currentPage+delta)) range.push(p);
-  }
+  const delta=2,range=[];
+  for(let p=1;p<=totalPages;p++){if(p===1||p===totalPages||(p>=currentPage-delta&&p<=currentPage+delta))range.push(p);}
   let html=`<button class="pg-btn" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}><i class="fas fa-chevron-left"></i></button>`;
   let prev=0;
   for(const p of range){
@@ -332,11 +338,11 @@ function goPage(p) {
 
 function applyFilters() {
   currentPage=1;
-  const q =document.getElementById('searchInput').value.toLowerCase();
+  const q=document.getElementById('searchInput').value.toLowerCase();
   const st=document.getElementById('filterStatus').value.toLowerCase();
   const pr=document.getElementById('filterPriority').value.toLowerCase();
   filteredIncidents=allIncidents.filter(i=>{
-    const mQ =!q ||(i.title||'').toLowerCase().includes(q)||(i.category||'').toLowerCase().includes(q);
+    const mQ=!q||(i.title||'').toLowerCase().includes(q)||(i.category||'').toLowerCase().includes(q);
     const mSt=!st||(i.status||'').toLowerCase()===st||((i.status||'').toLowerCase()==='in_progress'&&st==='progress');
     const mPr=!pr||(i.priority||'').toLowerCase()===pr;
     return mQ&&mSt&&mPr;
@@ -353,20 +359,20 @@ function renderTable(inc) {
     document.getElementById('paginationWrap').style.display='none';
     return;
   }
-  const startIdx =(currentPage-1)*PER_PAGE;
+  const startIdx=(currentPage-1)*PER_PAGE;
   const pageSlice=inc.slice(startIdx,startIdx+PER_PAGE);
   tbody.innerHTML=pageSlice.map((x,i)=>`
     <tr style="animation-delay:${i*.04}s">
       <td class="td-no">${startIdx+i+1}</td>
-      <td style="font-weight:700;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${x.title||''}">${x.title||'–'}</td>
+      <td style="font-weight:700;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#0f172a;" title="${x.title||''}">${x.title||'–'}</td>
       <td><span class="cat-tag">${x.category||x.type||'–'}</span></td>
       <td>${getPriorityBadge(x.priority)}</td>
       <td>${getStatusPill(x.status)}</td>
-      <td style="color:var(--gray-500);font-size:12.5px;">${formatDate(x.created_at)}</td>
+      <td style="color:#334155;font-size:12.5px;font-weight:600;">${formatDate(x.created_at)}</td>
       <td>
         <div class="reporter-wrap">
           <div class="reporter-ava">${(x.reporter_name||x.reporter||'?').charAt(0).toUpperCase()}</div>
-          <span style="font-size:13px;font-weight:600;color:var(--gray-700);">${x.reporter_name||x.reporter||'–'}</span>
+          <span style="font-size:13px;font-weight:600;color:#1e293b;">${x.reporter_name||x.reporter||'–'}</span>
         </div>
       </td>
       <td><a class="btn-detail" href="incident-detail.html?id=${x.id}"><i class="fas fa-eye"></i> Detail</a></td>
@@ -391,7 +397,7 @@ async function loadIncidents() {
 }
 
 async function loadNotifications(){
-  const token=localStorage.getItem('token'); if(!token) return;
+  const token=localStorage.getItem('token');if(!token)return;
   try{
     const res=await fetch(`${API_BASE}/notifications`,{headers:{'Authorization':`Bearer ${token}`}});
     const data=await res.json();
@@ -400,8 +406,8 @@ async function loadNotifications(){
     const badge=document.getElementById('notifBadge');
     if(badge){badge.textContent=unread;badge.style.display=unread>0?'flex':'none';}
     const list=document.getElementById('notifList');
-    if(!list) return;
-    if(!notifs.length){list.innerHTML='<div style="padding:24px;text-align:center;color:var(--gray-400);font-size:13px;">Tidak ada notifikasi</div>';return;}
+    if(!list)return;
+    if(!notifs.length){list.innerHTML='<div style="padding:24px;text-align:center;color:#64748b;font-size:13px;">Tidak ada notifikasi</div>';return;}
     list.innerHTML=notifs.map(n=>`
       <div class="ni ${n.is_read?'':'unread'} ${n.incident_id?'has-incident':''}"
            onclick="handleNotificationClick(${n.id}, ${n.incident_id!=null?n.incident_id:'null'})">
@@ -409,29 +415,17 @@ async function loadNotifications(){
         <div class="ni-msg">${n.message}</div>
         <div class="ni-time">${new Date(n.created_at).toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})}</div>
         <div class="ni-arrow">
-          ${n.incident_id
-            ? '<i class="fas fa-arrow-right"></i> Lihat detail insiden'
-            : '<i class="fas fa-list"></i> Lihat daftar insiden'
-          }
+          ${n.incident_id?'<i class="fas fa-arrow-right"></i> Lihat detail insiden':'<i class="fas fa-list"></i> Lihat daftar insiden'}
         </div>
       </div>`).join('');
   }catch(e){console.error(e);}
 }
 
-//  navigasi ke detail insiden atau daftar insiden
 async function handleNotificationClick(notificationId, incidentId) {
   const token=localStorage.getItem('token');
-  if(token){
-    await fetch(`${API_BASE}/notifications/${notificationId}/read`,{
-      method:'PUT',
-      headers:{'Authorization':`Bearer ${token}`}
-    });
-  }
-  if(incidentId){
-    window.location.href=`incident-detail.html?id=${incidentId}`;
-  } else {
-    window.location.href=`incidents.html`;
-  }
+  if(token){ await fetch(`${API_BASE}/notifications/${notificationId}/read`,{method:'PUT',headers:{'Authorization':`Bearer ${token}`}}); }
+  if(incidentId){ window.location.href=`incident-detail.html?id=${incidentId}`; }
+  else { window.location.href=`incidents.html`; }
 }
 
 function toggleNotifications(){

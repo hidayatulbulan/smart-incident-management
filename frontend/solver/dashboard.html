@@ -135,11 +135,11 @@
       box-shadow: 0 4px 10px rgba(230,57,70,.3);
       flex-shrink:0;
     }
-    .sb-brand { font-size:15px; font-weight:800; color:var(--gray-900); }
+    .sb-brand { font-size:15px; font-weight:800; color:#0f172a; letter-spacing:-.2px; }
     .sb-brand span { color: var(--red); }
     .sb-section {
       font-size: 9.5px; font-weight: 700;
-      color: var(--gray-400); text-transform: uppercase;
+      color: #94a3b8; text-transform: uppercase;
       letter-spacing: 1.3px; padding: 0 10px;
       margin: 18px 0 6px;
     }
@@ -148,13 +148,13 @@
       padding: 10px 12px;
       border-radius: var(--rsm);
       font-size: 13px; font-weight: 600;
-      color: var(--gray-500);
+      color: #1e293b;
       text-decoration: none;
       transition: all .2s;
       position: relative;
       margin-bottom: 2px;
     }
-    .nav-a i { width:16px; text-align:center; font-size:13px; }
+    .nav-a i { width:16px; text-align:center; font-size:13px; color:inherit; }
     .nav-a:hover { background: var(--red-50); color: var(--red); }
     .nav-a.active {
       background: linear-gradient(135deg, var(--red), #f05060);
@@ -170,23 +170,9 @@
     }
     .sb-spacer { flex:1; }
     .sb-divider { height:1px; background:var(--gray-100); margin:12px 0; }
-    .sb-user {
-      display:flex; align-items:center; gap:9px;
-      padding:9px 12px; border-radius:var(--rsm);
-      margin-bottom:2px;
-    }
-    .sb-ava {
-      width:32px; height:32px; border-radius:50%;
-      background: linear-gradient(135deg, var(--red-light), var(--red));
-      display:flex; align-items:center; justify-content:center;
-      font-size:13px; font-weight:800; color:#fff; flex-shrink:0;
-      box-shadow: 0 3px 8px rgba(230,57,70,.28);
-    }
-    .sb-uname { font-size:12.5px; font-weight:700; color:var(--gray-900); }
-    .sb-urole { font-size:10.5px; color:var(--gray-400); font-weight:500; }
     .sb-logout {
       display:flex; align-items:center; gap:10px;
-      padding:10px 12px; color:var(--gray-400);
+      padding:10px 12px; color:#374151;
       font-size:13px; font-weight:600;
       cursor:pointer; border:none; background:none;
       font-family:inherit; border-radius:var(--rsm);
@@ -209,11 +195,11 @@
     }
     .tb-left h1 {
       font-size: 22px; font-weight: 800;
-      color: var(--gray-900); letter-spacing: -.4px;
+      color: #0f172a; letter-spacing: -.4px;
     }
     .tb-left h1 span { color: var(--red); }
     .tb-left p {
-      font-size: 12px; color: var(--gray-400);
+      font-size: 12px; color: #475569;
       margin-top: 4px; font-weight: 500;
       display: flex; align-items: center; gap: 5px;
     }
@@ -227,13 +213,13 @@
       box-shadow: var(--shadow-sm);
     }
     .srch:focus-within { border-color:var(--red-light); }
-    .srch i { color:var(--gray-400); font-size:13px; }
+    .srch i { color:#64748b; font-size:13px; }
     .srch input {
       border:none; outline:none;
       font-size:13px; font-family:inherit;
-      color:var(--gray-900); background:transparent; flex:1;
+      color:#0f172a; background:transparent; flex:1;
     }
-    .srch input::placeholder { color:var(--gray-400); }
+    .srch input::placeholder { color:#64748b; }
     .notif-wrap { position:relative; }
     .notif-btn {
       width:38px; height:38px;
@@ -244,7 +230,7 @@
       box-shadow: var(--shadow-sm);
     }
     .notif-btn:hover { border-color:var(--red-light); background:var(--red-50); }
-    .notif-btn i { font-size:15px; color:var(--gray-500); }
+    .notif-btn i { font-size:15px; color:#475569; }
     #notifBadge {
       position:absolute; top:-5px; right:-5px;
       background:var(--red); color:#fff;
@@ -274,22 +260,26 @@
     .ni-title { font-size:13px; font-weight:700; color:var(--gray-900); margin-bottom:2px; }
     .ni-msg   { font-size:12px; color:var(--gray-500); line-height:1.4; }
     .ni-time  { font-size:11px; color:var(--gray-400); margin-top:3px; }
+    .ni-arrow { font-size:10px; color:#94a3b8; margin-top:4px; display:flex; align-items:center; gap:4px; font-weight:600; cursor:pointer; }
+    .ni-arrow i { font-size:9px; }
+    .ni.has-incident .ni-arrow { color:var(--red-light); }
+    .ni.has-incident:hover { background:var(--red-50); }
+
+    /* ── uchip: nama saja tanpa chevron ── */
     .uchip {
       display:flex; align-items:center; gap:8px;
-      padding:6px 13px 6px 7px;
+      padding:6px 14px 6px 8px;
       background:var(--white); border:1.5px solid var(--gray-200);
-      border-radius:11px; cursor:pointer; transition:all .2s;
+      border-radius:11px;
       box-shadow: var(--shadow-sm);
     }
-    .uchip:hover { border-color:var(--red-light); }
     .uchip-ava {
       width:27px; height:27px; border-radius:50%;
       background:linear-gradient(135deg,var(--red),var(--red-dark));
       display:flex; align-items:center; justify-content:center;
       font-size:11px; font-weight:800; color:#fff;
     }
-    .uchip-name { font-size:13px; font-weight:700; color:var(--gray-800); }
-    .uchip i { font-size:10px; color:var(--gray-400); }
+    .uchip-name { font-size:13px; font-weight:700; color:#0f172a; }
 
     /* ════ CONTENT ════ */
     .content {
@@ -340,7 +330,7 @@
     .sc-label {
       display: flex; align-items: center; gap: 8px;
       font-size: 11px; font-weight: 700;
-      color: rgba(255,255,255,.82);
+      color: rgba(255,255,255,.95);
       text-transform: uppercase; letter-spacing: .6px;
     }
     .sc-icon {
@@ -360,7 +350,7 @@
     .sc:nth-child(3) .sc-num { animation-delay:.34s }
     .sc:nth-child(4) .sc-num { animation-delay:.42s }
     .sc-foot {
-      font-size: 11px; color: rgba(255,255,255,.60);
+      font-size: 11px; color: rgba(255,255,255,.85);
       font-weight: 600; display:flex; align-items:center; gap:5px;
     }
     .sc-foot i { font-size: 10px; }
@@ -379,8 +369,8 @@
       padding: 20px 24px 16px;
       border-bottom: 1.5px solid var(--gray-100);
     }
-    .panel-title { font-size: 16px; font-weight: 800; color: var(--gray-900); }
-    .panel-sub   { font-size: 12px; color: var(--gray-400); font-weight: 500; margin-top:2px; }
+    .panel-title { font-size: 16px; font-weight: 800; color: #0f172a; }
+    .panel-sub   { font-size: 12px; color: #475569; font-weight: 500; margin-top:2px; }
     .panel-badge {
       background: var(--red-50); color: var(--red);
       border: 1px solid var(--red-100);
@@ -391,7 +381,7 @@
     thead th {
       padding: 12px 20px 11px;
       font-size: 11px; font-weight: 700;
-      color: var(--gray-400); text-align:left;
+      color: #334155; text-align:left;
       text-transform:uppercase; letter-spacing:.5px;
       border-bottom: 1.5px solid var(--gray-100);
       white-space:nowrap;
@@ -404,19 +394,17 @@
     tbody td {
       padding: 13px 20px;
       font-size: 13px; font-weight: 600;
-      color: var(--gray-800);
+      color: #0f172a;
       border-bottom: 1px solid var(--gray-50);
       vertical-align: middle;
     }
     tbody tr:last-child td { border-bottom: none; }
 
-    /* Badges */
     .badge { display:inline-flex; align-items:center; gap:3px; padding:3px 10px; border-radius:20px; font-size:11.5px; font-weight:700; }
     .b-high   { background:#fdecea; color:#e05b5b; }
     .b-medium { background:#fff3e0; color:var(--amber); }
     .b-low    { background:var(--green-100); color:var(--green); }
 
-    /* Status pills */
     .sp { display:inline-flex; align-items:center; gap:5px; padding:4px 10px; border-radius:20px; font-size:11.5px; font-weight:700; }
     .sp::before { content:''; width:6px; height:6px; border-radius:50%; flex-shrink:0; }
     .sp-open        { background:var(--blue-50);   color:var(--blue); }
@@ -426,14 +414,12 @@
     .sp-closed      { background:var(--green-50); color:var(--green); }
     .sp-closed::before { background:var(--green); }
 
-    /* SLA chip */
     .sla { display:inline-flex; align-items:center; gap:4px; padding:3px 9px; border-radius:8px; font-size:10.5px; font-weight:700; }
     .sla-ok   { background:var(--green-50); color:var(--green); border:1px solid var(--green-100); }
     .sla-warn { background:var(--amber-50); color:var(--amber); border:1px solid var(--amber-100); }
     .sla-over { background:var(--red-50);   color:var(--red);   border:1px solid var(--red-100); }
-    .sla-none { background:var(--gray-100); color:var(--gray-500); border:1px solid var(--gray-200); }
+    .sla-none { background:var(--gray-100); color:var(--gray-700); border:1px solid var(--gray-200); }
 
-    /* Action buttons */
     .btn {
       display:inline-flex; align-items:center; gap:5px;
       padding:6px 13px; border:none; border-radius:9px;
@@ -506,6 +492,22 @@
     .toast-err { background:linear-gradient(135deg,var(--red),var(--red-dark)); }
     .toast i { font-size:15px; }
 
+
+    /* ── See All Link ── */
+    .see-all-wrap {
+      padding: 16px 24px;
+      text-align: center;
+      border-top: 1px solid var(--gray-100);
+    }
+    .see-all-link {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 13px; font-weight: 700;
+      color: var(--red); text-decoration: none;
+      transition: gap .2s, opacity .2s;
+    }
+    .see-all-link:hover { gap: 10px; opacity: .8; }
+    .see-all-link i { font-size: 11px; }
+
     @media(max-width:900px){ .stat-grid{ grid-template-columns:1fr 1fr; } }
     @media(max-width:768px){ .sidebar{display:none;} .main{margin-left:0;} .content{padding:16px;} .topbar{padding:16px 16px 0;} }
   </style>
@@ -536,13 +538,8 @@
   <div class="sb-spacer"></div>
   <div class="sb-divider"></div>
 
-  <div class="sb-user">
-    <div class="sb-ava" id="sidebarAva">S</div>
-    <div>
-      <div class="sb-uname" id="sidebarName">–</div>
-      <div class="sb-urole">Solver</div>
-    </div>
-  </div>
+  <!-- sb-user DIHAPUS (icon profil di sidebar) -->
+
   <button class="sb-logout" onclick="logout()">
     <i class="fas fa-sign-out-alt"></i> Keluar
   </button>
@@ -575,10 +572,10 @@
           <div class="notif-list" id="notifList"></div>
         </div>
       </div>
+      <!-- uchip: dropdown chevron DIHAPUS -->
       <div class="uchip">
         <div class="uchip-ava" id="userAvatar">S</div>
         <span class="uchip-name" id="userName">Solver</span>
-        <i class="fas fa-chevron-down"></i>
       </div>
     </div>
   </div>
@@ -599,9 +596,9 @@
       <div class="sc sc-2">
         <div class="sc-label">
           <span class="sc-icon"><i class="fas fa-folder-open"></i></span>
-          Pending
+          Open
         </div>
-        <div class="sc-num" id="pending">0</div>
+        <div class="sc-num" id="openCount">0</div>
         <div class="sc-foot"><i class="fas fa-calendar-alt"></i> bulan ini</div>
       </div>
       <div class="sc sc-3">
@@ -649,6 +646,11 @@
           </td></tr>
         </tbody>
       </table>
+      <div class="see-all-wrap">
+        <a href="incidents.html" class="see-all-link">
+          <i class="fas fa-arrow-right"></i> Lihat Semua Insiden
+        </a>
+      </div>
     </div>
 
   </div>
@@ -671,7 +673,7 @@
       <div class="fg">
         <label for="selesaikanModalNote">Catatan Penyelesaian <span>*</span></label>
         <textarea id="selesaikanModalNote"
-          placeholder="Contoh: Kabel jaringan sudah diganti. Koneksi kembali normal pukul 14.30..."></textarea>
+          placeholder="Jelaskan langkah penyelesaian insiden..."></textarea>
       </div>
     </div>
     <div class="modal-ftr">
@@ -689,7 +691,6 @@
 <script>
 const API_BASE = 'http://localhost:3000/api';
 
-/* ── Toast ── */
 function showToast(msg, type = 'ok') {
   const t = document.createElement('div');
   t.className = `toast toast-${type}`;
@@ -702,7 +703,6 @@ function showToast(msg, type = 'ok') {
   }, 3200);
 }
 
-/* ── Badge helpers ── */
 function getStatusPill(status) {
   const s = (status || 'open').toLowerCase();
   const map = {
@@ -740,14 +740,12 @@ function formatDate(ds) {
   return new Date(ds).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
 }
 
-/* ── Auth ── */
 function logout() {
   localStorage.removeItem('token');
   localStorage.removeItem('user');
   window.location.href = '../auth/login.html';
 }
 
-/* ── Search ── */
 function filterIncidentsTable(q) {
   document.querySelectorAll('#incidentsTableBody tr').forEach(r => {
     if (r.querySelector('.empty')) return;
@@ -757,34 +755,21 @@ function filterIncidentsTable(q) {
   });
 }
 
-/* ── Tangani ── FIXED: URL & status diperbaiki ── */
 async function tanganiInsiden(id) {
   try {
     const token = localStorage.getItem('token');
     if (!token) { window.location.href = '../auth/login.html'; return; }
-
-    const res = await fetch(`${API_BASE}/incidents/${id}/status`, {  // ✅ URL benar
+    const res = await fetch(`${API_BASE}/incidents/${id}/status`, {
       method: 'PUT',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ status: 'in_progress' })  // ✅ status benar
+      headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: 'in_progress' })
     });
-
-    if (!res.ok) {
-      const e = await res.json();
-      showToast(e.message || 'Gagal memperbarui status', 'err');
-      return;
-    }
+    if (!res.ok) { const e = await res.json(); showToast(e.message || 'Gagal memperbarui status', 'err'); return; }
     showToast('Status berhasil diperbarui ke In Progress!');
     loadDashboard();
-  } catch (e) {
-    showToast(e.message || 'Terjadi kesalahan', 'err');
-  }
+  } catch (e) { showToast(e.message || 'Terjadi kesalahan', 'err'); }
 }
 
-/* ── Modal Selesaikan ── */
 let _modalId = null;
 
 function openSelesaikanModal(id) {
@@ -803,34 +788,22 @@ function closeSelesaikanModal() {
   _modalId = null;
 }
 
-/* ── Submit Selesai ── FIXED: URL & endpoint diperbaiki ── */
 async function submitSelesai() {
   const note = document.getElementById('selesaikanModalNote').value.trim();
   const errEl = document.getElementById('selesaikanModalError');
   const btn = document.getElementById('selesaikanModalSubmit');
-
-  if (!note) {
-    errEl.textContent = 'Catatan penyelesaian tidak boleh kosong';
-    errEl.classList.add('show');
-    return;
-  }
+  if (!note) { errEl.textContent = 'Catatan penyelesaian tidak boleh kosong'; errEl.classList.add('show'); return; }
   errEl.classList.remove('show');
   btn.disabled = true;
   btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
-
   try {
     const token = localStorage.getItem('token');
     if (!token) { window.location.href = '../auth/login.html'; return; }
-
-    const res = await fetch(`${API_BASE}/incidents/${_modalId}/resolve`, {  // ✅ pakai /resolve
+    const res = await fetch(`${API_BASE}/incidents/${_modalId}/resolve`, {
       method: 'PUT',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ solver_note: note, status: 'closed' })  // ✅ field benar
+      headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ solver_note: note, status: 'closed' })
     });
-
     if (!res.ok) {
       const e = await res.json();
       errEl.textContent = e.message || 'Gagal menyelesaikan insiden';
@@ -839,7 +812,6 @@ async function submitSelesai() {
       btn.innerHTML = '<i class="fas fa-check"></i> Selesaikan';
       return;
     }
-
     closeSelesaikanModal();
     showToast('Insiden diselesaikan! AI sedang membuat rekomendasi...');
     loadDashboard();
@@ -851,7 +823,6 @@ async function submitSelesai() {
   }
 }
 
-/* ── Load Dashboard ── */
 async function loadDashboard() {
   const token = localStorage.getItem('token');
   if (!token) { window.location.href = '../auth/login.html'; return; }
@@ -859,8 +830,7 @@ async function loadDashboard() {
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   if (user.role?.toLowerCase() !== 'solver') {
     window.location.href = user.role?.toLowerCase() === 'admin'
-      ? '../admin/dashboard.html'
-      : '../user/dashboard.html';
+      ? '../admin/dashboard.html' : '../user/dashboard.html';
     return;
   }
 
@@ -868,8 +838,7 @@ async function loadDashboard() {
     document.getElementById('greetingName').textContent = user.name;
     document.getElementById('userName').textContent = user.name;
     document.getElementById('userAvatar').textContent = user.name.charAt(0).toUpperCase();
-    document.getElementById('sidebarAva').textContent = user.name.charAt(0).toUpperCase();
-    document.getElementById('sidebarName').textContent = user.name;
+    // sidebarAva & sidebarName tidak lagi ada di DOM, skip
   }
 
   document.getElementById('greetingDate').textContent =
@@ -886,12 +855,12 @@ async function loadDashboard() {
     const inc = data.incidents || data.data || [];
 
     const total = inc.length;
-    const pend  = inc.filter(i => i.status?.toLowerCase() === 'open').length;
-    const prog  = inc.filter(i => ['progress', 'in_progress'].includes(i.status?.toLowerCase())).length;
+    const openCount = inc.filter(i => i.status?.toLowerCase() === 'open').length;
+    const prog  = inc.filter(i => ['progress','in_progress'].includes(i.status?.toLowerCase())).length;
     const done  = inc.filter(i => i.status?.toLowerCase() === 'closed').length;
 
     document.getElementById('totalAssigned').textContent = total;
-    document.getElementById('pending').textContent = pend;
+    document.getElementById('openCount').textContent = openCount;
     document.getElementById('onProgress').textContent = prog;
     document.getElementById('selesai').textContent = done;
     document.getElementById('panelCount').textContent = `${total} insiden`;
@@ -902,46 +871,46 @@ async function loadDashboard() {
       return;
     }
 
-    tbody.innerHTML = inc.map((x, i) => {
-      const st = (x.status || 'open').toLowerCase();
-      // Tombol Tangani: tampil jika status masih open
-      const showT = st === 'open';
-      // Tombol Selesaikan: tampil jika belum closed
-      const showS = st !== 'closed';
+    // Filter hanya open & in_progress, max 6
+    const filtered = inc
+      .filter(x => ['open','progress','in_progress'].includes((x.status || '').toLowerCase()))
+      .slice(0, 6);
 
-      return `<tr style="animation-delay:${i * .04}s">
-        <td style="font-weight:700;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"
-            title="${x.title || ''}">${x.title || '–'}</td>
-        <td><span style="background:var(--gray-100);color:var(--gray-600);padding:3px 10px;border-radius:8px;font-size:12px;font-weight:700;">${x.category || x.type || '–'}</span></td>
-        <td>${getPriorityBadge(x.priority)}</td>
-        <td>${getStatusPill(x.status)}</td>
-        <td>${getSLAChip(x)}</td>
-        <td style="color:var(--gray-500);font-size:12.5px;">${formatDate(x.created_at)}</td>
-        <td style="white-space:nowrap;">
-          ${showT ? `<button class="btn btn-tangani" onclick="tanganiInsiden(${x.id})"><i class="fas fa-play"></i> Tangani</button>` : ''}
-          ${showS ? `<button class="btn btn-selesai" onclick="openSelesaikanModal(${x.id})"><i class="fas fa-check"></i> Selesaikan</button>` : ''}
-        </td>
-      </tr>`;
-    }).join('');
+    if (!filtered.length) {
+      tbody.innerHTML = '<tr><td colspan="7" class="empty"><i class="fas fa-inbox"></i>Tidak ada insiden aktif saat ini.</td></tr>';
+    } else {
+      tbody.innerHTML = filtered.map((x, i) => {
+        const st = (x.status || 'open').toLowerCase();
+        const showT = st === 'open';
+        const showS = st !== 'closed';
+        return `<tr style="animation-delay:${i * .04}s">
+          <td style="font-weight:700;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${x.title || ''}">${x.title || '–'}</td>
+          <td><span style="background:#e2e8f0;color:#1e293b;padding:3px 10px;border-radius:8px;font-size:12px;font-weight:700;">${x.category || x.type || '–'}</span></td>
+          <td>${getPriorityBadge(x.priority)}</td>
+          <td>${getStatusPill(x.status)}</td>
+          <td>${getSLAChip(x)}</td>
+          <td style="color:#334155;font-size:12.5px;font-weight:600;">${formatDate(x.created_at)}</td>
+          <td style="white-space:nowrap;">
+            ${showT ? `<button class="btn btn-tangani" onclick="tanganiInsiden(${x.id})"><i class="fas fa-play"></i> Tangani</button>` : ''}
+            ${showS ? `<button class="btn btn-selesai" onclick="openSelesaikanModal(${x.id})"><i class="fas fa-check"></i> Selesaikan</button>` : ''}
+          </td>
+        </tr>`;
+      }).join('');
+    }
 
     const si = document.getElementById('searchInput');
     if (si && !si._bound) {
       si._bound = true;
       si.addEventListener('input', function () { filterIncidentsTable(this.value.toLowerCase()); });
     }
-  } catch (e) {
-    console.error('loadDashboard error:', e);
-  }
+  } catch (e) { console.error('loadDashboard error:', e); }
 }
 
-/* ── Notifications ── */
 async function loadNotifications() {
   const token = localStorage.getItem('token');
   if (!token) return;
   try {
-    const res = await fetch(`${API_BASE}/notifications`, {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
+    const res = await fetch(`${API_BASE}/notifications`, { headers: { 'Authorization': `Bearer ${token}` } });
     const data = await res.json();
     const notifs = data.notifications || [];
     const unread = notifs.filter(n => !n.is_read).length;
@@ -954,10 +923,17 @@ async function loadNotifications() {
       return;
     }
     list.innerHTML = notifs.map(n => `
-      <div class="ni ${n.is_read ? '' : 'unread'}" onclick="markRead(${n.id})">
+      <div class="ni ${n.is_read ? '' : 'unread'} ${n.incident_id ? 'has-incident' : ''}"
+           onclick="handleNotificationClick(${n.id}, ${n.incident_id != null ? n.incident_id : 'null'})">
         <div class="ni-title">${n.title}</div>
         <div class="ni-msg">${n.message}</div>
-        <div class="ni-time">${new Date(n.created_at).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
+        <div class="ni-time">${new Date(n.created_at).toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})}</div>
+        <div class="ni-arrow">
+          ${n.incident_id
+            ? '<i class="fas fa-arrow-right"></i> Lihat detail insiden'
+            : '<i class="fas fa-list"></i> Lihat daftar insiden'
+          }
+        </div>
       </div>`).join('');
   } catch (e) { console.error('loadNotifications error:', e); }
 }
@@ -971,23 +947,31 @@ function toggleNotifications() {
 
 async function markRead(id) {
   const token = localStorage.getItem('token');
-  await fetch(`${API_BASE}/notifications/${id}/read`, {
-    method: 'PUT',
-    headers: { 'Authorization': `Bearer ${token}` }
-  });
+  await fetch(`${API_BASE}/notifications/${id}/read`, { method:'PUT', headers:{'Authorization':`Bearer ${token}`} });
   loadNotifications();
 }
 
 async function markAllRead() {
   const token = localStorage.getItem('token');
-  await fetch(`${API_BASE}/notifications/read-all`, {
-    method: 'PUT',
-    headers: { 'Authorization': `Bearer ${token}` }
-  });
+  await fetch(`${API_BASE}/notifications/read-all`, { method:'PUT', headers:{'Authorization':`Bearer ${token}`} });
   loadNotifications();
 }
 
-/* ── Init ── */
+async function handleNotificationClick(notificationId, incidentId) {
+  const token = localStorage.getItem('token');
+  if (token) {
+    await fetch(`${API_BASE}/notifications/${notificationId}/read`, {
+      method: 'PUT',
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+  }
+  if (incidentId) {
+    window.location.href = `incident-detail.html?id=${incidentId}`;
+  } else {
+    window.location.href = `incidents.html`;
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const token = localStorage.getItem('token');
   if (!token) { window.location.href = '../auth/login.html'; return; }
@@ -997,8 +981,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (user.role?.toLowerCase() !== 'solver') {
     window.location.href = user.role?.toLowerCase() === 'admin'
-      ? '../admin/dashboard.html'
-      : '../user/dashboard.html';
+      ? '../admin/dashboard.html' : '../user/dashboard.html';
     return;
   }
 
@@ -1007,9 +990,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.addEventListener('click', e => {
     const dd = document.getElementById('notifDropdown');
-    if (dd && !dd.contains(e.target) && !e.target.closest('.notif-wrap')) {
-      dd.style.display = 'none';
-    }
+    if (dd && !dd.contains(e.target) && !e.target.closest('.notif-wrap')) dd.style.display = 'none';
   });
 
   loadDashboard();

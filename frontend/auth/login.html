@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Smart Incident Management</title>
     <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
@@ -14,17 +15,43 @@
 
     <div class="glass-card">
 
+        <!-- ─── LEFT PANEL ─── -->
         <div class="left-panel">
+            <div class="panel-grid"></div>
+            <div class="ring ring-1"></div>
+            <div class="ring ring-2"></div>
+
             <div class="left-content">
-                <h2>Cepat, Efisien, dan Produktif</h2>
+                <div class="left-logo">
+                    <img src="../assets/images/logo.png" alt="SmartIncident Logo" class="left-logo-img">
+                    <span class="left-logo-name">Smart<span>Incident</span></span>
+                </div>
+
+                <h2>Cepat, Efisien,<br>dan <em>Produktif</em></h2>
                 <p>Manajemen Insiden Cerdas membantu Anda menyederhanakan pelaporan, melacak masalah secara real-time, dan menyelesaikan insiden dengan presisi.</p>
+
+                <div class="left-stats">
+                    <div class="left-stat">
+                        <div class="left-stat-num">98<sup>%</sup></div>
+                        <div class="left-stat-label">Resolusi</div>
+                    </div>
+                    <div class="left-stat">
+                        <div class="left-stat-num">4.2<sup>m</sup></div>
+                        <div class="left-stat-label">Respons</div>
+                    </div>
+                    <div class="left-stat">
+                        <div class="left-stat-num">24<sup>/7</sup></div>
+                        <div class="left-stat-label">Monitoring</div>
+                    </div>
+                </div>
             </div>
         </div>
 
+        <!-- ─── RIGHT PANEL ─── -->
         <div class="right-panel">
             <div class="logo-header">
-                <h1>Smart Incident</h1>
-                <p>Selamat datang kembali! Silakan masuk.</p>
+                <h1>Selamat <span>Datang</span></h1>
+                <p>Silakan masuk untuk melanjutkan.</p>
             </div>
 
             <div id="error" class="error-message"></div>
@@ -64,19 +91,6 @@
                 </button>
             </form>
 
-            <div class="divider"><span>Atau lanjutkan dengan</span></div>
-
-            <div class="social-buttons">
-                <button class="btn-social" type="button" onclick="showMockMessage('Google')">
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g transform="matrix(1, 0, 0, 1, 27.009001, -39.238998)"><path fill="#4285F4" d="M -3.264 51.509 C -3.264 50.719 -3.334 49.969 -3.454 49.239 L -14.754 49.239 L -14.754 53.749 L -8.284 53.749 C -8.574 55.229 -9.424 56.479 -10.684 57.329 L -10.684 60.329 L -6.824 60.329 C -4.564 58.239 -3.264 55.159 -3.264 51.509 Z"/><path fill="#34A853" d="M -14.754 63.239 C -11.514 63.239 -8.804 62.159 -6.824 60.329 L -10.684 57.329 C -11.764 58.049 -13.134 58.489 -14.754 58.489 C -17.884 58.489 -20.534 56.379 -21.484 53.529 L -25.464 53.529 L -25.464 56.619 C -23.494 60.539 -19.444 63.239 -14.754 63.239 Z"/><path fill="#FBBC05" d="M -21.484 53.529 C -21.734 52.809 -21.864 52.039 -21.864 51.239 C -21.864 50.439 -21.724 49.669 -21.484 48.949 L -21.484 45.859 L -25.464 45.859 C -26.284 47.479 -26.754 49.299 -26.754 51.239 C -26.754 53.179 -26.284 54.999 -25.464 56.619 L -21.484 53.529 Z"/><path fill="#EA4335" d="M -14.754 43.989 C -12.984 43.989 -11.404 44.599 -10.154 45.789 L -6.734 42.369 C -8.804 40.429 -11.514 39.239 -14.754 39.239 C -19.444 39.239 -23.494 41.939 -25.464 45.859 L -21.484 48.949 C -20.534 46.099 -17.884 43.989 -14.754 43.989 Z"/></g></svg>
-                    Google
-                </button>
-                <button class="btn-social" type="button" onclick="showMockMessage('Apple')">
-                    <svg viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
-                    Apple
-                </button>
-            </div>
-
             <p class="footer-text">Belum punya akun? <a href="signup.html">Daftar</a></p>
         </div>
     </div>
@@ -85,8 +99,8 @@
         const LOGIN_URL = 'http://localhost:3000/api/auth/login';
 
         function togglePassword() {
-            const input = document.getElementById('password');
-            const eyeIcon = document.getElementById('eyeIcon');
+            const input      = document.getElementById('password');
+            const eyeIcon    = document.getElementById('eyeIcon');
             const eyeOffIcon = document.getElementById('eyeOffIcon');
             if (input.type === 'password') {
                 input.type = 'text';
@@ -101,28 +115,24 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             const loginForm = document.getElementById('loginForm');
-            const errorDiv = document.getElementById('error');
-            const spinner = document.getElementById('spinner');
-            const btnText = document.querySelector('.btn-text');
-            const loginBtn = document.getElementById('loginBtn');
+            const errorDiv  = document.getElementById('error');
+            const spinner   = document.getElementById('spinner');
+            const btnText   = document.querySelector('.btn-text');
+            const loginBtn  = document.getElementById('loginBtn');
 
             if (!loginForm) return;
-
             loginForm.addEventListener('submit', handleLogin);
 
             async function handleLogin(e) {
                 e.preventDefault();
-
-                const email = document.getElementById('email').value.trim();
+                const email    = document.getElementById('email').value.trim();
                 const password = document.getElementById('password').value.trim();
 
                 if (!email || !password) {
-                    showError('Email dan kata sandi wajib diisi');
-                    return;
+                    showError('Email dan kata sandi wajib diisi'); return;
                 }
 
                 errorDiv.style.display = 'none';
-                errorDiv.textContent = '';
                 loginBtn.disabled = true;
                 spinner.style.display = 'block';
                 btnText.style.display = 'none';
@@ -135,44 +145,27 @@
                     });
 
                     let data;
-                    try {
-                        data = await response.json();
-                    } catch (jsonError) {
-                        throw new Error('Format respons tidak valid dari server');
-                    }
+                    try { data = await response.json(); }
+                    catch { throw new Error('Format respons tidak valid dari server'); }
 
-                    if (!response.ok) {
-                        throw new Error(data.message || data.error || `Login gagal (${response.status})`);
-                    }
-
-                    if (!data.token) {
-                        throw new Error(data.message || 'Token tidak diterima dari server');
-                    }
+                    if (!response.ok) throw new Error(data.message || data.error || `Login gagal (${response.status})`);
+                    if (!data.token) throw new Error(data.message || 'Token tidak diterima dari server');
 
                     localStorage.setItem('token', data.token);
-
-                    if (data.user) {
-                        localStorage.setItem('user', JSON.stringify(data.user));
-                    }
+                    if (data.user) localStorage.setItem('user', JSON.stringify(data.user));
 
                     let redirectUrl = '../user/dashboard.html';
-                    if (data.user && data.user.role?.toLowerCase() === 'admin') {
-                        redirectUrl = '../admin/dashboard.html';
-                    } else if (data.user && data.user.role?.toLowerCase() === 'solver') {
-                        redirectUrl = '../solver/dashboard.html';
-                    }
+                    if (data.user?.role?.toLowerCase() === 'admin')  redirectUrl = '../admin/dashboard.html';
+                    if (data.user?.role?.toLowerCase() === 'solver') redirectUrl = '../solver/dashboard.html';
 
                     window.location.href = redirectUrl;
 
                 } catch (error) {
-                    let errorMessage = 'Login gagal. Silakan coba lagi.';
                     if (error instanceof TypeError) {
-                        errorMessage = 'Gagal terhubung ke server. Pastikan server berjalan di http://localhost:3000';
-                        alert(errorMessage);
-                    } else if (error.message) {
-                        errorMessage = error.message;
+                        alert('Gagal terhubung ke server. Pastikan server berjalan di http://localhost:3000');
+                    } else {
+                        showError(error.message || 'Login gagal. Silakan coba lagi.');
                     }
-                    showError(errorMessage);
                 } finally {
                     loginBtn.disabled = false;
                     spinner.style.display = 'none';
@@ -185,14 +178,6 @@
                 errorDiv.style.display = 'block';
             }
         });
-
-        function showMockMessage(provider) {
-            const footer = document.querySelector('.footer-text');
-            footer.innerHTML = `<span style="color:#0052D4">${provider} login hanya tampilan.</span>`;
-            setTimeout(() => {
-                footer.innerHTML = 'Belum punya akun? <a href="signup.html">Daftar</a>';
-            }, 2000);
-        }
     </script>
 </body>
 </html>
