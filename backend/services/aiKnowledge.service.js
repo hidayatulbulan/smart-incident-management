@@ -27,7 +27,6 @@ const HIGH_PRIORITY_KEYWORDS = [
 // ─────────────────────────────────────────────────────────
 // NOISE WORDS — kata umum yang muncul di SEMUA kasus
 // Tidak boleh dipakai untuk menentukan relevansi
-// Contoh: "mengeluarkan" ada di deskripsi dispenser DAN di KB AC
 // ─────────────────────────────────────────────────────────
 const NOISE_WORDS = new Set([
   'mengeluarkan', 'mengalir', 'menyalakan', 'mematikan', 'membuka',
@@ -62,6 +61,32 @@ function tokenize(text) {
 }
 
 // ─────────────────────────────────────────────────────────
+// DEDUPLICATION KEYWORD
+// Menghapus duplikat, membuang typo/noise, dan membatasi jumlah
+// ─────────────────────────────────────────────────────────
+function deduplicateKeywords(keywords, maxCount = 10) {
+  if (!keywords) return null;
+
+  const seen = new Set();
+  const result = [];
+
+  const list = keywords
+    .split(/[,\s]+/)
+    .map(k => k.trim().toLowerCase())
+    .filter(k => k.length >= 2);
+
+  for (const kw of list) {
+    if (seen.has(kw)) continue;      
+    if (NOISE_WORDS.has(kw)) continue; 
+    seen.add(kw);
+    result.push(kw);
+    if (result.length >= maxCount) break;
+  }
+
+  return result.length > 0 ? result.join(',') : null;
+}
+
+// ─────────────────────────────────────────────────────────
 // SCORING KB
 // - Match di kolom `keywords` KB = bobot x2 (paling kuat)
 // - Match di kolom `problem` KB = bobot x1
@@ -85,7 +110,7 @@ function scoreKBCase(kb, tokens) {
     const isPriority = HIGH_PRIORITY_KEYWORDS.includes(token);
     const weight     = isPriority ? 10 : 1;
 
-    // Cek kolom keywords KB (exact match lebih kuat)
+    // Cek kolom keywords KB 
     const matchedKeyword = kbKeywordList.some(kw =>
       isShort ? kw === token : (kw.includes(token) || token.includes(kw))
     );
@@ -149,7 +174,7 @@ async function getRecommendation(description, category) {
         console.log(`[KB] id=${kb.id} "${(kb.problem||'').substring(0,40)}" score=${s}`);
         return { ...kb, _score: s };
       })
-      .filter(kb => kb._score >= 10)       // threshold: minimal 1 noun match di keywords
+      .filter(kb => kb._score >= 10)
       .sort((a, b) => b._score - a._score)
       .slice(0, 5);
 
@@ -198,11 +223,13 @@ async function processClosedIncident(incident, userId) {
       durationMinutes = Math.round((end - start) / 60000);
     }
 
-    // Keywords bersih: hanya noun spesifik, tanpa noise
-    const autoKeywords = tokenize(`${incident.title || ''} ${incident.description || ''}`)
+    // Keywords: ambil noun spesifik dari title + description,
+    // lalu deduplikasi agar tidak ada kata ganda
+    const rawKeywords = tokenize(`${incident.title || ''} ${incident.description || ''}`)
       .filter(w => HIGH_PRIORITY_KEYWORDS.includes(w) || w.length >= 5)
-      .slice(0, 10)
       .join(',');
+
+    const autoKeywords = deduplicateKeywords(rawKeywords, 10);
 
     const cat = normalizeCategory(incident.category || incident.type);
 
@@ -238,4 +265,5 @@ module.exports = {
   processClosedIncident,
   normalizeCategory,
   tokenize,
+  deduplicateKeywords,
 };
