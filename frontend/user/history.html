@@ -15,168 +15,102 @@
       --gray-500: #8e95a2; --gray-600: #6b7280; --gray-700: #4b5563;
       --gray-800: #374151; --gray-900: #1f2937;
       --shadow: 0 2px 16px rgba(0,0,0,0.06);
-      --radius: 18px; --rsm: 12px;
-      --sidebar: 235px;
+      --radius: 18px; --rsm: 12px; --sidebar: 235px;
     }
-
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--gray-50); color: var(--gray-900); min-height: 100vh; display: flex; overflow-x: hidden; }
-
     @keyframes slideInLeft { from{transform:translateX(-100%);opacity:0} to{transform:translateX(0);opacity:1} }
     @keyframes fadeInDown  { from{transform:translateY(-18px);opacity:0} to{transform:translateY(0);opacity:1} }
     @keyframes fadeInUp    { from{transform:translateY(22px);opacity:0} to{transform:translateY(0);opacity:1} }
     @keyframes rowIn       { from{opacity:0;transform:translateX(-6px)} to{opacity:1;transform:translateX(0)} }
     @keyframes toastIn     { from{transform:translateX(110%);opacity:0} to{transform:translateX(0);opacity:1} }
 
-    /* ===== SIDEBAR ===== */
-    .sidebar {
-      width: var(--sidebar); background: var(--white); padding: 24px 14px;
-      box-shadow: 2px 0 20px rgba(0,0,0,0.05); display: flex; flex-direction: column;
-      position: fixed; top: 0; left: 0; bottom: 0; z-index: 100;
-      border-right: 1px solid var(--red-100);
-      animation: slideInLeft 0.45s cubic-bezier(0.22,1,0.36,1);
-    }
-    .logo { display: flex; align-items: center; gap: 11px; margin-bottom: 32px; padding: 8px 10px; }
-    .logo-icon { width: 38px; height: 38px; background: linear-gradient(135deg,var(--red),var(--red-dark)); border-radius: 11px; display: flex; align-items: center; justify-content: center; color: white; font-size: 17px; box-shadow: 0 4px 12px rgba(230,57,70,.32); }
-    .logo-text { font-size: 15.5px; font-weight: 800; color: var(--gray-900); }
-    .logo-text span { color: var(--red); }
+    .sidebar { width:var(--sidebar); background:var(--white); padding:24px 14px; box-shadow:2px 0 20px rgba(0,0,0,0.05); display:flex; flex-direction:column; position:fixed; top:0; left:0; bottom:0; z-index:100; border-right:1px solid var(--red-100); animation:slideInLeft 0.45s cubic-bezier(0.22,1,0.36,1); }
+    .logo { display:flex; align-items:center; gap:11px; margin-bottom:32px; padding:8px 10px; }
+    .logo-icon { width:38px; height:38px; background:linear-gradient(135deg,var(--red),var(--red-dark)); border-radius:11px; display:flex; align-items:center; justify-content:center; color:white; font-size:17px; box-shadow:0 4px 12px rgba(230,57,70,.32); }
+    .logo-text { font-size:15.5px; font-weight:800; color:var(--gray-900); }
+    .logo-text span { color:var(--red); }
+    .nav-section-label { font-size:9.5px; font-weight:700; color:#94a3b8; text-transform:uppercase; letter-spacing:1.3px; padding:0 10px; margin-bottom:7px; }
+    .nav-menu { list-style:none; margin-bottom:10px; }
+    .nav-item-li { margin-bottom:2px; }
+    .nav-link { display:flex; align-items:center; gap:11px; padding:10px 13px; color:#1e293b; text-decoration:none; border-radius:var(--rsm); font-size:13px; font-weight:600; transition:all .2s; position:relative; }
+    .nav-link:hover { background:var(--red-50); color:var(--red); }
+    .nav-link.active { background:linear-gradient(135deg,var(--red),#f05a67); color:white; box-shadow:0 4px 14px rgba(230,57,70,.28); }
+    .nav-link.active::before { content:''; position:absolute; left:-14px; width:4px; height:22px; background:var(--red); border-radius:0 4px 4px 0; }
+    .nav-link i { width:17px; text-align:center; font-size:13px; }
+    .nav-link svg { width:16px; height:16px; flex-shrink:0; }
+    .sidebar-divider { height:1px; background:var(--gray-100); margin:14px 0; }
+    .sidebar-spacer { flex:1; }
+    .logout-btn { display:flex; align-items:center; gap:11px; padding:10px 13px; color:#374151; font-size:13px; font-weight:600; cursor:pointer; border-radius:var(--rsm); border:none; background:none; font-family:inherit; transition:all .2s; width:100%; }
+    .logout-btn:hover { background:#fff5f5; color:var(--red); }
 
-    .nav-section-label { font-size: 9.5px; font-weight: 700; color: var(--gray-400); text-transform: uppercase; letter-spacing: 1.3px; padding: 0 10px; margin-bottom: 7px; }
-    .nav-menu { list-style: none; margin-bottom: 10px; }
-    .nav-item-li { margin-bottom: 2px; }
-    .nav-link { display: flex; align-items: center; gap: 11px; padding: 10px 13px; color: var(--gray-500); text-decoration: none; border-radius: var(--rsm); font-size: 13px; font-weight: 600; transition: all .2s; position: relative; }
-    .nav-link:hover { background: var(--red-50); color: var(--red); }
-    .nav-link.active { background: linear-gradient(135deg,var(--red),#f05a67); color: white; box-shadow: 0 4px 14px rgba(230,57,70,.28); }
-    .nav-link.active::before { content: ''; position: absolute; left: -14px; width: 4px; height: 22px; background: var(--red); border-radius: 0 4px 4px 0; }
-    .nav-link i { width: 17px; text-align: center; font-size: 13px; }
-    .sidebar-divider { height: 1px; background: var(--gray-100); margin: 14px 0; }
+    .main { margin-left:var(--sidebar); flex:1; display:flex; flex-direction:column; min-height:100vh; }
+    .topbar { display:flex; align-items:center; justify-content:space-between; padding:26px 30px 0; animation:fadeInDown 0.5s cubic-bezier(0.22,1,0.36,1); }
+    .topbar-left h1 { font-size:22px; font-weight:800; color:var(--gray-900); letter-spacing:-0.5px; }
+    .topbar-left p  { font-size:12.5px; color:#64748b; margin-top:3px; font-weight:500; }
+    .topbar-right { display:flex; align-items:center; gap:12px; }
+    .search-bar { display:flex; align-items:center; gap:8px; background:white; border:1.5px solid var(--gray-200); border-radius:11px; padding:8px 14px; min-width:230px; transition:all .2s; }
+    .search-bar:focus-within { border-color:var(--red-light); box-shadow:0 0 0 3px rgba(230,57,70,.08); }
+    .search-bar i { color:#94a3b8; font-size:12px; }
+    .search-bar input { flex:1; border:none; outline:none; font-size:12.5px; font-family:inherit; color:var(--gray-900); background:transparent; }
+    .search-bar input::placeholder { color:#94a3b8; }
 
-    .sidebar-spacer { flex: 1; }
-    .sidebar-user { display: flex; align-items: center; gap: 10px; padding: 10px 13px; border-radius: var(--rsm); margin-bottom: 2px; }
-    .user-ava { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg,var(--red),var(--red-dark)); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; color: white; flex-shrink: 0; box-shadow: 0 3px 10px rgba(230,57,70,.28); }
-    .user-name-sm { font-size: 12.5px; font-weight: 700; color: var(--gray-900); }
-    .user-role-sm { font-size: 10.5px; color: var(--gray-400); font-weight: 500; margin-top: 1px; }
+    .content { padding:20px 30px 36px; flex:1; display:flex; flex-direction:column; }
+    .filter-bar { display:flex; gap:10px; margin-bottom:18px; align-items:center; animation:fadeInDown 0.5s cubic-bezier(0.22,1,0.36,1) 0.05s both; }
+    .filter-select { padding:8px 14px; border:1.5px solid var(--gray-200); border-radius:11px; font-size:12.5px; cursor:pointer; outline:none; background:white; font-family:inherit; color:#334155; font-weight:600; transition:all .2s; }
+    .filter-select:focus, .filter-select:hover { border-color:var(--red-light); box-shadow:0 0 0 3px rgba(230,57,70,.07); }
+    .filter-select option { color:#1e293b; }
 
-    .logout-btn { display: flex; align-items: center; gap: 11px; padding: 10px 13px; color: var(--gray-400); font-size: 13px; font-weight: 600; cursor: pointer; border-radius: var(--rsm); border: none; background: none; font-family: inherit; transition: all .2s; width: 100%; }
-    .logout-btn:hover { background: #fff5f5; color: var(--red); }
+    .card { background:white; border-radius:var(--radius); box-shadow:var(--shadow); border:1px solid var(--gray-100); overflow:hidden; flex:1; display:flex; flex-direction:column; animation:fadeInUp 0.5s cubic-bezier(0.22,1,0.36,1) 0.1s both; }
+    .table-wrap { flex:1; overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; }
+    thead tr { border-bottom:2px solid var(--gray-100); }
+    th { padding:13px 16px; text-align:left; font-size:9.5px; font-weight:800; color:#334155; text-transform:uppercase; letter-spacing:.8px; background:var(--gray-50); white-space:nowrap; }
+    td { padding:13px 16px; border-bottom:1px solid var(--gray-100); font-size:12.5px; color:#0f172a; vertical-align:middle; }
+    tbody tr { transition:background .15s; animation:rowIn .3s ease both; }
+    tbody tr:hover { background:var(--red-50); }
+    tbody tr:last-child td { border-bottom:none; }
 
-    /* ===== MAIN ===== */
-    .main { margin-left: var(--sidebar); flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+    .no-cell { font-size:12px; font-weight:700; color:#334155; }
+    .id-badge { font-size:11.5px; font-weight:800; color:#334155; background:var(--gray-100); padding:3px 10px; border-radius:7px; display:inline-block; }
+    .title-cell { font-weight:700; color:#1e293b; max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; display:block; }
+    .cat-badge { background:#e2e8f0; color:#1e293b; padding:3px 10px; border-radius:7px; font-size:10.5px; font-weight:600; text-transform:capitalize; }
+    .date-cell { font-size:12px; color:#334155; font-weight:600; white-space:nowrap; }
 
-    /* ===== TOPBAR ===== */
-    .topbar {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 26px 30px 0;
-      animation: fadeInDown 0.5s cubic-bezier(0.22,1,0.36,1);
-    }
-    .topbar-left h1 { font-size: 22px; font-weight: 800; color: var(--gray-900); letter-spacing: -0.5px; }
-    .topbar-left p  { font-size: 12.5px; color: var(--gray-400); margin-top: 3px; font-weight: 500; }
-    .topbar-right { display: flex; align-items: center; gap: 12px; }
+    .p-badge { padding:4px 12px; border-radius:20px; font-size:10.5px; font-weight:700; display:inline-block; }
+    .p-high   { background:#fff0f2; color:var(--red);       border:1.5px solid var(--red-100); }
+    .p-medium { background:#fff7ed; color:#ea580c;          border:1.5px solid #fed7aa; }
+    .p-low    { background:var(--red-50); color:var(--red-dark); border:1.5px solid var(--red-100); }
 
-    .search-bar {
-      display: flex; align-items: center; gap: 8px;
-      background: white; border: 1.5px solid var(--gray-200);
-      border-radius: 11px; padding: 8px 14px; min-width: 230px; transition: all .2s;
-    }
-    .search-bar:focus-within { border-color: var(--red-light); box-shadow: 0 0 0 3px rgba(230,57,70,.08); }
-    .search-bar i { color: var(--gray-400); font-size: 12px; }
-    .search-bar input { flex: 1; border: none; outline: none; font-size: 12.5px; font-family: inherit; color: var(--gray-900); background: transparent; }
-    .search-bar input::placeholder { color: var(--gray-400); }
+    .s-badge { padding:4px 12px; border-radius:20px; font-size:10.5px; font-weight:700; display:inline-block; }
+    .s-open     { background:#fff7ed; color:#c2410c; border:1.5px solid #fed7aa; }
+    .s-progress { background:#eff6ff; color:#1d4ed8; border:1.5px solid #bfdbfe; }
+    .s-closed   { background:#f0fdf4; color:#15803d; border:1.5px solid #bbf7d0; }
 
-    .topbar-user { display: flex; align-items: center; gap: 8px; cursor: pointer; }
-    .topbar-ava { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg,var(--red),var(--red-dark)); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; color: white; box-shadow: 0 3px 10px rgba(230,57,70,.25); }
-    .topbar-name { font-size: 13px; font-weight: 700; color: var(--gray-800); }
-    .topbar-chevron { color: var(--gray-400); font-size: 11px; }
+    .detail-btn { padding:6px 15px; border-radius:9px; background:var(--red-50); color:var(--red); border:1.5px solid var(--red-100); font-size:12px; font-weight:700; cursor:pointer; font-family:inherit; transition:all .2s; display:inline-flex; align-items:center; gap:5px; text-decoration:none; }
+    .detail-btn:hover { background:var(--red); color:white; border-color:var(--red); transform:translateY(-1px); box-shadow:0 4px 12px rgba(230,57,70,.22); }
+    .delete-btn { padding:6px 15px; border-radius:9px; background:var(--red-50); color:var(--red); border:1.5px solid var(--red-100); font-size:12px; font-weight:700; cursor:pointer; font-family:inherit; transition:all .2s; display:inline-flex; align-items:center; gap:5px; }
+    .delete-btn:hover { background:var(--red); color:white; border-color:var(--red); transform:translateY(-1px); box-shadow:0 4px 12px rgba(230,57,70,.22); }
+    .delete-btn:disabled { opacity:0.5; cursor:not-allowed; }
+    .action-buttons { display:flex; gap:6px; }
 
-    /* ===== CONTENT ===== */
-    .content { padding: 20px 30px 36px; flex: 1; display: flex; flex-direction: column; }
+    .empty-state { text-align:center; padding:60px 20px; color:#64748b; }
+    .empty-state i { font-size:38px; margin-bottom:14px; display:block; opacity:.3; color:var(--red); }
+    .empty-state h3 { font-size:15px; font-weight:700; color:#334155; margin-bottom:6px; }
+    .empty-state p  { font-size:12.5px; font-weight:500; color:#64748b; }
 
-    /* ===== FILTERS ===== */
-    .filter-bar {
-      display: flex; gap: 10px; margin-bottom: 18px; align-items: center;
-      animation: fadeInDown 0.5s cubic-bezier(0.22,1,0.36,1) 0.05s both;
-    }
-    .filter-select {
-      padding: 8px 14px; border: 1.5px solid var(--gray-200); border-radius: 11px;
-      font-size: 12.5px; cursor: pointer; outline: none;
-      background: white; font-family: inherit; color: var(--gray-700); font-weight: 600; transition: all .2s;
-    }
-    .filter-select:focus, .filter-select:hover { border-color: var(--red-light); box-shadow: 0 0 0 3px rgba(230,57,70,.07); }
+    .table-footer { display:flex; align-items:center; padding:12px 18px; border-top:1px solid var(--gray-100); background:var(--gray-50); }
+    .footer-info { font-size:12px; color:#334155; font-weight:600; }
 
-    /* ===== TABLE CARD ===== */
-    .card {
-      background: white; border-radius: var(--radius);
-      box-shadow: var(--shadow); border: 1px solid var(--gray-100);
-      overflow: hidden; flex: 1; display: flex; flex-direction: column;
-      animation: fadeInUp 0.5s cubic-bezier(0.22,1,0.36,1) 0.1s both;
-    }
-    .table-wrap { flex: 1; overflow-x: auto; }
-
-    table { width: 100%; border-collapse: collapse; }
-    thead tr { border-bottom: 2px solid var(--gray-100); }
-    th { padding: 13px 16px; text-align: left; font-size: 9.5px; font-weight: 700; color: var(--gray-400); text-transform: uppercase; letter-spacing: .7px; background: var(--gray-50); white-space: nowrap; }
-    td { padding: 13px 16px; border-bottom: 1px solid var(--gray-100); font-size: 12.5px; color: var(--gray-700); vertical-align: middle; }
-    tbody tr { transition: background .15s; animation: rowIn .3s ease both; }
-    tbody tr:hover { background: var(--red-50); }
-    tbody tr:last-child td { border-bottom: none; }
-
-    .no-cell { font-size: 12px; font-weight: 700; color: var(--gray-400); }
-    .id-badge { font-size: 11.5px; font-weight: 800; color: var(--gray-500); background: var(--gray-100); padding: 3px 10px; border-radius: 7px; display: inline-block; }
-    .title-cell { font-weight: 700; color: var(--gray-800); max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: block; }
-    .cat-badge { background: var(--gray-100); color: var(--gray-600); padding: 3px 10px; border-radius: 7px; font-size: 10.5px; font-weight: 600; }
-    .date-cell { font-size: 12px; color: var(--gray-500); font-weight: 500; white-space: nowrap; }
-
-    .p-badge { padding: 4px 12px; border-radius: 20px; font-size: 10.5px; font-weight: 700; display: inline-block; }
-    .p-high   { background: #fff0f2; color: var(--red);       border: 1.5px solid var(--red-100); }
-    .p-medium { background: #fff7ed; color: #ea580c;          border: 1.5px solid #fed7aa; }
-    .p-low    { background: var(--red-50); color: var(--red-dark); border: 1.5px solid var(--red-100); }
-
-    .s-badge { padding: 4px 12px; border-radius: 20px; font-size: 10.5px; font-weight: 700; display: inline-block; }
-    .s-open     { background: #fff7ed; color: #c2410c; border: 1.5px solid #fed7aa; }
-    .s-progress { background: #eff6ff; color: #1d4ed8; border: 1.5px solid #bfdbfe; }
-    .s-closed   { background: #f0fdf4; color: #15803d; border: 1.5px solid #bbf7d0; }
-
-    .detail-btn {
-      padding: 6px 15px; border-radius: 9px;
-      background: var(--red-50); color: var(--red);
-      border: 1.5px solid var(--red-100);
-      font-size: 12px; font-weight: 700; cursor: pointer;
-      font-family: inherit; transition: all .2s;
-      display: inline-flex; align-items: center; gap: 5px; text-decoration: none;
-    }
-    .detail-btn:hover { background: var(--red); color: white; border-color: var(--red); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(230,57,70,.22); }
-
-    .delete-btn {
-      padding: 6px 15px; border-radius: 9px;
-      background: var(--red-50); color: var(--red);
-      border: 1.5px solid var(--red-100);
-      font-size: 12px; font-weight: 700; cursor: pointer;
-      font-family: inherit; transition: all .2s;
-      display: inline-flex; align-items: center; gap: 5px;
-    }
-    .delete-btn:hover { background: var(--red); color: white; border-color: var(--red); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(230,57,70,.22); }
-    .delete-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-    .action-buttons { display: flex; gap: 6px; }
-
-    .empty-state { text-align: center; padding: 60px 20px; color: var(--gray-400); }
-    .empty-state i { font-size: 38px; margin-bottom: 14px; display: block; opacity: .3; color: var(--red); }
-    .empty-state h3 { font-size: 15px; font-weight: 700; color: var(--gray-600); margin-bottom: 6px; }
-    .empty-state p  { font-size: 12.5px; font-weight: 500; }
-
-    .table-footer { display: flex; align-items: center; padding: 12px 18px; border-top: 1px solid var(--gray-100); background: var(--gray-50); }
-    .footer-info { font-size: 12px; color: var(--gray-400); font-weight: 500; }
-
-    .toast { position: fixed; top: 20px; right: 20px; padding: 13px 20px; border-radius: 12px; color: white; font-size: 13px; font-weight: 700; z-index: 9999; box-shadow: 0 8px 24px rgba(0,0,0,.14); animation: toastIn .3s ease; display: flex; align-items: center; gap: 8px; }
-    .toast-error { background: linear-gradient(135deg,var(--red),var(--red-dark)); }
-    .toast-success { background: linear-gradient(135deg,#22c55e,#16a34a); }
+    .toast { position:fixed; top:20px; right:20px; padding:13px 20px; border-radius:12px; color:white; font-size:13px; font-weight:700; z-index:9999; box-shadow:0 8px 24px rgba(0,0,0,.14); animation:toastIn .3s ease; display:flex; align-items:center; gap:8px; }
+    .toast-error   { background:linear-gradient(135deg,var(--red),var(--red-dark)); }
+    .toast-success { background:linear-gradient(135deg,#22c55e,#16a34a); }
 
     @media(max-width:768px) { .sidebar{display:none;} .main{margin-left:0;} .content{padding:16px;} .topbar{padding:18px 16px 0;} }
   </style>
 </head>
 <body>
 
-<!-- ===== SIDEBAR ===== -->
 <aside class="sidebar">
   <div class="logo">
     <img src="../assets/images/logo.png" style="width:36px;height:36px;object-fit:contain;border-radius:8px;" alt="Logo"
@@ -184,29 +118,43 @@
     <div class="logo-icon" id="sbFall" style="display:none"><i class="fas fa-shield-halved"></i></div>
     <span class="logo-text">Smart<span>Incident</span></span>
   </div>
-
   <div class="nav-section-label">Menu Utama</div>
   <nav>
     <ul class="nav-menu">
-      <li class="nav-item-li"><a href="dashboard.html" class="nav-link"><i class="fas fa-th-large"></i><span>Dashboard</span></a></li>
-      <li class="nav-item-li"><a href="report.html"    class="nav-link"><i class="fas fa-pen-to-square"></i><span>Lapor Insiden</span></a></li>
-      <li class="nav-item-li"><a href="history.html"   class="nav-link active"><i class="fas fa-clock-rotate-left"></i><span>Riwayat Laporan</span></a></li>
-      <li class="nav-item-li"><a href="profile.html"   class="nav-link"><i class="fas fa-user"></i><span>Profil</span></a></li>
+      <li class="nav-item-li">
+        <a href="dashboard.html" class="nav-link">
+          <i class="fas fa-th-large"></i><span>Dashboard</span>
+        </a>
+      </li>
+      <li class="nav-item-li">
+        <a href="report.html" class="nav-link">
+          <i class="fas fa-pen-to-square"></i><span>Lapor Insiden</span>
+        </a>
+      </li>
+      <li class="nav-item-li">
+        <a href="history.html" class="nav-link active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+          </svg>
+          <span>Riwayat Laporan</span>
+        </a>
+      </li>
+      <li class="nav-item-li">
+        <a href="profile.html" class="nav-link">
+          <i class="fas fa-user"></i><span>Profil</span>
+        </a>
+      </li>
     </ul>
   </nav>
-
   <div class="sidebar-spacer"></div>
-
   <div class="sidebar-divider"></div>
-
-  <button class="logout-btn" id="logoutBtn">
-    <i class="fas fa-sign-out-alt"></i><span>Keluar</span>
-  </button>
+  <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i><span>Keluar</span></button>
 </aside>
 
-<!-- ===== MAIN ===== -->
 <div class="main">
-
   <div class="topbar">
     <div class="topbar-left">
       <h1>Riwayat Laporan</h1>
@@ -218,7 +166,6 @@
         <input type="text" id="searchInput" placeholder="Cari judul atau kategori..."/>
       </div>
     </div>
-
   </div>
 
   <div class="content">
@@ -226,7 +173,7 @@
       <select id="filterStatus" class="filter-select">
         <option value="">Semua Status</option>
         <option value="open">Open</option>
-<option value="in_progress">On Progress</option>
+        <option value="in_progress">On Progress</option>
         <option value="closed">Closed</option>
       </select>
       <select id="filterPriority" class="filter-select">
@@ -285,12 +232,6 @@
     try {
       const u = JSON.parse(localStorage.getItem('user')) || {};
       currentUserId = u.id || null;
-      const ini  = u.name ? u.name.charAt(0).toUpperCase() : 'U';
-      const name = u.name || '–';
-      const role = u.role ? u.role.charAt(0).toUpperCase() + u.role.slice(1) : '–';
-      ['sidebarAva','topbarAva'].forEach(id => { const el=document.getElementById(id); if(el) el.textContent=ini; });
-      ['sidebarName','topbarName'].forEach(id => { const el=document.getElementById(id); if(el) el.textContent=name; });
-      const sr=document.getElementById('sidebarRole'); if(sr) sr.textContent=role;
     } catch(e) {}
   }
 
@@ -305,7 +246,6 @@
       allIncidents = data.incidents || data.data || [];
       renderTable(allIncidents);
     } catch(err) {
-      console.error(err);
       showToast('Gagal memuat data laporan');
       renderEmpty();
     }
@@ -316,109 +256,69 @@
     const pri = document.getElementById('filterPriority').value;
     const q   = document.getElementById('searchInput').value.toLowerCase();
     let f = allIncidents;
-if (sta) f = f.filter(i => {
-      const s = (i.status||'').toLowerCase();
-      return sta === 'in_progress' ? (s==='in_progress'||s==='progress') : s===sta;
-    });
+    if (sta) f = f.filter(i => { const s=(i.status||'').toLowerCase(); return sta==='in_progress'?(s==='in_progress'||s==='progress'):s===sta; });
     if (pri) f = f.filter(i => (i.priority||'').toLowerCase() === pri);
     if (q)   f = f.filter(i => (i.title||'').toLowerCase().includes(q)||(i.category||i.type||'').toLowerCase().includes(q));
     renderTable(f);
   }
 
+  function capitalize(str) { if(!str) return '-'; return str.charAt(0).toUpperCase()+str.slice(1); }
+
   function renderTable(list) {
     const tbody  = document.getElementById('historyTableBody');
     const footer = document.getElementById('footerInfo');
     if (!list || list.length === 0) { renderEmpty(); return; }
-
     tbody.innerHTML = list.map((inc, idx) => {
       const status   = (inc.status||'open').toLowerCase();
       const priority = (inc.priority||'medium').toLowerCase();
-      const sLabel = status==='progress'||status==='in_progress' ? 'On Progress' : status==='closed' ? 'Closed' : 'Open';
-      const sCls   = status==='progress'||status==='in_progress' ? 's-progress'  : status==='closed' ? 's-closed'  : 's-open';
+      const sLabel = status==='progress'||status==='in_progress'?'On Progress':status==='closed'?'Closed':'Open';
+      const sCls   = status==='progress'||status==='in_progress'?'s-progress':status==='closed'?'s-closed':'s-open';
       const pLabel = priority.charAt(0).toUpperCase()+priority.slice(1);
       const pCls   = 'p-'+priority;
-      
-      // Check if the current user owns this report
       const isOwner = inc.user_id === currentUserId;
-      const deleteButton = isOwner ? `<button class="delete-btn" onclick="deleteReport(${inc.id})" title="Hapus laporan">
-        <i class="fas fa-trash"></i> Hapus
-      </button>` : '';
-      
+      const delBtn = isOwner ? `<button class="delete-btn" onclick="deleteReport(${inc.id})"><i class="fas fa-trash"></i> Hapus</button>` : '';
       return `<tr style="animation-delay:${idx*0.04}s">
         <td><span class="no-cell">${idx+1}</span></td>
         <td><span class="id-badge">#INC-${String(inc.id).padStart(4,'0')}</span></td>
         <td><span class="title-cell">${esc(inc.title||'-')}</span></td>
-        <td><span class="cat-badge">${esc(inc.category||inc.type||'-')}</span></td>
+        <td><span class="cat-badge">${capitalize(inc.category||inc.type||'-')}</span></td>
         <td><span class="p-badge ${pCls}">${pLabel}</span></td>
         <td><span class="s-badge ${sCls}">${sLabel}</span></td>
         <td><span class="date-cell">${fmtDate(inc.created_at)}</span></td>
-        <td>
-          <div class="action-buttons">
-            <a class="detail-btn" href="incident-detail.html?id=${encodeURIComponent(inc.id)}">
-              <i class="fas fa-eye"></i> Detail
-            </a>
-            ${deleteButton}
-          </div>
-        </td>
+        <td><div class="action-buttons">
+          <a class="detail-btn" href="incident-detail.html?id=${encodeURIComponent(inc.id)}"><i class="fas fa-eye"></i> Detail</a>
+          ${delBtn}
+        </div></td>
       </tr>`;
     }).join('');
     footer.textContent = `Menampilkan ${list.length} laporan`;
   }
 
-  // Delete report function
   async function deleteReport(id) {
-    const confirmed = confirm('Apakah Anda yakin ingin menghapus laporan ini?');
-    
-    if (!confirmed) return;
-    
+    if (!confirm('Apakah Anda yakin ingin menghapus laporan ini?')) return;
     const token = getToken();
-    if (!token) {
-      window.location.href = '../auth/login.html';
-      return;
-    }
-    
+    if (!token) { window.location.href = '../auth/login.html'; return; }
     try {
-      const res = await fetch(`${API_BASE}/incidents/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-      
+      const res = await fetch(`${API_BASE}/incidents/${id}`, { method:'DELETE', headers:{'Authorization':`Bearer ${token}`,'Content-Type':'application/json'} });
       const data = await res.json();
-      
-      if (res.ok && data.success) {
-        alert('Laporan berhasil dihapus');
-        loadIncidents(token);
-      } else {
-        alert(data.message || 'Gagal menghapus laporan');
-      }
-    } catch(err) {
-      console.error('Delete error:', err);
-      alert('Gagal menghapus laporan');
-    }
+      if (res.ok && data.success) { showToast('Laporan berhasil dihapus', 'success'); loadIncidents(token); }
+      else alert(data.message || 'Gagal menghapus laporan');
+    } catch(err) { alert('Gagal menghapus laporan'); }
   }
 
   function renderEmpty() {
-    document.getElementById('historyTableBody').innerHTML = `
-      <tr><td colspan="8"><div class="empty-state">
-        <i class="fas fa-inbox"></i>
-        <h3>Belum ada laporan</h3>
-        <p>Laporan insiden yang Anda buat akan muncul di sini</p>
-      </div></td></tr>`;
+    document.getElementById('historyTableBody').innerHTML = `<tr><td colspan="8"><div class="empty-state">
+      <i class="fas fa-inbox"></i><h3>Belum ada laporan</h3>
+      <p>Laporan insiden yang Anda buat akan muncul di sini</p>
+    </div></td></tr>`;
     document.getElementById('footerInfo').textContent = 'Menampilkan 0 laporan';
   }
 
-  function fmtDate(s) {
-    if (!s) return '-';
-    try { return new Date(s).toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'}); }
-    catch(e) { return s; }
-  }
+  function fmtDate(s) { if(!s) return '-'; try{return new Date(s).toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'});}catch(e){return s;} }
   function esc(t) { if(!t)return''; const d=document.createElement('div'); d.textContent=t; return d.innerHTML; }
-  function showToast(msg) {
-    const t=document.createElement('div'); t.className='toast toast-error';
-    t.innerHTML=`<i class="fas fa-exclamation-circle"></i>${msg}`;
+  function showToast(msg, type='error') {
+    const t=document.createElement('div'); t.className=`toast toast-${type}`;
+    t.innerHTML=`<i class="fas fa-${type==='success'?'check':'exclamation'}-circle"></i>${msg}`;
     document.body.appendChild(t); setTimeout(()=>t.remove(),3500);
   }
 </script>

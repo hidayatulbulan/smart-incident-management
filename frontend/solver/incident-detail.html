@@ -8,64 +8,39 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --red:       #e63946;
-      --red-dark:  #c1121f;
-      --red-light: #ff8fa3;
-      --red-50:    #fff5f7;
-      --red-100:   #ffe0e5;
-      --white:    #ffffff;
-      --bg:       #f4f6fb;
-      --gray-50:  #f8f9fb;
-      --gray-100: #f0f2f5;
-      --gray-200: #e4e6ea;
-      --gray-300: #d1d5db;
-      --gray-400: #b0b5c0;
-      --gray-500: #8e95a2;
-      --gray-600: #6b7280;
-      --gray-700: #4b5563;
-      --gray-800: #374151;
-      --gray-900: #1f2937;
-      --green:     #16a34a;
-      --green-50:  #f0fdf4;
-      --green-100: #dcfce7;
-      --amber:     #d97706;
-      --amber-50:  #fffbeb;
-      --amber-100: #fef3c7;
-      --blue:      #2563eb;
-      --blue-50:   #eff6ff;
-      --blue-100:  #dbeafe;
-      --shadow-sm: 0 1px 6px rgba(0,0,0,0.06);
-      --shadow:    0 2px 16px rgba(0,0,0,0.07);
-      --radius:    16px;
-      --rsm:       12px;
-      --sidebar:   230px;
+      --red:#e63946;--red-dark:#c1121f;--red-light:#ff8fa3;--red-50:#fff5f7;--red-100:#ffe0e5;
+      --white:#ffffff;--bg:#f4f6fb;--gray-50:#f8f9fb;--gray-100:#f0f2f5;--gray-200:#e4e6ea;
+      --gray-300:#d1d5db;--gray-400:#b0b5c0;--gray-500:#8e95a2;--gray-600:#6b7280;
+      --gray-700:#4b5563;--gray-800:#374151;--gray-900:#1f2937;
+      --green:#16a34a;--green-50:#f0fdf4;--green-100:#dcfce7;
+      --amber:#d97706;--amber-50:#fffbeb;--amber-100:#fef3c7;
+      --blue:#2563eb;--blue-50:#eff6ff;--blue-100:#dbeafe;
+      --shadow-sm:0 1px 6px rgba(0,0,0,0.06);--shadow:0 2px 16px rgba(0,0,0,0.07);
+      --radius:16px;--rsm:12px;--sidebar:230px;
     }
-
     body { font-family:'Plus Jakarta Sans',sans-serif; background:var(--bg); color:#0f172a; min-height:100vh; display:flex; }
-
     @keyframes slideLeft  { from{transform:translateX(-100%);opacity:0} to{transform:translateX(0);opacity:1} }
     @keyframes fadeDown   { from{transform:translateY(-14px);opacity:0} to{transform:translateY(0);opacity:1} }
-    @keyframes fadeUp     { from{transform:translateY(16px);opacity:0}  to{transform:translateY(0);opacity:1} }
+    @keyframes fadeUp     { from{transform:translateY(16px);opacity:0} to{transform:translateY(0);opacity:1} }
     @keyframes fadeIn     { from{opacity:0} to{opacity:1} }
     @keyframes modalPop   { from{transform:translateY(-20px) scale(.96);opacity:0} to{transform:translateY(0) scale(1);opacity:1} }
     @keyframes toastSlide { from{transform:translateX(110%);opacity:0} to{transform:translateX(0);opacity:1} }
     @keyframes pulse      { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.5);opacity:.5} }
     @keyframes spin       { to{transform:rotate(360deg)} }
-    @keyframes slaFill    { from{width:0%} to{width:var(--target-w)} }
     @keyframes imgFadeIn  { from{opacity:0;transform:scale(.97)} to{opacity:1;transform:scale(1)} }
+    @keyframes feedbackPop { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
 
-    /* ═══ SIDEBAR ═══ */
+    /* SIDEBAR */
     .sidebar { width:var(--sidebar);background:var(--white);display:flex;flex-direction:column;padding:24px 14px;min-height:100vh;position:fixed;top:0;left:0;bottom:0;z-index:200;border-right:1px solid var(--red-100);box-shadow:2px 0 18px rgba(0,0,0,0.055);animation:slideLeft .42s cubic-bezier(.22,1,.36,1); }
     .sb-logo { display:flex;align-items:center;gap:10px;padding:4px 8px 24px;border-bottom:1px solid var(--gray-100);margin-bottom:6px; }
     .sb-logo img { width:36px;height:36px;object-fit:contain;border-radius:8px; }
-    .sb-logo-icon { width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--red),var(--red-dark));display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;box-shadow:0 4px 10px rgba(230,57,70,.3);flex-shrink:0; }
+    .sb-logo-icon { width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--red),var(--red-dark));display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;flex-shrink:0; }
     .sb-brand { font-size:15px;font-weight:800;color:#0f172a; }
     .sb-brand span { color:var(--red); }
     .sb-section { font-size:9.5px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:1.3px;padding:0 10px;margin:18px 0 6px; }
     .nav-a { display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--rsm);font-size:13px;font-weight:600;color:#1e293b;text-decoration:none;transition:all .2s;position:relative;margin-bottom:2px; }
-    .nav-a i { width:16px;text-align:center;font-size:13px;color:inherit; }
+    .nav-a i { width:16px;text-align:center;font-size:13px; }
     .nav-a:hover { background:var(--red-50);color:var(--red); }
     .nav-a.active { background:linear-gradient(135deg,var(--red),#f05060);color:#fff;box-shadow:0 4px 14px rgba(230,57,70,.28); }
     .nav-a.active::before { content:'';position:absolute;left:-14px;width:4px;height:22px;background:var(--red);border-radius:0 3px 3px 0; }
@@ -74,22 +49,17 @@
     .sb-logout { display:flex;align-items:center;gap:10px;padding:10px 12px;color:#374151;font-size:13px;font-weight:600;cursor:pointer;border:none;background:none;font-family:inherit;border-radius:var(--rsm);transition:all .2s;width:100%; }
     .sb-logout:hover { background:#fff5f5;color:var(--red); }
 
-    /* ═══ MAIN ═══ */
+    /* MAIN */
     .main { margin-left:var(--sidebar);flex:1;display:flex;flex-direction:column;min-height:100vh; }
-
-    /* ═══ TOPBAR ═══ */
     .topbar { display:flex;align-items:center;justify-content:space-between;padding:26px 32px 0;animation:fadeDown .45s cubic-bezier(.22,1,.36,1); }
     .tb-left { display:flex;align-items:center;gap:10px; }
     .btn-back { display:flex;align-items:center;gap:7px;padding:8px 14px;background:var(--white);border:1.5px solid var(--gray-200);border-radius:10px;font-size:13px;font-weight:700;color:#374151;cursor:pointer;font-family:inherit;transition:all .2s;box-shadow:var(--shadow-sm);text-decoration:none; }
     .btn-back:hover { border-color:var(--red-light);color:var(--red);background:var(--red-50); }
-    .btn-back i { font-size:11px; }
-
-    /* ═══ CONTENT ═══ */
     .content { padding:20px 32px 48px;display:flex;flex-direction:column;gap:22px;animation:fadeIn .5s ease; }
 
     .hero-card { background:linear-gradient(135deg,var(--red),var(--red-dark));border-radius:var(--radius);padding:26px 28px;display:flex;align-items:flex-start;justify-content:space-between;gap:20px;box-shadow:0 8px 28px rgba(230,57,70,.25);animation:fadeUp .45s cubic-bezier(.22,1,.36,1) .05s both; }
     .hero-left h1 { font-size:22px;font-weight:900;color:#fff;letter-spacing:-.4px;margin-bottom:8px;line-height:1.25; }
-    .hero-left .hero-meta { display:flex;align-items:center;gap:8px;flex-wrap:wrap; }
+    .hero-meta { display:flex;align-items:center;gap:8px;flex-wrap:wrap; }
     .hero-meta-item { display:flex;align-items:center;gap:5px;font-size:12px;color:rgba(255,255,255,.85);font-weight:600; }
     .hero-meta-item i { font-size:11px; }
     .hero-meta-sep { width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,.4); }
@@ -97,13 +67,9 @@
     .hb { padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;background:rgba(255,255,255,.20);color:#fff;border:1.5px solid rgba(255,255,255,.25); }
 
     .col-grid { display:grid;grid-template-columns:1fr 380px;gap:22px;align-items:start; }
-
     .card { background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--gray-100);overflow:hidden;animation:fadeUp .45s cubic-bezier(.22,1,.36,1) both; }
-    .card:nth-child(1){animation-delay:.08s}
-    .card:nth-child(2){animation-delay:.12s}
-    .card:nth-child(3){animation-delay:.16s}
-    .card:nth-child(4){animation-delay:.20s}
-
+    .card:nth-child(1){animation-delay:.08s} .card:nth-child(2){animation-delay:.12s}
+    .card:nth-child(3){animation-delay:.16s} .card:nth-child(4){animation-delay:.20s}
     .card-hdr { padding:18px 22px 16px;border-bottom:1.5px solid var(--gray-100);display:flex;align-items:center;gap:9px; }
     .card-hdr-icon { width:30px;height:30px;border-radius:9px;background:var(--red-50);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--red);flex-shrink:0; }
     .card-hdr h3 { font-size:14px;font-weight:800;color:#0f172a; }
@@ -133,19 +99,15 @@
     .admin-note i { color:var(--blue);margin-top:2px;flex-shrink:0; }
 
     .right-col { display:flex;flex-direction:column;gap:22px; }
-
     .photo-wrap { width:100%;border-radius:var(--rsm);overflow:hidden;background:var(--gray-50);aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer; }
     .photo-wrap img { width:100%;height:100%;object-fit:cover;border-radius:var(--rsm);animation:imgFadeIn .4s ease; }
     .photo-empty { display:flex;flex-direction:column;align-items:center;gap:8px;color:#94a3b8; }
     .photo-empty i { font-size:36px; }
-    .photo-empty span { font-size:13px;font-weight:600; }
     .lightbox { display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:2000;align-items:center;justify-content:center;cursor:zoom-out; }
     .lightbox.active { display:flex; }
     .lightbox img { max-width:90vw;max-height:90vh;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.5);animation:imgFadeIn .3s ease; }
-    .lightbox-close { position:absolute;top:20px;right:24px;background:rgba(255,255,255,.15);border:none;color:#fff;width:36px;height:36px;border-radius:10px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:background .2s; }
-    .lightbox-close:hover { background:rgba(255,255,255,.3); }
+    .lightbox-close { position:absolute;top:20px;right:24px;background:rgba(255,255,255,.15);border:none;color:#fff;width:36px;height:36px;border-radius:10px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center; }
 
-    /* ═══ SLA BOX ═══ */
     .sla-box { background:var(--gray-50);border-radius:var(--rsm);padding:16px; }
     .sla-top { display:flex;justify-content:space-between;align-items:center;margin-bottom:10px; }
     .sla-lbl { font-size:11px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.6px; }
@@ -165,21 +127,83 @@
     .action-wrap { display:flex;flex-direction:column;gap:10px; }
     .btn-full { width:100%;padding:12px 16px;border:none;border-radius:var(--rsm);font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s; }
     .btn-tangani  { background:var(--blue);color:#fff;box-shadow:0 4px 12px rgba(37,99,235,.28); }
-    .btn-tangani:hover  { background:#1d4ed8;transform:translateY(-1px);box-shadow:0 6px 18px rgba(37,99,235,.36); }
+    .btn-tangani:hover  { background:#1d4ed8;transform:translateY(-1px); }
     .btn-selesai  { background:linear-gradient(135deg,var(--red),var(--red-dark));color:#fff;box-shadow:0 4px 12px rgba(230,57,70,.28); }
     .btn-selesai:hover  { transform:translateY(-1px);box-shadow:0 6px 18px rgba(230,57,70,.36); }
     .btn-back-full { background:var(--gray-100);color:#374151; }
     .btn-back-full:hover { background:var(--gray-200); }
     .success-banner { background:var(--green-50);border:1.5px solid var(--green-100);border-radius:var(--rsm);padding:13px 16px;display:flex;align-items:center;gap:10px;font-size:13.5px;font-weight:700;color:var(--green); }
-    .success-banner i { font-size:16px; }
+
+    /* ── FEEDBACK AI BOX (baru) ── */
+    .aifb-box {
+      border-radius:var(--rsm);
+      padding:16px;
+      animation:feedbackPop .4s cubic-bezier(.22,1,.36,1);
+    }
+    .aifb-box.positive {
+      background:var(--green-50);
+      border:1.5px solid var(--green-100);
+    }
+    .aifb-box.negative {
+      background:var(--red-50);
+      border:1.5px solid var(--red-100);
+    }
+    .aifb-box.none {
+      background:var(--gray-50);
+      border:1.5px solid var(--gray-200);
+    }
+    .aifb-head {
+      display:flex; align-items:center; gap:8px;
+      margin-bottom:8px;
+    }
+    .aifb-icon {
+      width:28px; height:28px; border-radius:8px;
+      display:flex; align-items:center; justify-content:center;
+      font-size:12px; flex-shrink:0;
+    }
+    .aifb-box.positive .aifb-icon { background:var(--green-100); color:var(--green); }
+    .aifb-box.negative .aifb-icon { background:var(--red-100);   color:var(--red); }
+    .aifb-box.none     .aifb-icon { background:var(--gray-100);  color:#64748b; }
+    .aifb-title {
+      font-size:12px; font-weight:800;
+    }
+    .aifb-box.positive .aifb-title { color:var(--green); }
+    .aifb-box.negative .aifb-title { color:var(--red); }
+    .aifb-box.none     .aifb-title { color:#64748b; }
+    .aifb-msg {
+      font-size:12.5px; font-weight:500; line-height:1.6;
+    }
+    .aifb-box.positive .aifb-msg { color:#14532d; }
+    .aifb-box.negative .aifb-msg { color:#7f1d1d; }
+    .aifb-box.none     .aifb-msg { color:#475569; }
+    .aifb-reason {
+      display:inline-block; margin-top:7px;
+      padding:3px 10px; border-radius:20px;
+      font-size:11px; font-weight:700;
+      background:var(--red-100); color:var(--red);
+    }
+    .aifb-stats {
+      display:flex; gap:8px; margin-top:10px;
+    }
+    .aifb-stat {
+      flex:1; border-radius:9px; padding:8px 10px; text-align:center;
+    }
+    .aifb-stat.h { background:rgba(22,163,74,.12); }
+    .aifb-stat.n { background:rgba(230,57,70,.10); }
+    .aifb-stat-num { font-size:18px; font-weight:800; }
+    .aifb-stat.h .aifb-stat-num { color:var(--green); }
+    .aifb-stat.n .aifb-stat-num { color:var(--red); }
+    .aifb-stat-lbl { font-size:9.5px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; margin-top:2px; }
+    .aifb-stat.h .aifb-stat-lbl { color:var(--green); }
+    .aifb-stat.n .aifb-stat-lbl { color:var(--red); }
+    /* ── END FEEDBACK AI BOX ── */
 
     .overlay { display:none;position:fixed;inset:0;background:rgba(0,0,0,.42);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(4px); }
     .overlay.active { display:flex; }
     .modal { background:var(--white);border-radius:var(--radius);box-shadow:0 20px 60px rgba(0,0,0,.16);width:90%;max-width:480px;overflow:hidden;animation:modalPop .3s cubic-bezier(.22,1,.36,1); }
     .modal-hdr { padding:20px 24px;background:linear-gradient(135deg,var(--red),var(--red-dark));display:flex;justify-content:space-between;align-items:center; }
     .modal-hdr h3 { font-size:15px;font-weight:800;color:#fff;margin:0;display:flex;align-items:center;gap:8px; }
-    .modal-x { background:rgba(255,255,255,.18);border:none;color:#fff;width:28px;height:28px;border-radius:8px;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:background .2s; }
-    .modal-x:hover { background:rgba(255,255,255,.32); }
+    .modal-x { background:rgba(255,255,255,.18);border:none;color:#fff;width:28px;height:28px;border-radius:8px;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center; }
     .modal-bdy { padding:22px 24px; }
     .modal-hint { background:var(--red-50);border-radius:10px;padding:11px 14px;margin-bottom:16px;font-size:12.5px;color:#374151;font-weight:500;display:flex;gap:8px;align-items:flex-start;border-left:3px solid var(--red-light); }
     .modal-hint i { color:var(--red-light);margin-top:1px;flex-shrink:0; }
@@ -195,24 +219,19 @@
     .mbtn-cancel { background:var(--gray-100);color:#374151; }
     .mbtn-cancel:hover { background:var(--gray-200); }
     .mbtn-submit { background:linear-gradient(135deg,var(--green),#15803d);color:#fff;box-shadow:0 4px 12px rgba(22,163,74,.22); }
-    .mbtn-submit:hover { transform:translateY(-1px);box-shadow:0 6px 18px rgba(22,163,74,.32); }
+    .mbtn-submit:hover { transform:translateY(-1px); }
     .mbtn-submit:disabled { background:var(--gray-300);cursor:not-allowed;transform:none;box-shadow:none; }
 
     .toast { position:fixed;bottom:24px;right:24px;padding:12px 18px;border-radius:var(--rsm);color:#fff;font-size:13px;font-weight:700;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,.14);display:flex;align-items:center;gap:9px;animation:toastSlide .35s cubic-bezier(.22,1,.36,1);min-width:220px; }
     .toast-ok  { background:linear-gradient(135deg,var(--green),#15803d); }
     .toast-err { background:linear-gradient(135deg,var(--red),var(--red-dark)); }
-    .toast i { font-size:15px; }
-
-    .skel { background:linear-gradient(90deg,var(--gray-100) 25%,var(--gray-50) 50%,var(--gray-100) 75%);background-size:200% 100%;border-radius:6px;animation:shimmer 1.4s infinite; }
-    @keyframes shimmer { to{background-position:-200% center} }
 
     @media(max-width:1100px){ .col-grid{grid-template-columns:1fr;} .right-col{display:grid;grid-template-columns:1fr 1fr;} }
-    @media(max-width:768px){ .sidebar{display:none;} .main{margin-left:0;} .content{padding:16px;} .topbar{padding:16px 16px 0;} .right-col{grid-template-columns:1fr;} }
+    @media(max-width:768px){ .sidebar{display:none;} .main{margin-left:0;} .content{padding:16px;} .right-col{grid-template-columns:1fr;} }
   </style>
 </head>
 <body>
 
-<!-- SIDEBAR -->
 <aside class="sidebar">
   <div class="sb-logo">
     <img src="../assets/images/logo.png" alt="Logo" onerror="this.style.display='none';document.getElementById('sbFall').style.display='flex'">
@@ -222,23 +241,21 @@
   <div class="sb-section">Menu Utama</div>
   <nav>
     <a class="nav-a" href="dashboard.html"><i class="fas fa-th-large"></i> Dashboard</a>
-    <a class="nav-a active" href="incidents.html"><i class="fas fa-file-lines"></i> Insiden</a>
+    <a class="nav-a active" href="incidents.html"><i class="fas fa-file-lines"></i> Data Insiden</a>
   </nav>
   <div class="sb-spacer"></div>
   <div class="sb-divider"></div>
-  <button class="sb-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i>Keluar</button>
+  <button class="sb-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Keluar</button>
 </aside>
 
-<!-- MAIN -->
 <div class="main">
   <div class="topbar">
     <div class="tb-left">
-      <a class="btn-back" href="incidents.html"><i class="fas fa-arrow-left"></i> Kembali ke Insiden</a>
+      <a class="btn-back" href="incidents.html"><i class="fas fa-arrow-left"></i> Kembali ke Data Insiden</a>
     </div>
   </div>
 
   <div class="content" id="mainContent">
-
     <div class="hero-card" id="heroCard" style="display:none;">
       <div class="hero-left">
         <h1 id="heroTitle">–</h1>
@@ -249,6 +266,7 @@
 
     <div class="col-grid" id="colGrid" style="display:none;">
       <div style="display:flex;flex-direction:column;gap:22px;">
+
         <div class="card" id="infoCard">
           <div class="card-hdr">
             <div class="card-hdr-icon"><i class="fas fa-circle-info"></i></div>
@@ -270,6 +288,21 @@
           </div>
         </div>
 
+        <!-- ── CARD FEEDBACK AI (baru) ── -->
+        <div class="card" id="aiFeedbackCard" style="display:none;">
+          <div class="card-hdr">
+            <div class="card-hdr-icon" style="background:#fef9c3;"><i class="fas fa-star" style="color:#ca8a04;"></i></div>
+            <h3>Feedback User terhadap Saran AI</h3>
+          </div>
+          <div class="card-body" id="aiFeedbackBody">
+            <div style="text-align:center;padding:16px;color:#94a3b8;font-size:12.5px;">
+              <i class="fas fa-spinner fa-spin" style="display:block;margin-bottom:8px;font-size:18px;"></i>
+              Memuat feedback...
+            </div>
+          </div>
+        </div>
+        <!-- ── END CARD FEEDBACK AI ── -->
+
         <div class="card" id="solverNoteCard" style="display:none;">
           <div class="card-hdr">
             <div class="card-hdr-icon" style="background:var(--green-50);"><i class="fas fa-clipboard-check" style="color:var(--green);"></i></div>
@@ -289,7 +322,7 @@
           </div>
           <div class="card-body" style="padding:16px 22px 20px;">
             <div class="photo-wrap" id="photoWrap" onclick="openLightbox()">
-              <div class="photo-empty" id="photoEmpty"><i class="fas fa-image"></i><span>Tidak ada foto</span></div>
+              <div class="photo-empty" id="photoEmpty"><i class="fas fa-image"></i><span style="font-size:13px;font-weight:600;">Tidak ada foto</span></div>
             </div>
             <p style="font-size:11.5px;color:#64748b;margin-top:9px;text-align:center;font-weight:500;display:none;" id="photoHint">Klik foto untuk memperbesar</p>
           </div>
@@ -306,9 +339,7 @@
                 <span class="sla-lbl">Progres Waktu</span>
                 <span id="slaChip" class="sla-chip sla-none">–</span>
               </div>
-              <div class="sla-bar-bg">
-                <div class="sla-bar-fill" id="slaBarFill" style="width:0%;background:var(--green);"></div>
-              </div>
+              <div class="sla-bar-bg"><div class="sla-bar-fill" id="slaBarFill" style="width:0%;background:var(--green);"></div></div>
               <div class="sla-info" id="slaInfo">–</div>
               <div class="sla-deadline" id="slaDeadline"></div>
             </div>
@@ -334,13 +365,11 @@
   </div>
 </div>
 
-<!-- LIGHTBOX -->
 <div id="lightbox" class="lightbox" onclick="closeLightbox()">
   <button class="lightbox-close" onclick="closeLightbox()"><i class="fas fa-times"></i></button>
   <img id="lightboxImg" src="" alt="Foto Insiden"/>
 </div>
 
-<!-- MODAL SELESAIKAN -->
 <div id="modalOverlay" class="overlay" onclick="if(event.target===this)closeModal()">
   <div class="modal">
     <div class="modal-hdr">
@@ -352,7 +381,7 @@
       <div class="modal-err" id="modalErr"></div>
       <div class="fg">
         <label for="modalNote">Catatan Penyelesaian <span>*</span></label>
-        <textarea id="modalNote" placeholder=""></textarea>
+        <textarea id="modalNote" placeholder="Jelaskan langkah penyelesaian insiden..."></textarea>
       </div>
     </div>
     <div class="modal-ftr">
@@ -373,7 +402,6 @@ function showToast(msg, type='ok') {
   document.body.appendChild(t);
   setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity .4s';setTimeout(()=>t.remove(),400);},3200);
 }
-
 function openLightbox() { const img=document.querySelector('#photoWrap img');if(!img)return;document.getElementById('lightboxImg').src=img.src;document.getElementById('lightbox').classList.add('active'); }
 function closeLightbox() { document.getElementById('lightbox').classList.remove('active'); }
 function openModal() { document.getElementById('modalOverlay').classList.add('active');document.getElementById('modalNote').value='';document.getElementById('modalErr').classList.remove('show');const btn=document.getElementById('modalSubmit');btn.disabled=false;btn.innerHTML='<i class="fas fa-check"></i> Selesaikan';setTimeout(()=>document.getElementById('modalNote').focus(),100); }
@@ -396,16 +424,10 @@ function formatDate(ds) { if(!ds) return '–'; return new Date(ds).toLocaleDate
 function formatDateTime(ds) { if(!ds) return '–'; return new Date(ds).toLocaleDateString('id-ID',{day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'}); }
 
 function renderSLA(inc) {
-  const chip=document.getElementById('slaChip');
-  const bar=document.getElementById('slaBarFill');
-  const info=document.getElementById('slaInfo');
-  const dl_el=document.getElementById('slaDeadline');
+  const chip=document.getElementById('slaChip'),bar=document.getElementById('slaBarFill'),info=document.getElementById('slaInfo'),dl_el=document.getElementById('slaDeadline');
   if(!inc.sla_resolution_deadline){chip.innerHTML='<i class="fas fa-minus"></i> Tidak ada SLA';chip.className='sla-chip sla-none';info.textContent='Tidak ada data SLA';return;}
-  const now=new Date(),dl=new Date(inc.sla_resolution_deadline);
-  const start=new Date(inc.created_at||now);
-  const total=Math.max(dl-start,1);
-  const elapsed=now-start;
-  const pct=Math.min(100,Math.max(0,Math.round(elapsed/total*100)));
+  const now=new Date(),dl=new Date(inc.sla_resolution_deadline),start=new Date(inc.created_at||now);
+  const total=Math.max(dl-start,1),elapsed=now-start,pct=Math.min(100,Math.max(0,Math.round(elapsed/total*100)));
   dl_el.textContent='Deadline: '+formatDateTime(inc.sla_resolution_deadline);
   const st=(inc.status||'').toLowerCase();
   if(st==='closed'){
@@ -421,14 +443,95 @@ function renderSLA(inc) {
   setTimeout(()=>bar.style.width=pct+'%',150);
 }
 
+
+async function loadAIFeedback(incidentId) {
+  const card = document.getElementById('aiFeedbackCard');
+  const body = document.getElementById('aiFeedbackBody');
+  if (!card || !body) return;
+
+  card.style.display = 'block';
+
+  try {
+    const token = localStorage.getItem('token');
+    const res = await fetch(`${API_BASE}/incidents/${incidentId}/feedback-summary`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+
+    if (!res.ok) { card.style.display = 'none'; return; }
+
+    const data = await res.json();
+    if (!data.success) { card.style.display = 'none'; return; }
+
+    const d = data.data;
+    const total = (d.helpful || 0) + (d.not_relevant || 0);
+
+    if (total === 0) {
+      body.innerHTML = `
+        <div class="aifb-box none">
+          <div class="aifb-head">
+            <div class="aifb-icon"><i class="fas fa-star"></i></div>
+            <div class="aifb-title">Belum ada feedback</div>
+          </div>
+          <div class="aifb-msg">User belum memberikan penilaian terhadap saran AI untuk insiden ini.</div>
+        </div>`;
+      return;
+    }
+
+    if (d.not_relevant > 0) {
+      const reasons = d.reasons || [];
+      body.innerHTML = `
+        <div class="aifb-box negative">
+          <div class="aifb-head">
+            <div class="aifb-icon"><i class="fas fa-thumbs-down"></i></div>
+            <div class="aifb-title">Saran AI dinilai tidak relevan</div>
+          </div>
+          <div class="aifb-msg">User menilai saran AI untuk insiden ini kurang tepat. Pertimbangkan untuk memperbaiki catatan penyelesaian agar lebih spesifik.</div>
+          ${reasons.length ? reasons.map(r => `<span class="aifb-reason"><i class="fas fa-tag" style="font-size:9px;margin-right:4px;"></i>${r.reason}</span>`).join(' ') : ''}
+          <div class="aifb-stats">
+            <div class="aifb-stat h">
+              <div class="aifb-stat-num">${d.helpful}</div>
+              <div class="aifb-stat-lbl">Membantu</div>
+            </div>
+            <div class="aifb-stat n">
+              <div class="aifb-stat-num">${d.not_relevant}</div>
+              <div class="aifb-stat-lbl">Tidak Relevan</div>
+            </div>
+          </div>
+        </div>`;
+    } else {
+      body.innerHTML = `
+        <div class="aifb-box positive">
+          <div class="aifb-head">
+            <div class="aifb-icon"><i class="fas fa-thumbs-up"></i></div>
+            <div class="aifb-title">Saran AI dinilai membantu</div>
+          </div>
+          <div class="aifb-msg">User menilai saran AI untuk insiden ini sudah tepat dan membantu. Catatan penyelesaian Anda sangat berkontribusi pada kualitas saran AI.</div>
+          <div class="aifb-stats">
+            <div class="aifb-stat h">
+              <div class="aifb-stat-num">${d.helpful}</div>
+              <div class="aifb-stat-lbl">Membantu</div>
+            </div>
+            <div class="aifb-stat n">
+              <div class="aifb-stat-num">${d.not_relevant}</div>
+              <div class="aifb-stat-lbl">Tidak Relevan</div>
+            </div>
+          </div>
+        </div>`;
+    }
+  } catch(err) {
+    console.error('[AI Feedback]', err);
+    card.style.display = 'none';
+  }
+}
+
 async function tanganiInsiden() {
   const token=localStorage.getItem('token');if(!token){window.location.href='../auth/login.html';return;}
-  try {
+  try{
     const res=await fetch(`${API_BASE}/solver/incidents/${_incidentId}/status`,{method:'PUT',headers:{'Authorization':`Bearer ${token}`,'Content-Type':'application/json'},body:JSON.stringify({status:'progress',solver_note:'Sedang ditangani'})});
     if(!res.ok){const e=await res.json();showToast(e.message||'Gagal','err');return;}
     showToast('Status diperbarui ke On Progress!');
     setTimeout(()=>loadDetail(),500);
-  } catch(e){showToast(e.message||'Terjadi kesalahan','err');}
+  }catch(e){showToast(e.message||'Terjadi kesalahan','err');}
 }
 
 async function submitSelesai() {
@@ -439,11 +542,11 @@ async function submitSelesai() {
   errEl.classList.remove('show');
   btn.disabled=true;btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
   const token=localStorage.getItem('token');
-  try {
+  try{
     const res=await fetch(`${API_BASE}/solver/incidents/${_incidentId}/resolve`,{method:'PUT',headers:{'Authorization':`Bearer ${token}`,'Content-Type':'application/json'},body:JSON.stringify({status:'closed',solver_note:note})});
     if(!res.ok){const e=await res.json();errEl.textContent=e.message||'Gagal';errEl.classList.add('show');btn.disabled=false;btn.innerHTML='<i class="fas fa-check"></i> Selesaikan';return;}
     closeModal();showToast('Insiden diselesaikan! AI sedang membuat rekomendasi...');setTimeout(()=>loadDetail(),600);
-  } catch(e){errEl.textContent='Terjadi kesalahan: '+(e.message||'Unknown');errEl.classList.add('show');btn.disabled=false;btn.innerHTML='<i class="fas fa-check"></i> Selesaikan';}
+  }catch(e){errEl.textContent='Terjadi kesalahan: '+(e.message||'Unknown');errEl.classList.add('show');btn.disabled=false;btn.innerHTML='<i class="fas fa-check"></i> Selesaikan';}
 }
 
 async function loadDetail() {
@@ -453,7 +556,7 @@ async function loadDetail() {
   const urlParams=new URLSearchParams(window.location.search);
   _incidentId=urlParams.get('id');
   if(!_incidentId){showToast('ID Insiden tidak ditemukan','err');setTimeout(()=>window.location.href='incidents.html',1500);return;}
-  try {
+  try{
     const res=await fetch(`${API_BASE}/solver/incidents/${_incidentId}`,{headers:{'Authorization':`Bearer ${token}`}});
     if(res.status===401){window.location.href='../auth/login.html';return;}
     if(res.status===404){showToast('Insiden tidak ditemukan','err');setTimeout(()=>window.location.href='incidents.html',1500);return;}
@@ -479,7 +582,6 @@ async function loadDetail() {
       <span class="hb">${(inc.priority||'–').toUpperCase()}</span>
       <span class="hb">${(inc.status||'–').toUpperCase()}</span>
     `;
-
     document.getElementById('iStatus').innerHTML=getStatusPill(inc.status);
     document.getElementById('iPriority').innerHTML=getPriorityBadge(inc.priority);
     document.getElementById('iCategory').textContent=inc.category||inc.type||'–';
@@ -489,16 +591,12 @@ async function loadDetail() {
     document.getElementById('iUpdated').textContent=formatDateTime(inc.updated_at);
     document.getElementById('iId').textContent=`#${inc.id||'–'}`;
     document.getElementById('iDesc').textContent=inc.description||inc.desc||'Tidak ada deskripsi.';
-
     if(inc.admin_note){document.getElementById('adminNoteBox').innerHTML=`<div class="admin-note"><i class="fas fa-circle-info"></i><div><strong>Catatan Admin:</strong><br>${inc.admin_note}</div></div>`;}
 
-    const photoWrap=document.getElementById('photoWrap');
-    const photoEmpty=document.getElementById('photoEmpty');
-    const photoHint=document.getElementById('photoHint');
+    const photoWrap=document.getElementById('photoWrap'),photoEmpty=document.getElementById('photoEmpty'),photoHint=document.getElementById('photoHint');
     if(inc.photo){
-      const photoUrl=inc.photo.startsWith('http')?inc.photo:`http://localhost:3000/uploads/incidents/${inc.photo}`;
-      const img=document.createElement('img');
-      img.src=photoUrl;img.alt='Foto Insiden';img.style.cursor='zoom-in';
+      const url=inc.photo.startsWith('http')?inc.photo:`http://localhost:3000/uploads/incidents/${inc.photo}`;
+      const img=document.createElement('img');img.src=url;img.alt='Foto Insiden';img.style.cursor='zoom-in';
       img.onerror=function(){this.style.display='none';photoEmpty.style.display='flex';photoHint.style.display='none';};
       img.onload=function(){photoEmpty.style.display='none';photoHint.style.display='block';};
       photoWrap.appendChild(img);
@@ -509,15 +607,19 @@ async function loadDetail() {
     if(inc.solver_note){document.getElementById('solverNoteCard').style.display='block';document.getElementById('iSolverNote').textContent=inc.solver_note;}
 
     const st=(inc.status||'open').toLowerCase();
+    if(st==='closed'||st==='resolved') {
+      loadAIFeedback(_incidentId);
+    }
+
     const aw=document.getElementById('actionWrap');
     if(st==='open'){
-      aw.innerHTML=`<button class="btn-full btn-tangani" onclick="tanganiInsiden()"><i class="fas fa-play"></i> Tangani Insiden</button><a href="incidents.html" class="btn-full btn-back-full" style="text-decoration:none;"><i class="fas fa-arrow-left"></i> Kembali</a>`;
+      aw.innerHTML=`<button class="btn-full btn-tangani" onclick="tanganiInsiden()"><i class="fas fa-play"></i> Tangani Insiden</button><a href="incidents.html" class="btn-full btn-back-full" style="text-decoration:none;margin-top:0;"><i class="fas fa-arrow-left"></i> Kembali</a>`;
     } else if(st==='progress'||st==='in_progress'){
       aw.innerHTML=`<button class="btn-full btn-selesai" onclick="openModal()"><i class="fas fa-check-circle"></i> Selesaikan Insiden</button><a href="incidents.html" class="btn-full btn-back-full" style="text-decoration:none;"><i class="fas fa-arrow-left"></i> Kembali</a>`;
     } else {
       aw.innerHTML=`<div class="success-banner"><i class="fas fa-check-circle"></i> Insiden sudah diselesaikan</div><a href="incidents.html" class="btn-full btn-back-full" style="margin-top:6px;text-decoration:none;"><i class="fas fa-arrow-left"></i> Kembali</a>`;
     }
-  } catch(e){console.error(e);showToast('Gagal memuat data','err');}
+  }catch(e){console.error(e);showToast('Gagal memuat data','err');}
 }
 
 document.addEventListener('DOMContentLoaded',()=>{

@@ -10,11 +10,6 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --r1: #f28b82;
-      --r2: #e96b6b;
-      --r3: #d94f5c;
-      --r4: #b83048;
-
       --red:      #e63946;
       --red-dark: #c1121f;
       --red-50:   #fff5f7;
@@ -61,196 +56,71 @@
       overflow-x: hidden;
     }
 
-    @keyframes slideLeft {
-      from { transform: translateX(-100%); opacity: 0; }
-      to   { transform: translateX(0);    opacity: 1; }
-    }
-    @keyframes fadeDown {
-      from { transform: translateY(-14px); opacity: 0; }
-      to   { transform: translateY(0);    opacity: 1; }
-    }
-    @keyframes fadeUp {
-      from { transform: translateY(18px); opacity: 0; }
-      to   { transform: translateY(0);   opacity: 1; }
-    }
-    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
-    @keyframes cardPop {
-      0%   { transform: translateY(22px) scale(.97); opacity: 0; }
-      70%  { transform: translateY(-4px) scale(1.01); }
-      100% { transform: translateY(0)    scale(1);    opacity: 1; }
-    }
-    @keyframes numCount {
-      from { transform: translateY(12px); opacity: 0; }
-      to   { transform: translateY(0);   opacity: 1; }
-    }
-    @keyframes rowSlide {
-      from { transform: translateX(-10px); opacity: 0; }
-      to   { transform: translateX(0);    opacity: 1; }
-    }
-    @keyframes modalPop {
-      from { transform: translateY(-20px) scale(.96); opacity: 0; }
-      to   { transform: translateY(0)     scale(1);   opacity: 1; }
-    }
-    @keyframes toastSlide {
-      from { transform: translateX(110%); opacity: 0; }
-      to   { transform: translateX(0);   opacity: 1; }
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    @keyframes pulse {
-      0%,100% { transform: scale(1);   opacity: 1; }
-      50%     { transform: scale(1.5); opacity: .5; }
-    }
-    @keyframes bubbleFloat {
-      0%,100% { transform: translateY(0) scale(1); }
-      50%     { transform: translateY(-6px) scale(1.04); }
-    }
+    @keyframes slideLeft  { from{transform:translateX(-100%);opacity:0} to{transform:translateX(0);opacity:1} }
+    @keyframes fadeDown   { from{transform:translateY(-14px);opacity:0} to{transform:translateY(0);opacity:1} }
+    @keyframes fadeUp     { from{transform:translateY(18px);opacity:0}  to{transform:translateY(0);opacity:1} }
+    @keyframes fadeIn     { from{opacity:0} to{opacity:1} }
+    @keyframes numCount   { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes numIn      { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes rowSlide   { from{transform:translateX(-10px);opacity:0} to{transform:translateX(0);opacity:1} }
+    @keyframes modalPop   { from{transform:translateY(-20px) scale(.96);opacity:0} to{transform:translateY(0) scale(1);opacity:1} }
+    @keyframes toastSlide { from{transform:translateX(110%);opacity:0} to{transform:translateX(0);opacity:1} }
+    @keyframes spin       { to{transform:rotate(360deg)} }
+    @keyframes pulse      { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.5);opacity:.5} }
+    @keyframes floatA     { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+    @keyframes floatB     { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }
+    @keyframes shimmer    { 0%{left:-70%} 100%{left:130%} }
+    @keyframes iconHop    { 0%{transform:scale(1)} 40%{transform:scale(1.18) rotate(-8deg)} 70%{transform:scale(.94) rotate(3deg)} 100%{transform:scale(1)} }
 
     /* ════ SIDEBAR ════ */
     .sidebar {
       width: var(--sidebar);
       background: var(--white);
-      display: flex;
-      flex-direction: column;
+      display: flex; flex-direction: column;
       padding: 24px 14px;
       min-height: 100vh;
-      position: fixed;
-      top: 0; left: 0; bottom: 0;
+      position: fixed; top:0; left:0; bottom:0;
       z-index: 200;
       border-right: 1px solid var(--red-100);
       box-shadow: 2px 0 18px rgba(0,0,0,0.055);
       animation: slideLeft .42s cubic-bezier(.22,1,.36,1);
     }
-    .sb-logo {
-      display: flex; align-items: center; gap: 10px;
-      padding: 4px 8px 24px;
-      border-bottom: 1px solid var(--gray-100);
-      margin-bottom: 6px;
-    }
+    .sb-logo { display:flex; align-items:center; gap:10px; padding:4px 8px 24px; border-bottom:1px solid var(--gray-100); margin-bottom:6px; }
     .sb-logo img { width:36px; height:36px; object-fit:contain; border-radius:8px; }
-    .sb-logo-icon {
-      width:36px; height:36px; border-radius:9px;
-      background: linear-gradient(135deg, var(--red), var(--red-dark));
-      display:flex; align-items:center; justify-content:center;
-      color:#fff; font-size:16px;
-      box-shadow: 0 4px 10px rgba(230,57,70,.3);
-      flex-shrink:0;
-    }
+    .sb-logo-icon { width:36px; height:36px; border-radius:9px; background:linear-gradient(135deg,var(--red),var(--red-dark)); display:flex; align-items:center; justify-content:center; color:#fff; font-size:16px; box-shadow:0 4px 10px rgba(230,57,70,.3); flex-shrink:0; }
     .sb-brand { font-size:15px; font-weight:800; color:#0f172a; letter-spacing:-.2px; }
-    .sb-brand span { color: var(--red); }
-    .sb-section {
-      font-size: 9.5px; font-weight: 700;
-      color: #94a3b8; text-transform: uppercase;
-      letter-spacing: 1.3px; padding: 0 10px;
-      margin: 18px 0 6px;
-    }
-    .nav-a {
-      display: flex; align-items: center; gap: 10px;
-      padding: 10px 12px;
-      border-radius: var(--rsm);
-      font-size: 13px; font-weight: 600;
-      color: #1e293b;
-      text-decoration: none;
-      transition: all .2s;
-      position: relative;
-      margin-bottom: 2px;
-    }
-    .nav-a i { width:16px; text-align:center; font-size:13px; color:inherit; }
-    .nav-a:hover { background: var(--red-50); color: var(--red); }
-    .nav-a.active {
-      background: linear-gradient(135deg, var(--red), #f05060);
-      color: #fff;
-      box-shadow: 0 4px 14px rgba(230,57,70,.28);
-    }
-    .nav-a.active::before {
-      content:'';
-      position:absolute; left:-14px;
-      width:4px; height:22px;
-      background: var(--red);
-      border-radius: 0 3px 3px 0;
-    }
+    .sb-brand span { color:var(--red); }
+    .sb-section { font-size:9.5px; font-weight:700; color:#94a3b8; text-transform:uppercase; letter-spacing:1.3px; padding:0 10px; margin:18px 0 6px; }
+    .nav-a { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:var(--rsm); font-size:13px; font-weight:600; color:#1e293b; text-decoration:none; transition:all .2s; position:relative; margin-bottom:2px; }
+    .nav-a i { width:16px; text-align:center; font-size:13px; }
+    .nav-a:hover { background:var(--red-50); color:var(--red); }
+    .nav-a.active { background:linear-gradient(135deg,var(--red),#f05060); color:#fff; box-shadow:0 4px 14px rgba(230,57,70,.28); }
+    .nav-a.active::before { content:''; position:absolute; left:-14px; width:4px; height:22px; background:var(--red); border-radius:0 3px 3px 0; }
     .sb-spacer { flex:1; }
     .sb-divider { height:1px; background:var(--gray-100); margin:12px 0; }
-    .sb-logout {
-      display:flex; align-items:center; gap:10px;
-      padding:10px 12px; color:#374151;
-      font-size:13px; font-weight:600;
-      cursor:pointer; border:none; background:none;
-      font-family:inherit; border-radius:var(--rsm);
-      transition:all .2s; width:100%;
-    }
+    .sb-logout { display:flex; align-items:center; gap:10px; padding:10px 12px; color:#374151; font-size:13px; font-weight:600; cursor:pointer; border:none; background:none; font-family:inherit; border-radius:var(--rsm); transition:all .2s; width:100%; }
     .sb-logout:hover { background:#fff5f5; color:var(--red); }
 
     /* ════ MAIN ════ */
-    .main {
-      margin-left: var(--sidebar);
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-    .topbar {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 26px 32px 0;
-      animation: fadeDown .45s cubic-bezier(.22,1,.36,1);
-    }
-    .tb-left h1 {
-      font-size: 22px; font-weight: 800;
-      color: #0f172a; letter-spacing: -.4px;
-    }
-    .tb-left h1 span { color: var(--red); }
-    .tb-left p {
-      font-size: 12px; color: #475569;
-      margin-top: 4px; font-weight: 500;
-      display: flex; align-items: center; gap: 5px;
-    }
-    .tb-left p i { font-size: 11px; }
+    .main { margin-left:var(--sidebar); flex:1; display:flex; flex-direction:column; min-height:100vh; }
+    .topbar { display:flex; align-items:center; justify-content:space-between; padding:26px 32px 0; animation:fadeDown .45s cubic-bezier(.22,1,.36,1); }
+    .tb-left h1 { font-size:22px; font-weight:800; color:#0f172a; letter-spacing:-.4px; }
+    .tb-left h1 span { color:var(--red); }
+    .tb-left p { font-size:12px; color:#475569; margin-top:4px; font-weight:500; display:flex; align-items:center; gap:5px; }
+    .tb-left p i { font-size:11px; }
     .tb-right { display:flex; align-items:center; gap:12px; }
-    .srch {
-      display:flex; align-items:center; gap:8px;
-      background:var(--white); border:1.5px solid var(--gray-200);
-      border-radius:11px; padding:9px 15px;
-      min-width:200px; transition:border-color .2s;
-      box-shadow: var(--shadow-sm);
-    }
+    .srch { display:flex; align-items:center; gap:8px; background:var(--white); border:1.5px solid var(--gray-200); border-radius:11px; padding:9px 15px; min-width:200px; transition:border-color .2s; box-shadow:var(--shadow-sm); }
     .srch:focus-within { border-color:var(--red-light); }
     .srch i { color:#64748b; font-size:13px; }
-    .srch input {
-      border:none; outline:none;
-      font-size:13px; font-family:inherit;
-      color:#0f172a; background:transparent; flex:1;
-    }
+    .srch input { border:none; outline:none; font-size:13px; font-family:inherit; color:#0f172a; background:transparent; flex:1; }
     .srch input::placeholder { color:#64748b; }
     .notif-wrap { position:relative; }
-    .notif-btn {
-      width:38px; height:38px;
-      background:var(--white); border:1.5px solid var(--gray-200);
-      border-radius:11px;
-      display:flex; align-items:center; justify-content:center;
-      cursor:pointer; transition:all .2s;
-      box-shadow: var(--shadow-sm);
-    }
+    .notif-btn { width:38px; height:38px; background:var(--white); border:1.5px solid var(--gray-200); border-radius:11px; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all .2s; box-shadow:var(--shadow-sm); }
     .notif-btn:hover { border-color:var(--red-light); background:var(--red-50); }
     .notif-btn i { font-size:15px; color:#475569; }
-    #notifBadge {
-      position:absolute; top:-5px; right:-5px;
-      background:var(--red); color:#fff;
-      border-radius:50%; width:18px; height:18px;
-      font-size:9.5px; font-weight:800;
-      display:none; align-items:center; justify-content:center;
-      border:2px solid var(--white); z-index:1;
-    }
-    .notif-dd {
-      display:none; position:fixed; top:76px; right:24px;
-      width:340px; background:var(--white);
-      border-radius:var(--radius);
-      box-shadow:0 8px 30px rgba(0,0,0,.12);
-      z-index:999; border:1.5px solid var(--gray-200);
-      overflow:hidden;
-    }
-    .notif-hdr {
-      padding:14px 18px; border-bottom:1px solid var(--gray-100);
-      display:flex; justify-content:space-between; align-items:center;
-    }
+    #notifBadge { position:absolute; top:-5px; right:-5px; background:var(--red); color:#fff; border-radius:50%; width:18px; height:18px; font-size:9.5px; font-weight:800; display:none; align-items:center; justify-content:center; border:2px solid var(--white); z-index:1; }
+    .notif-dd { display:none; position:fixed; top:76px; right:24px; width:340px; background:var(--white); border-radius:var(--radius); box-shadow:0 8px 30px rgba(0,0,0,.12); z-index:999; border:1.5px solid var(--gray-200); overflow:hidden; }
+    .notif-hdr { padding:14px 18px; border-bottom:1px solid var(--gray-100); display:flex; justify-content:space-between; align-items:center; }
     .notif-hdr strong { font-size:14px; font-weight:800; color:var(--gray-900); }
     .notif-hdr a { font-size:12px; color:var(--red); cursor:pointer; font-weight:600; }
     .notif-list { max-height:320px; overflow-y:auto; }
@@ -260,145 +130,171 @@
     .ni-title { font-size:13px; font-weight:700; color:var(--gray-900); margin-bottom:2px; }
     .ni-msg   { font-size:12px; color:var(--gray-500); line-height:1.4; }
     .ni-time  { font-size:11px; color:var(--gray-400); margin-top:3px; }
-    .ni-arrow { font-size:10px; color:#94a3b8; margin-top:4px; display:flex; align-items:center; gap:4px; font-weight:600; cursor:pointer; }
-    .ni-arrow i { font-size:9px; }
-    .ni.has-incident .ni-arrow { color:var(--red-light); }
-    .ni.has-incident:hover { background:var(--red-50); }
-
-    /* ── uchip: nama saja tanpa chevron ── */
-    .uchip {
-      display:flex; align-items:center; gap:8px;
-      padding:6px 14px 6px 8px;
-      background:var(--white); border:1.5px solid var(--gray-200);
-      border-radius:11px;
-      box-shadow: var(--shadow-sm);
-    }
-    .uchip-ava {
-      width:27px; height:27px; border-radius:50%;
-      background:linear-gradient(135deg,var(--red),var(--red-dark));
-      display:flex; align-items:center; justify-content:center;
-      font-size:11px; font-weight:800; color:#fff;
-    }
+    .ni-arrow { font-size:10px; color:#94a3b8; margin-top:4px; display:flex; align-items:center; gap:4px; font-weight:600; }
+    .uchip { display:flex; align-items:center; gap:8px; padding:6px 14px 6px 8px; background:var(--white); border:1.5px solid var(--gray-200); border-radius:11px; box-shadow:var(--shadow-sm); }
+    .uchip-ava { width:27px; height:27px; border-radius:50%; background:linear-gradient(135deg,var(--red),var(--red-dark)); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; color:#fff; }
     .uchip-name { font-size:13px; font-weight:700; color:#0f172a; }
 
-    /* ════ CONTENT ════ */
-    .content {
-      padding: 22px 32px 48px;
-      display: flex; flex-direction: column; gap: 22px;
-      animation: fadeIn .5s ease;
-    }
+    .content { padding:22px 32px 48px; display:flex; flex-direction:column; gap:22px; animation:fadeIn .5s ease; }
+    
+    .stat-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
 
-    /* ════ STAT CARDS ════ */
+    .sc {
+      border-radius:22px;
+      padding:20px 20px 18px;
+      position:relative; overflow:hidden;
+      min-height:148px;
+      display:flex; flex-direction:column; justify-content:space-between;
+      animation:fadeUp .55s cubic-bezier(.22,1,.36,1) both;
+      transition:transform .28s cubic-bezier(.22,1,.36,1), box-shadow .28s ease;
+      cursor:default;
+    }
+    .sc:nth-child(1){animation-delay:.06s}
+    .sc:nth-child(2){animation-delay:.14s}
+    .sc:nth-child(3){animation-delay:.22s}
+    .sc:nth-child(4){animation-delay:.30s}
+    .sc:hover { transform:translateY(-5px); }
+    .sc:hover .sc-icon { animation:iconHop .45s cubic-bezier(.34,1.56,.64,1) forwards; }
+
+    .sc::after {
+      content:''; position:absolute; top:0; left:-70%;
+      width:38%; height:100%;
+      background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);
+      transform:skewX(-18deg); pointer-events:none;
+    }
+    .sc:hover::after { animation:shimmer .5s ease forwards; }
+
+
+    /* ════ Card════ */
+
     .stat-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 16px;
     }
+
+    /* Base card */
     .sc {
-      border-radius: var(--radius);
-      padding: 20px 22px 18px;
+      border-radius: 22px;
+      padding: 20px 20px 18px;
       position: relative; overflow: hidden;
-      min-height: 118px;
+      min-height: 148px;
       display: flex; flex-direction: column; justify-content: space-between;
-      box-shadow: 0 6px 24px rgba(180,20,40,.22);
-      animation: cardPop .55s cubic-bezier(.22,1,.36,1) both;
-      transition: transform .22s, box-shadow .22s;
+      animation: fadeUp .55s cubic-bezier(.22,1,.36,1) both;
+      transition: transform .28s cubic-bezier(.22,1,.36,1), box-shadow .28s ease;
       cursor: default;
     }
-    .sc:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(180,20,40,.30); }
-    .sc:nth-child(1){ animation-delay:.04s }
-    .sc:nth-child(2){ animation-delay:.10s }
-    .sc:nth-child(3){ animation-delay:.16s }
-    .sc:nth-child(4){ animation-delay:.22s }
-    .sc::before, .sc::after {
-      content:''; position:absolute; border-radius:50%;
-      opacity:.30; pointer-events:none;
-      animation: bubbleFloat 4s ease-in-out infinite;
+    .sc:nth-child(1) { animation-delay: .06s; }
+    .sc:nth-child(2) { animation-delay: .14s; }
+    .sc:nth-child(3) { animation-delay: .22s; }
+    .sc:nth-child(4) { animation-delay: .30s; }
+
+    .sc:hover { transform: translateY(-6px) scale(1.018); }
+    .sc:hover .sc-icon { animation: iconHop .45s cubic-bezier(.34,1.56,.64,1) forwards; }
+
+    /* Shimmer sweep on hover */
+    .sc::after {
+      content: ''; position: absolute; top: 0; left: -70%;
+      width: 38%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.22), transparent);
+      transform: skewX(-18deg); pointer-events: none;
     }
-    .sc-1 { background: linear-gradient(135deg, #f28b82, #ef6b6b); }
-    .sc-1::before { background:#ffb3ae; width:100px; height:100px; top:-26px; right:8px; animation-delay:0s; }
-    .sc-1::after  { background:#d94040; width: 64px; height: 64px; top: 34px; right:-14px; animation-delay:.8s; }
-    .sc-2 { background: linear-gradient(135deg, #e96b6b, #d95555); }
-    .sc-2::before { background:#f4a0a0; width:96px; height:96px; top:-22px; right:14px; animation-delay:.3s; }
-    .sc-2::after  { background:#c03030; width:58px; height:58px; bottom:-8px; right:10px; animation-delay:1.1s; }
-    .sc-3 { background: linear-gradient(135deg, #d94f5c, #c83a4a); }
-    .sc-3::before { background:#ee8a96; width:92px; height:92px; top:-20px; right:10px; animation-delay:.6s; }
-    .sc-3::after  { background:#a02030; width:56px; height:56px; top:32px;  right:-10px; animation-delay:1.4s; }
-    .sc-4 { background: linear-gradient(135deg, #b83048, #a02038); }
-    .sc-4::before { background:#de7080; width:88px; height:88px; top:-20px; right:12px; animation-delay:.9s; }
-    .sc-4::after  { background:#7c1028; width:52px; height:52px; bottom:-8px; right:18px; animation-delay:1.7s; }
-    .sc-label {
-      display: flex; align-items: center; gap: 8px;
-      font-size: 11px; font-weight: 700;
-      color: rgba(255,255,255,.95);
-      text-transform: uppercase; letter-spacing: .6px;
+    .sc:hover::after { animation: shimmer .5s ease forwards; }
+
+    /* ── Bubble elements ── */
+    .bbl {
+      position: absolute; border-radius: 50%;
+      pointer-events: none; background: rgba(255,255,255,.28);
     }
+    .bbl-lg { width: 105px; height: 105px; bottom: -28px; right: -20px; }
+    .bbl-sm { width:  60px; height:  60px; bottom:  24px; right:  62px; opacity: .7; }
+
+    .sc-1 {
+      background: linear-gradient(125deg, #e84c58 0%, #f07888 40%, #f9c5ca 100%);
+      box-shadow: 0 8px 28px rgba(232,76,88,.28);
+    }
+    .sc-1:hover { box-shadow: 0 18px 44px rgba(232,76,88,.42); }
+    .sc-1 .bbl-lg { animation: floatA 5.5s ease-in-out infinite; }
+    .sc-1 .bbl-sm { animation: floatSm 5s  ease-in-out infinite .7s; }
+    .sc-1 .sc-lbl  { color: rgba(255,255,255,.90); }
+    .sc-1 .sc-num  { color: #fff; text-shadow: 0 2px 14px rgba(0,0,0,.14); }
+    .sc-1 .sc-icon { background: rgba(255,255,255,.25); border: 1.5px solid rgba(255,255,255,.38); color: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+    .sc-1 .sc-foot { color: rgba(255,255,255,.80); }
+    .sc-1 .sc-div  { background: rgba(255,255,255,.28); }
+
+    .sc-2 {
+      background: linear-gradient(125deg, #b8202e 0%, #d84a5a 40%, #f09aa8 100%);
+      box-shadow: 0 8px 28px rgba(184,32,46,.28);
+    }
+    .sc-2:hover { box-shadow: 0 18px 44px rgba(184,32,46,.42); }
+    .sc-2 .bbl-lg { animation: floatB 5.8s ease-in-out infinite 1s; }
+    .sc-2 .bbl-sm { animation: floatSm 5.2s ease-in-out infinite 1.3s; }
+    .sc-2 .sc-lbl  { color: rgba(255,255,255,.90); }
+    .sc-2 .sc-num  { color: #fff; text-shadow: 0 2px 14px rgba(0,0,0,.14); }
+    .sc-2 .sc-icon { background: rgba(255,255,255,.22); border: 1.5px solid rgba(255,255,255,.34); color: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+    .sc-2 .sc-foot { color: rgba(255,255,255,.78); }
+    .sc-2 .sc-div  { background: rgba(255,255,255,.22); }
+
+
+    .sc-3 {
+      background: linear-gradient(125deg, #e04060 0%, #ec7888 40%, #fbbdc8 100%);
+      box-shadow: 0 8px 28px rgba(224,64,96,.26);
+    }
+    .sc-3:hover { box-shadow: 0 18px 44px rgba(224,64,96,.40); }
+    .sc-3 .bbl-lg { animation: floatC 6s   ease-in-out infinite 2s; }
+    .sc-3 .bbl-sm { animation: floatSm 5.4s ease-in-out infinite 2.3s; }
+    .sc-3 .sc-lbl  { color: rgba(255,255,255,.90); }
+    .sc-3 .sc-num  { color: #fff; text-shadow: 0 2px 14px rgba(0,0,0,.16); }
+    .sc-3 .sc-icon { background: rgba(255,255,255,.22); border: 1.5px solid rgba(255,255,255,.34); color: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+    .sc-3 .sc-foot { color: rgba(255,255,255,.78); }
+    .sc-3 .sc-div  { background: rgba(255,255,255,.20); }
+
+    .sc-4 {
+      background: linear-gradient(125deg, #8c1b28 0%, #b82535 40%, #e07082 100%);
+      box-shadow: 0 8px 28px rgba(140,27,40,.32);
+    }
+    .sc-4:hover { box-shadow: 0 18px 44px rgba(140,27,40,.46); }
+    .sc-4 .bbl-lg { animation: floatD 6.2s ease-in-out infinite 3s; }
+    .sc-4 .bbl-sm { animation: floatSm 5.6s ease-in-out infinite 3.3s; }
+    .sc-4 .sc-lbl  { color: rgba(255,255,255,.85); }
+    .sc-4 .sc-num  { color: #fff; text-shadow: 0 2px 14px rgba(0,0,0,.22); }
+    .sc-4 .sc-icon { background: rgba(255,255,255,.18); border: 1.5px solid rgba(255,255,255,.28); color: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.16); }
+    .sc-4 .sc-foot { color: rgba(255,255,255,.72); }
+    .sc-4 .sc-div  { background: rgba(255,255,255,.15); }
+
+    /* Card internals */
+    .sc-top  { display: flex; align-items: flex-start; justify-content: space-between; position: relative; z-index: 2; }
+    .sc-lbl  { font-size: 9.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .8px; line-height: 1.4; }
     .sc-icon {
-      width: 26px; height: 26px; border-radius: 8px;
-      background: rgba(255,255,255,.20);
+      width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
-      font-size: 12px;
+      font-size: 16px; transition: all .28s ease;
     }
-    .sc-num {
-      font-size: 40px; font-weight: 900;
-      color: #fff; letter-spacing: -1.5px;
-      position: relative; z-index: 1; line-height: 1;
-      animation: numCount .6s cubic-bezier(.22,1,.36,1) both;
+    .sc-div  { height: 1px; margin: 0; position: relative; z-index: 2; }
+    .sc-num  {
+      font-size: 44px; font-weight: 900; line-height: 1;
+      letter-spacing: -1.5px; position: relative; z-index: 2;
+      animation: numIn .6s cubic-bezier(.22,1,.36,1) .45s both;
     }
-    .sc:nth-child(1) .sc-num { animation-delay:.18s }
-    .sc:nth-child(2) .sc-num { animation-delay:.26s }
-    .sc:nth-child(3) .sc-num { animation-delay:.34s }
-    .sc:nth-child(4) .sc-num { animation-delay:.42s }
     .sc-foot {
-      font-size: 11px; color: rgba(255,255,255,.85);
-      font-weight: 600; display:flex; align-items:center; gap:5px;
+      font-size: 10.5px; font-weight: 600;
+      display: flex; align-items: center; gap: 5px;
+      position: relative; z-index: 2;
     }
-    .sc-foot i { font-size: 10px; }
+    .sc-foot i { font-size: 9px; }
 
     /* ════ TABLE PANEL ════ */
-    .panel {
-      background: var(--white);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      border: 1px solid var(--gray-100);
-      overflow: hidden;
-      animation: fadeUp .5s cubic-bezier(.22,1,.36,1) .28s both;
-    }
-    .panel-top {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 20px 24px 16px;
-      border-bottom: 1.5px solid var(--gray-100);
-    }
-    .panel-title { font-size: 16px; font-weight: 800; color: #0f172a; }
-    .panel-sub   { font-size: 12px; color: #475569; font-weight: 500; margin-top:2px; }
-    .panel-badge {
-      background: var(--red-50); color: var(--red);
-      border: 1px solid var(--red-100);
-      font-size: 11.5px; font-weight: 700;
-      padding: 4px 13px; border-radius: 20px;
-    }
+    .panel { background:var(--white); border-radius:var(--radius); box-shadow:var(--shadow); border:1px solid var(--gray-100); overflow:hidden; animation:fadeUp .5s cubic-bezier(.22,1,.36,1) .28s both; }
+    .panel-top { display:flex; align-items:center; justify-content:space-between; padding:20px 24px 16px; border-bottom:1.5px solid var(--gray-100); }
+    .panel-title { font-size:16px; font-weight:800; color:#0f172a; }
+    .panel-sub   { font-size:12px; color:#475569; font-weight:500; margin-top:2px; }
+    .panel-badge { background:var(--red-50); color:var(--red); border:1px solid var(--red-100); font-size:11.5px; font-weight:700; padding:4px 13px; border-radius:20px; }
     table { width:100%; border-collapse:collapse; }
-    thead th {
-      padding: 12px 20px 11px;
-      font-size: 11px; font-weight: 700;
-      color: #334155; text-align:left;
-      text-transform:uppercase; letter-spacing:.5px;
-      border-bottom: 1.5px solid var(--gray-100);
-      white-space:nowrap;
-    }
-    tbody tr {
-      transition: background .15s;
-      animation: rowSlide .3s ease both;
-    }
-    tbody tr:hover { background: var(--red-50); }
-    tbody td {
-      padding: 13px 20px;
-      font-size: 13px; font-weight: 600;
-      color: #0f172a;
-      border-bottom: 1px solid var(--gray-50);
-      vertical-align: middle;
-    }
-    tbody tr:last-child td { border-bottom: none; }
+    thead th { padding:12px 20px 11px; font-size:11px; font-weight:700; color:#334155; text-align:left; text-transform:uppercase; letter-spacing:.5px; border-bottom:1.5px solid var(--gray-100); white-space:nowrap; }
+    tbody tr { transition:background .15s; animation:rowSlide .3s ease both; }
+    tbody tr:hover { background:var(--red-50); }
+    tbody td { padding:13px 20px; font-size:13px; font-weight:600; color:#0f172a; border-bottom:1px solid var(--gray-50); vertical-align:middle; }
+    tbody tr:last-child td { border-bottom:none; }
 
     .badge { display:inline-flex; align-items:center; gap:3px; padding:3px 10px; border-radius:20px; font-size:11.5px; font-weight:700; }
     .b-high   { background:#fdecea; color:#e05b5b; }
@@ -407,7 +303,7 @@
 
     .sp { display:inline-flex; align-items:center; gap:5px; padding:4px 10px; border-radius:20px; font-size:11.5px; font-weight:700; }
     .sp::before { content:''; width:6px; height:6px; border-radius:50%; flex-shrink:0; }
-    .sp-open        { background:var(--blue-50);   color:var(--blue); }
+    .sp-open        { background:var(--blue-50);  color:var(--blue); }
     .sp-open::before { background:var(--blue); }
     .sp-progress    { background:#fff7ed; color:var(--amber); }
     .sp-progress::before { background:var(--amber); animation:pulse 1.4s ease infinite; }
@@ -420,43 +316,21 @@
     .sla-over { background:var(--red-50);   color:var(--red);   border:1px solid var(--red-100); }
     .sla-none { background:var(--gray-100); color:var(--gray-700); border:1px solid var(--gray-200); }
 
-    .btn {
-      display:inline-flex; align-items:center; gap:5px;
-      padding:6px 13px; border:none; border-radius:9px;
-      font-size:12px; font-weight:700;
-      cursor:pointer; font-family:inherit;
-      transition:all .2s; white-space:nowrap;
-    }
-    .btn-tangani { background:var(--blue-50);  color:var(--blue);  border:1.5px solid var(--blue-100); }
+    .btn { display:inline-flex; align-items:center; gap:5px; padding:6px 13px; border:none; border-radius:9px; font-size:12px; font-weight:700; cursor:pointer; font-family:inherit; transition:all .2s; white-space:nowrap; }
+    .btn-tangani { background:var(--blue-50); color:var(--blue); border:1.5px solid var(--blue-100); }
     .btn-tangani:hover { background:var(--blue); color:#fff; transform:translateY(-1px); box-shadow:0 4px 12px rgba(37,99,235,.28); }
     .btn-selesai { background:var(--green-50); color:var(--green); border:1.5px solid var(--green-100); margin-left:4px; }
     .btn-selesai:hover { background:var(--green); color:#fff; transform:translateY(-1px); box-shadow:0 4px 12px rgba(22,163,74,.28); }
     .btn i { font-size:11px; }
 
-    .empty {
-      text-align:center; padding:48px 20px;
-      color:var(--gray-400); font-size:13.5px; font-weight:600;
-    }
-    .empty i { font-size:36px; display:block; margin-bottom:12px; opacity:.25; }
+    .empty { text-align:center; padding:48px 20px; color:var(--red-light); font-size:13.5px; font-weight:600; }
+    .empty i { font-size:36px; display:block; margin-bottom:12px; opacity:.45; color:var(--red-light); }
 
     /* ════ MODAL ════ */
-    .overlay {
-      display:none; position:fixed; inset:0;
-      background:rgba(0,0,0,.42); z-index:1000;
-      align-items:center; justify-content:center;
-      backdrop-filter:blur(4px);
-    }
+    .overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.42); z-index:1000; align-items:center; justify-content:center; backdrop-filter:blur(4px); }
     .overlay.active { display:flex; }
-    .modal {
-      background:var(--white); border-radius:var(--radius);
-      box-shadow:0 20px 60px rgba(0,0,0,.16);
-      width:90%; max-width:460px; overflow:hidden;
-      animation:modalPop .3s cubic-bezier(.22,1,.36,1);
-    }
-    .modal-hdr {
-      padding:20px 24px; display:flex; justify-content:space-between; align-items:center;
-      background:linear-gradient(135deg,var(--red),var(--red-dark));
-    }
+    .modal { background:var(--white); border-radius:var(--radius); box-shadow:0 20px 60px rgba(0,0,0,.16); width:90%; max-width:460px; overflow:hidden; animation:modalPop .3s cubic-bezier(.22,1,.36,1); }
+    .modal-hdr { padding:20px 24px; display:flex; justify-content:space-between; align-items:center; background:linear-gradient(135deg,var(--red),var(--red-dark)); }
     .modal-hdr h3 { font-size:15px; font-weight:800; color:#fff; margin:0; display:flex; align-items:center; gap:8px; }
     .modal-x { background:rgba(255,255,255,.18); border:none; color:#fff; width:28px; height:28px; border-radius:8px; cursor:pointer; font-size:13px; display:flex; align-items:center; justify-content:center; transition:background .2s; }
     .modal-x:hover { background:rgba(255,255,255,.32); }
@@ -479,76 +353,41 @@
     .mbtn-submit:disabled { background:var(--gray-300); cursor:not-allowed; transform:none; box-shadow:none; }
 
     /* ════ TOAST ════ */
-    .toast {
-      position:fixed; bottom:24px; right:24px;
-      padding:12px 18px; border-radius:var(--rsm); color:#fff;
-      font-size:13px; font-weight:700; z-index:9999;
-      box-shadow:0 8px 24px rgba(0,0,0,.14);
-      display:flex; align-items:center; gap:9px;
-      animation:toastSlide .35s cubic-bezier(.22,1,.36,1);
-      min-width:220px;
-    }
+    .toast { position:fixed; bottom:24px; right:24px; padding:12px 18px; border-radius:var(--rsm); color:#fff; font-size:13px; font-weight:700; z-index:9999; box-shadow:0 8px 24px rgba(0,0,0,.14); display:flex; align-items:center; gap:9px; animation:toastSlide .35s cubic-bezier(.22,1,.36,1); min-width:220px; }
     .toast-ok  { background:linear-gradient(135deg,var(--green),#15803d); }
     .toast-err { background:linear-gradient(135deg,var(--red),var(--red-dark)); }
     .toast i { font-size:15px; }
 
+    .see-all-wrap { padding:16px 24px; text-align:center; border-top:1px solid var(--gray-100); }
+    .see-all-link { display:inline-flex; align-items:center; gap:7px; font-size:13px; font-weight:700; color:var(--red); text-decoration:none; transition:gap .2s,opacity .2s; }
+    .see-all-link:hover { gap:10px; opacity:.8; }
+    .see-all-link i { font-size:11px; }
 
-    /* ── See All Link ── */
-    .see-all-wrap {
-      padding: 16px 24px;
-      text-align: center;
-      border-top: 1px solid var(--gray-100);
-    }
-    .see-all-link {
-      display: inline-flex; align-items: center; gap: 7px;
-      font-size: 13px; font-weight: 700;
-      color: var(--red); text-decoration: none;
-      transition: gap .2s, opacity .2s;
-    }
-    .see-all-link:hover { gap: 10px; opacity: .8; }
-    .see-all-link i { font-size: 11px; }
-
-    @media(max-width:900px){ .stat-grid{ grid-template-columns:1fr 1fr; } }
+    @media(max-width:900px){ .stat-grid{grid-template-columns:1fr 1fr;} }
     @media(max-width:768px){ .sidebar{display:none;} .main{margin-left:0;} .content{padding:16px;} .topbar{padding:16px 16px 0;} }
   </style>
 </head>
 <body>
 
-<!-- ═══════════ SIDEBAR ═══════════ -->
+<!-- SIDEBAR -->
 <aside class="sidebar">
   <div class="sb-logo">
-    <img src="../assets/images/logo.png" alt="Logo"
-         onerror="this.style.display='none';document.getElementById('sbFall').style.display='flex'">
-    <div class="sb-logo-icon" id="sbFall" style="display:none">
-      <i class="fas fa-shield-halved"></i>
-    </div>
+    <img src="../assets/images/logo.png" alt="Logo" onerror="this.style.display='none';document.getElementById('sbFall').style.display='flex'">
+    <div class="sb-logo-icon" id="sbFall" style="display:none"><i class="fas fa-shield-halved"></i></div>
     <span class="sb-brand">Smart<span>Incident</span></span>
   </div>
-
   <div class="sb-section">Menu Utama</div>
   <nav>
-    <a class="nav-a active" href="dashboard.html">
-      <i class="fas fa-th-large"></i> Dashboard
-    </a>
-    <a class="nav-a" href="incidents.html">
-      <i class="fas fa-file-lines"></i> Insiden
-    </a>
+    <a class="nav-a active" href="dashboard.html"><i class="fas fa-th-large"></i> Dashboard</a>
+    <a class="nav-a" href="incidents.html"><i class="fas fa-file-lines"></i> Data Insiden</a>
   </nav>
-
   <div class="sb-spacer"></div>
   <div class="sb-divider"></div>
-
-  <!-- sb-user DIHAPUS (icon profil di sidebar) -->
-
-  <button class="sb-logout" onclick="logout()">
-    <i class="fas fa-sign-out-alt"></i> Keluar
-  </button>
+  <button class="sb-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Keluar</button>
 </aside>
 
-<!-- ═══════════ MAIN ═══════════ -->
+<!-- MAIN -->
 <div class="main">
-
-  <!-- TOPBAR -->
   <div class="topbar">
     <div class="tb-left">
       <h1>Halo <span id="greetingName">Solver</span>, Selamat Datang!</h1>
@@ -572,7 +411,6 @@
           <div class="notif-list" id="notifList"></div>
         </div>
       </div>
-      <!-- uchip: dropdown chevron DIHAPUS -->
       <div class="uchip">
         <div class="uchip-ava" id="userAvatar">S</div>
         <span class="uchip-name" id="userName">Solver</span>
@@ -580,41 +418,46 @@
     </div>
   </div>
 
-  <!-- CONTENT -->
   <div class="content">
-
-    <!-- 4 STAT CARDS -->
     <div class="stat-grid">
       <div class="sc sc-1">
-        <div class="sc-label">
-          <span class="sc-icon"><i class="fas fa-clipboard-list"></i></span>
-          Total Assigned
+        <div class="bbl bbl-lg"></div><div class="bbl bbl-sm"></div>
+        <div class="sc-top">
+          <div class="sc-lbl">Total<br>Assigned</div>
+          <div class="sc-icon"><i class="fas fa-clipboard-list"></i></div>
         </div>
         <div class="sc-num" id="totalAssigned">0</div>
+        <div class="sc-div"></div>
         <div class="sc-foot"><i class="fas fa-calendar-alt"></i> bulan ini</div>
       </div>
       <div class="sc sc-2">
-        <div class="sc-label">
-          <span class="sc-icon"><i class="fas fa-folder-open"></i></span>
-          Open
+        <div class="bbl bbl-lg"></div><div class="bbl bbl-sm"></div>
+        <div class="sc-top">
+          <div class="sc-lbl">Open</div>
+          <div class="sc-icon"><i class="fas fa-folder-open"></i></div>
         </div>
         <div class="sc-num" id="openCount">0</div>
+        <div class="sc-div"></div>
         <div class="sc-foot"><i class="fas fa-calendar-alt"></i> bulan ini</div>
       </div>
       <div class="sc sc-3">
-        <div class="sc-label">
-          <span class="sc-icon"><i class="fas fa-spinner"></i></span>
-          On Progress
+        <div class="bbl bbl-lg"></div><div class="bbl bbl-sm"></div>
+        <div class="sc-top">
+          <div class="sc-lbl">On<br>Progress</div>
+          <div class="sc-icon"><i class="fas fa-spinner"></i></div>
         </div>
         <div class="sc-num" id="onProgress">0</div>
+        <div class="sc-div"></div>
         <div class="sc-foot"><i class="fas fa-calendar-alt"></i> bulan ini</div>
       </div>
       <div class="sc sc-4">
-        <div class="sc-label">
-          <span class="sc-icon"><i class="fas fa-check-circle"></i></span>
-          Closed
+        <div class="bbl bbl-lg"></div><div class="bbl bbl-sm"></div>
+        <div class="sc-top">
+          <div class="sc-lbl">Closed</div>
+          <div class="sc-icon"><i class="fas fa-check-circle"></i></div>
         </div>
         <div class="sc-num" id="selesai">0</div>
+        <div class="sc-div"></div>
         <div class="sc-foot"><i class="fas fa-calendar-alt"></i> bulan ini</div>
       </div>
     </div>
@@ -630,20 +473,10 @@
       </div>
       <table>
         <thead>
-          <tr>
-            <th>Judul</th>
-            <th>Kategori</th>
-            <th>Prioritas</th>
-            <th>Status</th>
-            <th>SLA</th>
-            <th>Dilaporkan</th>
-            <th>Aksi</th>
-          </tr>
+          <tr><th>Judul</th><th>Kategori</th><th>Prioritas</th><th>Status</th><th>SLA</th><th>Dilaporkan</th><th>Aksi</th></tr>
         </thead>
         <tbody id="incidentsTableBody">
-          <tr><td colspan="7" class="empty">
-            <i class="fas fa-inbox"></i>Memuat data...
-          </td></tr>
+          <tr><td colspan="7" class="empty"><i class="fas fa-inbox"></i>Memuat data...</td></tr>
         </tbody>
       </table>
       <div class="see-all-wrap">
@@ -656,9 +489,8 @@
   </div>
 </div>
 
-<!-- ═══════════ MODAL ═══════════ -->
-<div id="selesaikanModalOverlay" class="overlay"
-     onclick="if(event.target===this)closeSelesaikanModal()">
+<!-- MODAL -->
+<div id="selesaikanModalOverlay" class="overlay" onclick="if(event.target===this)closeSelesaikanModal()">
   <div class="modal">
     <div class="modal-hdr">
       <h3><i class="fas fa-check-circle"></i> Selesaikan Insiden</h3>
@@ -672,327 +504,252 @@
       <div class="modal-err" id="selesaikanModalError"></div>
       <div class="fg">
         <label for="selesaikanModalNote">Catatan Penyelesaian <span>*</span></label>
-        <textarea id="selesaikanModalNote"
-          placeholder="Jelaskan langkah penyelesaian insiden..."></textarea>
+        <textarea id="selesaikanModalNote" placeholder="Jelaskan langkah penyelesaian insiden..."></textarea>
       </div>
     </div>
     <div class="modal-ftr">
-      <button class="mbtn mbtn-cancel" onclick="closeSelesaikanModal()">
-        <i class="fas fa-times"></i> Batal
-      </button>
-      <button class="mbtn mbtn-submit" id="selesaikanModalSubmit" onclick="submitSelesai()">
-        <i class="fas fa-check"></i> Selesaikan
-      </button>
+      <button class="mbtn mbtn-cancel" onclick="closeSelesaikanModal()"><i class="fas fa-times"></i> Batal</button>
+      <button class="mbtn mbtn-submit" id="selesaikanModalSubmit" onclick="submitSelesai()"><i class="fas fa-check"></i> Selesaikan</button>
     </div>
   </div>
 </div>
 
-<!-- ═══════════ JAVASCRIPT ═══════════ -->
 <script>
 const API_BASE = 'http://localhost:3000/api';
 
-function showToast(msg, type = 'ok') {
+function showToast(msg, type='ok') {
   const t = document.createElement('div');
   t.className = `toast toast-${type}`;
   t.innerHTML = `<i class="fas ${type==='ok'?'fa-check-circle':'fa-circle-xmark'}"></i>${msg}`;
   document.body.appendChild(t);
-  setTimeout(() => {
-    t.style.opacity = '0';
-    t.style.transition = 'opacity .4s';
-    setTimeout(() => t.remove(), 400);
-  }, 3200);
+  setTimeout(() => { t.style.opacity='0'; t.style.transition='opacity .4s'; setTimeout(()=>t.remove(),400); }, 3200);
 }
 
 function getStatusPill(status) {
-  const s = (status || 'open').toLowerCase();
-  const map = {
-    open:        { cls: 'sp-open',     label: 'Open'        },
-    progress:    { cls: 'sp-progress', label: 'On Progress' },
-    in_progress: { cls: 'sp-progress', label: 'On Progress' },
-    closed:      { cls: 'sp-closed',   label: 'Closed'      },
-  };
-  const m = map[s] || { cls: 'sp-open', label: status };
+  const s=(status||'open').toLowerCase();
+  const map={open:{cls:'sp-open',label:'Open'},progress:{cls:'sp-progress',label:'On Progress'},in_progress:{cls:'sp-progress',label:'On Progress'},closed:{cls:'sp-closed',label:'Closed'}};
+  const m=map[s]||{cls:'sp-open',label:status};
   return `<span class="sp ${m.cls}">${m.label}</span>`;
 }
 
 function getPriorityBadge(priority) {
-  const p = (priority || 'low').toLowerCase();
-  if (p === 'high')   return '<span class="badge b-high">High</span>';
-  if (p === 'medium') return '<span class="badge b-medium">Medium</span>';
+  const p=(priority||'low').toLowerCase();
+  if(p==='high')   return '<span class="badge b-high">High</span>';
+  if(p==='medium') return '<span class="badge b-medium">Medium</span>';
   return '<span class="badge b-low">Low</span>';
 }
 
 function getSLAChip(inc) {
-  if (!inc.sla_resolution_deadline) return '<span class="sla sla-none">–</span>';
-  const now = new Date(), dl = new Date(inc.sla_resolution_deadline);
-  const st = (inc.status || '').toLowerCase();
-  if (st === 'closed') return inc.is_overdue
+  if(!inc.sla_resolution_deadline) return '<span class="sla sla-none">–</span>';
+  const now=new Date(),dl=new Date(inc.sla_resolution_deadline);
+  const st=(inc.status||'').toLowerCase();
+  if(st==='closed') return inc.is_overdue
     ? '<span class="sla sla-over"><i class="fas fa-times-circle"></i> Terlambat</span>'
     : '<span class="sla sla-ok"><i class="fas fa-check-circle"></i> Terpenuhi</span>';
-  if (now > dl) return '<span class="sla sla-over"><i class="fas fa-exclamation-triangle"></i> Overdue</span>';
-  const m = Math.floor((dl - now) / 60000);
-  if (m < 60) return `<span class="sla sla-warn"><i class="fas fa-clock"></i> ${m}m</span>`;
-  return `<span class="sla sla-ok"><i class="fas fa-clock"></i> ${Math.floor(m / 60)}j</span>`;
+  if(now>dl) return '<span class="sla sla-over"><i class="fas fa-exclamation-triangle"></i> Overdue</span>';
+  const m=Math.floor((dl-now)/60000);
+  if(m<60) return `<span class="sla sla-warn"><i class="fas fa-clock"></i> ${m}m</span>`;
+  return `<span class="sla sla-ok"><i class="fas fa-clock"></i> ${Math.floor(m/60)}j</span>`;
 }
 
 function formatDate(ds) {
-  if (!ds) return '–';
-  return new Date(ds).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+  if(!ds) return '–';
+  return new Date(ds).toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'});
 }
 
-function logout() {
-  localStorage.removeItem('token');
-  localStorage.removeItem('user');
-  window.location.href = '../auth/login.html';
-}
+function logout() { localStorage.removeItem('token'); localStorage.removeItem('user'); window.location.href='../auth/login.html'; }
 
 function filterIncidentsTable(q) {
   document.querySelectorAll('#incidentsTableBody tr').forEach(r => {
-    if (r.querySelector('.empty')) return;
-    const a = r.cells[0]?.textContent.toLowerCase() || '';
-    const b = r.cells[1]?.textContent.toLowerCase() || '';
-    r.style.display = (a.includes(q) || b.includes(q)) ? '' : 'none';
+    if(r.querySelector('.empty')) return;
+    const a=r.cells[0]?.textContent.toLowerCase()||'';
+    const b=r.cells[1]?.textContent.toLowerCase()||'';
+    r.style.display=(a.includes(q)||b.includes(q))?'':'none';
   });
 }
 
 async function tanganiInsiden(id) {
   try {
-    const token = localStorage.getItem('token');
-    if (!token) { window.location.href = '../auth/login.html'; return; }
-    const res = await fetch(`${API_BASE}/incidents/${id}/status`, {
-      method: 'PUT',
-      headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ status: 'in_progress' })
-    });
-    if (!res.ok) { const e = await res.json(); showToast(e.message || 'Gagal memperbarui status', 'err'); return; }
+    const token=localStorage.getItem('token');
+    if(!token){window.location.href='../auth/login.html';return;}
+    const res=await fetch(`${API_BASE}/incidents/${id}/status`,{method:'PUT',headers:{'Authorization':`Bearer ${token}`,'Content-Type':'application/json'},body:JSON.stringify({status:'in_progress'})});
+    if(!res.ok){const e=await res.json();showToast(e.message||'Gagal memperbarui status','err');return;}
     showToast('Status berhasil diperbarui ke In Progress!');
     loadDashboard();
-  } catch (e) { showToast(e.message || 'Terjadi kesalahan', 'err'); }
+  } catch(e){showToast(e.message||'Terjadi kesalahan','err');}
 }
 
-let _modalId = null;
+let _modalId=null;
 
 function openSelesaikanModal(id) {
-  _modalId = id;
+  _modalId=id;
   document.getElementById('selesaikanModalOverlay').classList.add('active');
-  document.getElementById('selesaikanModalNote').value = '';
+  document.getElementById('selesaikanModalNote').value='';
   document.getElementById('selesaikanModalError').classList.remove('show');
-  const btn = document.getElementById('selesaikanModalSubmit');
-  btn.disabled = false;
-  btn.innerHTML = '<i class="fas fa-check"></i> Selesaikan';
-  setTimeout(() => document.getElementById('selesaikanModalNote').focus(), 100);
+  const btn=document.getElementById('selesaikanModalSubmit');
+  btn.disabled=false; btn.innerHTML='<i class="fas fa-check"></i> Selesaikan';
+  setTimeout(()=>document.getElementById('selesaikanModalNote').focus(),100);
 }
 
 function closeSelesaikanModal() {
   document.getElementById('selesaikanModalOverlay').classList.remove('active');
-  _modalId = null;
+  _modalId=null;
 }
 
 async function submitSelesai() {
-  const note = document.getElementById('selesaikanModalNote').value.trim();
-  const errEl = document.getElementById('selesaikanModalError');
-  const btn = document.getElementById('selesaikanModalSubmit');
-  if (!note) { errEl.textContent = 'Catatan penyelesaian tidak boleh kosong'; errEl.classList.add('show'); return; }
+  const note=document.getElementById('selesaikanModalNote').value.trim();
+  const errEl=document.getElementById('selesaikanModalError');
+  const btn=document.getElementById('selesaikanModalSubmit');
+  if(!note){errEl.textContent='Catatan penyelesaian tidak boleh kosong';errEl.classList.add('show');return;}
   errEl.classList.remove('show');
-  btn.disabled = true;
-  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
+  btn.disabled=true; btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
   try {
-    const token = localStorage.getItem('token');
-    if (!token) { window.location.href = '../auth/login.html'; return; }
-    const res = await fetch(`${API_BASE}/incidents/${_modalId}/resolve`, {
-      method: 'PUT',
-      headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ solver_note: note, status: 'closed' })
-    });
-    if (!res.ok) {
-      const e = await res.json();
-      errEl.textContent = e.message || 'Gagal menyelesaikan insiden';
-      errEl.classList.add('show');
-      btn.disabled = false;
-      btn.innerHTML = '<i class="fas fa-check"></i> Selesaikan';
-      return;
-    }
+    const token=localStorage.getItem('token');
+    if(!token){window.location.href='../auth/login.html';return;}
+    const res=await fetch(`${API_BASE}/incidents/${_modalId}/resolve`,{method:'PUT',headers:{'Authorization':`Bearer ${token}`,'Content-Type':'application/json'},body:JSON.stringify({solver_note:note,status:'closed'})});
+    if(!res.ok){const e=await res.json();errEl.textContent=e.message||'Gagal menyelesaikan insiden';errEl.classList.add('show');btn.disabled=false;btn.innerHTML='<i class="fas fa-check"></i> Selesaikan';return;}
     closeSelesaikanModal();
     showToast('Insiden diselesaikan! AI sedang membuat rekomendasi...');
     loadDashboard();
-  } catch (e) {
-    errEl.textContent = 'Terjadi kesalahan: ' + (e.message || 'Unknown error');
-    errEl.classList.add('show');
-    btn.disabled = false;
-    btn.innerHTML = '<i class="fas fa-check"></i> Selesaikan';
-  }
+  } catch(e){errEl.textContent='Terjadi kesalahan: '+(e.message||'Unknown error');errEl.classList.add('show');btn.disabled=false;btn.innerHTML='<i class="fas fa-check"></i> Selesaikan';}
+}
+
+function animateCount(el, target) {
+  if(!el) return;
+  let cur=0; const step=Math.max(1,Math.ceil(target/22));
+  const t=setInterval(()=>{cur=Math.min(cur+step,target);el.textContent=cur;if(cur>=target)clearInterval(t);},40);
 }
 
 async function loadDashboard() {
-  const token = localStorage.getItem('token');
-  if (!token) { window.location.href = '../auth/login.html'; return; }
-
-  const user = JSON.parse(localStorage.getItem('user') || '{}');
-  if (user.role?.toLowerCase() !== 'solver') {
-    window.location.href = user.role?.toLowerCase() === 'admin'
-      ? '../admin/dashboard.html' : '../user/dashboard.html';
+  const token=localStorage.getItem('token');
+  if(!token){window.location.href='../auth/login.html';return;}
+  const user=JSON.parse(localStorage.getItem('user')||'{}');
+  if(user.role?.toLowerCase()!=='solver'){
+    window.location.href=user.role?.toLowerCase()==='admin'?'../admin/dashboard.html':'../user/dashboard.html';
     return;
   }
-
-  if (user.name) {
-    document.getElementById('greetingName').textContent = user.name;
-    document.getElementById('userName').textContent = user.name;
-    document.getElementById('userAvatar').textContent = user.name.charAt(0).toUpperCase();
-    // sidebarAva & sidebarName tidak lagi ada di DOM, skip
-  }
-
-  document.getElementById('greetingDate').textContent =
-    new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-
-  try {
-    const res = await fetch(`${API_BASE}/solver/incidents`, {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
-    if (res.status === 401) { window.location.href = '../auth/login.html'; return; }
-    if (!res.ok) { console.error('API error', res.status); return; }
-
-    const data = await res.json();
-    const inc = data.incidents || data.data || [];
-
-    const total = inc.length;
-    const openCount = inc.filter(i => i.status?.toLowerCase() === 'open').length;
-    const prog  = inc.filter(i => ['progress','in_progress'].includes(i.status?.toLowerCase())).length;
-    const done  = inc.filter(i => i.status?.toLowerCase() === 'closed').length;
-
-    document.getElementById('totalAssigned').textContent = total;
-    document.getElementById('openCount').textContent = openCount;
-    document.getElementById('onProgress').textContent = prog;
-    document.getElementById('selesai').textContent = done;
-    document.getElementById('panelCount').textContent = `${total} insiden`;
-
-    const tbody = document.getElementById('incidentsTableBody');
-    if (!inc.length) {
-      tbody.innerHTML = '<tr><td colspan="7" class="empty"><i class="fas fa-inbox"></i>Belum ada insiden yang ditugaskan.</td></tr>';
-      return;
+ if(user.name){
+    document.getElementById('greetingName').textContent=user.name;
+    document.getElementById('userName').textContent=user.name;
+    document.getElementById('userAvatar').textContent=user.name.charAt(0).toUpperCase();
+}
+document.getElementById('greetingDate').textContent=new Date().toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+try {
+    const rp = await fetch(`${API_BASE}/auth/profile`, {headers:{'Authorization':`Bearer ${token}`}});
+    if(rp.ok){
+        const pd = await rp.json();
+        const u = pd.data || pd;
+        const av = document.getElementById('userAvatar');
+        if(u.profile_photo && av){
+            av.innerHTML = `<img src="http://localhost:3000/uploads/${u.profile_photo}" 
+                alt="foto" style="width:100%;height:100%;border-radius:50%;object-fit:cover;"
+                onerror="this.parentElement.textContent='${(u.name||'S').charAt(0).toUpperCase()}'">`;
+        }
+        if(u.name){
+            document.getElementById('greetingName').textContent=u.name;
+            document.getElementById('userName').textContent=u.name;
+        }
     }
-
-    // Filter hanya open & in_progress, max 6
-    const filtered = inc
-      .filter(x => ['open','progress','in_progress'].includes((x.status || '').toLowerCase()))
-      .slice(0, 6);
-
-    if (!filtered.length) {
-      tbody.innerHTML = '<tr><td colspan="7" class="empty"><i class="fas fa-inbox"></i>Tidak ada insiden aktif saat ini.</td></tr>';
-    } else {
-      tbody.innerHTML = filtered.map((x, i) => {
-        const st = (x.status || 'open').toLowerCase();
-        const showT = st === 'open';
-        const showS = st !== 'closed';
-        return `<tr style="animation-delay:${i * .04}s">
-          <td style="font-weight:700;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${x.title || ''}">${x.title || '–'}</td>
-          <td><span style="background:#e2e8f0;color:#1e293b;padding:3px 10px;border-radius:8px;font-size:12px;font-weight:700;">${x.category || x.type || '–'}</span></td>
+} catch(e){ console.error('avatar error',e); }
+  try {
+    const res=await fetch(`${API_BASE}/solver/incidents`,{headers:{'Authorization':`Bearer ${token}`}});
+    if(res.status===401){window.location.href='../auth/login.html';return;}
+    if(!res.ok){console.error('API error',res.status);return;}
+    const data=await res.json();
+    const inc=data.incidents||data.data||[];
+    const total=inc.length;
+    const openCount=inc.filter(i=>i.status?.toLowerCase()==='open').length;
+    const prog=inc.filter(i=>['progress','in_progress'].includes(i.status?.toLowerCase())).length;
+    const done=inc.filter(i=>i.status?.toLowerCase()==='closed').length;
+    animateCount(document.getElementById('totalAssigned'),total);
+    animateCount(document.getElementById('openCount'),openCount);
+    animateCount(document.getElementById('onProgress'),prog);
+    animateCount(document.getElementById('selesai'),done);
+    document.getElementById('panelCount').textContent=`${total} insiden`;
+    const tbody=document.getElementById('incidentsTableBody');
+    if(!inc.length){tbody.innerHTML='<tr><td colspan="7" class="empty"><i class="fas fa-inbox"></i>Belum ada insiden yang ditugaskan.</td></tr>';return;}
+    const filtered=inc.filter(x=>['open','progress','in_progress'].includes((x.status||'').toLowerCase())).slice(0,6);
+    if(!filtered.length){tbody.innerHTML='<tr><td colspan="7" class="empty"><i class="fas fa-inbox"></i>Tidak ada insiden aktif saat ini.</td></tr>';}
+    else{
+      tbody.innerHTML=filtered.map((x,i)=>{
+        const st=(x.status||'open').toLowerCase();
+        const showT=st==='open',showS=st!=='closed';
+        return `<tr style="animation-delay:${i*.04}s">
+          <td style="font-weight:700;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${x.title||''}">${x.title||'–'}</td>
+          <td><span style="background:#e2e8f0;color:#1e293b;padding:3px 10px;border-radius:8px;font-size:12px;font-weight:700;">${x.category||x.type||'–'}</span></td>
           <td>${getPriorityBadge(x.priority)}</td>
           <td>${getStatusPill(x.status)}</td>
           <td>${getSLAChip(x)}</td>
           <td style="color:#334155;font-size:12.5px;font-weight:600;">${formatDate(x.created_at)}</td>
           <td style="white-space:nowrap;">
-            ${showT ? `<button class="btn btn-tangani" onclick="tanganiInsiden(${x.id})"><i class="fas fa-play"></i> Tangani</button>` : ''}
-            ${showS ? `<button class="btn btn-selesai" onclick="openSelesaikanModal(${x.id})"><i class="fas fa-check"></i> Selesaikan</button>` : ''}
+            ${showT?`<button class="btn btn-tangani" onclick="tanganiInsiden(${x.id})"><i class="fas fa-play"></i> Tangani</button>`:''}
+            ${showS?`<button class="btn btn-selesai" onclick="openSelesaikanModal(${x.id})"><i class="fas fa-check"></i> Selesaikan</button>`:''}
           </td>
         </tr>`;
       }).join('');
     }
-
-    const si = document.getElementById('searchInput');
-    if (si && !si._bound) {
-      si._bound = true;
-      si.addEventListener('input', function () { filterIncidentsTable(this.value.toLowerCase()); });
-    }
-  } catch (e) { console.error('loadDashboard error:', e); }
+    const si=document.getElementById('searchInput');
+    if(si&&!si._bound){si._bound=true;si.addEventListener('input',function(){filterIncidentsTable(this.value.toLowerCase());});}
+  } catch(e){console.error('loadDashboard error:',e);}
 }
 
 async function loadNotifications() {
-  const token = localStorage.getItem('token');
-  if (!token) return;
+  const token=localStorage.getItem('token'); if(!token) return;
   try {
-    const res = await fetch(`${API_BASE}/notifications`, { headers: { 'Authorization': `Bearer ${token}` } });
-    const data = await res.json();
-    const notifs = data.notifications || [];
-    const unread = notifs.filter(n => !n.is_read).length;
-    const badge = document.getElementById('notifBadge');
-    if (badge) { badge.textContent = unread; badge.style.display = unread > 0 ? 'flex' : 'none'; }
-    const list = document.getElementById('notifList');
-    if (!list) return;
-    if (!notifs.length) {
-      list.innerHTML = '<div style="padding:24px;text-align:center;color:var(--gray-400);font-size:13px;">Tidak ada notifikasi</div>';
-      return;
-    }
-    list.innerHTML = notifs.map(n => `
-      <div class="ni ${n.is_read ? '' : 'unread'} ${n.incident_id ? 'has-incident' : ''}"
-           onclick="handleNotificationClick(${n.id}, ${n.incident_id != null ? n.incident_id : 'null'})">
+    const res=await fetch(`${API_BASE}/notifications`,{headers:{'Authorization':`Bearer ${token}`}});
+    const data=await res.json();
+    const notifs=data.notifications||[];
+    const unread=notifs.filter(n=>!n.is_read).length;
+    const badge=document.getElementById('notifBadge');
+    if(badge){badge.textContent=unread;badge.style.display=unread>0?'flex':'none';}
+    const list=document.getElementById('notifList');
+    if(!list) return;
+    if(!notifs.length){list.innerHTML='<div style="padding:24px;text-align:center;color:var(--gray-400);font-size:13px;">Tidak ada notifikasi</div>';return;}
+    list.innerHTML=notifs.map(n=>`
+      <div class="ni ${n.is_read?'':'unread'}" onclick="handleNotificationClick(${n.id},${n.incident_id!=null?n.incident_id:'null'})">
         <div class="ni-title">${n.title}</div>
         <div class="ni-msg">${n.message}</div>
         <div class="ni-time">${new Date(n.created_at).toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})}</div>
-        <div class="ni-arrow">
-          ${n.incident_id
-            ? '<i class="fas fa-arrow-right"></i> Lihat detail insiden'
-            : '<i class="fas fa-list"></i> Lihat daftar insiden'
-          }
-        </div>
+        <div class="ni-arrow"><i class="fas fa-arrow-right"></i> ${n.incident_id?'Lihat detail insiden':'Lihat daftar insiden'}</div>
       </div>`).join('');
-  } catch (e) { console.error('loadNotifications error:', e); }
+  } catch(e){console.error('loadNotifications error:',e);}
 }
 
 function toggleNotifications() {
-  const dd = document.getElementById('notifDropdown');
-  const open = dd.style.display === 'block';
-  dd.style.display = open ? 'none' : 'block';
-  if (!open) loadNotifications();
-}
-
-async function markRead(id) {
-  const token = localStorage.getItem('token');
-  await fetch(`${API_BASE}/notifications/${id}/read`, { method:'PUT', headers:{'Authorization':`Bearer ${token}`} });
-  loadNotifications();
+  const dd=document.getElementById('notifDropdown');
+  const open=dd.style.display==='block';
+  dd.style.display=open?'none':'block';
+  if(!open) loadNotifications();
 }
 
 async function markAllRead() {
-  const token = localStorage.getItem('token');
-  await fetch(`${API_BASE}/notifications/read-all`, { method:'PUT', headers:{'Authorization':`Bearer ${token}`} });
+  const token=localStorage.getItem('token');
+  await fetch(`${API_BASE}/notifications/read-all`,{method:'PUT',headers:{'Authorization':`Bearer ${token}`}});
   loadNotifications();
 }
 
-async function handleNotificationClick(notificationId, incidentId) {
-  const token = localStorage.getItem('token');
-  if (token) {
-    await fetch(`${API_BASE}/notifications/${notificationId}/read`, {
-      method: 'PUT',
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
-  }
-  if (incidentId) {
-    window.location.href = `incident-detail.html?id=${incidentId}`;
-  } else {
-    window.location.href = `incidents.html`;
-  }
+async function handleNotificationClick(notificationId,incidentId) {
+  const token=localStorage.getItem('token');
+  if(token) await fetch(`${API_BASE}/notifications/${notificationId}/read`,{method:'PUT',headers:{'Authorization':`Bearer ${token}`}});
+  if(incidentId) window.location.href=`incident-detail.html?id=${incidentId}`;
+  else window.location.href='incidents.html';
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  const token = localStorage.getItem('token');
-  if (!token) { window.location.href = '../auth/login.html'; return; }
-
-  let user = {};
-  try { user = JSON.parse(localStorage.getItem('user') || '{}'); } catch (e) {}
-
-  if (user.role?.toLowerCase() !== 'solver') {
-    window.location.href = user.role?.toLowerCase() === 'admin'
-      ? '../admin/dashboard.html' : '../user/dashboard.html';
+document.addEventListener('DOMContentLoaded',()=>{
+  const token=localStorage.getItem('token');
+  if(!token){window.location.href='../auth/login.html';return;}
+  let user={};
+  try{user=JSON.parse(localStorage.getItem('user')||'{}');}catch(e){}
+  if(user.role?.toLowerCase()!=='solver'){
+    window.location.href=user.role?.toLowerCase()==='admin'?'../admin/dashboard.html':'../user/dashboard.html';
     return;
   }
-
   loadNotifications();
-  setInterval(loadNotifications, 30000);
-
-  document.addEventListener('click', e => {
-    const dd = document.getElementById('notifDropdown');
-    if (dd && !dd.contains(e.target) && !e.target.closest('.notif-wrap')) dd.style.display = 'none';
+  setInterval(loadNotifications,30000);
+  document.addEventListener('click',e=>{
+    const dd=document.getElementById('notifDropdown');
+    if(dd&&!dd.contains(e.target)&&!e.target.closest('.notif-wrap')) dd.style.display='none';
   });
-
   loadDashboard();
 });
 </script>

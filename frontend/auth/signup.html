@@ -84,7 +84,7 @@
                             </svg>
                         </button>
                     </div>
-                    <small class="small-text">Minimal 6 karakter</small>
+                    <small class="small-text">Minimal 8 karakter</small>
                 </div>
 
                 <div class="form-group">
@@ -156,8 +156,8 @@
             if (!name || !email || !password || !confirmPassword) {
                 showError('Semua kolom wajib diisi'); return;
             }
-            if (password.length < 6) {
-                showError('Password minimal 6 karakter'); return;
+            if (password.length < 8) {
+                showError('Password minimal 8 karakter'); return;
             }
             if (password !== confirmPassword) {
                 showError('Kata sandi tidak cocok'); return;

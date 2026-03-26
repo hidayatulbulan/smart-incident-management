@@ -17,130 +17,104 @@
             --shadow: 0 2px 16px rgba(0,0,0,0.06);
             --radius: 18px; --rsm: 12px;
         }
-
         * { margin:0; padding:0; box-sizing:border-box; }
         body { font-family:'Plus Jakarta Sans',sans-serif; background:var(--gray-50); color:var(--gray-900); font-size:13px; overflow-x:hidden; }
         .container { display:flex; min-height:100vh; }
 
-        /* ===== KEYFRAMES ===== */
         @keyframes slideInLeft { from{transform:translateX(-100%);opacity:0} to{transform:translateX(0);opacity:1} }
         @keyframes fadeInDown  { from{transform:translateY(-18px);opacity:0} to{transform:translateY(0);opacity:1} }
-        @keyframes fadeInUp    { from{transform:translateY(22px);opacity:0}  to{transform:translateY(0);opacity:1} }
-        @keyframes popIn       { from{opacity:0;transform:scale(0.7)}        to{opacity:1;transform:scale(1)} }
+        @keyframes fadeInUp    { from{transform:translateY(22px);opacity:0} to{transform:translateY(0);opacity:1} }
         @keyframes shimmer     { 0%{left:-60%} 100%{left:130%} }
-        @keyframes toastIn     { from{transform:translateX(110%);opacity:0}  to{transform:translateX(0);opacity:1} }
+        @keyframes toastIn     { from{transform:translateX(110%);opacity:0} to{transform:translateX(0);opacity:1} }
         @keyframes countPop    { 0%{transform:scale(0.6);opacity:0} 70%{transform:scale(1.1)} 100%{transform:scale(1);opacity:1} }
         @keyframes floatBubble { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
         @keyframes rowFadeIn   { from{opacity:0;transform:translateX(-10px)} to{opacity:1;transform:translateX(0)} }
         @keyframes modalIn     { from{opacity:0;transform:scale(0.9) translateY(20px)} to{opacity:1;transform:scale(1) translateY(0)} }
 
-        /* ===== SIDEBAR ===== */
-        .sidebar {
-            width:235px; background:var(--white); padding:24px 14px;
-            box-shadow:2px 0 20px rgba(0,0,0,0.05); display:flex; flex-direction:column;
-            position:fixed; top:0; left:0; bottom:0; z-index:100;
-            border-right:1px solid var(--red-100);
-            animation:slideInLeft 0.45s cubic-bezier(0.22,1,0.36,1);
-        }
+        /* SIDEBAR */
+        .sidebar { width:235px; background:var(--white); padding:24px 14px; box-shadow:2px 0 20px rgba(0,0,0,0.05); display:flex; flex-direction:column; position:fixed; top:0; left:0; bottom:0; z-index:100; border-right:1px solid var(--red-100); animation:slideInLeft 0.45s cubic-bezier(0.22,1,0.36,1); }
         .logo { display:flex; align-items:center; gap:11px; margin-bottom:32px; padding:8px 10px; }
         .logo-icon { width:38px; height:38px; background:linear-gradient(135deg,var(--red),var(--red-dark)); border-radius:11px; display:flex; align-items:center; justify-content:center; color:white; font-size:17px; box-shadow:0 4px 12px rgba(230,57,70,.32); }
         .logo-text { font-size:15.5px; font-weight:800; color:var(--gray-900); }
         .logo-text span { color:var(--red); }
 
-        .nav-section-label { font-size:9.5px; font-weight:700; color:var(--gray-400); text-transform:uppercase; letter-spacing:1.3px; padding:0 10px; margin-bottom:7px; }
+
+        .nav-section-label { font-size:9.5px; font-weight:700; color:#94a3b8; text-transform:uppercase; letter-spacing:1.3px; padding:0 10px; margin-bottom:7px; }
         .nav-menu { list-style:none; margin-bottom:10px; }
         .nav-item { margin-bottom:2px; }
-        .nav-link { display:flex; align-items:center; gap:11px; padding:10px 13px; color:var(--gray-500); text-decoration:none; border-radius:var(--rsm); font-size:13px; font-weight:600; transition:all .2s; position:relative; }
+        .nav-link { display:flex; align-items:center; gap:11px; padding:10px 13px; color:#1e293b; text-decoration:none; border-radius:var(--rsm); font-size:13px; font-weight:600; transition:all .2s; position:relative; }
         .nav-link:hover { background:var(--red-50); color:var(--red); }
         .nav-link.active { background:linear-gradient(135deg,var(--red),#f05a67); color:white; box-shadow:0 4px 14px rgba(230,57,70,.28); }
         .nav-link.active::before { content:''; position:absolute; left:-14px; width:4px; height:22px; background:var(--red); border-radius:0 4px 4px 0; }
         .nav-link i { width:17px; text-align:center; font-size:13px; }
         .sidebar-divider { height:1px; background:var(--gray-100); margin:14px 0; }
-        .logout { display:flex; align-items:center; gap:11px; padding:10px 13px; color:var(--gray-400); font-size:13px; font-weight:600; cursor:pointer; border-radius:var(--rsm); margin-top:auto; transition:all .2s; text-decoration:none; }
+
+        .logout { display:flex; align-items:center; gap:11px; padding:10px 13px; color:#374151; font-size:13px; font-weight:600; cursor:pointer; border-radius:var(--rsm); margin-top:auto; transition:all .2s; text-decoration:none; }
         .logout:hover { background:#fff5f5; color:var(--red); }
 
-        /* ===== MAIN ===== */
         .main-content { margin-left:235px; flex:1; padding:26px 30px; }
 
-        /* ===== PAGE HEADER ===== */
+        /* PAGE HEADER */
         .page-header { margin-bottom:24px; animation:fadeInDown 0.5s cubic-bezier(0.22,1,0.36,1); }
         .page-header h1 { font-size:22px; font-weight:800; color:var(--gray-900); letter-spacing:-0.5px; }
-        .page-header p  { font-size:12.5px; color:var(--gray-400); margin-top:3px; font-weight:500; }
+        .page-header p { font-size:12.5px; color:#64748b; margin-top:3px; font-weight:500; }
 
-        /* ===== STAT CARDS ===== */
+        /* STAT CARDS */
         .stats-row { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:22px; }
-
-        .stat-box {
-            background:var(--white); border-radius:var(--radius); padding:20px 22px;
-            box-shadow:var(--shadow); border:1px solid var(--gray-100);
-            position:relative; overflow:hidden;
-            animation:fadeInUp .55s cubic-bezier(0.22,1,0.36,1) both;
-            transition:transform .25s, box-shadow .25s;
-            cursor:default;
-        }
-        .stat-box:nth-child(1){animation-delay:.08s}
-        .stat-box:nth-child(2){animation-delay:.16s}
-        .stat-box:nth-child(3){animation-delay:.24s}
+        .stat-box { background:var(--white); border-radius:var(--radius); padding:20px 22px; box-shadow:var(--shadow); border:1px solid var(--gray-100); position:relative; overflow:hidden; animation:fadeInUp .55s cubic-bezier(0.22,1,0.36,1) both; transition:transform .25s, box-shadow .25s; cursor:default; }
+        .stat-box:nth-child(1){animation-delay:.08s} .stat-box:nth-child(2){animation-delay:.16s} .stat-box:nth-child(3){animation-delay:.24s}
         .stat-box:hover { transform:translateY(-4px); box-shadow:0 12px 32px rgba(230,57,70,.12); }
-
-        /* shimmer on hover */
         .stat-box::after { content:''; position:absolute; top:0; left:-60%; width:35%; height:100%; background:linear-gradient(90deg,transparent,rgba(230,57,70,.05),transparent); transform:skewX(-18deg); pointer-events:none; }
         .stat-box:hover::after { animation:shimmer .55s ease forwards; }
-
-        /* floating bubble decoration */
         .stat-box .bubble { position:absolute; border-radius:50%; background:rgba(230,57,70,.06); pointer-events:none; }
         .stat-box .bubble-lg { width:90px; height:90px; bottom:-20px; right:-18px; animation:floatBubble 5s ease-in-out infinite; }
         .stat-box .bubble-sm { width:50px; height:50px; bottom:10px; right:55px; animation:floatBubble 5s ease-in-out infinite 0.5s; }
-
         .stat-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px; }
-        .stat-label { font-size:9.5px; font-weight:700; letter-spacing:.8px; text-transform:uppercase; color:var(--gray-400); }
+        .stat-label { font-size:9.5px; font-weight:700; letter-spacing:.8px; text-transform:uppercase; color:#94a3b8; }
         .stat-icon-wrap { width:34px; height:34px; border-radius:10px; background:var(--red-50); display:flex; align-items:center; justify-content:center; color:var(--red); font-size:14px; }
-        .stat-value { font-size:30px; font-weight:800; color:var(--gray-900); line-height:1; animation:countPop .6s cubic-bezier(0.22,1,0.36,1) .4s both; }
-        .stat-footer { display:flex; align-items:center; gap:6px; margin-top:10px; font-size:11px; color:var(--gray-400); font-weight:500; }
+        .stat-value { font-size:30px; font-weight:800; color:#0f172a; line-height:1; animation:countPop .6s cubic-bezier(0.22,1,0.36,1) .4s both; }
+        .stat-footer { display:flex; align-items:center; gap:6px; margin-top:10px; font-size:11px; color:#64748b; font-weight:500; }
         .stat-dot { width:7px; height:7px; border-radius:50%; background:var(--red-light); animation:floatBubble 2.2s ease-in-out infinite; }
 
-        /* ===== CARD ===== */
+        /* CARD */
         .card { background:var(--white); border-radius:var(--radius); padding:22px; box-shadow:var(--shadow); border:1px solid var(--gray-100); animation:fadeInUp .5s cubic-bezier(0.22,1,0.36,1) .28s both; }
 
-        /* ===== ROLE TABS ===== */
+        /* ROLE TABS */
         .role-tabs { display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap; }
-        .tab-btn { padding:7px 18px; border-radius:var(--rsm); border:1.5px solid var(--gray-200); background:var(--white); color:var(--gray-600); font-size:12.5px; font-weight:600; cursor:pointer; font-family:inherit; transition:all .2s; }
+        .tab-btn { padding:7px 18px; border-radius:var(--rsm); border:1.5px solid var(--gray-200); background:var(--white); color:#334155; font-size:12.5px; font-weight:600; cursor:pointer; font-family:inherit; transition:all .2s; }
         .tab-btn:hover { border-color:var(--red-light); color:var(--red); background:var(--red-50); }
         .tab-btn.active { background:linear-gradient(135deg,var(--red),var(--red-dark)); color:white; border-color:transparent; box-shadow:0 4px 14px rgba(230,57,70,.26); }
 
-        /* ===== TABLE CONTROLS ===== */
+        /* TABLE CONTROLS */
         .table-controls { display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; gap:12px; flex-wrap:wrap; }
         .search-box { position:relative; }
         .search-box input { padding:9px 16px 9px 38px; border:1.5px solid var(--gray-200); border-radius:11px; width:270px; font-size:12.5px; outline:none; font-family:inherit; color:var(--gray-900); transition:all .2s; }
         .search-box input:focus { border-color:var(--red-light); box-shadow:0 0 0 3px rgba(230,57,70,.08); }
+        .search-box input::placeholder { color:#94a3b8; }
         .search-box i { position:absolute; left:13px; top:50%; transform:translateY(-50%); color:var(--gray-400); font-size:12px; }
-
         .add-btn { display:flex; align-items:center; gap:8px; padding:10px 20px; background:linear-gradient(135deg,var(--red),var(--red-dark)); color:white; border:none; border-radius:var(--rsm); font-size:13px; font-weight:700; cursor:pointer; font-family:inherit; transition:all .2s; box-shadow:0 4px 14px rgba(230,57,70,.26); }
         .add-btn:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(230,57,70,.36); }
 
-        /* ===== TABLE ===== */
+        /* TABLE */
         .users-table { width:100%; border-collapse:collapse; }
         .users-table thead tr { border-bottom:2px solid var(--gray-100); }
-        .users-table th { padding:10px 12px; text-align:left; font-size:9.5px; font-weight:700; color:var(--gray-400); text-transform:uppercase; letter-spacing:.7px; }
-        .users-table td { padding:13px 12px; border-bottom:1px solid var(--gray-100); vertical-align:middle; }
+        .users-table th { padding:10px 12px; text-align:left; font-size:9.5px; font-weight:700; color:#334155; text-transform:uppercase; letter-spacing:.7px; }
+        .users-table td { padding:13px 12px; border-bottom:1px solid var(--gray-100); vertical-align:middle; color:#0f172a; }
         .users-table tbody tr { transition:background .15s; animation:rowFadeIn .35s ease both; }
         .users-table tbody tr:hover { background:var(--red-50); }
         .users-table tbody tr:last-child td { border-bottom:none; }
 
         .user-cell { display:flex; align-items:center; gap:11px; }
         .user-avatar { width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; color:white; flex-shrink:0; }
-        .user-info h4 { font-size:13px; font-weight:700; color:var(--gray-900); }
-        .user-info p  { font-size:11px; color:var(--gray-400); margin-top:1px; }
-
-        /* EMAIL */
-        .email-cell { font-size:12.5px; color:var(--gray-600); }
+        .user-info h4 { font-size:13px; font-weight:700; color:#1e293b; }
+        .email-cell { font-size:12.5px; color:#334155; font-weight:500; }
 
         /* ROLE BADGES */
         .role-badge { padding:3px 12px; border-radius:20px; font-size:10.5px; font-weight:700; display:inline-block; }
-        .role-admin  { background:var(--red-50);   color:var(--red); }
-        .role-solver { background:rgba(230,57,70,.07); color:var(--red-dark); }
-        .role-user   { background:rgba(255,143,163,.15); color:var(--red-light); }
-        .role-manager{ background:var(--red-100);  color:var(--red); }
+        .role-admin   { background:var(--red-50); color:var(--red); }
+        .role-solver  { background:rgba(230,57,70,.07); color:var(--red-dark); }
+        .role-user    { background:rgba(255,143,163,.15); color:#be185d; }
+        .role-manager { background:var(--red-100); color:var(--red); }
 
         /* ACTION BUTTONS */
         .action-buttons { display:flex; gap:6px; }
@@ -155,36 +129,27 @@
         .empty-state i { font-size:36px; margin-bottom:12px; display:block; opacity:.35; }
         .empty-state p { font-size:13px; font-weight:500; }
 
-        /* ===== MODAL ===== */
-        #userModal {
-            display:none; position:fixed; top:0; left:0; width:100%; height:100%;
-            background:rgba(0,0,0,0.45); z-index:2000;
-            justify-content:center; align-items:center;
-            backdrop-filter:blur(2px);
-        }
-        .modal-box {
-            background:white; border-radius:var(--radius); padding:28px;
-            max-width:460px; width:90%;
-            box-shadow:0 24px 64px rgba(0,0,0,.18);
-            animation:modalIn .35s cubic-bezier(0.22,1,0.36,1);
-        }
+        /* MODAL */
+        #userModal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.45); z-index:2000; justify-content:center; align-items:center; backdrop-filter:blur(2px); }
+        .modal-box { background:white; border-radius:var(--radius); padding:28px; max-width:460px; width:90%; box-shadow:0 24px 64px rgba(0,0,0,.18); animation:modalIn .35s cubic-bezier(0.22,1,0.36,1); }
         .modal-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:22px; }
-        .modal-head h2 { font-size:17px; font-weight:800; color:var(--gray-900); }
+        .modal-head h2 { font-size:17px; font-weight:800; color:#1e293b; }
         .modal-close { background:none; border:none; font-size:18px; color:var(--gray-400); cursor:pointer; width:30px; height:30px; display:flex; align-items:center; justify-content:center; border-radius:8px; transition:all .2s; }
         .modal-close:hover { background:var(--red-50); color:var(--red); }
 
         .form-group { margin-bottom:14px; }
-        .form-group label { display:block; font-size:10px; font-weight:700; color:var(--gray-400); text-transform:uppercase; letter-spacing:.6px; margin-bottom:5px; }
-        .form-group input, .form-group select { width:100%; padding:9px 12px; border:1.5px solid var(--gray-200); border-radius:10px; font-size:12.5px; outline:none; font-family:inherit; color:var(--gray-800); transition:border-color .2s; background:white; }
+        .form-group label { display:block; font-size:10px; font-weight:700; color:#334155; text-transform:uppercase; letter-spacing:.6px; margin-bottom:5px; }
+        .form-group input, .form-group select { width:100%; padding:9px 12px; border:1.5px solid var(--gray-200); border-radius:10px; font-size:12.5px; outline:none; font-family:inherit; color:#1e293b; transition:border-color .2s; background:white; }
         .form-group input:focus, .form-group select:focus { border-color:var(--red-light); box-shadow:0 0 0 3px rgba(230,57,70,.08); }
+        .form-group input::placeholder { color:#94a3b8; }
 
         .modal-actions { display:flex; gap:10px; margin-top:20px; }
-        .modal-save-btn   { flex:1; padding:10px; background:linear-gradient(135deg,var(--red),var(--red-dark)); color:white; border:none; border-radius:10px; font-size:13px; font-weight:700; cursor:pointer; font-family:inherit; transition:all .2s; box-shadow:0 4px 12px rgba(230,57,70,.22); }
+        .modal-save-btn { flex:1; padding:10px; background:linear-gradient(135deg,var(--red),var(--red-dark)); color:white; border:none; border-radius:10px; font-size:13px; font-weight:700; cursor:pointer; font-family:inherit; transition:all .2s; box-shadow:0 4px 12px rgba(230,57,70,.22); }
         .modal-save-btn:hover { transform:translateY(-1px); box-shadow:0 6px 18px rgba(230,57,70,.32); }
-        .modal-cancel-btn { flex:1; padding:10px; border:1.5px solid var(--gray-200); background:white; color:var(--gray-700); border-radius:10px; font-size:13px; font-weight:600; cursor:pointer; font-family:inherit; transition:all .2s; }
+        .modal-cancel-btn { flex:1; padding:10px; border:1.5px solid var(--gray-200); background:white; color:#374151; border-radius:10px; font-size:13px; font-weight:600; cursor:pointer; font-family:inherit; transition:all .2s; }
         .modal-cancel-btn:hover { border-color:var(--gray-300); background:var(--gray-50); }
 
-        /* ===== TOAST ===== */
+        /* TOAST */
         .toast { position:fixed; top:20px; right:20px; padding:13px 20px; border-radius:12px; color:white; font-size:13px; font-weight:700; z-index:9999; box-shadow:0 8px 24px rgba(0,0,0,.14); animation:toastIn .3s ease; display:flex; align-items:center; gap:8px; }
         .toast-success { background:linear-gradient(135deg,#22c55e,#16a34a); }
         .toast-error   { background:linear-gradient(135deg,var(--red),var(--red-dark)); }
@@ -195,7 +160,6 @@
 <body>
 <div class="container">
 
-    <!-- SIDEBAR -->
     <aside class="sidebar">
         <div class="logo">
             <img src="../assets/images/logo.png" style="width:36px;height:36px;object-fit:contain;border-radius:8px;" alt="Logo"
@@ -203,7 +167,6 @@
             <div class="logo-icon" id="sbFall" style="display:none"><i class="fas fa-shield-halved"></i></div>
             <span class="logo-text">Smart<span>Incident</span></span>
         </div>
-
         <div class="nav-section-label">Menu Utama</div>
         <nav>
             <ul class="nav-menu">
@@ -217,19 +180,15 @@
         <a class="logout"><i class="fas fa-sign-out-alt"></i><span>Keluar</span></a>
     </aside>
 
-    <!-- MAIN -->
     <main class="main-content">
-
         <div class="page-header">
             <h1>Manajemen Pengguna</h1>
             <p>Kelola pengguna dan hak akses sistem</p>
         </div>
 
-        <!-- STAT CARDS -->
         <div class="stats-row">
             <div class="stat-box">
-                <div class="bubble bubble-lg"></div>
-                <div class="bubble bubble-sm"></div>
+                <div class="bubble bubble-lg"></div><div class="bubble bubble-sm"></div>
                 <div class="stat-top">
                     <div class="stat-label">Total User</div>
                     <div class="stat-icon-wrap"><i class="fas fa-users"></i></div>
@@ -238,8 +197,7 @@
                 <div class="stat-footer"><span class="stat-dot"></span>pengguna terdaftar</div>
             </div>
             <div class="stat-box">
-                <div class="bubble bubble-lg"></div>
-                <div class="bubble bubble-sm"></div>
+                <div class="bubble bubble-lg"></div><div class="bubble bubble-sm"></div>
                 <div class="stat-top">
                     <div class="stat-label">Total Solver</div>
                     <div class="stat-icon-wrap"><i class="fas fa-user-check"></i></div>
@@ -248,8 +206,7 @@
                 <div class="stat-footer"><span class="stat-dot"></span>solver aktif</div>
             </div>
             <div class="stat-box">
-                <div class="bubble bubble-lg"></div>
-                <div class="bubble bubble-sm"></div>
+                <div class="bubble bubble-lg"></div><div class="bubble bubble-sm"></div>
                 <div class="stat-top">
                     <div class="stat-label">Administrator</div>
                     <div class="stat-icon-wrap"><i class="fas fa-user-shield"></i></div>
@@ -259,17 +216,13 @@
             </div>
         </div>
 
-        <!-- TABLE CARD -->
         <div class="card">
-            <!-- Role Tabs -->
             <div class="role-tabs" id="roleTabs">
                 <button class="tab-btn active" onclick="filterByRole('all', this)">Semua</button>
                 <button class="tab-btn" onclick="filterByRole('user', this)">User</button>
                 <button class="tab-btn" onclick="filterByRole('solver', this)">Solver</button>
                 <button class="tab-btn" onclick="filterByRole('admin', this)">Admin</button>
             </div>
-
-            <!-- Controls -->
             <div class="table-controls">
                 <div class="search-box">
                     <i class="fas fa-search"></i>
@@ -279,8 +232,6 @@
                     <i class="fas fa-plus"></i> Tambah
                 </button>
             </div>
-
-            <!-- Table -->
             <table class="users-table">
                 <thead>
                     <tr>
@@ -298,7 +249,7 @@
     </main>
 </div>
 
-<!-- ===== MODAL ===== -->
+<!-- MODAL -->
 <div id="userModal">
     <div class="modal-box">
         <div class="modal-head">
@@ -335,12 +286,10 @@
     </div>
 </div>
 
-<!-- ===== ORIGINAL JS — INTACT ===== -->
 <script>
     let allUsersData = [];
     let currentEditingUserId = null;
 
-    /* ── TOAST ── */
     function showToast(msg, type = 'success') {
         const t = document.createElement('div');
         t.className = `toast toast-${type}`;
@@ -349,11 +298,9 @@
         setTimeout(() => t.remove(), 3500);
     }
 
-    /* ── AVATAR COLORS (red palette) ── */
     const redPalette = ['#e63946','#c1121f','#f05a67','#ff8fa3','#8c1b28','#fda4af'];
     function getAvatarColor(id) { return redPalette[id % redPalette.length]; }
 
-    /* ── INIT ── */
     document.addEventListener('DOMContentLoaded', () => {
         fetchUsers();
         setupSearchFilter();
@@ -362,35 +309,24 @@
 
     function getAuthToken() {
         const token = localStorage.getItem("token") || localStorage.getItem("authToken") || sessionStorage.getItem("token");
-        if (!token) {
-            alert("Sesi habis. Silakan login kembali.");
-            window.location.href = "../../auth/login.html";
-            return null;
-        }
+        if (!token) { alert("Sesi habis. Silakan login kembali."); window.location.href = "../../auth/login.html"; return null; }
         return token;
     }
 
-    /* ── FETCH USERS ── */
     async function fetchUsers() {
         try {
             const token = getAuthToken();
             if (!token) return;
-
             const response = await fetch('http://localhost:3000/api/admin/users', {
                 method: 'GET',
                 headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token }
             });
-
             const data = await response.json();
             if (!response.ok) throw new Error(data.message || 'Failed to fetch users');
-
             allUsersData = data.data;
-
-            // Animate stat numbers counting up
             animateCount('totalUsersCount',    allUsersData.filter(u => u.role?.toLowerCase() === 'user').length);
             animateCount('activeUsersCount',   allUsersData.filter(u => u.role?.toLowerCase() === 'solver').length);
             animateCount('administratorsCount',allUsersData.filter(u => u.role?.toLowerCase() === 'admin').length);
-
             renderUsersTable(allUsersData);
         } catch (error) {
             console.error('Fetch users error:', error);
@@ -400,7 +336,6 @@
         }
     }
 
-    /* count-up animation */
     function animateCount(id, target) {
         const el = document.getElementById(id);
         if (!el) return;
@@ -413,7 +348,6 @@
         }, 40);
     }
 
-    /* ── RENDER TABLE ── */
     function renderUsersTable(users) {
         const tbody = document.getElementById('usersTableBody');
         if (!users || users.length === 0) {
@@ -445,7 +379,6 @@
         }).join('');
     }
 
-    /* ── MODAL OPEN/CLOSE ── */
     function openAddUserModal() {
         currentEditingUserId = null;
         document.getElementById('modalTitle').textContent = 'Tambah Pengguna';
@@ -468,12 +401,8 @@
         document.getElementById('userModal').style.display = 'flex';
     }
 
-    function closeUserModal() {
-        document.getElementById('userModal').style.display = 'none';
-        currentEditingUserId = null;
-    }
+    function closeUserModal() { document.getElementById('userModal').style.display = 'none'; currentEditingUserId = null; }
 
-    /* ── SUBMIT FORM ── */
     async function submitUserForm(event) {
         event.preventDefault();
         const formData = {
@@ -482,50 +411,31 @@
             role:  document.getElementById('userRole').value
         };
         if (!currentEditingUserId) formData.password = document.getElementById('userPassword').value;
-
         try {
-            const token = getAuthToken();
-            if (!token) return;
+            const token = getAuthToken(); if (!token) return;
             const method = currentEditingUserId ? 'PUT' : 'POST';
             const url    = currentEditingUserId
                 ? `http://localhost:3000/api/admin/users/${currentEditingUserId}`
                 : `http://localhost:3000/api/admin/users`;
-
-            const response = await fetch(url, {
-                method,
-                headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
-                body: JSON.stringify(formData)
-            });
+            const response = await fetch(url, { method, headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token }, body: JSON.stringify(formData) });
             const data = await response.json();
             if (!response.ok) throw new Error(data.message || 'Failed to save user');
             showToast(data.message || 'Pengguna berhasil disimpan');
-            closeUserModal();
-            fetchUsers();
-        } catch (error) {
-            showToast('Gagal menyimpan: ' + error.message, 'error');
-        }
+            closeUserModal(); fetchUsers();
+        } catch (error) { showToast('Gagal menyimpan: ' + error.message, 'error'); }
     }
 
-    /* ── DELETE ── */
     async function deleteUser(userId) {
         if (!confirm('Yakin ingin menghapus pengguna ini?')) return;
         try {
-            const token = getAuthToken();
-            if (!token) return;
-            const response = await fetch(`http://localhost:3000/api/admin/users/${userId}`, {
-                method: 'DELETE',
-                headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token }
-            });
+            const token = getAuthToken(); if (!token) return;
+            const response = await fetch(`http://localhost:3000/api/admin/users/${userId}`, { method: 'DELETE', headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token } });
             const data = await response.json();
             if (!response.ok) throw new Error(data.message || 'Failed to delete user');
-            showToast(data.message || 'Pengguna berhasil dihapus');
-            fetchUsers();
-        } catch (error) {
-            showToast('Gagal menghapus: ' + error.message, 'error');
-        }
+            showToast(data.message || 'Pengguna berhasil dihapus'); fetchUsers();
+        } catch (error) { showToast('Gagal menghapus: ' + error.message, 'error'); }
     }
 
-    /* ── FILTER BY ROLE ── */
     function filterByRole(role, btnEl) {
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         if (btnEl) btnEl.classList.add('active');
@@ -535,27 +445,21 @@
         renderUsersTable(filtered);
     }
 
-    /* ── SEARCH ── */
     function setupSearchFilter() {
         document.getElementById('userSearchInput').addEventListener('keyup', e => {
             const q = e.target.value.toLowerCase();
-            const filtered = allUsersData.filter(u =>
-                u.name.toLowerCase().includes(q) || u.email.toLowerCase().includes(q)
-            );
+            const filtered = allUsersData.filter(u => u.name.toLowerCase().includes(q) || u.email.toLowerCase().includes(q));
             renderUsersTable(filtered);
         });
     }
 
-    /* ── LOGOUT ── */
     function setupLogout() {
         document.querySelector('.logout').addEventListener('click', () => {
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
+            localStorage.removeItem('token'); localStorage.removeItem('user');
             window.location.href = '../auth/login.html';
         });
     }
 
-    /* close modal on outside click */
     document.getElementById('userModal').addEventListener('click', e => {
         if (e.target === document.getElementById('userModal')) closeUserModal();
     });

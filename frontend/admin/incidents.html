@@ -30,23 +30,31 @@
         .logo-icon { width:38px; height:38px; background:linear-gradient(135deg,var(--red),var(--red-dark)); border-radius:11px; display:flex; align-items:center; justify-content:center; color:white; font-size:17px; box-shadow:0 4px 12px rgba(230,57,70,0.32); }
         .logo-text { font-size:15.5px; font-weight:800; color:var(--gray-900); letter-spacing:-0.3px; }
         .logo-text span { color:var(--red); }
-        .nav-section-label { font-size:9.5px; font-weight:700; color:var(--gray-400); text-transform:uppercase; letter-spacing:1.3px; padding:0 10px; margin-bottom:7px; }
+
+        /* ✅ MENU UTAMA label */
+        .nav-section-label { font-size:9.5px; font-weight:700; color:#94a3b8; text-transform:uppercase; letter-spacing:1.3px; padding:0 10px; margin-bottom:7px; }
         .nav-menu { list-style:none; margin-bottom:10px; }
         .nav-item { margin-bottom:2px; }
-        .nav-link { display:flex; align-items:center; gap:11px; padding:10px 13px; color:var(--gray-500); text-decoration:none; border-radius:var(--radius-sm); font-size:13px; font-weight:600; transition:all 0.2s; position:relative; }
+
+        /* ✅ Nav link — #1e293b */
+        .nav-link { display:flex; align-items:center; gap:11px; padding:10px 13px; color:#1e293b; text-decoration:none; border-radius:var(--radius-sm); font-size:13px; font-weight:600; transition:all 0.2s; position:relative; }
         .nav-link:hover { background:var(--red-50); color:var(--red); }
         .nav-link.active { background:linear-gradient(135deg,var(--red),#f05a67); color:white; box-shadow:0 4px 14px rgba(230,57,70,0.28); }
         .nav-link.active::before { content:''; position:absolute; left:-14px; width:4px; height:22px; background:var(--red); border-radius:0 4px 4px 0; }
         .nav-link i { width:17px; text-align:center; font-size:13px; }
         .sidebar-divider { height:1px; background:var(--gray-100); margin:14px 0; }
-        .logout-link { display:flex; align-items:center; gap:11px; padding:10px 13px; color:var(--gray-400); font-size:13px; font-weight:600; cursor:pointer; border-radius:var(--radius-sm); margin-top:auto; border:none; background:none; transition:all 0.2s; font-family:inherit; width:100%; }
+
+        /* ✅ Keluar — #374151 */
+        .logout-link { display:flex; align-items:center; gap:11px; padding:10px 13px; color:#374151; font-size:13px; font-weight:600; cursor:pointer; border-radius:var(--radius-sm); margin-top:auto; border:none; background:none; transition:all 0.2s; font-family:inherit; width:100%; }
         .logout-link:hover { background:#fff5f5; color:var(--red); }
 
         /* MAIN */
         .main-content { flex:1; margin-left:235px; padding:26px 30px; }
         .page-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:24px; animation:fadeInDown 0.5s cubic-bezier(0.22,1,0.36,1); }
         .page-header-left h1 { font-size:22px; font-weight:800; color:var(--gray-900); letter-spacing:-0.5px; }
-        .page-header-left p { font-size:12.5px; color:var(--gray-400); margin-top:3px; font-weight:500; }
+
+        /* ✅ Sub-judul halaman */
+        .page-header-left p { font-size:12.5px; color:#64748b; margin-top:3px; font-weight:500; }
         .card { background:white; border-radius:var(--radius); padding:22px; box-shadow:var(--shadow-card); border:1px solid var(--gray-100); animation:fadeInUp 0.5s cubic-bezier(0.22,1,0.36,1) 0.1s both; }
         .table-controls { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:12px; }
         .search-filter { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
@@ -54,21 +62,32 @@
         .search-box input { padding:9px 16px 9px 38px; border:1.5px solid var(--gray-200); border-radius:11px; width:260px; font-size:12.5px; outline:none; transition:all 0.2s; background:white; font-family:inherit; color:var(--gray-900); }
         .search-box input:focus { border-color:var(--red-light); box-shadow:0 0 0 3px rgba(230,57,70,0.08); }
         .search-box i { position:absolute; left:13px; top:50%; transform:translateY(-50%); color:var(--gray-400); font-size:12px; }
-        .filter-select { padding:9px 14px; border:1.5px solid var(--gray-200); border-radius:11px; font-size:12.5px; cursor:pointer; outline:none; background:white; font-family:inherit; color:var(--gray-700); font-weight:500; transition:all 0.2s; }
+
+        /* ✅ Filter select — #334155 */
+        .filter-select { padding:9px 14px; border:1.5px solid var(--gray-200); border-radius:11px; font-size:12.5px; cursor:pointer; outline:none; background:white; font-family:inherit; color:#334155; font-weight:500; transition:all 0.2s; }
         .filter-select:focus { border-color:var(--red-light); box-shadow:0 0 0 3px rgba(230,57,70,0.08); }
 
         /* TABLE */
         .incidents-table { width:100%; border-collapse:collapse; }
         .incidents-table thead tr { border-bottom:2px solid var(--gray-100); }
-        .incidents-table th { padding:10px 12px; text-align:left; font-size:10px; font-weight:700; color:var(--gray-400); text-transform:uppercase; letter-spacing:0.7px; }
-        .incidents-table td { padding:12px 12px; border-bottom:1px solid var(--gray-100); font-size:12.5px; color:var(--gray-700); vertical-align:middle; }
+
+        /* ✅ Header tabel — #334155 */
+        .incidents-table th { padding:10px 12px; text-align:left; font-size:10px; font-weight:700; color:#334155; text-transform:uppercase; letter-spacing:0.7px; }
+
+        /* ✅ Isi baris — #0f172a */
+        .incidents-table td { padding:12px 12px; border-bottom:1px solid var(--gray-100); font-size:12.5px; color:#0f172a; vertical-align:middle; }
         .incidents-table tbody tr { transition:background 0.15s; }
         .incidents-table tbody tr:hover { background:var(--red-50); }
         .incidents-table tbody tr:last-child td { border-bottom:none; }
         .user-cell { display:flex; align-items:center; gap:9px; }
         .user-avatar-small { width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:white; flex-shrink:0; }
-        .user-name { font-weight:600; color:var(--gray-800); }
-        .id-badge { font-size:12px; font-weight:700; color:var(--gray-500); }
+
+        /* ✅ Reporter name — #1e293b */
+        .user-name { font-weight:600; color:#1e293b; }
+
+        /* ✅ ID badge — #334155 */
+        .id-badge { font-size:12px; font-weight:700; color:#334155; }
+
         .priority-badge { padding:3px 11px; border-radius:20px; font-size:10.5px; font-weight:700; display:inline-block; }
         .priority-high   { background:#fff0f2; color:var(--red); }
         .priority-medium { background:#fff7ed; color:#ea580c; }
@@ -78,10 +97,18 @@
         .status-open     { background-color:#fff7ed; color:#c2410c; border-color:#fed7aa; }
         .status-progress { background-color:#eff6ff; color:#1d4ed8; border-color:#bfdbfe; }
         .status-closed   { background-color:#f0fdf4; color:#15803d; border-color:#bbf7d0; }
-        .assign-select { padding:5px 10px; border:1.5px solid var(--gray-200); border-radius:9px; font-size:11.5px; cursor:pointer; outline:none; background:white; font-family:inherit; color:var(--gray-700); font-weight:500; max-width:145px; transition:border-color 0.2s; }
+        .assign-select { padding:5px 10px; border:1.5px solid var(--gray-200); border-radius:9px; font-size:11.5px; cursor:pointer; outline:none; background:white; font-family:inherit; color:#334155; font-weight:500; max-width:145px; transition:border-color 0.2s; }
         .assign-select:focus { border-color:var(--red-light); }
-        .cat-badge { background:var(--gray-100); color:var(--gray-600); padding:3px 10px; border-radius:7px; font-size:10.5px; font-weight:600; }
-        .date-cell { font-size:11.5px; color:var(--gray-500); font-weight:500; white-space:nowrap; }
+
+        /* ✅ Kategori chip — #1e293b + bg lebih jelas */
+        .cat-badge { background:#e2e8f0; color:#1e293b; padding:3px 10px; border-radius:7px; font-size:10.5px; font-weight:600; }
+
+        /* ✅ Tanggal — #334155 + bold */
+        .date-cell { font-size:11.5px; color:#334155; font-weight:600; white-space:nowrap; }
+
+        /* ✅ Judul insiden — #1e293b */
+        .incident-title { color:#1e293b; font-weight:600; }
+
         .action-buttons { display:flex; gap:6px; }
         .action-btn { width:30px; height:30px; border-radius:8px; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s; font-size:12px; }
         .view-btn   { background:var(--red-50);   color:var(--red); }
@@ -93,9 +120,11 @@
 
         /* PAGINATION */
         .pagination-wrap { display:flex; flex-direction:column; align-items:center; gap:10px; margin-top:22px; }
-        .pagination-info { font-size:12px; color:var(--gray-500); font-weight:500; }
+
+        /* ✅ Pagination info — #334155 */
+        .pagination-info { font-size:12px; color:#334155; font-weight:600; }
         .pagination { display:flex; justify-content:center; align-items:center; gap:5px; }
-        .page-btn { min-width:34px; height:34px; border-radius:9px; border:1.5px solid var(--gray-200); background:white; cursor:pointer; font-size:12.5px; font-weight:600; font-family:inherit; color:var(--gray-600); transition:all 0.2s; display:flex; align-items:center; justify-content:center; padding:0 8px; }
+        .page-btn { min-width:34px; height:34px; border-radius:9px; border:1.5px solid var(--gray-200); background:white; cursor:pointer; font-size:12.5px; font-weight:600; font-family:inherit; color:#334155; transition:all 0.2s; display:flex; align-items:center; justify-content:center; padding:0 8px; }
         .page-btn:hover:not(.active):not(:disabled) { border-color:var(--red-light); color:var(--red); background:var(--red-50); }
         .page-btn.active { background:linear-gradient(135deg,var(--red),var(--red-dark)); color:white; border-color:transparent; box-shadow:0 4px 12px rgba(230,57,70,0.28); }
         .page-btn:disabled { opacity:0.38; cursor:not-allowed; }
@@ -127,12 +156,16 @@
         .modal-section-label::after { content:''; flex:1; height:1px; background:linear-gradient(to right,var(--red-100),transparent); }
         .modal-form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
         .form-group { margin-bottom:13px; }
+
+        /* ✅ Form label dalam modal — merah tegas (sudah bagus) */
         .form-group label { display:block; font-size:9.5px; font-weight:700; color:var(--red); margin-bottom:5px; text-transform:uppercase; letter-spacing:0.8px; opacity:0.85; }
-        .form-group input, .form-group textarea, .form-group select { width:100%; padding:9px 12px; border:1.5px solid var(--red-100); border-radius:10px; font-size:12.5px; outline:none; font-family:inherit; color:var(--gray-800); transition:border-color 0.2s; background:white; }
+
+        /* ✅ Form input value — #1e293b */
+        .form-group input, .form-group textarea, .form-group select { width:100%; padding:9px 12px; border:1.5px solid var(--red-100); border-radius:10px; font-size:12.5px; outline:none; font-family:inherit; color:#1e293b; transition:border-color 0.2s; background:white; }
         .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color:var(--red-light); box-shadow:0 0 0 3px rgba(230,57,70,0.08); }
-        .form-group input[readonly], .form-group textarea[readonly] { background:var(--red-50); color:var(--gray-700); cursor:default; }
+        .form-group input[readonly], .form-group textarea[readonly] { background:var(--red-50); color:#334155; cursor:default; }
         .form-group textarea { resize:vertical; min-height:76px; }
-        .modal-status-select { width:100%; padding:9px 12px; border:1.5px solid var(--red-100); border-radius:10px; font-size:12.5px; outline:none; font-family:inherit; color:var(--gray-800); background:white; cursor:pointer; font-weight:600; }
+        .modal-status-select { width:100%; padding:9px 12px; border:1.5px solid var(--red-100); border-radius:10px; font-size:12.5px; outline:none; font-family:inherit; color:#1e293b; background:white; cursor:pointer; font-weight:600; }
         .solver-note { background:#f0fdf4 !important; color:#166534 !important; border-color:#bbf7d0 !important; }
         .admin-note-area { background:white !important; border-color:var(--red-light) !important; }
         .modal-footer { padding:14px 24px; border-top:1.5px solid var(--red-100); display:flex; gap:10px; justify-content:flex-end; background:var(--red-50); border-radius:0 0 var(--radius) var(--radius); flex-shrink:0; }
@@ -149,13 +182,17 @@
         .delete-modal-icon .icon-circle { width:62px; height:62px; background:linear-gradient(135deg,var(--red),var(--red-dark)); border-radius:50%; display:inline-flex; align-items:center; justify-content:center; color:white; font-size:24px; box-shadow:0 8px 20px rgba(230,57,70,0.35); }
         .delete-modal-content { padding:16px 24px 22px; text-align:center; }
         .delete-modal-content h3 { font-size:17px; font-weight:800; color:var(--gray-900); margin-bottom:8px; }
-        .delete-modal-content p { font-size:13px; color:var(--gray-500); line-height:1.6; }
+
+        /* ✅ Teks deskripsi delete modal — #374151 */
+        .delete-modal-content p { font-size:13px; color:#374151; line-height:1.6; }
         .delete-modal-content .incident-info { background:var(--red-50); border:1.5px solid var(--red-100); border-radius:10px; padding:10px 14px; margin:14px 0; text-align:left; }
         .delete-modal-content .inc-id { font-size:10px; font-weight:700; color:var(--red); margin-bottom:2px; }
-        .delete-modal-content .inc-title { font-size:13px; font-weight:700; color:var(--gray-800); }
+
+        /* ✅ Judul insiden di delete modal — #1e293b */
+        .delete-modal-content .inc-title { font-size:13px; font-weight:700; color:#1e293b; }
         .delete-modal-content .warning-text { font-size:11.5px; color:var(--red); font-weight:600; display:flex; align-items:center; justify-content:center; gap:5px; margin-top:8px; }
         .delete-modal-actions { display:flex; gap:10px; padding:0 24px 22px; }
-        .btn-cancel-delete { flex:1; padding:11px; border:1.5px solid var(--gray-200); background:white; color:var(--gray-600); border-radius:11px; font-size:13px; font-weight:600; cursor:pointer; font-family:inherit; transition:all 0.2s; }
+        .btn-cancel-delete { flex:1; padding:11px; border:1.5px solid var(--gray-200); background:white; color:#374151; border-radius:11px; font-size:13px; font-weight:600; cursor:pointer; font-family:inherit; transition:all 0.2s; }
         .btn-cancel-delete:hover { background:var(--gray-50); }
         .btn-confirm-delete { flex:1; padding:11px; background:linear-gradient(135deg,var(--red),var(--red-dark)); color:white; border:none; border-radius:11px; font-size:13px; font-weight:700; cursor:pointer; font-family:inherit; box-shadow:0 4px 14px rgba(230,57,70,0.3); display:flex; align-items:center; justify-content:center; gap:7px; transition:all 0.2s; }
         .btn-confirm-delete:hover { transform:translateY(-1px); }
@@ -236,7 +273,6 @@
                 </tbody>
             </table>
 
-            <!-- PAGINATION WRAPPER -->
             <div class="pagination-wrap" id="paginationWrap" style="display:none;">
                 <div class="pagination-info" id="paginationInfo"></div>
                 <div class="pagination" id="paginationEl"></div>
@@ -351,9 +387,8 @@ function showEmpty() {
 /* ─── STATE ─── */
 const PER_PAGE = 10;
 let page     = 1;
-let allData  = [];   
+let allData  = [];
 let solvers  = [];
-
 const byId = id => allData.find(i => i.id === parseInt(id));
 
 /* ─── PAGINATION ─── */
@@ -362,43 +397,20 @@ function renderPagination(total, cur) {
     const wrap  = document.getElementById('paginationWrap');
     const info  = document.getElementById('paginationInfo');
     const el    = document.getElementById('paginationEl');
-
     if (total === 0) { wrap.style.display = 'none'; return; }
-
     const from = (cur - 1) * PER_PAGE + 1;
     const to   = Math.min(cur * PER_PAGE, total);
     info.textContent = `${from}–${to} dari ${total} insiden`;
-
     if (pages <= 1) { el.innerHTML = ''; wrap.style.display = 'flex'; return; }
-
     let s = Math.max(1, cur - 2);
     let e = Math.min(pages, s + 4);
     if (e - s < 4) s = Math.max(1, e - 4);
-
     let h = '';
-
-    // Prev
     h += `<button class="page-btn" onclick="goTo(${cur-1})" ${cur===1?'disabled':''}><i class="fas fa-chevron-left"></i></button>`;
-
-    // Halaman pertama + dots
-    if (s > 1) {
-        h += `<button class="page-btn" onclick="goTo(1)">1</button>`;
-        if (s > 2) h += `<span style="color:var(--gray-400);padding:0 2px;font-size:13px;">…</span>`;
-    }
-
-    for (let p = s; p <= e; p++) {
-        h += `<button class="page-btn ${p===cur?'active':''}" onclick="goTo(${p})">${p}</button>`;
-    }
-
-    // Dots + halaman terakhir
-    if (e < pages) {
-        if (e < pages-1) h += `<span style="color:var(--gray-400);padding:0 2px;font-size:13px;">…</span>`;
-        h += `<button class="page-btn" onclick="goTo(${pages})">${pages}</button>`;
-    }
-
-    // Next
+    if (s > 1) { h += `<button class="page-btn" onclick="goTo(1)">1</button>`; if (s > 2) h += `<span style="color:#94a3b8;padding:0 2px;font-size:13px;">…</span>`; }
+    for (let p = s; p <= e; p++) h += `<button class="page-btn ${p===cur?'active':''}" onclick="goTo(${p})">${p}</button>`;
+    if (e < pages) { if (e < pages-1) h += `<span style="color:#94a3b8;padding:0 2px;font-size:13px;">…</span>`; h += `<button class="page-btn" onclick="goTo(${pages})">${pages}</button>`; }
     h += `<button class="page-btn" onclick="goTo(${cur+1})" ${cur===pages?'disabled':''}><i class="fas fa-chevron-right"></i></button>`;
-
     el.innerHTML = h;
     wrap.style.display = 'flex';
 }
@@ -417,7 +429,6 @@ function renderPage(rows) {
     const tbody = document.getElementById('incidentsTableBody');
     tbody.innerHTML = '';
     if (!rows.length) { showEmpty(); return; }
-
     rows.forEach(inc => {
         const tr   = document.createElement('tr');
         const name = inc.reporter_name || 'Unknown';
@@ -425,25 +436,19 @@ function renderPage(rows) {
         let sc = 'status-open';
         if (ls==='in_progress'||ls==='progress') sc = 'status-progress';
         else if (ls==='closed') sc = 'status-closed';
-
         let opts = '<option value="">-- Pilih Solver --</option>';
-        solvers.forEach(s => {
-            opts += `<option value="${s.id}" ${inc.assigned_to===s.id?'selected':''}>${esc(s.name)}</option>`;
-        });
-
+        solvers.forEach(s => { opts += `<option value="${s.id}" ${inc.assigned_to===s.id?'selected':''}>${esc(s.name)}</option>`; });
         tr.innerHTML = `
             <td><span class="id-badge">#${String(inc.id).padStart(3,'0')}</span></td>
             <td><div class="user-cell">
                 <div class="user-avatar-small" style="background:${colorFrom(String(inc.id))}">${initial(name)}</div>
                 <span class="user-name">${esc(name)}</span>
             </div></td>
-            <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600;color:var(--gray-800);"
-                title="${esc(inc.title||'')}">${esc(inc.title||'-')}</td>
+            <td class="incident-title" style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${esc(inc.title||'')}">${esc(inc.title||'-')}</td>
             <td><span class="cat-badge">${esc(inc.category||'-')}</span></td>
             <td><span class="priority-badge priority-${(inc.priority||'medium').toLowerCase()}">${esc(inc.priority||'Medium')}</span></td>
             <td>
-                <select class="status-select ${sc}"
-                    onchange="updateStatus(${inc.id},this.value);this.className='status-select '+statusClass(this.value)">
+                <select class="status-select ${sc}" onchange="updateStatus(${inc.id},this.value);this.className='status-select '+statusClass(this.value)">
                     <option value="open"        ${ls==='open'?'selected':''}>Open</option>
                     <option value="in_progress" ${ls==='in_progress'||ls==='progress'?'selected':''}>On Progress</option>
                     <option value="closed"      ${ls==='closed'?'selected':''}>Closed</option>
@@ -466,24 +471,14 @@ function statusClass(v) {
     return 'status-open';
 }
 
-/* ─── INISIALISASI ─── */
 async function initData(incidents) {
-    
     if (!solvers.length) {
         try {
-            const r = await fetch('http://localhost:3000/api/admin/solvers', {
-                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-            });
+            const r = await fetch('http://localhost:3000/api/admin/solvers', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
             if (r.ok) { const d = await r.json(); solvers = d.data || []; }
         } catch(e) { console.error(e); }
     }
-
-    // Enrich solver name
-    allData = incidents.map(inc => {
-        const sv = solvers.find(s => s.id === inc.assigned_to);
-        return { ...inc, _solverName: sv ? sv.name : null };
-    });
-
+    allData = incidents.map(inc => { const sv = solvers.find(s => s.id === inc.assigned_to); return { ...inc, _solverName: sv ? sv.name : null }; });
     page = 1;
     renderPage(allData.slice(0, PER_PAGE));
     renderPagination(allData.length, page);
@@ -493,7 +488,6 @@ async function initData(incidents) {
 function openModal(id, readOnly) {
     const inc = byId(id);
     if (!inc) { err('Insiden tidak ditemukan'); return; }
-
     document.getElementById('modalIncidentId').value     = inc.id;
     document.getElementById('modalIdText').textContent   = String(inc.id).padStart(3,'0');
     document.getElementById('modalTitle').value          = inc.title || '';
@@ -505,16 +499,10 @@ function openModal(id, readOnly) {
     document.getElementById('modalAdminNote').value      = inc.admin_note || '';
     document.getElementById('modalAssignedSolver').value = inc._solverName || 'Belum di-assign';
     document.getElementById('modalSolverNote').value     = inc.solver_note || 'Belum ada catatan dari solver';
-
     const photo = document.getElementById('modalPhoto');
     const noph  = document.getElementById('modalNoPhoto');
-    if (inc.photo) {
-        photo.src = `http://localhost:3000/uploads/incidents/${inc.photo}`;
-        photo.style.display = 'block'; noph.style.display = 'none';
-    } else {
-        photo.style.display = 'none'; noph.style.display = 'block';
-    }
-
+    if (inc.photo) { photo.src = `http://localhost:3000/uploads/incidents/${inc.photo}`; photo.style.display = 'block'; noph.style.display = 'none'; }
+    else { photo.style.display = 'none'; noph.style.display = 'block'; }
     const saveBtn = document.getElementById('modalSaveBtn');
     if (readOnly) {
         document.getElementById('modalHeadTitle').textContent = `Detail Insiden #${String(inc.id).padStart(3,'0')}`;
@@ -531,15 +519,12 @@ function openModal(id, readOnly) {
 }
 
 function closeIncidentModal() { document.getElementById('incidentModal').style.display = 'none'; }
-document.getElementById('incidentModal').addEventListener('click', e => {
-    if (e.target === document.getElementById('incidentModal')) closeIncidentModal();
-});
+document.getElementById('incidentModal').addEventListener('click', e => { if (e.target === document.getElementById('incidentModal')) closeIncidentModal(); });
 function viewIncident(id) { openModal(id, true); }
 function editIncident(id) { openModal(id, false); }
 
 /* ─── DELETE ─── */
 let pendingDel = null;
-
 function deleteIncident(id) {
     const inc = byId(id);
     if (!inc) { err('Insiden tidak ditemukan'); return; }
@@ -551,11 +536,8 @@ function deleteIncident(id) {
     btn.innerHTML = '<i class="fas fa-trash-alt"></i> Ya, Hapus';
     document.getElementById('deleteModal').style.display = 'flex';
 }
-
 function closeDeleteModal() { document.getElementById('deleteModal').style.display='none'; pendingDel=null; }
-document.getElementById('deleteModal').addEventListener('click', e => {
-    if (e.target === document.getElementById('deleteModal')) closeDeleteModal();
-});
+document.getElementById('deleteModal').addEventListener('click', e => { if (e.target === document.getElementById('deleteModal')) closeDeleteModal(); });
 
 async function confirmDelete() {
     if (!pendingDel) return;
@@ -564,35 +546,20 @@ async function confirmDelete() {
     btn.disabled = true;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menghapus...';
     try {
-        const r = await fetch(`http://localhost:3000/api/admin/incidents/${id}`, {
-            method: 'DELETE',
-            headers: { 'Content-Type':'application/json', 'Authorization':`Bearer ${localStorage.getItem('token')}` }
-        });
+        const r = await fetch(`http://localhost:3000/api/admin/incidents/${id}`, { method: 'DELETE', headers: { 'Content-Type':'application/json', 'Authorization':`Bearer ${localStorage.getItem('token')}` } });
         const d = await r.json();
         if (!r.ok) throw new Error(d.message);
         closeDeleteModal();
         ok(`Insiden #${String(id).padStart(3,'0')} berhasil dihapus`);
         fetchIncidents();
-    } catch(e) {
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fas fa-trash-alt"></i> Ya, Hapus';
-        err('Gagal menghapus: ' + e.message);
-    }
+    } catch(e) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-trash-alt"></i> Ya, Hapus'; err('Gagal menghapus: ' + e.message); }
 }
 
-/* ─── API ─── */
 async function saveIncidentChanges() {
     const id  = document.getElementById('modalIncidentId').value;
     const tok = localStorage.getItem('token');
     try {
-        const r = await fetch(`http://localhost:3000/api/admin/incidents/${id}`, {
-            method: 'PUT',
-            headers: { 'Content-Type':'application/json', 'Authorization':`Bearer ${tok}` },
-            body: JSON.stringify({
-                status:     document.getElementById('modalStatusSelect').value,
-                admin_note: document.getElementById('modalAdminNote').value
-            })
-        });
+        const r = await fetch(`http://localhost:3000/api/admin/incidents/${id}`, { method: 'PUT', headers: { 'Content-Type':'application/json', 'Authorization':`Bearer ${tok}` }, body: JSON.stringify({ status: document.getElementById('modalStatusSelect').value, admin_note: document.getElementById('modalAdminNote').value }) });
         const d = await r.json();
         if (!r.ok) throw new Error(d.message);
         ok(`Insiden #${id} berhasil diperbarui`);
@@ -603,11 +570,7 @@ async function saveIncidentChanges() {
 
 async function updateStatus(id, status) {
     try {
-        const r = await fetch(`http://localhost:3000/api/admin/incidents/${id}`, {
-            method: 'PUT',
-            headers: { 'Content-Type':'application/json', 'Authorization':`Bearer ${localStorage.getItem('token')}` },
-            body: JSON.stringify({ status })
-        });
+        const r = await fetch(`http://localhost:3000/api/admin/incidents/${id}`, { method: 'PUT', headers: { 'Content-Type':'application/json', 'Authorization':`Bearer ${localStorage.getItem('token')}` }, body: JSON.stringify({ status }) });
         const d = await r.json();
         if (!r.ok) throw new Error(d.message);
         ok(`Status insiden #${id} berhasil diubah`);
@@ -618,11 +581,7 @@ async function updateStatus(id, status) {
 async function assignSolver(incId, solvId) {
     if (!solvId) return;
     try {
-        const r = await fetch(`http://localhost:3000/api/admin/incidents/${incId}/assign`, {
-            method: 'PUT',
-            headers: { 'Content-Type':'application/json', 'Authorization':`Bearer ${localStorage.getItem('token')}` },
-            body: JSON.stringify({ assigned_to: parseInt(solvId) })
-        });
+        const r = await fetch(`http://localhost:3000/api/admin/incidents/${incId}/assign`, { method: 'PUT', headers: { 'Content-Type':'application/json', 'Authorization':`Bearer ${localStorage.getItem('token')}` }, body: JSON.stringify({ assigned_to: parseInt(solvId) }) });
         const d = await r.json();
         if (!r.ok) throw new Error(d.message);
         ok('Solver berhasil di-assign!');
@@ -636,42 +595,23 @@ async function fetchIncidents(resetSolvers = false) {
     if (resetSolvers) solvers = [];
     showLoading();
     try {
-        const r = await fetch('http://localhost:3000/api/admin/incidents', {
-            headers: { 'Content-Type':'application/json', 'Authorization':`Bearer ${tok}` }
-        });
+        const r = await fetch('http://localhost:3000/api/admin/incidents', { headers: { 'Content-Type':'application/json', 'Authorization':`Bearer ${tok}` } });
         if (r.status === 401) { window.location.href = '../auth/login.html'; return; }
         if (r.status === 403) { err('Access denied'); return; }
         if (!r.ok) throw new Error(`HTTP ${r.status}`);
-
         const data = await r.json();
         let inc = data.success && Array.isArray(data.data) ? data.data : [];
-
-        // Filter lokal
         const q   = document.getElementById('searchInput').value.toLowerCase();
         const pri = document.getElementById('priorityFilter').value.toLowerCase();
         const sta = document.getElementById('statusFilter').value.toLowerCase();
-
-        if (q)   inc = inc.filter(i =>
-            (i.title||'').toLowerCase().includes(q) ||
-            (i.reporter_name||'').toLowerCase().includes(q) ||
-            (i.category||'').toLowerCase().includes(q));
+        if (q)   inc = inc.filter(i => (i.title||'').toLowerCase().includes(q) || (i.reporter_name||'').toLowerCase().includes(q) || (i.category||'').toLowerCase().includes(q));
         if (pri) inc = inc.filter(i => (i.priority||'').toLowerCase() === pri);
-        if (sta) inc = inc.filter(i => {
-            const ls = (i.status||'').toLowerCase();
-            return sta === 'in_progress' ? (ls==='in_progress'||ls==='progress') : ls===sta;
-        });
-
+        if (sta) inc = inc.filter(i => { const ls = (i.status||'').toLowerCase(); return sta === 'in_progress' ? (ls==='in_progress'||ls==='progress') : ls===sta; });
         if (!inc.length) { showEmpty(); return; }
-
         await initData(inc);
-    } catch(e) {
-        console.error(e);
-        err('Gagal memuat data insiden');
-        showEmpty();
-    }
+    } catch(e) { console.error(e); err('Gagal memuat data insiden'); showEmpty(); }
 }
 
-/* ─── EVENTS ─── */
 document.getElementById('searchInput').addEventListener('input',  () => { page=1; fetchIncidents(); });
 document.getElementById('priorityFilter').addEventListener('change', () => { page=1; fetchIncidents(); });
 document.getElementById('statusFilter').addEventListener('change',   () => { page=1; fetchIncidents(); });
@@ -680,24 +620,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const params = new URLSearchParams(window.location.search);
     const stPar  = params.get('status');
     const idPar  = params.get('id');
-
     if (stPar) document.getElementById('statusFilter').value = stPar;
-
     fetchIncidents(true);
-
     if (idPar) {
-        const tryOpen = () => {
-            const inc = byId(parseInt(idPar));
-            if (inc) openModal(parseInt(idPar), true);
-            else setTimeout(tryOpen, 500);
-        };
+        const tryOpen = () => { const inc = byId(parseInt(idPar)); if (inc) openModal(parseInt(idPar), true); else setTimeout(tryOpen, 500); };
         setTimeout(tryOpen, 1000);
     }
-
-    document.querySelector('.logout')?.addEventListener('click', () => {
-        localStorage.clear();
-        window.location.href = '../auth/login.html';
-    });
+    document.querySelector('.logout')?.addEventListener('click', () => { localStorage.clear(); window.location.href = '../auth/login.html'; });
 });
 </script>
 </body>

@@ -28,16 +28,20 @@
         .logo-icon { width:38px; height:38px; background:linear-gradient(135deg,var(--red),var(--red-dark)); border-radius:11px; display:flex; align-items:center; justify-content:center; color:white; font-size:17px; box-shadow:0 4px 12px rgba(230,57,70,0.32); }
         .logo-text { font-size:15.5px; font-weight:800; color:var(--gray-900); letter-spacing:-0.3px; }
         .logo-text span { color:var(--red); }
-        .nav-section-label { font-size:9.5px; font-weight:700; color:var(--gray-400); text-transform:uppercase; letter-spacing:1.3px; padding:0 10px; margin-bottom:7px; }
+
+ 
+        .nav-section-label { font-size:9.5px; font-weight:700; color:#94a3b8; text-transform:uppercase; letter-spacing:1.3px; padding:0 10px; margin-bottom:7px; }
+
         .nav-menu { list-style:none; margin-bottom:10px; }
         .nav-item { margin-bottom:2px; }
-        .nav-link { display:flex; align-items:center; gap:11px; padding:10px 13px; color:var(--gray-500); text-decoration:none; border-radius:var(--radius-sm); font-size:13px; font-weight:600; transition:all 0.2s; position:relative; }
+        .nav-link { display:flex; align-items:center; gap:11px; padding:10px 13px; color:#1e293b; text-decoration:none; border-radius:var(--radius-sm); font-size:13px; font-weight:600; transition:all 0.2s; position:relative; }
         .nav-link:hover { background:var(--red-50); color:var(--red); }
         .nav-link.active { background:linear-gradient(135deg,var(--red),#f05a67); color:white; box-shadow:0 4px 14px rgba(230,57,70,0.28); }
         .nav-link.active::before { content:''; position:absolute; left:-14px; width:4px; height:22px; background:var(--red); border-radius:0 4px 4px 0; }
         .nav-link i { width:17px; text-align:center; font-size:13px; }
         .sidebar-divider { height:1px; background:var(--gray-100); margin:14px 0; }
-        .logout-link { display:flex; align-items:center; gap:11px; padding:10px 13px; color:var(--gray-400); font-size:13px; font-weight:600; cursor:pointer; border-radius:var(--radius-sm); margin-top:auto; border:none; background:none; transition:all 0.2s; font-family:inherit; width:100%; }
+
+        .logout-link { display:flex; align-items:center; gap:11px; padding:10px 13px; color:#374151; font-size:13px; font-weight:600; cursor:pointer; border-radius:var(--radius-sm); margin-top:auto; border:none; background:none; transition:all 0.2s; font-family:inherit; width:100%; }
         .logout-link:hover { background:#fff5f5; color:var(--red); }
 
         /* MAIN */
@@ -48,7 +52,7 @@
         @keyframes fadeInDown { from{transform:translateY(-18px);opacity:0;} to{transform:translateY(0);opacity:1;} }
         .welcome-text h1 { font-size:22px; font-weight:800; color:var(--gray-900); letter-spacing:-0.5px; }
         .welcome-text h1 span { color:var(--red); }
-        .welcome-text p { font-size:12.5px; color:var(--gray-400); margin-top:3px; display:flex; align-items:center; gap:5px; }
+        .welcome-text p { font-size:12.5px; color:#64748b; margin-top:3px; display:flex; align-items:center; gap:5px; font-weight:500; }
         .header-right { display:flex; align-items:center; gap:10px; }
         .search-box { position:relative; }
         .search-box input { padding:9px 16px 9px 38px; border:1.5px solid var(--gray-200); border-radius:11px; width:220px; font-size:12.5px; outline:none; transition:all 0.2s; background:white; font-family:inherit; color:var(--gray-900); }
@@ -60,6 +64,8 @@
         .user-profile:hover { border-color:var(--red-light); background:var(--red-50); }
         .user-avatar { width:30px; height:30px; background:linear-gradient(135deg,var(--red),#f05a67); border-radius:9px; display:flex; align-items:center; justify-content:center; font-weight:800; color:white; font-size:13px; }
         .user-info p { font-size:13px; font-weight:700; color:var(--gray-800); }
+        .user-avatar { overflow: hidden; }
+        .user-avatar img { width:100%; height:100%; object-fit:cover; border-radius:9px; }      
 
         /* STAT CARDS */
         .stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:22px; }
@@ -106,49 +112,22 @@
         .card-subtitle { font-size:11.5px; color:var(--gray-400); font-weight:600; }
         .chart-container { height:225px; position:relative; }
 
-        /*  AKTIVITAS — doughnut chart wrapper */
-        .activity-donut-wrap {
-            position: relative;
-            width: 175px;
-            height: 175px;
-            margin: 0 auto 20px;
-        }
-        .activity-donut-wrap canvas {
-            position: absolute;
-            top: 0; left: 0;
-        }
-        .donut-center-text {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            pointer-events: none;
-        }
-        .donut-center-num {
-            font-size: 26px;
-            font-weight: 800;
-            color: var(--gray-900);
-            line-height: 1;
-            letter-spacing: -1px;
-        }
-        .donut-center-lbl {
-            font-size: 9.5px;
-            color: var(--gray-400);
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-top: 2px;
-        }
+        /* AKTIVITAS — doughnut chart wrapper */
+        .activity-donut-wrap { position:relative; width:175px; height:175px; margin:0 auto 20px; }
+        .activity-donut-wrap canvas { position:absolute; top:0; left:0; }
+        .donut-center-text { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center; pointer-events:none; }
+        .donut-center-num { font-size:26px; font-weight:800; color:var(--gray-900); line-height:1; letter-spacing:-1px; }
+        .donut-center-lbl { font-size:9.5px; color:var(--gray-400); font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-top:2px; }
 
         .activity-legend { display:flex; flex-direction:column; gap:12px; }
         .legend-item { display:flex; justify-content:space-between; align-items:center; padding:9px 13px; border-radius:var(--radius-sm); background:var(--gray-50); transition:background 0.2s; cursor:default; }
         .legend-item:hover { background:var(--red-50); }
-        .legend-label { display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--gray-600); font-weight:600; }
+        .legend-label { display:flex; align-items:center; gap:8px; font-size:12.5px; color:#374151; font-weight:600; }
         .legend-dot { width:9px; height:9px; border-radius:50%; }
         .legend-dot.low    { background:#f5536b; }
         .legend-dot.medium { background:#ee8626; }
         .legend-dot.high   { background:var(--red-dark); }
-        .legend-value { font-weight:800; font-size:13.5px; color:var(--gray-900); }
+        .legend-value { font-weight:800; font-size:13.5px; color:#0f172a; }
 
         /* BOTTOM */
         .incidents-grid { display:grid; grid-template-columns:2fr 1fr; gap:18px; }
@@ -160,14 +139,16 @@
 
         .incidents-table { width:100%; border-collapse:collapse; }
         .incidents-table thead tr { border-bottom:2px solid var(--gray-100); }
-        .incidents-table th { padding:10px 12px; text-align:left; font-size:10px; font-weight:700; color:var(--gray-400); text-transform:uppercase; letter-spacing:0.7px; }
-        .incidents-table td { padding:11px 12px; border-bottom:1px solid var(--gray-100); font-size:12.5px; color:var(--gray-700); vertical-align:middle; }
+
+        .incidents-table th { padding:10px 12px; text-align:left; font-size:10px; font-weight:700; color:#334155; text-transform:uppercase; letter-spacing:0.7px; }
+        .incidents-table td { padding:11px 12px; border-bottom:1px solid var(--gray-100); font-size:12.5px; color:#0f172a; vertical-align:middle; }
         .incidents-table tbody tr { transition:background 0.15s; }
         .incidents-table tbody tr:hover { background:var(--red-50); }
         .incidents-table tbody tr:last-child td { border-bottom:none; }
         .user-cell { display:flex; align-items:center; gap:8px; }
         .user-avatar-small { width:28px; height:28px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:white; flex-shrink:0; }
-        .user-name { font-weight:600; color:var(--gray-800); font-size:12.5px; }
+        .user-name { font-weight:600; color:#1e293b; font-size:12.5px; }
+
         .priority-badge { padding:2px 10px; border-radius:20px; font-size:10.5px; font-weight:700; display:inline-block; }
         .priority-high   { background:#fff0f2; color:var(--red); }
         .priority-medium { background:#fff7ed; color:#ea580c; }
@@ -176,13 +157,18 @@
         .status-open     { background:#fff7ed; color:#c2410c; }
         .status-progress { background:#eff6ff; color:#d8931d; }
         .status-closed   { background:#f0fdf4; color:#0ca55b; }
-        .cat-badge { background:var(--gray-100); color:var(--gray-600); padding:2px 9px; border-radius:7px; font-size:10.5px; font-weight:600; }
+
+        .cat-badge { background:#e2e8f0; color:#1e293b; padding:2px 9px; border-radius:7px; font-size:10.5px; font-weight:600; }
+        .incident-title { color:#1e293b; font-weight:600; }
+
         .view-all-btn { text-align:center; padding:13px; color:var(--red); font-weight:700; cursor:pointer; font-size:12.5px; border-top:1px solid var(--gray-100); transition:background 0.2s; border-radius:0 0 var(--radius) var(--radius); }
         .view-all-btn:hover { background:var(--red-50); }
+
         .incidents-summary { display:flex; flex-direction:column; gap:14px; }
         .summary-item { display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; }
-        .summary-label { font-size:12.5px; color:var(--gray-600); font-weight:600; }
-        .summary-value { font-size:17px; font-weight:800; color:var(--gray-900); }
+        .summary-label { font-size:12.5px; color:#334155; font-weight:600; }
+        .summary-value { font-size:17px; font-weight:800; color:#0f172a; }
+
         .summary-bar { width:100%; height:7px; background:var(--gray-100); border-radius:10px; overflow:hidden; }
         .summary-bar-fill { height:100%; border-radius:10px; transition:width 1.2s cubic-bezier(0.4,0,0.2,1); }
         .summary-bar-fill.low    { background:linear-gradient(90deg,#f5536b,#f5536b); }
@@ -292,10 +278,8 @@
                 <div class="chart-container"><canvas id="incidentChart"></canvas></div>
             </div>
 
-            <!--  AKTIVITAS — doughnut chart -->
             <div class="card">
                 <div class="card-header"><h3 class="card-title">Aktivitas</h3><span class="card-subtitle">Bulan ini</span></div>
-
                 <div class="activity-donut-wrap">
                     <canvas id="donutChart" width="175" height="175"></canvas>
                     <div class="donut-center-text">
@@ -303,7 +287,6 @@
                         <div class="donut-center-lbl">Total</div>
                     </div>
                 </div>
-
                 <div class="activity-legend">
                     <div class="legend-item">
                         <div class="legend-label"><span class="legend-dot low"></span><span>Low</span></div>
@@ -384,12 +367,33 @@
     document.getElementById('todayDate').textContent = new Date().toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
 
     try {
-        const u = JSON.parse(localStorage.getItem('user') || '{}');
-        if (u.name) {
-            document.getElementById('adminName').textContent = u.name;
-            document.getElementById('adminAvatar').textContent = u.name.charAt(0).toUpperCase();
+    const u = JSON.parse(localStorage.getItem('user') || '{}');
+    if (u.name) {
+        document.getElementById('adminName').textContent = u.name;
+        document.getElementById('adminAvatar').textContent = u.name.charAt(0).toUpperCase();
+    }
+} catch(e) {}
+
+(async () => {
+    const token = localStorage.getItem('token');
+    if(!token) return;
+    try {
+        const rp = await fetch(`${API}/auth/profile`, {headers:{'Authorization':`Bearer ${token}`}});
+        if(!rp.ok) return;
+        const pd = await rp.json();
+        const u = pd.data || pd;
+        const av = document.getElementById('adminAvatar');
+        if(u.profile_photo && av){
+            av.innerHTML = `<img src="http://localhost:3000/uploads/${u.profile_photo}"
+                alt="foto" style="width:100%;height:100%;border-radius:9px;object-fit:cover;"
+                onerror="this.parentElement.textContent='${(u.name||'A').charAt(0).toUpperCase()}'">`;
         }
-    } catch(e) {}
+        if(u.name){
+            document.getElementById('adminName').textContent = u.name;
+            document.getElementById('adminAvatar').textContent = u.profile_photo ? '' : u.name.charAt(0).toUpperCase();
+        }
+    } catch(e){ console.error('avatar error',e); }
+})();
 
     function logout() {
         localStorage.removeItem('token');
@@ -425,7 +429,7 @@
                     <div class="user-avatar-small" style="background:${COLORS[i%COLORS.length]}">${(inc.reporter_name||'U').charAt(0).toUpperCase()}</div>
                     <span class="user-name">${inc.reporter_name||'Pengguna'}</span>
                 </div></td>
-                <td style="color:var(--gray-800);font-weight:600;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${inc.title||'-'}</td>
+                <td class="incident-title" style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${inc.title||'-'}</td>
                 <td><span class="cat-badge">${inc.category||inc.type||'-'}</span></td>
                 <td>${getPriorityBadge(inc.priority)}</td>
                 <td>${getStatusBadge(inc.status)}</td>
@@ -463,56 +467,31 @@
                 responsive: true, maintainAspectRatio: false,
                 plugins: { legend: { display: false }, tooltip: { backgroundColor: '#1f2937', titleColor: '#fff', bodyColor: '#9ca3af', padding: 11, cornerRadius: 10, callbacks: { label: ctx => ` ${ctx.raw} insiden` } } },
                 scales: {
-                    x: { grid: { display: false }, ticks: { font: { size:11, family:'Plus Jakarta Sans' }, color:'#9e9e9e' } },
-                    y: { grid: { color:'#f5f5f5' }, ticks: { font: { size:11, family:'Plus Jakarta Sans' }, color:'#9e9e9e', stepSize: 1 }, beginAtZero: true }
+                    x: { grid: { display: false }, ticks: { font: { size:11, family:'Plus Jakarta Sans' }, color:'#334155' } },
+                    y: { grid: { color:'#f5f5f5' }, ticks: { font: { size:11, family:'Plus Jakarta Sans' }, color:'#334155', stepSize: 1 }, beginAtZero: true }
                 }
             }
         });
     }
 
-    /* ✅ Doughnut chart 3 warna Low / Medium / High */
     function initDonutChart(low, medium, high) {
         const ctx = document.getElementById('donutChart').getContext('2d');
         if (donutChart) donutChart.destroy();
-
         const total = low + medium + high;
-        // Kalau semua 0, tampilkan placeholder abu-abu
         const data   = total > 0 ? [low, medium, high] : [1];
         const colors = total > 0 ? ['#f5536b', '#ee8626', '#c1121f'] : ['#e4e6ea'];
         const labels = total > 0 ? ['Low', 'Medium', 'High'] : ['Tidak ada data'];
-
         donutChart = new Chart(ctx, {
             type: 'doughnut',
-            data: {
-                labels,
-                datasets: [{
-                    data,
-                    backgroundColor: colors,
-                    borderColor: '#ffffff',
-                    borderWidth: 3,
-                    hoverOffset: 6
-                }]
-            },
+            data: { labels, datasets: [{ data, backgroundColor: colors, borderColor: '#ffffff', borderWidth: 3, hoverOffset: 6 }] },
             options: {
-                responsive: false,
-                cutout: '70%',
+                responsive: false, cutout: '70%',
                 animation: { animateRotate: true, duration: 900, easing: 'easeInOutQuart' },
                 plugins: {
                     legend: { display: false },
                     tooltip: {
-                        enabled: total > 0,
-                        backgroundColor: '#1f2937',
-                        titleColor: '#fff',
-                        bodyColor: '#9ca3af',
-                        padding: 10,
-                        cornerRadius: 10,
-                        callbacks: {
-                            label: ctx => {
-                                const val = ctx.raw;
-                                const pct = total > 0 ? Math.round(val / total * 100) : 0;
-                                return ` ${val} insiden (${pct}%)`;
-                            }
-                        }
+                        enabled: total > 0, backgroundColor: '#1f2937', titleColor: '#fff', bodyColor: '#9ca3af', padding: 10, cornerRadius: 10,
+                        callbacks: { label: ctx => { const val = ctx.raw; const pct = total > 0 ? Math.round(val / total * 100) : 0; return ` ${val} insiden (${pct}%)`; } }
                     }
                 }
             }
@@ -523,39 +502,26 @@
         try {
             const token = localStorage.getItem('token');
             if (!token) { window.location.href = '../auth/login.html'; return; }
-
-            const res = await fetch(`${API}/admin/incidents`, {
-                headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
-            });
+            const res = await fetch(`${API}/admin/incidents`, { headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' } });
             if (res.status === 401) { window.location.href = '../auth/login.html'; return; }
             if (!res.ok) { console.error('API error', res.status); return; }
-
             const data = await res.json();
             const incidents = (data.success ? data.data : data.incidents) || [];
             allIncidents = incidents;
-
             const total   = incidents.length;
             const open    = incidents.filter(i => i.status?.toLowerCase() === 'open').length;
             const inProg  = incidents.filter(i => ['in_progress','progress'].includes(i.status?.toLowerCase())).length;
             const high    = incidents.filter(i => i.priority?.toLowerCase() === 'high').length;
             const medium  = incidents.filter(i => i.priority?.toLowerCase() === 'medium').length;
             const low     = incidents.filter(i => i.priority?.toLowerCase() === 'low').length;
-
-            // Stat cards
             document.getElementById('totalVal').textContent    = total;
             document.getElementById('openVal').textContent     = open;
             document.getElementById('progressVal').textContent = inProg;
             document.getElementById('highVal').textContent     = high;
-
-            // Donut center
             document.getElementById('circleTotal').textContent = total;
-
-            // Legend persentase
             document.getElementById('lowPct').textContent  = total ? Math.round(low    / total * 100) + '%' : '0%';
             document.getElementById('medPct').textContent  = total ? Math.round(medium / total * 100) + '%' : '0%';
             document.getElementById('highPct').textContent = total ? Math.round(high   / total * 100) + '%' : '0%';
-
-            // Ringkasan prioritas
             document.getElementById('lowCount').textContent  = low;
             document.getElementById('medCount').textContent  = medium;
             document.getElementById('highCount').textContent = high;
@@ -564,17 +530,10 @@
                 document.getElementById('medBar').style.width  = Math.round(medium / total * 100) + '%';
                 document.getElementById('highBar').style.width = Math.round(high   / total * 100) + '%';
             }
-
-            // ✅ Render donut chart
             initDonutChart(low, medium, high);
-
-            // Tabel default tampilkan Open
             renderTable(incidents.filter(i => i.status?.toLowerCase() === 'open'));
             initLineChart(incidents);
-
-        } catch(err) {
-            console.error('Dashboard error:', err);
-        }
+        } catch(err) { console.error('Dashboard error:', err); }
     }
 
     document.getElementById('searchInput').addEventListener('input', function() {
@@ -604,31 +563,21 @@
             }
             list.innerHTML = notifs.map(n => `
                 <div onclick="handleNotificationClick(${n.id}, ${n.incident_id})" style="padding:13px 17px;border-bottom:1px solid #f5f5f5;background:${n.is_read?'#fff':'#fff5f7'};cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='#fff0f2'" onmouseout="this.style.background='${n.is_read?'#fff':'#fff5f7'}'">
-                    <div style="font-size:12.5px;font-weight:700;color:#1f2937;margin-bottom:3px;">${n.title}</div>
-                    <div style="font-size:11.5px;color:#757575;">${n.message}</div>
-                    <div style="font-size:10.5px;color:#9ca3af;margin-top:3px;">${new Date(n.created_at).toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})}</div>
+                    <div style="font-size:12.5px;font-weight:700;color:#1e293b;margin-bottom:3px;">${n.title}</div>
+                    <div style="font-size:11.5px;color:#374151;">${n.message}</div>
+                    <div style="font-size:10.5px;color:#64748b;margin-top:3px;">${new Date(n.created_at).toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})}</div>
                 </div>
             `).join('');
         } catch(e) { console.error(e); }
     }
 
-    // Handle notification click - navigate to incident detail and mark as read
     async function handleNotificationClick(notifId, incidentId) {
-        // Mark notification as read
         const token = localStorage.getItem('token');
         if (token) {
             await fetch(`http://localhost:3000/api/notifications/${notifId}/read`, { method:'PUT', headers:{ 'Authorization':`Bearer ${token}` } });
         }
-        
-        // Close dropdown
         document.getElementById('notifDropdown').style.display = 'none';
-        
-        // Navigate to incidents page with id parameter
-        if (incidentId) {
-            window.location.href = `incidents.html?id=${incidentId}`;
-        } else {
-            window.location.href = 'incidents.html';
-        }
+        if (incidentId) { window.location.href = `incidents.html?id=${incidentId}`; } else { window.location.href = 'incidents.html'; }
     }
 
     function toggleNotifications() {
