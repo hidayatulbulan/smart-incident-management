@@ -1,11 +1,4 @@
 const db = require("../config/database");
-
-/**
- * Get notifications for logged-in user (unread first)
- * GET /api/notifications
- * Requires: Bearer token
- * Returns: Last 20 notifications ordered by is_read ASC, created_at DESC
- */
 exports.getNotifications = async (req, res) => {
   try {
     const userId = req.user?.id;
@@ -36,13 +29,7 @@ exports.getNotifications = async (req, res) => {
   }
 };
 
-/**
- * Mark one notification as read
- * PUT /api/notifications/:id/read
- * Requires: Bearer token
- * Validates: Notification belongs to logged-in user
- * Returns: Updated notification
- */
+
 exports.markAsRead = async (req, res) => {
   try {
     const { id } = req.params;
@@ -62,7 +49,6 @@ exports.markAsRead = async (req, res) => {
       });
     }
 
-    // Check if notification exists and belongs to user
     const [notifications] = await db.query(
       "SELECT * FROM notifications WHERE id = ? AND user_id = ?",
       [id, userId]
@@ -75,13 +61,11 @@ exports.markAsRead = async (req, res) => {
       });
     }
 
-    // Update notification
     await db.query(
       "UPDATE notifications SET is_read = 1 WHERE id = ? AND user_id = ?",
       [id, userId]
     );
 
-    // Fetch updated notification
     const [updatedNotifications] = await db.query(
       "SELECT * FROM notifications WHERE id = ?",
       [id]
@@ -101,12 +85,6 @@ exports.markAsRead = async (req, res) => {
   }
 };
 
-/**
- * Mark all notifications as read for logged-in user
- * PUT /api/notifications/read-all
- * Requires: Bearer token
- * Returns: Count of updated notifications
- */
 exports.markAllAsRead = async (req, res) => {
   try {
     const userId = req.user?.id;

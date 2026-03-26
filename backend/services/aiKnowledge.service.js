@@ -1,7 +1,7 @@
 /**
  * ╔══════════════════════════════════════════════════════════════════════╗
  * ║           SmartIncident — AI Knowledge Service                       ║
- * ║  Dipanggil controller via:                                           ║
+ *                                            ║
  * ║    getRecommendation(description, category)                          ║
  * ║    processClosedIncident(incident, userId)                           ║
  * ╚══════════════════════════════════════════════════════════════════════╝

@@ -1,6 +1,6 @@
 /**
  * ╔══════════════════════════════════════════════════════╗
- * ║         SmartIncident — AI Service (Lokal)           ║
+ * ║         SmartIncident — AI Service         ║
  * ║  Sistem Rekomendasi 3 Lapis:                         ║
  * ║  Lapis 1 → KB teknisi (kasus serupa yang RELEVAN)    ║
  * ║  Lapis 2 → Hardcode self-fix per kategori/keyword    ║
@@ -8,21 +8,53 @@
  * ╚══════════════════════════════════════════════════════╝
  */
 
-// Keyword prioritas — termasuk kata pendek seperti "ac", "pc"
 const HIGH_PRIORITY_KEYWORDS = [
   'monitor', 'wifi', 'printer', 'internet', 'laptop', 'proyektor',
   'komputer', 'tinta', 'lampu', 'listrik', 'email', 'aplikasi',
   'mouse', 'keyboard', 'dispenser', 'server', 'jaringan', 'kabel',
-  // Kata pendek — dicocokkan dengan whole-word regex
   'ac', 'pc', 'hp', 'usb', 'lan'
 ];
 
-// Frasa yang dilarang muncul di saran user
 const BLACKLIST_SARAN = [
   'dinyatakan selesai', 'masalah selesai', 'sudah fix', 'oke', 'aman',
   'berhasil diperbaiki', 'sudah diperbaiki', 'tiket ditutup', 'solved',
   'tidak ada catatan', 'selesai.', 'done', 'siap'
 ];
+
+// ─────────────────────────────────────────────────────────
+// FIX: Kata-kata sudut pandang teknisi → diganti ke user
+// ─────────────────────────────────────────────────────────
+const TECHNICIAN_TO_USER_MAP = [
+  // Pola "teknisi [kata kerja]" → "Anda bisa [kata kerja]"
+  { pattern: /\bteknisi\s+(me\w+|meng\w+|mem\w+)/gi, replacement: 'Anda bisa $1' },
+  { pattern: /\bteknisi\s+(\w+)/gi,                   replacement: 'Anda bisa $1' },
+  // Pola "dilakukan pengecekan" → "lakukan pengecekan"
+  { pattern: /\bdilakukan\s+/gi,   replacement: 'lakukan ' },
+  { pattern: /\bdiperiksa\b/gi,    replacement: 'periksa' },
+  { pattern: /\bdimatikan\b/gi,    replacement: 'matikan' },
+  { pattern: /\bdinyalakan\b/gi,   replacement: 'nyalakan' },
+  { pattern: /\bdibersihkan\b/gi,  replacement: 'bersihkan' },
+  { pattern: /\bdicabut\b/gi,      replacement: 'cabut' },
+  { pattern: /\bdipasang\b/gi,     replacement: 'pasang' },
+  { pattern: /\bdirestart\b/gi,    replacement: 'restart' },
+  // Pola "oleh teknisi" → hapus
+  { pattern: /\s*oleh\s+teknisi\b/gi, replacement: '' },
+  // Pola "tim teknisi" → "tim"
+  { pattern: /\btim\s+teknisi\b/gi, replacement: 'tim' },
+];
+
+/**
+ * Ubah kalimat dari sudut pandang teknisi ke sudut pandang user
+ */
+function reframeToUser(text) {
+  let result = text;
+  for (const { pattern, replacement } of TECHNICIAN_TO_USER_MAP) {
+    result = result.replace(pattern, replacement);
+  }
+  // Pastikan huruf pertama kapital
+  result = result.trim();
+  return result.charAt(0).toUpperCase() + result.slice(1);
+}
 
 // ─────────────────────────────────────────────────────────
 // LAPIS 2: SELF-FIX MAP
@@ -150,10 +182,6 @@ function normalizeCategory(category) {
   return 'IT';
 }
 
-/**
- * FIX UTAMA: tokenisasi mendukung kata pendek prioritas (≥ 2 huruf)
- * Sebelumnya filter w.length > 3 membuat "ac" tidak pernah diproses
- */
 function tokenize(text) {
   return (text || '')
     .toLowerCase()
@@ -166,10 +194,6 @@ function tokenize(text) {
     });
 }
 
-/**
- * FIX: Scoring KB dengan whole-word match untuk kata pendek
- * Sebelumnya "ac" bisa match "fasilitas", "aplikasi", dll
- */
 function filterRelevantKBCases(kbCases, description) {
   if (!kbCases || kbCases.length === 0) return [];
 
@@ -203,6 +227,9 @@ function filterRelevantKBCases(kbCases, description) {
     .sort((a, b) => b._score - a._score);
 }
 
+// ─────────────────────────────────────────────────────────
+// FIX UTAMA: extractSelfFixFromKB — tambah reframeToUser()
+// ─────────────────────────────────────────────────────────
 function extractSelfFixFromKB(kbCases) {
   if (!kbCases || kbCases.length === 0) return null;
 
@@ -214,8 +241,10 @@ function extractSelfFixFromKB(kbCases) {
 
   for (const kbCase of kbCases.slice(0, 3)) {
     if (selfFixSaran.length >= 3) break;
-    const solution = kbCase.solution || '';
-    const kalimat = solution
+
+    // Ambil dari solution DAN result KB
+    const textSources = [kbCase.solution || '', kbCase.result || ''].join('. ');
+    const kalimat = textSources
       .split(/[.\n]/)
       .map(s => s.trim())
       .filter(s => s.length > 15);
@@ -224,14 +253,16 @@ function extractSelfFixFromKB(kbCases) {
       if (selfFixSaran.length >= 3) break;
       const kLower = k.toLowerCase();
 
+      // Skip kalimat yang ada di blacklist
       if (BLACKLIST_SARAN.some(black => kLower.includes(black))) continue;
 
-      if (USER_ACTION_KEYWORDS.some(kw => kLower.includes(kw))) {
-        let saran = k.charAt(0).toUpperCase() + k.slice(1);
-        if (!USER_ACTION_KEYWORDS.some(kw => kLower.startsWith(kw))) {
-          saran = "Coba " + saran.charAt(0).toLowerCase() + saran.slice(1);
-        }
-        selfFixSaran.push(saran);
+      // Ubah sudut pandang teknisi → user SEBELUM cek action keyword
+      const reframed = reframeToUser(k);
+      const reframedLower = reframed.toLowerCase();
+
+      // Hanya ambil kalimat yang mengandung kata aksi untuk user
+      if (USER_ACTION_KEYWORDS.some(kw => reframedLower.includes(kw))) {
+        selfFixSaran.push(reframed);
       }
     }
   }
@@ -255,10 +286,9 @@ function getSelfFixSuggestions(description, category, kbCases = []) {
     }
   }
 
-  // LAPIS 2: Keyword map — cari match paling spesifik
-  // Sort dari keyword terpanjang agar lebih spesifik diproses duluan
-  const categoryMap     = SELF_FIX_MAP[cat] || SELF_FIX_MAP['IT'];
-  const sortedKeywords  = Object.keys(categoryMap).sort((a, b) => b.length - a.length);
+  // LAPIS 2: Keyword map
+  const categoryMap    = SELF_FIX_MAP[cat] || SELF_FIX_MAP['IT'];
+  const sortedKeywords = Object.keys(categoryMap).sort((a, b) => b.length - a.length);
 
   for (const keyword of sortedKeywords) {
     const isShort = keyword.length <= 3;
@@ -283,14 +313,13 @@ async function generateRecommendation(incident, slaData) {
     const slaStatus = slaData.overall_sla_status;
     const category  = normalizeCategory(incident.category || incident.type || 'IT');
 
-    // kb_similar_cases diisi oleh aiKnowledge.service sebelum fungsi ini dipanggil
-    const kbCases        = incident.kb_similar_cases || [];
+    const kbCases         = incident.kb_similar_cases || [];
     const relevantKBCases = filterRelevantKBCases(kbCases, incident.description);
-    const hasKB          = relevantKBCases.length > 0;
+    const hasKB           = relevantKBCases.length > 0;
 
     const saran = getSelfFixSuggestions(incident.description, category, kbCases);
 
-    let level    = 'info';
+    let level     = 'info';
     let ringkasan = '';
     let statusSla = '';
     let estimasi  = '';
@@ -327,12 +356,12 @@ async function generateRecommendation(incident, slaData) {
       source:  hasKB ? 'kb+local' : 'local',
       data: {
         ringkasan,
-        status_sla:      statusSla,
-        saran:           saran.slice(0, 3),
-        pesan_motivasi:  pesan,
+        status_sla:     statusSla,
+        saran:          saran.slice(0, 3),
+        pesan_motivasi: pesan,
         estimasi,
         level,
-        kb_match_count:  relevantKBCases.length,
+        kb_match_count: relevantKBCases.length,
       }
     };
 
@@ -342,7 +371,6 @@ async function generateRecommendation(incident, slaData) {
   }
 }
 
-// Parse rekomendasi tersimpan dari DB (JSON string)
 function parseStoredRecommendation(raw) {
   try {
     if (!raw) return null;

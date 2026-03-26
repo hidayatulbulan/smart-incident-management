@@ -3,10 +3,7 @@ const router = express.Router();
 const { authenticate } = require("../middleware/auth");
 const solverController = require("../controllers/solverController");
 const incidentController = require("../controllers/incidentController");
-/**
- * Solver authorization middleware
- * Checks if user has 'solver' role
- */
+
 const authorizeSolver = (req, res, next) => {
   try {
     if (!req.user || req.user.role?.toLowerCase() !== "solver") {
@@ -25,16 +22,9 @@ const authorizeSolver = (req, res, next) => {
   }
 };
 
-// Get all incidents assigned to this solver (for incidents.html - all statuses)
 router.get("/incidents", authenticate, authorizeSolver, solverController.getMyIncidents);
-
-// Get latest OPEN incidents for Dashboard (filter status='open', limit 5)
 router.get("/incidents/latest", authenticate, authorizeSolver, solverController.getLatestIncidents);
-
-// Get specific incident detail
 router.get("/incidents/:id", authenticate, authorizeSolver, solverController.getIncidentDetail);
-
-// Update incident status and solver note
 router.put("/incidents/:id/status", authenticate, authorizeSolver, solverController.updateStatus);
 router.put("/incidents/:id/resolve", authenticate, authorizeSolver, incidentController.resolveIncident);
 

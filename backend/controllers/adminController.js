@@ -4,7 +4,7 @@ const bcryptjs = require("bcryptjs");
 const { createNotification } = require("../helpers/notificationHelper");
 
 /**
- * Get all incidents (Admin only)
+ * Get all incidents
  * GET /api/admin/incidents
  */
 exports.getAllIncidents = async (req, res) => {
@@ -18,7 +18,7 @@ exports.getAllIncidents = async (req, res) => {
 };
 
 /**
- * Update incident status and admin note (Admin only)
+ * Update incident status and admin note 
  * PUT /api/admin/incidents/:id
  */
 exports.updateIncident = async (req, res) => {
@@ -46,7 +46,7 @@ exports.updateIncident = async (req, res) => {
 };
 
 /**
- * Delete incident (Admin only)
+ * Delete incident 
  * DELETE /api/admin/incidents/:id
  */
 exports.deleteIncident = async (req, res) => {
@@ -69,7 +69,7 @@ exports.deleteIncident = async (req, res) => {
 };
 
 /**
- * Get reports statistics (Admin only)
+ * Get reports statistics
  * GET /api/admin/reports/stats
  */
 exports.getReportsStats = async (req, res) => {
@@ -105,7 +105,7 @@ exports.getReportsStats = async (req, res) => {
 };
 
 /**
- * Get weekly incidents by category (Admin only)
+ * Get weekly incidents by category
  * GET /api/admin/reports/weekly
  */
 exports.getWeeklyByCategory = async (req, res) => {
@@ -129,9 +129,8 @@ exports.getWeeklyByCategory = async (req, res) => {
       if (!weekMap.has(key)) weekMap.set(key, { it: 0, fasilitas: 0 });
 
       const category = (row.category || '').toLowerCase().trim();
-      const isIT = category === 'it' || category.includes('software') || category.includes('hardware') || category.includes('sistem') || category.includes('network') || category.includes('teknologi');
-      const isFasilitas = category === 'fasilitas' || category === 'facilities' || category === 'facility' || category.includes('fasilitas') || category.includes('gedung') || category.includes('ruangan');
-
+      const isIT = category === 'it' || category === 'IT' || category.includes('software') || category.includes('hardware') || category.includes('sistem') || category.includes('network') || category.includes('teknologi');
+      const isFasilitas = category === 'fasilitas' || category === 'Fasilitas' || category === 'facilities' || category === 'facility' || category.includes('fasilitas') || category.includes('gedung') || category.includes('ruangan');
       if (isIT) weekMap.get(key).it += parseInt(row.count);
       else if (isFasilitas) weekMap.get(key).fasilitas += parseInt(row.count);
       else weekMap.get(key).it += parseInt(row.count);
@@ -153,7 +152,7 @@ exports.getWeeklyByCategory = async (req, res) => {
 };
 
 /**
- * Get top reporters (Admin only)
+ * Get top reporters 
  * GET /api/admin/reports/top-reporters
  */
 exports.getTopReporters = async (req, res) => {
@@ -188,7 +187,7 @@ exports.getTopReporters = async (req, res) => {
 };
 
 /**
- * Get performance metrics (Admin only)
+ * Get performance metrics
  * GET /api/admin/reports/performance
  */
 exports.getPerformanceMetrics = async (req, res) => {
@@ -231,7 +230,7 @@ exports.getPerformanceMetrics = async (req, res) => {
 };
 
 /**
- * Get all users (Admin only)
+ * Get all users 
  * GET /api/admin/users
  */
 exports.getUsers = async (req, res) => {
@@ -248,7 +247,7 @@ exports.getUsers = async (req, res) => {
 };
 
 /**
- * Create new user (Admin only)
+ * Create new user 
  * POST /api/admin/users
  */
 exports.createUser = async (req, res) => {
@@ -271,7 +270,7 @@ exports.createUser = async (req, res) => {
 };
 
 /**
- * Update user (Admin only)
+ * Update user 
  * PUT /api/admin/users/:id
  */
 exports.updateUser = async (req, res) => {
@@ -293,7 +292,7 @@ exports.updateUser = async (req, res) => {
 };
 
 /**
- * Delete user (Admin only)
+ * Delete user 
  * DELETE /api/admin/users/:id
  */
 exports.deleteUser = async (req, res) => {
@@ -313,7 +312,7 @@ exports.deleteUser = async (req, res) => {
 };
 
 /**
- * Get all solvers (Admin only)
+ * Get all solvers (
  * GET /api/admin/solvers
  */
 exports.getSolvers = async (req, res) => {
@@ -327,7 +326,7 @@ exports.getSolvers = async (req, res) => {
 };
 
 /**
- * Assign incident to solver (Admin only)
+ * Assign incident to solver
  * PUT /api/admin/incidents/:id/assign
  */
 exports.assignIncident = async (req, res) => {

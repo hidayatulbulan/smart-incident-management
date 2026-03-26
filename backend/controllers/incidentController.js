@@ -32,7 +32,7 @@ async function injectKBToIncident(incident) {
 // FIX: Tidak menyimpan rekomendasi ke DB saat insiden dibuat.
 // Rekomendasi di-generate fresh setiap kali user membuka detail
 // insiden via getAIRecommendation(). Ini memastikan rekomendasi
-// selalu pakai KB terbaru — bukan snapshot saat insiden dibuat.
+// selalu pakai KB terbaru .
 // ─────────────────────────────────────────────────────────
 exports.create = async (req, res) => {
   try {
@@ -74,8 +74,7 @@ exports.create = async (req, res) => {
     } catch (slaErr) {
       console.error("[SLA] Failed to set SLA:", slaErr.message);
     }
-
-    // Notifikasi admin
+admin 
     try {
       const [reporterData] = await db.query("SELECT name FROM users WHERE id = ?", [userId]);
       const reporterName   = reporterData[0]?.name || "User";
@@ -237,7 +236,7 @@ exports.getLatest = async (req, res) => {
 
 // ─────────────────────────────────────────────────────────
 // RESOLVE INCIDENT
-// FIX: Hapus cache rekomendasi saat selesai, simpan ke KB,
+// FIX: Hapus cache rekomendasi saat selesai, 
 // lalu generate rekomendasi fresh pakai KB yang sudah terupdate
 // ─────────────────────────────────────────────────────────
 exports.resolveIncident = async (req, res) => {
@@ -274,8 +273,7 @@ exports.resolveIncident = async (req, res) => {
       console.error("[SLA] evaluateSLA error:", slaErr.message);
     }
 
-    // Simpan ke KB dulu — SEBELUM generate rekomendasi
-    // Urutan ini penting: KB harus sudah ada datanya saat generate rekomendasi
+    // KB harus sudah ada datanya saat generate rekomendasi
     let kbResult = null;
     if (newStatus === "closed") {
       try {
@@ -286,9 +284,6 @@ exports.resolveIncident = async (req, res) => {
         console.error("[KB] Failed to save to knowledge base:", kbErr.message);
       }
     }
-
-    // Generate rekomendasi fresh setelah KB terupdate
-    // Hapus cache lama dulu
     try {
       await db.query("UPDATE incidents SET recommendation = NULL WHERE id = ?", [id]);
 
@@ -307,8 +302,6 @@ exports.resolveIncident = async (req, res) => {
     } catch (aiErr) {
       console.error("[AI] generateRecommendation error:", aiErr.message);
     }
-
-    // Notifikasi user
     try {
       const statusLabel = newStatus === "closed" ? "diselesaikan" : "diperbarui";
       await createNotificationsForMultiple(
@@ -347,9 +340,6 @@ exports.getAIRecommendation = async (req, res) => {
 
     const incident = await Incident.getById(id);
     if (!incident) return res.status(404).json({ success: false, message: "Incident not found" });
-
-    // Selalu hapus cache dan generate fresh
-    // Alasan: KB bisa bertambah kapan saja, cache lama mungkin pakai data KB yang belum lengkap
     await db.query("UPDATE incidents SET recommendation = NULL WHERE id = ?", [id]);
 
     const slaForAI       = slaService.prepareSLAForAI(incident);
@@ -372,6 +362,109 @@ exports.getAIRecommendation = async (req, res) => {
 
   } catch (error) {
     console.error("getAIRecommendation error:", error);
+    res.status(500).json({ success: false, message: "Internal server error", error: error.message });
+  }
+};
+
+// ─────────────────────────────────────────────────────────
+//  AI SUGGESTION
+// Dipanggil otomatis setelah AI generate rekomendasi
+// POST /api/incidents/:id/ai-suggestion
+// ─────────────────────────────────────────────────────────
+exports.saveAISuggestion = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { content } = req.body;
+
+    if (!id || !content) {
+      return res.status(400).json({ success: false, message: "incident_id dan content wajib diisi" });
+    }
+
+    const [result] = await db.query(
+      `INSERT INTO ai_suggestions (incident_id, content) VALUES (?, ?)`,
+      [id, content]
+    );
+
+    return res.status(201).json({
+      success: true,
+      suggestion_id: result.insertId
+    });
+  } catch (error) {
+    console.error("saveAISuggestion error:", error);
+    res.status(500).json({ success: false, message: "Internal server error", error: error.message });
+  }
+};
+
+// ─────────────────────────────────────────────────────────
+// SUBMIT FEEDBACK
+// POST /api/incidents/:id/feedback
+// Body: { feedback, ai_suggestion_id, reason }
+// feedback: 'helpful' | 'not_relevant'
+// reason: 'Kategori tidak sesuai' | 'Saran tidak relevan' | dst
+// ─────────────────────────────────────────────────────────
+exports.submitFeedback = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { feedback, ai_suggestion_id, reason } = req.body;
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return res.status(401).json({ success: false, message: "User not authenticated" });
+    }
+    if (!feedback || !ai_suggestion_id) {
+      return res.status(400).json({ success: false, message: "feedback dan ai_suggestion_id wajib diisi" });
+    }
+    if (!['helpful', 'not_relevant'].includes(feedback)) {
+      return res.status(400).json({ success: false, message: "feedback harus 'helpful' atau 'not_relevant'" });
+    }
+
+    const [existing] = await db.query(
+      `SELECT id FROM ai_feedbacks WHERE user_id = ? AND ai_suggestion_id = ?`,
+      [userId, ai_suggestion_id]
+    );
+    if (existing.length > 0) {
+      return res.status(409).json({ success: false, message: "Anda sudah memberikan feedback untuk saran ini" });
+    }
+    await db.query(
+      `INSERT INTO ai_feedbacks (incident_id, user_id, ai_suggestion_id, feedback, reason)
+       VALUES (?, ?, ?, ?, ?)`,
+      [id, userId, ai_suggestion_id, feedback, reason || null]
+    );
+
+    const column = feedback === 'helpful' ? 'helpful_count' : 'not_relevant_count';
+    await db.query(
+      `UPDATE ai_suggestions SET ${column} = ${column} + 1 WHERE id = ?`,
+      [ai_suggestion_id]
+    );
+
+    if (feedback === 'not_relevant') {
+      try {
+        const incident = await require('../models/incidentModel').getById(id);
+        const [admins] = await db.query("SELECT id FROM users WHERE role = 'admin'");
+        const adminIds = admins.map(a => a.id);
+
+        if (adminIds.length > 0) {
+          const { createNotificationsForMultiple } = require('../helpers/notificationHelper');
+          await createNotificationsForMultiple(
+            adminIds,
+            "Feedback AI Negatif",
+            `Saran AI untuk insiden "${incident?.title}" dinilai tidak relevan${reason ? `: ${reason}` : ''}`,
+            "ai_feedback_negative",
+            parseInt(id)
+          );
+        }
+      } catch (notifErr) {
+        console.error("[NOTIF] feedback notification error:", notifErr.message);
+      }
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: feedback === 'helpful' ? "Terima kasih atas feedback positif!" : "Feedback diterima, kami akan tingkatkan saran AI."
+    });
+
+  } catch (error) {
+    console.error("submitFeedback error:", error);
     res.status(500).json({ success: false, message: "Internal server error", error: error.message });
   }
 };

@@ -33,10 +33,10 @@ exports.register = async (req, res) => {
     }
 
     // Validate password strength
-    if (password.length < 6) {
+   if (password.length < 8) {
       return res.status(400).json({
         success: false,
-        message: "Password must be at least 6 characters long"
+        message: "Password must be at least 8 characters long"
       });
     }
 
@@ -102,7 +102,7 @@ exports.login = async (req, res) => {
       });
     }
 
-    // Find user by email in database
+    // Find user by email
     const user = await User.findByEmail(email);
     if (!user) {
       return res.status(401).json({
@@ -161,8 +161,6 @@ exports.login = async (req, res) => {
 exports.getProfile = async (req, res) => {
   try {
     const userId = req.user.id;
-
-    // Get user data from database
     const user = await User.findById(userId);
 
     if (!user) {
@@ -198,14 +196,13 @@ exports.getProfile = async (req, res) => {
  * PUT /api/auth/profile
  * Requires: Bearer token in Authorization header
  * Body: { name }
- * Updates user name in database
+ * Updates user name 
  */
 exports.updateProfile = async (req, res) => {
   try {
     const userId = req.user.id;
     const { name } = req.body;
 
-    // Validate input
     if (!name) {
       return res.status(400).json({
         success: false,
@@ -220,10 +217,7 @@ exports.updateProfile = async (req, res) => {
       });
     }
 
-    // Update user name in database
     await User.updateName(userId, name.trim());
-
-    // Get updated user data
     const updatedUser = await User.findById(userId);
 
     res.status(200).json({
@@ -250,7 +244,7 @@ exports.updateProfile = async (req, res) => {
  * Update User Profile Photo
  * POST /api/auth/profile/photo
  * Requires: Bearer token in Authorization header, file upload (multipart/form-data, key: "photo")
- * Updates user profile photo filename in database
+ * Updates user profile photo 
  */
 exports.updateProfilePhoto = async (req, res) => {
   try {
@@ -264,10 +258,7 @@ exports.updateProfilePhoto = async (req, res) => {
     const userId = req.user.id;
     const filename = req.file.filename;
 
-    // Update user profile_photo in database
     await db.query("UPDATE users SET profile_photo = ? WHERE id = ?", [filename, userId]);
-
-    // Get updated user data
     const updatedUser = await User.findById(userId);
 
     res.status(200).json({
